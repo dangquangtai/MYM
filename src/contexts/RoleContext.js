@@ -1,0 +1,110 @@
+import React, { createContext } from 'react';
+import { vibEndpoints } from '../store/constant';
+import axiosInstance from '../services/axios';
+import useView from '../hooks/useView';
+
+const RoleContext = createContext({});
+
+export const RoleProvider = ({ children }) => {
+  const { setView } = useView();
+
+  const getRoleDetail = async (id) => {
+    return axiosInstance
+      .post(vibEndpoints.get_detail_role_template, {
+         outputtype: 'RawJson' ,id})
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return news;
+        } else return {};
+      });
+  };
+  const getDepartmentListGroup = async (id) => {
+    return axiosInstance
+      .post(vibEndpoints.get_all_group, {
+         outputtype: 'RawJson'})
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list: news, view } = response.data;
+          return news;
+        } else return {};
+      });
+  };
+
+
+  const createRole = async (role) => {
+    return axiosInstance.post(vibEndpoints.create_role_template, role).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+  const syncRole = async () => {
+    return axiosInstance.post(vibEndpoints.sync_group_for_department, {
+      outputtype: 'RawJson',
+      company_code: 'HNN',
+    }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+  const addAccountToGroup = async (group_name, account_id) => {
+    return axiosInstance.post(vibEndpoints.add_account_to_group,{
+      outputtype: 'RawJson',
+      group_name: group_name,
+      company_code: 'HNN',
+      account_id: account_id,
+    }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+  const removeAccountToGroup = async (group_name, account_id, email_address) => {
+    return axiosInstance.post(vibEndpoints.remove_account_to_group,{
+      outputtype: 'RawJson',
+      group_name: group_name,
+      email_address: email_address,
+      company_code: 'HNN',
+      account_id: account_id,
+    }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+  const activeRole = async ( role ) => {
+    return axiosInstance
+     .post(vibEndpoints.active_role_template,{
+      outputtype: 'RawJson',
+      ...role,
+
+    }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+  const updateRole = async (account) => {
+    return axiosInstance.post(vibEndpoints.update_account, account).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
+  return (
+    <RoleContext.Provider
+      value={{
+        createRole,
+        updateRole,
+        activeRole,
+        getRoleDetail,
+        getDepartmentListGroup,
+        addAccountToGroup,
+        removeAccountToGroup,
+        syncRole,
+      }}
+    >
+      {children}
+    </RoleContext.Provider>
+  );
+};
+
+export default RoleContext;
