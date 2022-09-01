@@ -1,4 +1,19 @@
-import { Button, Card, Checkbox, Grid, Tooltip, FormControlLabel, TablePagination, TableRow, Paper, Switch, Table, TableBody, TableCell, TableContainer } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Grid,
+  Tooltip,
+  FormControlLabel,
+  TablePagination,
+  TableRow,
+  Paper,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+} from '@material-ui/core';
 import React, { useEffect } from 'react';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -6,6 +21,7 @@ import DuoIcon from '@material-ui/icons/Duo';
 import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import StarIcon from '@material-ui/icons/Star';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import { useDispatch, useSelector } from 'react-redux';
 import { CONFIRM_CHANGE, DOCUMENT_CHANGE, FLOATING_MENU_CHANGE, TASK_CHANGE, VIEW_CHANGE } from '../../store/actions';
@@ -24,14 +40,11 @@ import NoteModal from './NoteModal';
 import { style, useStyles } from './style';
 import { bookingStatusList } from './data';
 import { getComparator, stableSort, getTodayAndTomorrow } from '../../utils/table';
-
-import SearchIcon from '@material-ui/icons/Search';
 import useRole from '../../hooks/useRole';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 import { format as formatDate } from 'date-fns';
 import useBatch from './../../hooks/useBatch';
-
 
 export default function GeneralTable(props) {
   const classes = useStyles();
@@ -42,7 +55,7 @@ export default function GeneralTable(props) {
   const { selectedFolder } = useSelector((state) => state.folder);
 
   const { selectedDocument } = useSelector((state) => state.document);
-  
+
   useEffect(() => {
     const initOptions = {
       id: tableColumns.includes('booking_id'),
@@ -95,35 +108,18 @@ export default function GeneralTable(props) {
 
   const buttonAccountCreate = menuButtons.find((button) => button.name === view.user.list.create);
 
+  const buttonDeptCreate = menuButtons.find((button) => button.name === view.department.list.create);
+  const buttonRemoveAccount = menuButtons.find((button) => button.name === view.role.list.remove);
 
-  const buttonDeptCreate = menuButtons.find(
-    (button) => button.name === view.department.list.create
-  );
-  const buttonRemoveAccount = menuButtons.find(
-    (button) => button.name === view.role.list.remove
-  );
-
-  const buttonCreateMentor = menuButtons.find(
-    (button) => button.name === view.mentor.list.create
-  )
-  const buttonCreateRole = menuButtons.find(
-    (button) => button.name === view.role.list.create
-  )
-  const buttonShowTreeView =menuButtons.find(
-    (button) => button.name === view.department.list.show_tree
-  )
-  const buttonSelectDepartment = menuButtons.find(
-    (button) => button.name === view.role.list.select
-  )
-  const buttonSyncDepartment = menuButtons.find(
-    (button) => button.name === view.role.list.sync_department
-  )
-  const buttonAddAccount = menuButtons.find(
-    (button) => button.name === view.role.list.addnew
-  )
-
+  const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
+  const buttonCreateRole = menuButtons.find((button) => button.name === view.role.list.create);
+  const buttonShowTreeView = menuButtons.find((button) => button.name === view.department.list.show_tree);
+  const buttonSelectDepartment = menuButtons.find((button) => button.name === view.role.list.select);
+  const buttonSyncDepartment = menuButtons.find((button) => button.name === view.role.list.sync_department);
+  const buttonAddAccount = menuButtons.find((button) => button.name === view.role.list.addnew);
 
   const buttonCreateBatch = menuButtons.find((button) => button.name === view.batch.list.create);
+  const buttonDownloadBatch = menuButtons.find((button) => button.name === view.batch.list.download);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -136,7 +132,7 @@ export default function GeneralTable(props) {
   const [pageCurrent, setPage] = React.useState(1);
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
-  
+
   const reduxDocuments = useSelector((state) => state.task);
   const {
     documents = [],
@@ -169,25 +165,23 @@ export default function GeneralTable(props) {
     career: '',
 
     group_id: '',
-
   };
 
   const { getDocuments } = useTask();
 
-  const { getBookingDetail, approveBooking, reviewBooking, setNoteBooking, setCompletedBooking, getListUniversity } = useBooking();
+  const { getBookingDetail, approveBooking, reviewBooking, setNoteBooking, setCompletedBooking, getListUniversity } =
+    useBooking();
 
   const { activeDepartment, getDepartmentDetail } = useDepartment();
 
+  const { activeRole, getRoleDetail, getDepartmentListGroup, addAccountToGroup, removeAccountToGroup, syncRole } =
+    useRole();
 
- 
-  const {activeRole, getRoleDetail, getDepartmentListGroup,  addAccountToGroup, removeAccountToGroup, syncRole} = useRole();
-
-  const {getAccountDetail, activeAccount} = useAccount();
-
+  const { getAccountDetail, activeAccount } = useAccount();
 
   const { getMentorDetail, toggleActiveMentor } = useMentor();
 
-  const { activeBatch, activeCode } = useBatch()
+  const { activeBatch, activeCode, downloadBatch } = useBatch();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -234,7 +228,7 @@ export default function GeneralTable(props) {
     });
     setPage(1);
   };
-  
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = documents.map((n) => n.id);
@@ -311,27 +305,32 @@ export default function GeneralTable(props) {
     } else if (documentType === 'department') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
-    } else if (documentType ==='role') {
+    } else if (documentType === 'role') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
-  const showTreeView =() =>{
+  const showTreeView = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-  }
-  
-  const showFormAddAccount =() =>{
+  };
 
+  const showFormAddAccount = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, accountDocument: true });
-  }
+  };
   const reloadCurrentDocuments = (page = 1) => {
     setSelected([]);
     fetchDocument({ page: pageCurrent });
   };
 
-  const showConfirmPopup = ({ title = 'Thông báo', message = 'Yêu cầu lựa chọn ít nhất một bản ghi', action = null, payload = null, onSuccess = null }) => {
+  const showConfirmPopup = ({
+    title = 'Thông báo',
+    message = 'Yêu cầu lựa chọn ít nhất một bản ghi',
+    action = null,
+    payload = null,
+    onSuccess = null,
+  }) => {
     setConfirmPopup({ type: CONFIRM_CHANGE, open: true, title, message, action, payload, onSuccess });
   };
 
@@ -396,7 +395,7 @@ export default function GeneralTable(props) {
   };
 
   const toggleSetActiveRole = async (event, id, is_active) => {
-    event.stopPropagation()
+    event.stopPropagation();
     await activeRole({
       id,
       is_active,
@@ -449,6 +448,7 @@ export default function GeneralTable(props) {
       reloadCurrentDocuments();
     }
   };
+
   const handleAddAccountToGroup = async (email_address, company_code, group_name_list, account_id) => {
     try {
       await addAccountToGroup(email_address, company_code, group_name_list, account_id);
@@ -457,17 +457,20 @@ export default function GeneralTable(props) {
       reloadCurrentDocuments();
     }
   };
+
   const handleRemoveAccountToGroup = async (email_address, group_name_list, account_id) => {
     try {
-      await removeAccountToGroup( group_name_list, account_id, email_address);
+      await removeAccountToGroup(group_name_list, account_id, email_address);
     } catch (e) {
     } finally {
       reloadCurrentDocuments();
     }
   };
+
   const handleShowColumn = (id, newState) => {
     setDisplayOptions((pre) => ({ ...pre, [id]: newState }));
   };
+
   const [group_name, setGroup] = React.useState();
   const handleFilterChange = (data) => {
     fetchDocument(data);
@@ -508,10 +511,51 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
   };
 
+  const handleClickDownLoadBatch = async (id) => {
+    try {
+      const check = await downloadBatch(id);
+      if (!check) {
+      } else {
+        showConfirmPopup({
+          message: `Bạn có muốn tải xuống lô này không ?`,
+          action: handleDownload,
+          payload: check,
+          onSuccess: reloadCurrentDocuments,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDownload = (url) => {
+    var link = document.createElement('a');
+    link.download = 'Code.xlsx';
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <React.Fragment>
-      {isOpenModalNote && <NoteModal isOpen={isOpenModalNote} isList={true} handleClose={() => setIsOpenModalNote(false)} handleSubmit={handleNoteBooking} selectedBooking={selectedRecord} />}
-      <Modal isOpen={isOpenModal} handleClose={() => setIsOpenModal(false)} type={modalType} handleCancel={handleCancelBooking} handleReview={handleReviewBooking} selectedBooking={selected[0]} />
+      {isOpenModalNote && (
+        <NoteModal
+          isOpen={isOpenModalNote}
+          isList={true}
+          handleClose={() => setIsOpenModalNote(false)}
+          handleSubmit={handleNoteBooking}
+          selectedBooking={selectedRecord}
+        />
+      )}
+      <Modal
+        isOpen={isOpenModal}
+        handleClose={() => setIsOpenModal(false)}
+        type={modalType}
+        handleCancel={handleCancelBooking}
+        handleReview={handleReviewBooking}
+        selectedBooking={selected[0]}
+      />
 
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12} style={style.tableTitleWrap}>
@@ -537,10 +581,9 @@ export default function GeneralTable(props) {
                 createNewAccount={openDialogCreate}
                 btnCreateNewDept={buttonDeptCreate}
                 createNewDept={openDialogCreate}
-
                 buttonCreateRole={buttonCreateRole}
                 createNewRole={openDialogCreate}
-                buttonShowTreeView= {buttonShowTreeView}
+                buttonShowTreeView={buttonShowTreeView}
                 showTreeView={showTreeView}
                 buttonSelectDepartment={buttonSelectDepartment}
                 getDepartmentList={getDepartmentListGroup}
@@ -548,10 +591,8 @@ export default function GeneralTable(props) {
                 buttonAddAccount={buttonAddAccount}
                 showFormAddAccount={showFormAddAccount}
                 syncRole={syncRole}
-
                 buttonCreateBatch={buttonCreateBatch}
                 handleClickCreateBatch={handleClickCreateBatch}
-
               />
               <TableContainer>
                 <Table
@@ -573,27 +614,25 @@ export default function GeneralTable(props) {
                     documentType={documentType}
                   />
                   <TableBody>
-
-                    {stableSort(documents || [], getComparator(order, orderBy)).map(
-                      (row, index) => {
-                        const isItemSelected = isSelected(row.id);
-                        const labelId = `enhanced-table-checkbox-${index}`;
-                        return (
-                          <TableRow
-                            className={classes.tableRow}
-                            hover
-                            aria-checked={isItemSelected}
-                            tabIndex={-1}
-                            key={row.id || row.account_id || row.department_code || row.role_template_id}
-                            selected={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                onClick={(event) => handleClick(event, row.id)}
-                                checked={isItemSelected}
-                                inputProps={{ 'aria-labelledby': labelId }}
-                              />
-                            </TableCell>
+                    {stableSort(documents || [], getComparator(order, orderBy)).map((row, index) => {
+                      const isItemSelected = isSelected(row.id);
+                      const labelId = `enhanced-table-checkbox-${index}`;
+                      return (
+                        <TableRow
+                          className={classes.tableRow}
+                          hover
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.id || row.account_id || row.department_code || row.role_template_id}
+                          selected={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              onClick={(event) => handleClick(event, row.id)}
+                              checked={isItemSelected}
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                          </TableCell>
                           {displayOptions.id && (
                             <TableCell align="left">
                               <div className={classes.tableItemID} onClick={(event) => openDetailDocument(event, row)}>
@@ -605,7 +644,10 @@ export default function GeneralTable(props) {
                           {displayOptions.fullname && (
                             <TableCell align="left">
                               <>
-                                <span className={classes.tableItemName} onClick={(event) => openDetailDocument(event, row)}>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
                                   {row.fullname}
                                 </span>
                                 &nbsp;&nbsp;
@@ -615,7 +657,10 @@ export default function GeneralTable(props) {
                           {displayOptions.account_id && (
                             <TableCell align="left">
                               <>
-                                <span className={classes.tableItemName} onClick={(event) => openDetailDocument(event, row)}>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
                                   {row.account_id}
                                 </span>
                                 &nbsp;&nbsp;
@@ -625,7 +670,10 @@ export default function GeneralTable(props) {
                           {displayOptions.image_url && (
                             <TableCell align="left">
                               <>
-                                <span className={classes.tableItemName} onClick={(event) => openDetailDocument(event, row)}>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
                                   <img src={row.image_url} style={style.tableUserAvatar} />
                                 </span>
                                 &nbsp;&nbsp;
@@ -635,7 +683,10 @@ export default function GeneralTable(props) {
                           {displayOptions.department_name && (
                             <TableCell align="left">
                               <>
-                                <span className={classes.tableItemName} onClick={(event) => openDetailDocument(event, row)}>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
                                   {row.department_name}
                                 </span>
                                 &nbsp;&nbsp;
@@ -645,7 +696,10 @@ export default function GeneralTable(props) {
                           {displayOptions.department_parent && (
                             <TableCell align="left">
                               <>
-                                <span className={classes.tableItemName} onClick={(event) => openDetailDocument(event, row)}>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
                                   {row.parent_department_code}
                                 </span>
                                 &nbsp;&nbsp;
@@ -655,7 +709,10 @@ export default function GeneralTable(props) {
                           {displayOptions.number_member && (
                             <TableCell align="left">
                               <>
-                                <span className={classes.tableItemName} onClick={(event) => openDetailDocument(event, row)}>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
                                   {row.number_member}
                                 </span>
                                 &nbsp;&nbsp;
@@ -665,7 +722,10 @@ export default function GeneralTable(props) {
                           {displayOptions.full_name && (
                             <TableCell align="left">
                               <>
-                                <span className={classes.tableItemName} onClick={(event) => openDetailDocument(event, row)}>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
                                   {row.full_name}
                                 </span>
                                 &nbsp;&nbsp;
@@ -678,12 +738,15 @@ export default function GeneralTable(props) {
                                 <div>{row.code}</div>
                                 <div>{formatDateTime(row.created_date)}</div>
                               </div>
-
                             </TableCell>
                           )}
                           {displayOptions.batch_number && <TableCell align="left">{row.batch_number || ''}</TableCell>}
-                          {displayOptions.university_name && <TableCell align="left">{row.university_name || ''}</TableCell>}
-                          {displayOptions.email_address && <TableCell align="left">{row.email_address || ''}</TableCell>}
+                          {displayOptions.university_name && (
+                            <TableCell align="left">{row.university_name || ''}</TableCell>
+                          )}
+                          {displayOptions.email_address && (
+                            <TableCell align="left">{row.email_address || ''}</TableCell>
+                          )}
                           {displayOptions.number_phone && <TableCell align="left">{row.number_phone || ''}</TableCell>}
                           {displayOptions.schedule && <TableCell align="left">{row.schedule || ''}</TableCell>}
                           {displayOptions.career && <TableCell align="left">{row.career || ''}</TableCell>}
@@ -697,86 +760,60 @@ export default function GeneralTable(props) {
                               )}
                             </TableCell>
                           )}
-                          
-                           
-                            
-                          
 
-                            
-                          
-                            {displayOptions.mentor_name && (
-                              <TableCell align="left">
-                             
-                                   <span>   
-                                   {row.mentor_name || ''}
-                                     </span> 
-                                </TableCell>
-                            )}
-                            {displayOptions.link && (
-                              <TableCell align="left">
-                                <a
-                                  style={style.meetingLink}
-                                  href={row.link_meeting || '#'}
-                                  target="_blank"
-                                >
-                                  {row.link_meeting || ''}
-                                </a>
-                              </TableCell>
-                            )}
-                         
-                            {displayOptions.rating && (
-                              <TableCell align="left">
-                                {(!isNaN(row.rating) && row.rating) > 0 && (
-                                  <div style={style.ratingWrap}>
-                                    <span>{row.rating}</span>
-                                    <StarIcon style={style.starIcon} />
-                                  </div>
-                                )}
-                              </TableCell>
-                            )}
-                            {displayOptions.total && (
-                              <TableCell align="left">{row.total}</TableCell>
-                            )}
-                            {displayOptions.uncomplete && (
-                              <TableCell align="left">{row.uncomplete}</TableCell>
-                            )}
-                            {displayOptions.completed && (
-                              <TableCell align="left">{row.completed}</TableCell>
-                            )}
-                            {displayOptions.reject && (
-                              <TableCell align="left">{row.reject}</TableCell>
-                            )}
-                            {displayOptions.role_template_name && (
-                              <TableCell align="left"
-                              onClick={(event) => openDetailDocument(event, row)}
-                              >{row.role_template_name}</TableCell>
-                            )}
-                            {displayOptions.apply_to_department_type && row.apply_to_department_type && (
-                              <TableCell align="left">{
-                                row.apply_to_department_type.join(', ')
-                                
-                              }</TableCell>
-                            )}
-                            
-                            {displayOptions.visible_for_selection && (
-                              <TableCell align="left">
-                                <>
-                                 <FormControlLabel
-                                          control={<Switch color="primary" checked={row.is_approval_role}  />}
-                                        />
-                                </>
-                              </TableCell>
-                            )} 
-                            {displayOptions.approval_role && (
-                              <TableCell align="left">
-                                <>
-                                 <FormControlLabel
-                                          control={<Switch color="primary" checked={row.is_visible_for_selection} />}
-                                        />
-                                </>
-                              </TableCell>
-                            )} 
-                           
+                          {displayOptions.mentor_name && (
+                            <TableCell align="left">
+                              <span>{row.mentor_name || ''}</span>
+                            </TableCell>
+                          )}
+                          {displayOptions.link && (
+                            <TableCell align="left">
+                              <a style={style.meetingLink} href={row.link_meeting || '#'} target="_blank">
+                                {row.link_meeting || ''}
+                              </a>
+                            </TableCell>
+                          )}
+
+                          {displayOptions.rating && (
+                            <TableCell align="left">
+                              {(!isNaN(row.rating) && row.rating) > 0 && (
+                                <div style={style.ratingWrap}>
+                                  <span>{row.rating}</span>
+                                  <StarIcon style={style.starIcon} />
+                                </div>
+                              )}
+                            </TableCell>
+                          )}
+                          {displayOptions.total && <TableCell align="left">{row.total}</TableCell>}
+                          {displayOptions.uncomplete && <TableCell align="left">{row.uncomplete}</TableCell>}
+                          {displayOptions.completed && <TableCell align="left">{row.completed}</TableCell>}
+                          {displayOptions.reject && <TableCell align="left">{row.reject}</TableCell>}
+                          {displayOptions.role_template_name && (
+                            <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
+                              {row.role_template_name}
+                            </TableCell>
+                          )}
+                          {displayOptions.apply_to_department_type && row.apply_to_department_type && (
+                            <TableCell align="left">{row.apply_to_department_type.join(', ')}</TableCell>
+                          )}
+
+                          {displayOptions.visible_for_selection && (
+                            <TableCell align="left">
+                              <>
+                                <FormControlLabel control={<Switch color="primary" checked={row.is_approval_role} />} />
+                              </>
+                            </TableCell>
+                          )}
+                          {displayOptions.approval_role && (
+                            <TableCell align="left">
+                              <>
+                                <FormControlLabel
+                                  control={<Switch color="primary" checked={row.is_visible_for_selection} />}
+                                />
+                              </>
+                            </TableCell>
+                          )}
+
                           {displayOptions.link && (
                             <TableCell align="left">
                               <a style={style.meetingLink} href={row.link_meeting || '#'} target="_blank">
@@ -786,8 +823,14 @@ export default function GeneralTable(props) {
                           )}
                           {displayOptions.type && <TableCell align="left">{row.type || ''}</TableCell>}
                           {displayOptions.count && <TableCell align="left">{row.count || ''}</TableCell>}
-                          {displayOptions.used_date && <TableCell align="left">{formatDateTime(row.used_date) || ''}</TableCell>}
-                          {displayOptions.expiration_date && <TableCell align="left">{row.expiration_date ? formatDate(new Date(row.expiration_date), 'dd/MM/yyyy') : ''}</TableCell>}
+                          {displayOptions.used_date && (
+                            <TableCell align="left">{formatDateTime(row.used_date) || ''}</TableCell>
+                          )}
+                          {displayOptions.expiration_date && (
+                            <TableCell align="left">
+                              {row.expiration_date ? formatDate(new Date(row.expiration_date), 'dd/MM/yyyy') : ''}
+                            </TableCell>
+                          )}
                           {displayOptions.status && (
                             <TableCell align="left">
                               {row.status && (
@@ -797,8 +840,7 @@ export default function GeneralTable(props) {
                               )}
                             </TableCell>
                           )}
-                          
-                         
+
                           {displayOptions.active && (
                             <TableCell align="left">
                               <>
@@ -808,127 +850,181 @@ export default function GeneralTable(props) {
                                     case 'account':
                                       return (
                                         <FormControlLabel
-
-                                          control={<Switch color="primary" checked={row.is_active} onClick={(event) => toggleSetActiveAccount(event, row.email_address, event.target.checked)} />}
+                                          control={
+                                            <Switch
+                                              color="primary"
+                                              checked={row.is_active}
+                                              onClick={(event) =>
+                                                toggleSetActiveAccount(event, row.email_address, event.target.checked)
+                                              }
+                                            />
+                                          }
                                         />
                                       );
                                     case 'department':
                                       return (
                                         <FormControlLabel
-                                          control={<Switch color="primary" checked={row.is_active} onClick={(event) => toggleSetDepartment(event, row.department_code, event.target.checked)} />}
+                                          control={
+                                            <Switch
+                                              color="primary"
+                                              checked={row.is_active}
+                                              onClick={(event) =>
+                                                toggleSetDepartment(event, row.department_code, event.target.checked)
+                                              }
+                                            />
+                                          }
                                         />
                                       );
                                     case 'mentor':
-                                      return <FormControlLabel control={<Switch color="primary" checked={!!row.is_active} onClick={(event) => handleToggleActiveMentor(event, row.id)} />} />;
+                                      return (
+                                        <FormControlLabel
+                                          control={
+                                            <Switch
+                                              color="primary"
+                                              checked={!!row.is_active}
+                                              onClick={(event) => handleToggleActiveMentor(event, row.id)}
+                                            />
+                                          }
+                                        />
+                                      );
                                     case 'code':
                                       return (
                                         <FormControlLabel
-                                          control={<Switch color="primary" checked={row.is_active} onClick={(event) => handleToggleActiveCode(event, row.id)} />}
-                                        />
-                                        );
-                                    case 'batch':
-                                          return (
-                                            <FormControlLabel
-                                              control={<Switch color="primary" checked={row.is_active} onClick={(event) => handleToggleActiveBatch(event, row.id)} />}
+                                          control={
+                                            <Switch
+                                              color="primary"
+                                              checked={row.is_active}
+                                              onClick={(event) => handleToggleActiveCode(event, row.id)}
                                             />
-                                          );
-                                    case 'role':
-                                        return <FormControlLabel
-                                          control={<Switch color="primary" checked={row.is_active} onClick={(event) => toggleSetActiveRole(event, row.role_template_id ,event.target.checked)} />}
+                                          }
                                         />
-                                    }
-                                  })()}
-                                  &nbsp;&nbsp;
-                                </>
-                              </TableCell>
-                            )}
-                            {displayOptions.menuButtons && (
-                              <TableCell align="left">
-                                <div className={classes.handleButtonWrap}>
-                                  {(buttonBookingApprove && row.is_can_approve) && (
-                                    <Tooltip title={buttonBookingApprove.text}>
-                                      <Button
-                                        className={`${classes.handleButton} `}
-                                        onClick={() => handleApproveBooking(row.id)}
-                                      >
-                                        <SkipNextIcon className={classes.noteButtonIcon} />
-                                      </Button>
-                                    </Tooltip>
-                                  )}
-                                  {buttonBookingNote && (
-                                    <Tooltip title={buttonBookingNote.text}>
-                                      <Button
-                                        className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                        onClick={() => handleOpenModal('note', row)}
-                                      >
-                                        <NoteAddSharpIcon className={classes.noteButtonIcon} />
-                                      </Button>
-                                    </Tooltip>
-                                  )}
-                                  {buttonRemoveAccount && (
-                                    <Tooltip title={buttonRemoveAccount.text}>
-                                      <Button
-                                        className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                        onClick={() => handleRemoveAccountToGroup(row.email_address, group_name, row.account_id )}
-                                      >
-                                        <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
-                                      </Button>
-                                    </Tooltip>
-                                  )}
-                                  {buttonBookingHandled && (
-                                    <Tooltip title={buttonBookingHandled.text}>
-                                      <Button
-                                        className={classes.handleButton}
-                                        onClick={() => handleSetCompletedBooking(row.id)}
-                                      >
-                                        <HowToRegIcon className={classes.handleButtonIcon} />
-                                      </Button>
-                                    </Tooltip>
-                                  )}
-                                  {(buttonBookingMeeting && row.link_meeting !== null) && (
-                                    <Tooltip title={buttonBookingMeeting.text}>
-                                      <Button
+                                      );
+                                    case 'batch':
+                                      return (
+                                        <FormControlLabel
+                                          control={
+                                            <Switch
+                                              color="primary"
+                                              checked={row.is_active}
+                                              onClick={(event) => handleToggleActiveBatch(event, row.id)}
+                                            />
+                                          }
+                                        />
+                                      );
+                                    case 'role':
+                                      return (
+                                        <FormControlLabel
+                                          control={
+                                            <Switch
+                                              color="primary"
+                                              checked={row.is_active}
+                                              onClick={(event) =>
+                                                toggleSetActiveRole(event, row.role_template_id, event.target.checked)
+                                              }
+                                            />
+                                          }
+                                        />
+                                      );
+                                  }
+                                })()}
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
+                          {displayOptions.menuButtons && (
+                            <TableCell align="left">
+                              <div className={classes.handleButtonWrap}>
+                                {buttonBookingApprove && row.is_can_approve && (
+                                  <Tooltip title={buttonBookingApprove.text}>
+                                    <Button
+                                      className={`${classes.handleButton} `}
+                                      onClick={() => handleApproveBooking(row.id)}
+                                    >
+                                      <SkipNextIcon className={classes.noteButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingNote && (
+                                  <Tooltip title={buttonBookingNote.text}>
+                                    <Button
+                                      className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                      onClick={() => handleOpenModal('note', row)}
+                                    >
+                                      <NoteAddSharpIcon className={classes.noteButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonRemoveAccount && (
+                                  <Tooltip title={buttonRemoveAccount.text}>
+                                    <Button
+                                      className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                      onClick={() =>
+                                        handleRemoveAccountToGroup(row.email_address, group_name, row.account_id)
+                                      }
+                                    >
+                                      <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingHandled && (
+                                  <Tooltip title={buttonBookingHandled.text}>
+                                    <Button
+                                      className={classes.handleButton}
+                                      onClick={() => handleSetCompletedBooking(row.id)}
+                                    >
+                                      <HowToRegIcon className={classes.handleButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingMeeting && row.link_meeting !== null && (
+                                  <Tooltip title={buttonBookingMeeting.text}>
+                                    <Button className={`${classes.handleButton} ${classes.handleButtonMeeting}`}>
+                                      <a
+                                        href={row.link_meeting}
                                         className={`${classes.handleButton} ${classes.handleButtonMeeting}`}
-
+                                        target="_blank"
                                       >
-                                        <a href={row.link_meeting}
-                                          className={`${classes.handleButton} ${classes.handleButtonMeeting}`}
-                                          target="_blank">
-                                          <DuoIcon className={classes.handleButtonIconMeeting} />
-                                        </a>
-                                      </Button>
-                                    </Tooltip>
-                                  )}
-                                  {(buttonBookingCancel && row.is_can_cancel) && (
-                                    <Tooltip title={buttonBookingCancel.text}>
-                                      <Button
-                                        className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                        onClick={() => handleOpenModal('cancel', row)}
-                                      >
-                                        <DeleteOutlineIcon className={classes.handleButtonIcon} />
-                                      </Button>
-                                    </Tooltip>
-                                  )}
-                                  {(buttonBookingReview && row.is_can_completed) && (
-                                    <Tooltip title={buttonBookingReview.text}>
-                                      <Button
-                                        className={classes.handleButton}
-                                        onClick={() => handleOpenModal('review', row)}
-                                      >
-                                        <AssignmentTurnedInIcon className={classes.handleButtonIcon} />
-                                      </Button>
-                                    </Tooltip>
-                                  )}
-                                  
-                                </div>
-                              </TableCell>
-                            )}
-                          </TableRow>
-                        );
-                      }
-                    )}
-
-
+                                        <DuoIcon className={classes.handleButtonIconMeeting} />
+                                      </a>
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingCancel && row.is_can_cancel && (
+                                  <Tooltip title={buttonBookingCancel.text}>
+                                    <Button
+                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
+                                      onClick={() => handleOpenModal('cancel', row)}
+                                    >
+                                      <DeleteOutlineIcon className={classes.handleButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingReview && row.is_can_completed && (
+                                  <Tooltip title={buttonBookingReview.text}>
+                                    <Button
+                                      className={classes.handleButton}
+                                      onClick={() => handleOpenModal('review', row)}
+                                    >
+                                      <AssignmentTurnedInIcon className={classes.handleButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonDownloadBatch && (
+                                  <Tooltip title={buttonDownloadBatch.text}>
+                                    <Button
+                                      className={classes.handleButton}
+                                      onClick={() => handleClickDownLoadBatch(row.batch_number)}
+                                    >
+                                      <GetAppIcon className={classes.handleButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                              </div>
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>

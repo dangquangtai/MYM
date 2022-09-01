@@ -125,7 +125,7 @@ const DetailDocumentDialog = () => {
   const [editMentor, setEditMentor] = useState(null);
 
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [isOpenModalNote, setIsOpenModalNote] = useState(false)
+  const [isOpenModalNote, setIsOpenModalNote] = useState(false);
   const initNoteSelectionList = {
     1: {
       id: 1,
@@ -339,7 +339,6 @@ const DetailDocumentDialog = () => {
         selectedDocument: detailDocument,
         documentType: 'booking',
       });
-      
     } catch (error) {
       setIsOpenSnackbar(true);
       setSnackbarData({
@@ -366,7 +365,7 @@ const DetailDocumentDialog = () => {
     try {
       await setNoteBooking(document.id, note, isSend);
       const detailDocument = await getBookingDetail(document.id);
-      setDocument({...document, ...detailDocument})
+      setDocument({ ...document, ...detailDocument });
     } catch (e) {
     } finally {
       setIsOpenModalNote(false);
@@ -719,10 +718,17 @@ const DetailDocumentDialog = () => {
                             <div>{document.status}</div>
                           </div>
 
-                          <a href={document?.link_meeting || '#'} target="_blank">
-                            <img src="https://play-lh.googleusercontent.com/GBYSf20osBl2CRHbjGOyaOG5kQ3G4xbRau-dzScU9ozuXQJtnUZPkR3IqEDOo5OiVgU" />
-                            <div>Tham gia meeting</div>
-                          </a>
+                          {!!document.link_record ? (
+                            <a href={document.link_record} target="_blank">
+                              <img src="https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/images%2Fmovie-850.png?alt=media&token=dfb9ed6a-9d7a-45b5-822d-ed124ed98cab" />
+                              <div>Xem lại record</div>
+                            </a>
+                          ) : (
+                            <a href={document?.link_meeting || '#'} target="_blank">
+                              <img src="https://play-lh.googleusercontent.com/GBYSf20osBl2CRHbjGOyaOG5kQ3G4xbRau-dzScU9ozuXQJtnUZPkR3IqEDOo5OiVgU" />
+                              <div>Tham gia meeting</div>
+                            </a>
+                          )}
                         </div>
                       </div>
                       <div className={classes.tabItem}>

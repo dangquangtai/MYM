@@ -22,8 +22,10 @@ import { AccountProvider } from '../contexts/AccountContext';
 import { MentorProvider } from '../contexts/MentorContext';
 import { TaskProvider } from '../contexts/TaskContext.js';
 import { DepartmentProvider } from '../contexts/DepartmentContext';
-import { RoleProvider} from '../contexts/RoleContext';
+import { RoleProvider } from '../contexts/RoleContext';
 import { BatchProvider } from './../contexts/BatchContext';
+import { ChartProvider } from './../contexts/ChartContext';
+
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -35,6 +37,7 @@ function loadLocaleData(locale) {
     default:
       return import('./../compiled-lang/en.json');
   }
+
 }
 
 // Configure JSS
@@ -67,14 +70,14 @@ const App = () => {
                               <BookingProvider>
                                 <AccountProvider>
                                   <MentorProvider>
-                           
-
                                     <DepartmentProvider>
                                       <BatchProvider>
-                                       <RoleProvider>
-                                        <Routes />
-                                        <Snackbar />
-                                        </RoleProvider>
+                                        <ChartProvider>
+                                          <RoleProvider>
+                                            <Routes />
+                                            <Snackbar />
+                                          </RoleProvider>
+                                        </ChartProvider>
                                       </BatchProvider>
                                     </DepartmentProvider>
                                   </MentorProvider>

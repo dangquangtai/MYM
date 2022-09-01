@@ -35,12 +35,25 @@ export const BatchProvider = ({ children }) => {
       });
   };
 
+  const downloadBatch = async (id) => {
+    return axiosInstance
+      .post(vibEndpoints.download_batch, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return  response.data.url;
+        return false;
+      });
+  };
+
   return (
     <BatchContext.Provider
       value={{
         createBatch,
         activeCode,
-        activeBatch
+        activeBatch,
+        downloadBatch
       }}
     >
       {children}

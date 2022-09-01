@@ -88,6 +88,13 @@ export const vibEndpoints = {
   get_all_batch: '/Primary/?FlowAlias=hnn_code_api_get_all_code_batch&action=api',
   create_batch: '/Primary/?FlowAlias=hnn_code_api_create_code_batch&action=api',
   active_batch: '/Primary/?FlowAlias=hnn_code_api_set_active_batch&action=api',
+  download_batch: '/Primary/?FlowAlias=hnn_code_api_download_batch&action=api',
+
+  get_bar_chart_data: '/Primary/?FlowAlias=hnn_api_booking_get_bar_chart_data&action=api',
+  get_booking_status_data_horitional_barchart: '/Primary/?FlowAlias=hnn_api_booking_get_booking_status_for_horitional_bar_chart&action=api',
+  get_count_of_booking_by_mentor_data_horitional_barchart: '/Primary/?FlowAlias=hnn_api_booking_get_count_of_booking_by_mentor_for_horitional_bar_chart&action=api',
+  get_booking_by_career_pie_chart: '/Primary/?FlowAlias=hnn_api_booking_get_booking_by_career_for_pie_chart&action=api',
+  get_mentor_ratting_colorfull_bar_chart: '/Primary/?FlowAlias=hnn_api_booking_get_mentor_ratting_for_colorfull_bar_chart&action=api'
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -199,7 +206,8 @@ export const view = {
   },
   batch: {
     list: {
-      create: 'CODE_BATCH_LIST_CREATE_MENU_BUTTON'
+      create: 'CODE_BATCH_LIST_CREATE_MENU_BUTTON',
+      download: 'CODE_BATCH_LIST_DOWNLOAD_MENU_BUTTON',
     }
   },
 
