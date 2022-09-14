@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import { ACCOUNT_INITIALISE, LOGIN, LOGOUT } from '../store/actions';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints, comanyCode } from '../store/constant';
 import axiosInstance from '../services/axios';
 import accountReducer from '../store/accountReducer';
 import Loader from '../component/Loader/Loader';
@@ -32,7 +32,7 @@ const setSession = (serviceToken, user, { turnOnLoading, turnOffLoading }) => {
     axiosInstance.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
     axiosInstance.interceptors.request.use((request) => {
       if (request.method === 'post') {
-        request.data.company_id = user.company_id;
+        request.data.company_code = comanyCode;
       }
       return request;
     });
@@ -90,7 +90,7 @@ export const JWTProvider = ({ children }) => {
   const { turnOnLoading, turnOffLoading } = useLoading();
 
   const login = async (email, password) => {
-    const response = await axiosInstance.post(vibEndpoints.authenticate, {
+    const response = await axiosInstance.post(apiEndpoints.authenticate, {
       email_address: email,
       password,
       outputtype: 'RawJson',

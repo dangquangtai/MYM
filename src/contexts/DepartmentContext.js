@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import useView from '../hooks/useView';
 
@@ -10,7 +10,7 @@ export const DepartmentProvider = ({ children }) => {
 
   const getDepartmentDetail = async (department_code) => {
     return axiosInstance
-      .post(vibEndpoints.get_department_detail, {
+      .post(apiEndpoints.get_department_detail, {
          outputtype: 'RawJson' ,department_code})
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
@@ -22,7 +22,7 @@ export const DepartmentProvider = ({ children }) => {
   };
   const getDepartmentList = async (department) => {
     return axiosInstance
-      .post(vibEndpoints.get_department_list, {
+      .post(apiEndpoints.get_department_list, {
          outputtype: 'RawJson' ,
          ...department,
         })
@@ -36,7 +36,7 @@ export const DepartmentProvider = ({ children }) => {
   };
   const getDepartmentTypeList = async (department) => {
     return axiosInstance
-      .post(vibEndpoints.get_department_type_list, {
+      .post(apiEndpoints.get_department_type_list, {
          outputtype: 'RawJson' ,
          ...department,
         })
@@ -50,7 +50,7 @@ export const DepartmentProvider = ({ children }) => {
   };
   const getDataTreeView = async () => {
     return axiosInstance
-      .post(vibEndpoints.get_tree_view_data, {
+      .post(apiEndpoints.get_tree_view_data, {
          outputtype: 'RawJson' ,
          company_code: 'HNN',
         })
@@ -63,14 +63,14 @@ export const DepartmentProvider = ({ children }) => {
     };
 
   const createDepartment = async (department) => {
-    return axiosInstance.post(vibEndpoints.create_department, department).then((response) => {
+    return axiosInstance.post(apiEndpoints.create_department, department).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
   };
   const activeDepartment = async ( department ) => {
     return axiosInstance
-     .post(vibEndpoints.deactive_department,{
+     .post(apiEndpoints.deactive_department,{
       outputtype: 'RawJson',
       ...department,
 
@@ -80,7 +80,7 @@ export const DepartmentProvider = ({ children }) => {
     });
   };
   const updateDepartment = async (department) => {
-    return axiosInstance.post(vibEndpoints.update_department, department).then((response) => {
+    return axiosInstance.post(apiEndpoints.update_department, department).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });

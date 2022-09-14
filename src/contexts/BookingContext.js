@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import useView from '../hooks/useView';
 
@@ -10,7 +10,7 @@ export const BookingProvider = ({ children }) => {
 
   const getBookingDetail = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_booking_detail, { outputtype: 'RawJson', id })
+      .post(apiEndpoints.get_booking_detail, { outputtype: 'RawJson', id })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data: news, view } = response.data;
@@ -21,7 +21,7 @@ export const BookingProvider = ({ children }) => {
   };
 
   const updateBooking = async (booking) => {
-    return axiosInstance.post(vibEndpoints.update_booking, booking).then((response) => {
+    return axiosInstance.post(apiEndpoints.update_booking, booking).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
@@ -29,7 +29,7 @@ export const BookingProvider = ({ children }) => {
 
   const cancelBooking = async (id, action, note) => {
     return axiosInstance
-      .post(vibEndpoints.cancel_booking, {
+      .post(apiEndpoints.cancel_booking, {
         outputtype: 'RawJson',
         id: id,
         action: action,
@@ -43,7 +43,7 @@ export const BookingProvider = ({ children }) => {
 
   const reviewBooking = async (id, action, note) => {
     return axiosInstance
-      .post(vibEndpoints.review_booking, {
+      .post(apiEndpoints.review_booking, {
         outputtype: 'RawJson',
         id: id,
         action: action,
@@ -57,7 +57,7 @@ export const BookingProvider = ({ children }) => {
 
   const approveBooking = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.approve_booking, {
+      .post(apiEndpoints.approve_booking, {
         outputtype: 'RawJson',
         id: id,
       })
@@ -69,7 +69,7 @@ export const BookingProvider = ({ children }) => {
 
   const setCompletedBooking = async (id, action = null) => {
     return axiosInstance
-      .post(vibEndpoints.set_completed_state, {
+      .post(apiEndpoints.set_completed_state, {
         outputtype: 'RawJson',
         id: id,
         action: action,
@@ -82,7 +82,7 @@ export const BookingProvider = ({ children }) => {
 
   const setNoteBooking = async (id, note, is_send) => {
     return axiosInstance
-      .post(vibEndpoints.set_note_booking, {
+      .post(apiEndpoints.set_note_booking, {
         outputtype: 'RawJson',
         id: id,
         note: note,
@@ -96,7 +96,7 @@ export const BookingProvider = ({ children }) => {
 
   const updateBookingMentor = async (id, data) => {
     return axiosInstance
-      .post(vibEndpoints.update_booking_mentor, {
+      .post(apiEndpoints.update_booking_mentor, {
         outputtype: 'RawJson',
         id: id,
         ...data,
@@ -110,7 +110,7 @@ export const BookingProvider = ({ children }) => {
 
   const getMentorDetail = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_mentor_detail, { outputtype: 'RawJson', id })
+      .post(apiEndpoints.get_mentor_detail, { outputtype: 'RawJson', id })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data: mentor } = response.data;
@@ -121,7 +121,7 @@ export const BookingProvider = ({ children }) => {
 
   const getListUniversity = async () => {
     return axiosInstance
-      .post(vibEndpoints.get_list_university, { outputtype: 'RawJson' })
+      .post(apiEndpoints.get_list_university, { outputtype: 'RawJson' })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const {
@@ -134,7 +134,7 @@ export const BookingProvider = ({ children }) => {
 
   const getFeedback = async (booking_id) => {
     return axiosInstance
-      .post(vibEndpoints.get_feedback_detail, { outputtype: 'RawJson', booking_id })
+      .post(apiEndpoints.get_feedback_detail, { outputtype: 'RawJson', booking_id })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data: feedback } = response.data;
@@ -145,7 +145,7 @@ export const BookingProvider = ({ children }) => {
 
   const getMentorList = async (conditions) => {
     return axiosInstance
-      .post(vibEndpoints.get_mentor_list, { outputtype: 'RawJson', ...conditions })
+      .post(apiEndpoints.get_mentor_list, { outputtype: 'RawJson', ...conditions })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data } = response;
@@ -156,7 +156,7 @@ export const BookingProvider = ({ children }) => {
 
   const getCareerDemandList = async () => {
     return axiosInstance
-      .post(vibEndpoints.get_career_demand, { outputtype: 'RawJson' })
+      .post(apiEndpoints.get_career_demand, { outputtype: 'RawJson' })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data } = response;
@@ -167,7 +167,7 @@ export const BookingProvider = ({ children }) => {
 
   const getStatisticData = async () => {
     return axiosInstance
-      .post(vibEndpoints.get_statistic_data, { outputtype: 'RawJson' })
+      .post(apiEndpoints.get_statistic_data, { outputtype: 'RawJson' })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data } = response.data;
@@ -178,7 +178,7 @@ export const BookingProvider = ({ children }) => {
 
   const getLog = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_log_data, { id: id, outputtype: 'RawJson' })
+      .post(apiEndpoints.get_log_data, { id: id, outputtype: 'RawJson' })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { list } = response.data;
@@ -189,7 +189,7 @@ export const BookingProvider = ({ children }) => {
 
   const getLitsNote = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_list_note, { id: id, outputtype: 'RawJson' })
+      .post(apiEndpoints.get_list_note, { id: id, outputtype: 'RawJson' })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { list } = response.data;
@@ -200,7 +200,7 @@ export const BookingProvider = ({ children }) => {
 
   const getFullCalendar = async () => {
     return axiosInstance
-      .post(vibEndpoints.get_full_calendar, { outputtype: 'RawJson' })
+      .post(apiEndpoints.get_full_calendar, { outputtype: 'RawJson' })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { list } = response.data;

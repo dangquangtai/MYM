@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import useView from '../hooks/useView';
 
@@ -10,7 +10,7 @@ export const AccountProvider = ({ children }) => {
 
   const getAccountDetail = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_account_detail, {
+      .post(apiEndpoints.get_account_detail, {
          outputtype: 'RawJson' ,id})
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
@@ -22,7 +22,7 @@ export const AccountProvider = ({ children }) => {
   };
   const getAllTask = async () => {
     return axiosInstance
-      .post(vibEndpoints.get_all_task, {
+      .post(apiEndpoints.get_all_task, {
          outputtype: 'RawJson',
          company_id: null,})
       .then((response) => {
@@ -35,7 +35,7 @@ export const AccountProvider = ({ children }) => {
   };
   const getAllUser = async () => {
     return axiosInstance
-      .post(vibEndpoints.get_all_account_list, {
+      .post(apiEndpoints.get_all_account_list, {
          outputtype: 'RawJson',
          company_code: 'HNN',})
       .then((response) => {
@@ -46,14 +46,14 @@ export const AccountProvider = ({ children }) => {
       });
   };
   const createAccount = async (account) => {
-    return axiosInstance.post(vibEndpoints.create_account, account).then((response) => {
+    return axiosInstance.post(apiEndpoints.create_account, account).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
   };
   const activeAccount = async ( account ) => {
     return axiosInstance
-     .post(vibEndpoints.active_account,{
+     .post(apiEndpoints.active_account,{
       outputtype: 'RawJson',
       ...account,
 
@@ -63,7 +63,7 @@ export const AccountProvider = ({ children }) => {
     });
   };
   const updateAccount = async (account) => {
-    return axiosInstance.post(vibEndpoints.update_account, account).then((response) => {
+    return axiosInstance.post(apiEndpoints.update_account, account).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });

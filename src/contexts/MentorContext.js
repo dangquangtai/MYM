@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import useView from '../hooks/useView';
 
@@ -10,7 +10,7 @@ export const MentorProvider = ({ children }) => {
 
   const getMentorDetail = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_mentor_detail_by_id, {
+      .post(apiEndpoints.get_mentor_detail_by_id, {
         outputtype: 'RawJson', id
       })
       .then((response) => {
@@ -23,21 +23,21 @@ export const MentorProvider = ({ children }) => {
   };
 
   const createMentor = async (mentor) => {
-    return axiosInstance.post(vibEndpoints.create_mentor, { outputtype: 'RawJson', ...mentor }).then((response) => {
+    return axiosInstance.post(apiEndpoints.create_mentor, { outputtype: 'RawJson', ...mentor }).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
   };
 
   const updateMentor = async (mentor) => {
-    return axiosInstance.post(vibEndpoints.update_mentor, { outputtype: 'RawJson', ...mentor }).then((response) => {
+    return axiosInstance.post(apiEndpoints.update_mentor, { outputtype: 'RawJson', ...mentor }).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
   };
 
   const toggleActiveMentor = async (data) => {
-    return axiosInstance.post(vibEndpoints.set_active_mentor, { outputtype: 'RawJson', ...data }).then((response) => {
+    return axiosInstance.post(apiEndpoints.set_active_mentor, { outputtype: 'RawJson', ...data }).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });

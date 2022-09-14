@@ -11,6 +11,7 @@ import viewReducer from './viewReducer';
 import confirmReducer from './confirmReducer';
 import taskReducer from './taskReducer.js';
 import documentReducer from './documentReducer.js';
+import appReducer from './appReducer.js';
 
 const reducer = combineReducers({
   customization: customizationReducer,
@@ -25,6 +26,7 @@ const reducer = combineReducers({
   confirm: confirmReducer,
   task: taskReducer,
   document: documentReducer,
+  app: appReducer,
 });
 
 export default reducer;

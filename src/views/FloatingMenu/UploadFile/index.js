@@ -69,7 +69,7 @@ export default function PermissionModal(props) {
     const uploadData = new FormData();
     uploadData.append('file', selectedFiles[0]);
     const { data: file } = await api.post(apiEndpoints.upload, uploadData);
-    // await axiosInstance.post(vibEndpoints.upload_file_to_document, { outputtype: "RawJson", project_id: selectedProject.id, document_id: documentId, file_name: selectedFiles[0].name,
+    // await axiosInstance.post(apiEndpoints.upload_file_to_document, { outputtype: "RawJson", project_id: selectedProject.id, document_id: documentId, file_name: selectedFiles[0].name,
     //     file_url: `${apiDomain}/${file.filename}`
     // })
     setSelectedFile([]);

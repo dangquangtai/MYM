@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 import { FOLDER_CHANGE } from '../store/actions';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import { useDispatch } from 'react-redux';
 
@@ -11,10 +11,15 @@ const FolderContext = createContext({
 export const FolderProvider = ({ children }) => {
   const dispatch = useDispatch();
 
-  function getFolders(selectedProject) {
+  function getFolders(selectedProject, app_id) {
     if (!selectedProject) return;
     axiosInstance
-      .post(vibEndpoints.get_folders, { outputtype: 'RawJson', project_id: selectedProject.id })
+      .post(apiEndpoints.get_folders, {
+        outputtype: 'RawJson',
+        company_code: 'MYM',
+        app_id: app_id,
+        project_id: selectedProject.id,
+      })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { Item: folders } = response.data;
@@ -27,11 +32,7 @@ export const FolderProvider = ({ children }) => {
       });
   }
 
-  return (
-    <FolderContext.Provider value={{ getFolders, reloadFolders: getFolders }}>
-      {children}
-    </FolderContext.Provider>
-  );
+  return <FolderContext.Provider value={{ getFolders, reloadFolders: getFolders }}>{children}</FolderContext.Provider>;
 };
 
 export default FolderContext;
