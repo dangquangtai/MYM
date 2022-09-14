@@ -1,19 +1,19 @@
 import React, { createContext } from 'react';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 
 const BatchContext = createContext({});
 
 export const BatchProvider = ({ children }) => {
   const createBatch = async (code) => {
-    return axiosInstance.post(vibEndpoints.create_batch, code).then((response) => {
+    return axiosInstance.post(apiEndpoints.create_batch, code).then((response) => {
       if (response.status === 200 && response.data.return === 200) return response.data.url;
       return false;
     });
   };
   const activeCode = async (code) => {
     return axiosInstance
-      .post(vibEndpoints.active_code, {
+      .post(apiEndpoints.active_code, {
         outputtype: 'RawJson',
         ...code,
       })
@@ -25,7 +25,7 @@ export const BatchProvider = ({ children }) => {
 
   const activeBatch = async (code) => {
     return axiosInstance
-      .post(vibEndpoints.active_batch, {
+      .post(apiEndpoints.active_batch, {
         outputtype: 'RawJson',
         ...code,
       })
@@ -37,7 +37,7 @@ export const BatchProvider = ({ children }) => {
 
   const downloadBatch = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.download_batch, {
+      .post(apiEndpoints.download_batch, {
         outputtype: 'RawJson',
         id,
       })

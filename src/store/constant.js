@@ -1,40 +1,15 @@
 export const gridSpacing = 3;
 export const drawerWidth = 320;
 export const drawerWidthIcon = 120;
-export const vibEndpoints = {
+export const comanyCode = 'MYM';
+export const apiEndpoints = {
   authenticate: '/Primary/?FlowAlias=hnn_api_authenticate_booking&action=api',
   login: '/Primary/?FlowAlias=portal_api_sgin_sign_in&action=api',
   home: '/Primary/?FlowAlias=portal_api_home_get_home_page&outputtype=RawJson&action=api',
   menu: '/Primary/?FlowAlias=portal_api_home_get_menu&outputtype=RawJson&action=api',
-  get_project_list: '/Primary/?FlowAlias=hnn_booking_api_get_menu_project&action=api',
-  get_folders: '/Primary/?FlowAlias=hnn_booking_api_get_menu_tree&action=api',
-
-  get_mentor_detail: '/Primary/?FlowAlias=hnn_api_ment_get_mentor_detail_by_id&action=api',
-  get_mentor_list: '/Primary/?FlowAlias=hnn_api_booking_change_mentor&action=api',
-  //booking
-  get_all_booking: '/Primary/?FlowAlias=hnn_api_booking_get_all_booking&action=api',
-  get_handle_booking: '/Primary/?FlowAlias=hnn_api_booking_get_all_handle_booking&action=api',
-  get_cancel_booking: '/Primary/?FlowAlias=hnn_api_booking_get_all_cancel_booking&action=api',
-  get_completed_booking: '/Primary/?FlowAlias=hnn_api_booking_get_all_completed_bookings&action=api',
-  get_by_date_booking: '/Primary/?FlowAlias=hnn_api_booking_get_all_booking_by_date&action=api',
-  get_by_mentor_booking: '/Primary/?FlowAlias=hnn_api_booking_get_statistic&action=api',
-  get_booking_detail: '/Primary/?FlowAlias=hnn_api_booking_get_detail_booking&action=api',
-  set_booking_status: '/Primary/?FlowAlias=hnn_api_booking_set_booking_status&action=api',
-  update_booking: '/Primary/?FlowAlias=hnn_api_booking_update_booking_information&action=api',
-  cancel_booking: '/Primary/?FlowAlias=hnn_api_booking_cancel_booking&action=api',
-  review_booking: '/Primary/?FlowAlias=hnn_api_booking_review_booking&action=api',
-  approve_booking: '/Primary/?FlowAlias=hnn_api_booking_approve_booking&action=api',
-  set_completed_state: '/Primary/?FlowAlias=hnn_api_booking_set_completed_state&&action=api',
-  set_note_booking: '/Primary/?FlowAlias=hnn_api_booking_update_note_booking_by_id&&action=api',
-  get_career_demand: '/Primary/?FlowAlias=hnn_api_booking_get_all_career_and_demand&action=api',
-  get_list_university: '/Primary/?FlowAlias=hnn_api_univ_get_all_university&action=api',
-  get_feedback_detail: '/Primary/?FlowAlias=hnn_api_booking_get_feedback_by_booking_id&action=api',
-  update_booking_mentor: '/Primary/?FlowAlias=hnn_api_booking_update_booking_mentor&action=api',
-  get_list_note: '/Primary/?FlowAlias=hnn_api_booking_get_list_note&action=api',
-  get_all_role: '/Primary/?FlowAlias=hnn_api_role_get_all_role_by_page&action=api',
-  get_all_active_account: '/Primary/?FlowAlias=hnn_acco_api_get_all_active_account_by_page&action=api',
-  get_all_inactive_account: '/Primary/?FlowAlias=hnn_acco_api_get_all_inactive_account_by_page&action=api',
-  get_full_calendar: '/Primary/?FlowAlias=hnn_api_booking_get_list_calendar_event&action=api',
+  get_project_list: '/Primary/?FlowAlias=bs_menu_api_get_project_list&action=api',
+  get_app_list: '/Primary/?FlowAlias=bs_menu_api_get_list_app&action=api',
+  get_folders: '/Primary/?FlowAlias=bs_menu_api_get_menu_tree&action=api',
 
   // account
   get_all_account: '/Primary/?FlowAlias=hnn_acco_api_get_all_account_by_page&action=api',
@@ -46,7 +21,7 @@ export const vibEndpoints = {
   active_account: '/Primary/?FlowAlias=hnn_api_user_active_account&action=api',
   get_all_task: '/Primary/?FlowAlias=hnn_api_booking_get_all_task&action=api',
   get_all_account_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_all_account&action=api',
-  
+
   //role template
   get_all_active_role_template: '/Primary/?FlowAlias=hnn_api_role_get_all_active_role_template_by_page&action=api',
   active_role_template: '/Primary/?FlowAlias=hnn_api_role_active_role&action=api',
@@ -54,11 +29,11 @@ export const vibEndpoints = {
   get_all_inactive_role_template: '/Primary/?FlowAlias=hnn_api_role_get_all_inactive_role_template_by_page&action=api',
   create_role_template: '/Primary/?FlowAlias=hnn_api_role_create_role&action=api',
   get_all_group: '/Primary/?FlowAlias=hnn_api_role_get_all_group&action=api',
-  
+
   add_account_to_group: '/Primary/?FlowAlias=bs_api_user_add_acount_to_group&action=api',
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
   //department
-  
+
   sync_group_for_department: '/Primary/?FlowAlias=hnn_api_role_sync_group_for_department&action=api',
   get_tree_view_data: '/Primary/?FlowAlias=bs_api_dept_get_tree_view_data&action=api',
   get_all_active_department: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
@@ -66,79 +41,54 @@ export const vibEndpoints = {
   deactive_department: '/Primary/?FlowAlias=hnn_api_booking_user_deactive_department&action=api',
   create_department: '/Primary/?FlowAlias=hnn_api_booking_user_create_department&action=api',
   update_department: '/Primary/?FlowAlias=hnn_api_booking_user_update_department&action=api',
-  get_department_list:'/Primary/?FlowAlias=hnn_api_booking_user_get_department_list&action=api',
-  get_department_type_list:'/Primary/?FlowAlias=hnn_api_booking_user_get_department_type_list&action=api',
-  get_department_detail:'/Primary/?FlowAlias=hnn_api_booking_department_get_detail_department_by_name&action=api',
+  get_department_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_department_list&action=api',
+  get_department_type_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_department_type_list&action=api',
+  get_department_detail: '/Primary/?FlowAlias=hnn_api_booking_department_get_detail_department_by_name&action=api',
 
-  // mentor
-  get_all_mentors: '/Primary/?FlowAlias=hnn_api_ment_get_all_mentors&action=api',
-  get_inactive_mentors: '/Primary/?FlowAlias=hnn_api_ment_get_all_inactive_mentors&action=api',
-  get_mentor_detail_by_id: '/Primary/?FlowAlias=hnn_api_ment_get_mentor_detail_by_id&action=api',
-  create_mentor: '/Primary/?FlowAlias=hnn_api_ment_create_mentor&action=api',
-  update_mentor: '/Primary/?FlowAlias=hnn_api_ment_update_mentor&action=api',
-  set_active_mentor: '/Primary/?FlowAlias=hnn_api_ment_set_active_mentor&action=api',
+  //Podcast
+  get_all_active_playlist: '/Primary/?FlowAlias=&action=api',
+  get_all_inactive_playlist: '/Primary/?FlowAlias=&action=api',
+  get_playlist_detail: '/Primary/?FlowAlias=&action=api',
 
-  get_statistic_data: '/Primary/?FlowAlias=hnn_api_booking_get_statistic_data&action=api',
-  get_log_data: '/Primary/?FlowAlias=hnn_api_booking_get_log_data&action=api',
+  get_all_active_podcast: '/Primary/?FlowAlias=&action=api',
+  get_all_inactive_podcast: '/Primary/?FlowAlias=&action=api',
+  get_podcast_detail: '/Primary/?FlowAlias=&action=api',
 
-  get_all_code: '/Primary/?FlowAlias=hnn_code_api_get_all_code&action=api',
-  get_unused_code: '/Primary/?FlowAlias=hnn_code_api_get_all_unused_code&action=api',
-  active_code: '/Primary/?FlowAlias=hnn_code_api_set_active_code&action=api',
-
-  get_all_batch: '/Primary/?FlowAlias=hnn_code_api_get_all_code_batch&action=api',
-  create_batch: '/Primary/?FlowAlias=hnn_code_api_create_code_batch&action=api',
-  active_batch: '/Primary/?FlowAlias=hnn_code_api_set_active_batch&action=api',
-  download_batch: '/Primary/?FlowAlias=hnn_code_api_download_batch&action=api',
-
-  get_bar_chart_data: '/Primary/?FlowAlias=hnn_api_booking_get_bar_chart_data&action=api',
-  get_booking_status_data_horitional_barchart: '/Primary/?FlowAlias=hnn_api_booking_get_booking_status_for_horitional_bar_chart&action=api',
-  get_count_of_booking_by_mentor_data_horitional_barchart: '/Primary/?FlowAlias=hnn_api_booking_get_count_of_booking_by_mentor_for_horitional_bar_chart&action=api',
-  get_booking_by_career_pie_chart: '/Primary/?FlowAlias=hnn_api_booking_get_booking_by_career_for_pie_chart&action=api',
-  get_mentor_ratting_colorfull_bar_chart: '/Primary/?FlowAlias=hnn_api_booking_get_mentor_ratting_for_colorfull_bar_chart&action=api'
+  get_all_active_episode: '/Primary/?FlowAlias=&action=api',
+  get_all_inactive_episode: '/Primary/?FlowAlias=&action=api',
+  get_episode_detail: '/Primary/?FlowAlias=&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
-export const apiEndpoints = {
-  upload: '/upload',
-};
 
-export const bookingActions = {
-  all_list: 'HNN_ACTION_OPEN_BOOKING_LIST',
-  handle_list: 'HNN_ACTION_OPEN_HANDLE_BOOKING_LIST',
-  cancel_list: 'HNN_ACTION_OPEN_CANCEL_BOOKING_LIST',
-  completed_list: 'HNN_ACTION_OPEN_COMPLETED_BOOKING_LIST',
-  by_date_list: 'HNN_ACTION_OPEN_DATE_BOOKING_LIST',
-  by_mentor_list: 'HNN_ACTION_OPEN_MENTOR_STATISTIC_LIST',
-  full_calendar: 'HNN_ACTION_OPEN_CALENDAR'
-};
-export const roleActions={
+export const roleActions = {
   list_active_role: 'HNN_ACTIONE_OPEN_ACTIVE_ROLE_TEMPLATE_LIST',
   list_inactive_role: 'HNN_ACTIONE_OPEN_INACTIVE_ROLE_TEMPLATE_LIST',
   list_role: 'HNN_ACTION_OPEN_ROLE_LIST',
-}
-export const accountActions={
+};
+export const accountActions = {
   list_active_user: 'HNN_ACTION_OPEN_ACTIVE_USER_LIST',
   list_inactive_user: 'HNN_ACTION_OPEN_INACTIVE_USER_LIST',
-}
-export const departmentActions={
+};
+export const departmentActions = {
   list_active_department: 'HNN_ACTION_OPEN_ACTIVE_DEPT_LIST',
   list_inactive_department: 'HNN_ACTION_OPEN_INACTIVE_DEPT_LIST',
-}
+};
 
+export const playlistActions = {
+  active_list: 'MYM_MEDIA_PODCAST_OPEN_PLAYLIST_LIST',
+  inactive_list: '',
+};
 
-export const mentorActions = {
-  list_active_mentors: 'HNN_ACTION_OPEN_ACTIVE_MENTOR_LIST',
-  list_inactive_mentors: 'HNN_ACTION_OPEN_INACTIVE_MENTOR_LIST'
-}
+export const podcastActions = {
+  active_list: 'MYM_MEDIA_PODCAST_OPEN_PODCAST_LIST',
+  inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTVIe_PODCAST_LIST',
+};
 
-export const codeActions = {
-  list_codes: 'HNN_ACTION_OPEN_CODE_LIST',
-  list_unused_codes: 'HNN_ACTION_OPEN_UNUSED_CODE_LIST'
-}
-
-export const batchActions = {
-  list_batchs: 'HNN_ACTION_OPEN_BATCH_LIST',
-}
+export const episodeActions = {
+  active_list: 'MYM_MEDIA_PODCAST_OPEN_EPISODE_LIST',
+  inactive_list: '',
+};
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
@@ -150,20 +100,6 @@ export const view = {
   floating: {
     createAccount: 'USER_LIST_CREATE_FLOAT_BUTTON',
   },
-  booking: {
-    list: {
-      cancel: 'BOOKING_LIST_CANCEL_MENU_BUTTON',
-      review: 'BOOKING_LIST_REVIEW_MENU_BUTTON',
-      handled: 'BOOKING_LIST_HANDLED_MENU_BUTTON',
-      note: 'BOOKING_LIST_NOTE_MENU_BUTTON',
-      meeting: 'BOOKING_LIST_MEETING_MENU_BUTTON',
-      approve: 'BOOKING_LIST_APPROVE_MENU_BUTTON'
-    },
-    detail: {
-      save: 'BOOKING_DETAIL_SAVE_FORM_BUTTON',
-    
-    },
-  },
   user: {
     list: {
       create: 'USER_LIST_CREATE_MENU_BUTTON',
@@ -174,13 +110,13 @@ export const view = {
   },
   mentor: {
     list: {
-      create: 'MENTOR_LIST_CREATE_MENU_BUTTON'
+      create: 'MENTOR_LIST_CREATE_MENU_BUTTON',
     },
     form: {
       working: 'MENTOR_DETAIL_WORKDAY_FORM_BUTTON',
       leave: 'MENTOR_DETAIL_LEAVE_FORM_BUTTON',
-      save: 'MENTOR_DETAIL_SAVE_FORM_BUTTON'
-    }
+      save: 'MENTOR_DETAIL_SAVE_FORM_BUTTON',
+    },
   },
   department: {
     list: {
@@ -188,10 +124,9 @@ export const view = {
       show_tree: 'DEPARTMENT_LIST_SHOW_TREE_VIEW_BUTTON',
     },
     detail: {
-      save: 'DEPARTMENT_LIST_CREATE_FORM_BUTTON'
+      save: 'DEPARTMENT_LIST_CREATE_FORM_BUTTON',
     },
   },
-
   role: {
     list: {
       create: 'ROLE_TEMPLATE_LIST_CREATE_MENU_BUTTON',
@@ -200,16 +135,30 @@ export const view = {
       addnew: 'ROLE_LIST_ADD_ACCOUNT_MENU_BUTTON',
       sync_department: 'ROLE_TEMPLATE_LIST_SYNC_DEPARTMENT_MENU_BUTTON',
     },
-    detail: {
-
-    }
+    detail: {},
   },
-  batch: {
+  playlist: {
     list: {
-      create: 'CODE_BATCH_LIST_CREATE_MENU_BUTTON',
-      download: 'CODE_BATCH_LIST_DOWNLOAD_MENU_BUTTON',
-    }
+      create: 'MYM_MEDIA_PODCAST_PLAYLIST_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_MEDIA_PODCAST_PLAYLIST_SAVE_FORM_BUTTON',
+    },
   },
-
-  
+  podcast: {
+    list: {
+      create: '',
+    },
+    detail: {
+      save: '',
+    },
+  },
+  episode: {
+    list: {
+      create: '',
+    },
+    detail: {
+      save: '',
+    },
+  },
 };

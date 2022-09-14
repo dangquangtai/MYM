@@ -43,11 +43,11 @@ const Summnary = () => {
 
   useEffect(() => {
     getStatistic();
-    getChartByStatus();
-    getChartByMentor();
-    getBarChartData();
-    getChartByCareer();
-    getChartByRatting();
+    // getChartByStatus();
+    // getChartByMentor();
+    // getBarChartData();
+    // getChartByCareer();
+    // getChartByRatting();
   }, []);
 
   const getStatistic = async () => {
@@ -127,7 +127,7 @@ const Summnary = () => {
   return (
     <React.Fragment>
       <Grid item xs={12}>
-        <Grid container spacing={gridSpacing} justify="flex-end">
+        {/* <Grid container spacing={gridSpacing} justify="flex-end">
           <Grid item xs={6} sm={6} style={{ paddingTop: 0, paddingBottom: 0 }}>
             <Grid container spacing={gridSpacing} justify="flex-end" alignItems='flex-end'>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -171,9 +171,9 @@ const Summnary = () => {
               </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={5} xs={12}>
             <Grid container spacing={gridSpacing}>
@@ -227,8 +227,8 @@ const Summnary = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12}>
+      </Grid> */}
+      {/* <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={6} xs={12}>
             <HoritionalBarChart
@@ -268,7 +268,7 @@ const Summnary = () => {
             />
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </React.Fragment>
   );
 };

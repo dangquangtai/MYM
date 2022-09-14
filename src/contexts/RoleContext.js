@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { vibEndpoints } from '../store/constant';
+import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import useView from '../hooks/useView';
 
@@ -10,7 +10,7 @@ export const RoleProvider = ({ children }) => {
 
   const getRoleDetail = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_detail_role_template, {
+      .post(apiEndpoints.get_detail_role_template, {
          outputtype: 'RawJson' ,id})
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
@@ -22,7 +22,7 @@ export const RoleProvider = ({ children }) => {
   };
   const getDepartmentListGroup = async (id) => {
     return axiosInstance
-      .post(vibEndpoints.get_all_group, {
+      .post(apiEndpoints.get_all_group, {
          outputtype: 'RawJson'})
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
@@ -34,13 +34,13 @@ export const RoleProvider = ({ children }) => {
 
 
   const createRole = async (role) => {
-    return axiosInstance.post(vibEndpoints.create_role_template, role).then((response) => {
+    return axiosInstance.post(apiEndpoints.create_role_template, role).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
   };
   const syncRole = async () => {
-    return axiosInstance.post(vibEndpoints.sync_group_for_department, {
+    return axiosInstance.post(apiEndpoints.sync_group_for_department, {
       outputtype: 'RawJson',
       company_code: 'HNN',
     }).then((response) => {
@@ -49,7 +49,7 @@ export const RoleProvider = ({ children }) => {
     });
   };
   const addAccountToGroup = async (group_name, account_id) => {
-    return axiosInstance.post(vibEndpoints.add_account_to_group,{
+    return axiosInstance.post(apiEndpoints.add_account_to_group,{
       outputtype: 'RawJson',
       group_name: group_name,
       company_code: 'HNN',
@@ -60,7 +60,7 @@ export const RoleProvider = ({ children }) => {
     });
   };
   const removeAccountToGroup = async (group_name, account_id, email_address) => {
-    return axiosInstance.post(vibEndpoints.remove_account_to_group,{
+    return axiosInstance.post(apiEndpoints.remove_account_to_group,{
       outputtype: 'RawJson',
       group_name: group_name,
       email_address: email_address,
@@ -73,7 +73,7 @@ export const RoleProvider = ({ children }) => {
   };
   const activeRole = async ( role ) => {
     return axiosInstance
-     .post(vibEndpoints.active_role_template,{
+     .post(apiEndpoints.active_role_template,{
       outputtype: 'RawJson',
       ...role,
 
@@ -83,7 +83,7 @@ export const RoleProvider = ({ children }) => {
     });
   };
   const updateRole = async (account) => {
-    return axiosInstance.post(vibEndpoints.update_account, account).then((response) => {
+    return axiosInstance.post(apiEndpoints.update_account, account).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
