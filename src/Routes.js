@@ -10,6 +10,7 @@ import AuthGuard from './component/Auth/AuthGuard';
 import MinimalLayout from './layout/MinimalLayout';
 
 const AuthLogin = lazy(() => import('./views/Login'));
+const App = lazy(() => import('./views/Dashboard/App/index.js'));
 const DashboardDefault = lazy(() => import('./views/Dashboard/Default'));
 const Logout = lazy(() => import('./views/Users/logout'));
 
@@ -20,7 +21,7 @@ const Routes = () => {
     <AnimatePresence>
       <Suspense fallback={<Loader />}>
         <Switch>
-          <Redirect exact from="/" to="/dashboard/default" />
+          <Redirect exact from="/" to="/dashboard/app" />
           <Route path={['/application/login']}>
             <MinimalLayout>
               <Switch location={location} key={location.pathname}>
@@ -36,6 +37,7 @@ const Routes = () => {
                 <NavMotion>
                   <GuestGuard>
                     <Route path="/login" component={AuthLogin} />
+                    <Route path="/dashboard/app" component={App} />
                     <Route path="/dashboard/default" component={DashboardDefault} />
                     {/* <Route path="/documents" component={DetailDocument} /> */}
                   </GuestGuard>
@@ -43,11 +45,12 @@ const Routes = () => {
               </Switch>
             </MinimalLayout>
           </Route>
-          <Route path={['/dashboard/default', '/users/logout']}>
+          <Route path={['/dashboard/app', '/dashboard/default', '/users/logout']}>
             <MainLayout>
               <Switch location={location} key={location.pathname}>
                 <NavMotion>
                   <AuthGuard>
+                    <Route path="/dashboard/app" component={App} />
                     <Route path="/dashboard/default" component={DashboardDefault} />
                     <Route path="/users/logout" component={Logout} />
                   </AuthGuard>

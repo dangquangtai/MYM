@@ -11,11 +11,12 @@ const MenuList = (props) => {
   const { getFolders } = useFolder();
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
+  const { selectedApp } = useSelector((state) => state.app);
   useEffect(() => {
     if (selectedProject) {
-      getFolders(selectedProject);
+      getFolders(selectedProject, selectedApp);
     }
-  }, [selectedProject]);
+  }, [selectedProject, selectedApp]);
 
   const { folder } = useSelector((state) => state.folder);
   let childFolders = [{ ...folder, type: 'group' }];

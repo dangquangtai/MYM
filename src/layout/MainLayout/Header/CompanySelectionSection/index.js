@@ -74,12 +74,13 @@ const CompanySelectionSection = () => {
 
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
+  const { selectedApp } = useSelector((state) => state.app);
 
   useEffect(() => {
     setTimeout(() => {
-      getProjects();
+      getProjects(selectedApp);
     }, 0);
-  }, []);
+  }, [selectedApp]);
 
   const theme = useTheme();
   const matchDownSm = useMediaQuery(theme.breakpoints.down('xs'));

@@ -18,3 +18,5 @@ export const CONFIRM_CHANGE = '@confirm/CHANGE';
 export const DOCUMENT_CHANGE = '@document/CHANGE';
 export const NEWS_CHANGE = '@news/CHANGE';
 export const TASK_CHANGE = '@task/CHANGE_TASK';
+export const APP_CHANGE = '@app/CHANGE_APP';
+export const SELECTED_APP_CHANGE = '@app/SELECTED_APP_CHANGE';

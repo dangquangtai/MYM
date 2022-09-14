@@ -6,7 +6,7 @@ const GuestGuard = ({ children }) => {
   const { isLoggedIn } = useAuth();
 
   if (isLoggedIn) {
-    return <Redirect to="/dashboard/default" />;
+    return <Redirect to="/dashboard/app" />;
   }
 
   return children;
