@@ -3,6 +3,7 @@ export const drawerWidth = 320;
 export const drawerWidthIcon = 120;
 export const comanyCode = 'MYM';
 export const apiEndpoints = {
+  upload: '/upload',
   authenticate: '/Primary/?FlowAlias=hnn_api_authenticate_booking&action=api',
   login: '/Primary/?FlowAlias=portal_api_sgin_sign_in&action=api',
   home: '/Primary/?FlowAlias=portal_api_home_get_home_page&outputtype=RawJson&action=api',
@@ -50,13 +51,20 @@ export const apiEndpoints = {
   get_all_inactive_playlist: '/Primary/?FlowAlias=&action=api',
   get_playlist_detail: '/Primary/?FlowAlias=&action=api',
 
-  get_all_active_podcast: '/Primary/?FlowAlias=&action=api',
-  get_all_inactive_podcast: '/Primary/?FlowAlias=&action=api',
-  get_podcast_detail: '/Primary/?FlowAlias=&action=api',
+  get_all_active_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_active&action=api',
+  get_all_inactive_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_inactive&action=api',
+  get_podcast_detail: '/Primary/?FlowAlias=bs_media_api_get_podcast_detail_by_id&action=api',
+  create_podcast: '/Primary/?FlowAlias=bs_media_api_create_podcast&action=api',
+  update_podcast: '/Primary/?FlowAlias=bs_media_api_update_podcast&action=api',
 
-  get_all_active_episode: '/Primary/?FlowAlias=&action=api',
+  get_counseling_categoies: '/Primary/?FlowAlias=bs_partner_api_get_counseling_categoies&action=api',
+  get_mentor_list_by_category_id: '/Primary/?FlowAlias=bs_api_partner_get_all_mentor&action=api',
+
+  get_all_active_episode: '/Primary/?FlowAlias=bs_media_api_get_list_episode_active&action=api',
   get_all_inactive_episode: '/Primary/?FlowAlias=&action=api',
-  get_episode_detail: '/Primary/?FlowAlias=&action=api',
+  get_episode_detail: '/Primary/?FlowAlias=bs_media_api_get_episode_detail_by_id&action=api',
+  create_episode: '/Primary/?FlowAlias=bs_media_api_create_episode&action=api',
+  update_episode: '/Primary/?FlowAlias=bs_media_api_update_episode&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -147,18 +155,18 @@ export const view = {
   },
   podcast: {
     list: {
-      create: '',
+      create: 'MYM_MEDIA_PODCAST_PODCAST_CREATE_MENU_BUTTON',
     },
     detail: {
-      save: '',
+      save: 'MYM_MEDIA_PODCAST_PODCAST_SAVE_FORM_BUTTON',
     },
   },
   episode: {
     list: {
-      create: '',
+      create: 'MYM_MEDIA_PODCAST_EPISODE_CRETAE_MENU_BUTTON',
     },
     detail: {
-      save: '',
+      save: 'MYM_MEDIA_PODCAST_EPISODE_SAVE_FORM_BUTTON',
     },
   },
 };

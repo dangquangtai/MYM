@@ -1,4 +1,4 @@
-import { apiEndpoints, accountActions, departmentActions, roleActions } from '../store/constant.js';
+import { apiEndpoints, accountActions, departmentActions, roleActions, podcastActions, episodeActions } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
   switch (selectedFolder ? selectedFolder.action : '') {
@@ -23,6 +23,18 @@ export function getUrlByAction(selectedFolder) {
     }
     case roleActions.list_role: {
       return apiEndpoints.get_all_account_by_department;
+    }
+    case podcastActions.active_list: {
+      return apiEndpoints.get_all_active_podcast;
+    }
+    case podcastActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_podcast;
+    }
+    case episodeActions.active_list: {
+      return apiEndpoints.get_all_active_episode;
+    }
+    case episodeActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_episode;
     }
 
     default: {

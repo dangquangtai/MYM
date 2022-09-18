@@ -1,18 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getUrlByAction } from './../../../utils/utils';
-import BookingWrapper from './../../Booking/index';
 import AccountWrapper from '../../Account';
 import DepartmentWrapper from '../../Department';
 import RoleWrapper from '../../Role';
 import { Grid } from '@material-ui/core';
-import { gridSpacing, accountActions, departmentActions, roleActions } from './../../../store/constant';
-import MentorWrapper from '../../Mentor';
+import { gridSpacing, accountActions, departmentActions, roleActions, podcastActions, episodeActions } from './../../../store/constant';
 import Summnary from './../Summary/index';
-import FullCalendar from '../../Booking/FullCalendar/index';
-import CodeWrapper from './../../Code/index';
-import BatchWrapper from './../../Batch/index';
 import { Redirect } from 'react-router-dom';
+import PodcastWrapper from './../../Podcast/Podcast';
+import EpisodeWrapper from './../../Podcast/Episode/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -23,6 +20,9 @@ const Default = () => {
   const availableDepartmentEndpoint = Object.values(departmentActions);
 
   const availableRoleEndpoint = Object.values(roleActions);
+
+  const availablePodcastEndpoint = Object.values(podcastActions);
+  const availableEpisodeEndpoint = Object.values(episodeActions);
 
   if (!selectedApp) {
     return <Redirect to="/dashboard/app" />;
@@ -43,6 +43,8 @@ const Default = () => {
           {availableAccountEndpoint.includes(selectedFolder?.action) && <AccountWrapper />}
           {availableDepartmentEndpoint.includes(selectedFolder?.action) && <DepartmentWrapper />}
           {availableRoleEndpoint.includes(selectedFolder?.action) && <RoleWrapper />}
+          {availablePodcastEndpoint.includes(selectedFolder?.action) && <PodcastWrapper />}
+          {availableEpisodeEndpoint.includes(selectedFolder?.action) && <EpisodeWrapper />}
         </Grid>
       )}
     </Grid>
