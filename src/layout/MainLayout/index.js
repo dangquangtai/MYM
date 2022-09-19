@@ -25,6 +25,9 @@ import RoleModal from '../../views/Role/Detail';
 import TreeViewModal from '../../views/Department/Tree_View';
 import FormModal from '../../views/Role/Form';
 import BatchModal from './../../views/Batch/New/index';
+import PodcastModal from '../../views/Podcast/Podcast/Detail/index.js';
+import EpisodeModal from '../../views/Podcast/Episode/Detail';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -89,13 +92,14 @@ const MainLayout = ({ children }) => {
         return <MentorModal />;
       case 'department':
         return <><TreeViewModal/><DepartmentModal /></>;
-        
       case 'role':
         return <><RoleModal/><FormModal/></> ;
-
-        return <DepartmentModal />;
       case 'batch':
         return <BatchModal />;
+      case 'podcast': 
+        return <PodcastModal />;
+      case 'episode':
+        return <EpisodeModal />;
 
     }
   }

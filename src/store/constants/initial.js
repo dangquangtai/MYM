@@ -33,6 +33,29 @@ export const initMentorData = {
   vacation: []
 }
 
+export const initPodcastData = {
+  title: "",
+  description: "",
+  image_url: "",
+  duration: 0,
+  episodes: 0,
+  category_id: "",
+  mentor_id: "",
+  banner_url: "",
+  list_episode_id: [],
+}
+
+export const initEpisodeData = {
+  id: "",
+  title: "",
+  image_url: "",
+  description: "",
+  is_for_member: false,
+  duration: 0,
+  episode_number: 0,
+  source_file_url: "",
+}
+
 export const genderList = [
   'Nam',
   'Nữ'

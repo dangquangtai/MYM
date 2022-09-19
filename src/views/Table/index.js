@@ -45,6 +45,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 import { format as formatDate } from 'date-fns';
 import useBatch from './../../hooks/useBatch';
+import usePodcast from './../../hooks/usePodcast';
 
 export default function GeneralTable(props) {
   const classes = useStyles();
@@ -59,6 +60,7 @@ export default function GeneralTable(props) {
   useEffect(() => {
     const initOptions = {
       id: tableColumns.includes('booking_id'),
+      title: tableColumns.includes('title'),
       fullname: tableColumns.includes('fullname'),
       department_name: tableColumns.includes('department_name'),
       department_parent: tableColumns.includes('department_parent'),
@@ -99,27 +101,18 @@ export default function GeneralTable(props) {
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
 
-  const buttonBookingCancel = menuButtons.find((button) => button.name === view.booking.list.cancel);
-  const buttonBookingReview = menuButtons.find((button) => button.name === view.booking.list.review);
-  const buttonBookingMeeting = menuButtons.find((button) => button.name === view.booking.list.meeting);
-  const buttonBookingHandled = menuButtons.find((button) => button.name === view.booking.list.handled);
-  const buttonBookingNote = menuButtons.find((button) => button.name === view.booking.list.note);
-  const buttonBookingApprove = menuButtons.find((button) => button.name === view.booking.list.approve);
-
   const buttonAccountCreate = menuButtons.find((button) => button.name === view.user.list.create);
 
   const buttonDeptCreate = menuButtons.find((button) => button.name === view.department.list.create);
   const buttonRemoveAccount = menuButtons.find((button) => button.name === view.role.list.remove);
 
-  const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
   const buttonCreateRole = menuButtons.find((button) => button.name === view.role.list.create);
   const buttonShowTreeView = menuButtons.find((button) => button.name === view.department.list.show_tree);
   const buttonSelectDepartment = menuButtons.find((button) => button.name === view.role.list.select);
   const buttonSyncDepartment = menuButtons.find((button) => button.name === view.role.list.sync_department);
   const buttonAddAccount = menuButtons.find((button) => button.name === view.role.list.addnew);
-
-  const buttonCreateBatch = menuButtons.find((button) => button.name === view.batch.list.create);
-  const buttonDownloadBatch = menuButtons.find((button) => button.name === view.batch.list.download);
+  const buttonCreatePodcast = menuButtons.find((button) => button.name === view.podcast.list.create);
+  const buttonCreateEpisode = menuButtons.find((button) => button.name === view.episode.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -163,7 +156,6 @@ export default function GeneralTable(props) {
     university_id: '',
     status: '',
     career: '',
-
     group_id: '',
   };
 
@@ -182,6 +174,8 @@ export default function GeneralTable(props) {
   const { getMentorDetail, toggleActiveMentor } = useMentor();
 
   const { activeBatch, activeCode, downloadBatch } = useBatch();
+
+  const { getPodcastDetail, getEpisodeDetail } = usePodcast();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -295,6 +289,14 @@ export default function GeneralTable(props) {
       detailDocument = await getRoleDetail(selectedDocument.role_template_id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    } else if (documentType === 'podcast') {
+      detailDocument = await getPodcastDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, podcastDocument: true });
+    } else if (documentType === 'episode') {
+      detailDocument = await getEpisodeDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, episodeDocument: true });
     }
   };
 
@@ -506,26 +508,14 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, mentorDocument: true });
   };
 
-  const handleClickCreateBatch = () => {
+  const handleClickCreatePodcast = () => {
     dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
-    dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
+    dispatch({ type: FLOATING_MENU_CHANGE, podcastDocument: true });
   };
 
-  const handleClickDownLoadBatch = async (id) => {
-    try {
-      const check = await downloadBatch(id);
-      if (!check) {
-      } else {
-        showConfirmPopup({
-          message: `Bạn có muốn tải xuống lô này không ?`,
-          action: handleDownload,
-          payload: check,
-          onSuccess: reloadCurrentDocuments,
-        });
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  const handleClickCreateEpisode = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, episodeDocument: true });
   };
 
   const handleDownload = (url) => {
@@ -575,8 +565,6 @@ export default function GeneralTable(props) {
                 displayOptions={displayOptions}
                 data={stableSort(documents || [], getComparator(order, orderBy))}
                 getListUniversity={getListUniversity}
-                buttonCreateMentor={buttonCreateMentor}
-                handleClickCreateMentor={handleClickCreateMentor}
                 btnCreateNewAccount={buttonAccountCreate}
                 createNewAccount={openDialogCreate}
                 btnCreateNewDept={buttonDeptCreate}
@@ -591,8 +579,10 @@ export default function GeneralTable(props) {
                 buttonAddAccount={buttonAddAccount}
                 showFormAddAccount={showFormAddAccount}
                 syncRole={syncRole}
-                buttonCreateBatch={buttonCreateBatch}
-                handleClickCreateBatch={handleClickCreateBatch}
+                buttonCreatePodcast={buttonCreatePodcast}
+                createPodcast={handleClickCreatePodcast}
+                buttonCreateEpisode={buttonCreateEpisode}
+                createEpisode={handleClickCreateEpisode}
               />
               <TableContainer>
                 <Table
@@ -641,6 +631,19 @@ export default function GeneralTable(props) {
                               </div>
                             </TableCell>
                           )}
+                          {displayOptions.title && (
+                            <TableCell align="left">
+                              <>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
+                                  {row.title}
+                                </span>
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
                           {displayOptions.fullname && (
                             <TableCell align="left">
                               <>
@@ -674,7 +677,7 @@ export default function GeneralTable(props) {
                                   className={classes.tableItemName}
                                   onClick={(event) => openDetailDocument(event, row)}
                                 >
-                                  <img src={row.image_url} style={style.tableUserAvatar} />
+                                  <img alt="" src={row.image_url} style={style.tableUserAvatar} />
                                 </span>
                                 &nbsp;&nbsp;
                               </>
@@ -934,26 +937,6 @@ export default function GeneralTable(props) {
                           {displayOptions.menuButtons && (
                             <TableCell align="left">
                               <div className={classes.handleButtonWrap}>
-                                {buttonBookingApprove && row.is_can_approve && (
-                                  <Tooltip title={buttonBookingApprove.text}>
-                                    <Button
-                                      className={`${classes.handleButton} `}
-                                      onClick={() => handleApproveBooking(row.id)}
-                                    >
-                                      <SkipNextIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingNote && (
-                                  <Tooltip title={buttonBookingNote.text}>
-                                    <Button
-                                      className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                      onClick={() => handleOpenModal('note', row)}
-                                    >
-                                      <NoteAddSharpIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
                                 {buttonRemoveAccount && (
                                   <Tooltip title={buttonRemoveAccount.text}>
                                     <Button
@@ -963,59 +946,6 @@ export default function GeneralTable(props) {
                                       }
                                     >
                                       <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingHandled && (
-                                  <Tooltip title={buttonBookingHandled.text}>
-                                    <Button
-                                      className={classes.handleButton}
-                                      onClick={() => handleSetCompletedBooking(row.id)}
-                                    >
-                                      <HowToRegIcon className={classes.handleButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingMeeting && row.link_meeting !== null && (
-                                  <Tooltip title={buttonBookingMeeting.text}>
-                                    <Button className={`${classes.handleButton} ${classes.handleButtonMeeting}`}>
-                                      <a
-                                        href={row.link_meeting}
-                                        className={`${classes.handleButton} ${classes.handleButtonMeeting}`}
-                                        target="_blank"
-                                      >
-                                        <DuoIcon className={classes.handleButtonIconMeeting} />
-                                      </a>
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingCancel && row.is_can_cancel && (
-                                  <Tooltip title={buttonBookingCancel.text}>
-                                    <Button
-                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                      onClick={() => handleOpenModal('cancel', row)}
-                                    >
-                                      <DeleteOutlineIcon className={classes.handleButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingReview && row.is_can_completed && (
-                                  <Tooltip title={buttonBookingReview.text}>
-                                    <Button
-                                      className={classes.handleButton}
-                                      onClick={() => handleOpenModal('review', row)}
-                                    >
-                                      <AssignmentTurnedInIcon className={classes.handleButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonDownloadBatch && (
-                                  <Tooltip title={buttonDownloadBatch.text}>
-                                    <Button
-                                      className={classes.handleButton}
-                                      onClick={() => handleClickDownLoadBatch(row.batch_number)}
-                                    >
-                                      <GetAppIcon className={classes.handleButtonIcon} />
                                     </Button>
                                   </Tooltip>
                                 )}

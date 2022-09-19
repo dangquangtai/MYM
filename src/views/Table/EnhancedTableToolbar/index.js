@@ -27,11 +27,8 @@ const EnhancedTableToolbar = (props) => {
     handleShowColumn,
     handleFilterChange,
     displayOptions,
-    getListUniversity,
     getDepartmentList,
     data,
-    buttonCreateMentor,
-    handleClickCreateMentor,
     btnCreateNewAccount,
     createNewAccount,
     btnCreateNewDept,
@@ -46,10 +43,10 @@ const EnhancedTableToolbar = (props) => {
     buttonAddAccount,
     showFormAddAccount,
     syncRole,
-
-    buttonCreateBatch,
-    handleClickCreateBatch,
-
+    buttonCreatePodcast,
+    createPodcast,
+    buttonCreateEpisode,
+    createEpisode,
   } = props;
 
   const filterRef = useRef(null);
@@ -87,10 +84,10 @@ const EnhancedTableToolbar = (props) => {
   const handleSelect = (group_id) => {
     setFilter({ ...filter, group_id: group_id });
     handleFilterChange(filter);
-  }
-  const handleSyncRole= async() => {
+  };
+  const handleSyncRole = async () => {
     await syncRole();
-  }
+  };
   const handleResetFilter = () => {
     setFilter((pre) => ({
       ...pre,
@@ -132,18 +129,13 @@ const EnhancedTableToolbar = (props) => {
   };
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
-  const [dataDepartmentList, setDepartment] = React.useState()
+  const [dataDepartmentList, setDepartment] = React.useState();
   useEffect(() => {
-    async function initUniversityList() {
-      const data = await getListUniversity();
-      setUniversityList(data);
-    }
     async function initDepartmentList() {
       const data = await getDepartmentList();
       setDepartment(data);
     }
     initDepartmentList();
-    initUniversityList();
   }, []);
 
   useEffect(() => {
@@ -198,65 +190,53 @@ const EnhancedTableToolbar = (props) => {
 
         {buttonCreateRole && (
           <Grid item>
-            <Button
-              variant="contained"
-              color={"primary"}
-              onClick={createNewRole}
-            >
+            <Button variant="contained" color={'primary'} onClick={createNewRole}>
               {buttonCreateRole.text}
             </Button>
           </Grid>
         )}
-      
-         {buttonAddAccount && (
-          <Grid item>
-            <Button
-              variant="contained"
-              color={"primary"}
-              onClick={showFormAddAccount}
 
-            >
+        {buttonAddAccount && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={showFormAddAccount}>
               {buttonAddAccount.text}
             </Button>
           </Grid>
         )}
-         {buttonSyncDepartment && (
+        {buttonSyncDepartment && (
           <Grid item>
-            <Button
-              variant="contained"
-              color={"primary"}
-              onClick={handleSyncRole}
-
-            >
+            <Button variant="contained" color={'primary'} onClick={handleSyncRole}>
               {buttonSyncDepartment.text}
-              </Button>
-              </Grid>
-              )
-         }
-        {buttonCreateBatch && (
-          <Grid item>
-            <Button variant="contained" color={'primary'} onClick={handleClickCreateBatch}>
-              {buttonCreateBatch.text}
-
             </Button>
           </Grid>
         )}
+
+        {buttonCreatePodcast && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createPodcast}>
+              {buttonCreatePodcast.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonCreateEpisode && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createEpisode}>
+              {buttonCreateEpisode.text}
+            </Button>
+          </Grid>
+        )}
+
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
-          {numSelected > 0 ? (
+          {numSelected > 0 && (
             <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
               {numSelected} bản ghi được chọn
             </Typography>
-          ) : (
-            buttonCreateMentor && (
-              <Button onClick={handleClickCreateMentor} className={classes.btnCreateMentor}>
-                {buttonCreateMentor.text}
-              </Button>
-            )
           )}
         </Grid>
 
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
-          <Grid container justify="flex-end" alignItems='center'>
+          <Grid container justify="flex-end" alignItems="center">
             <div className={classes.toolSearchWrap}>
               <SearchIcon />
               <input
@@ -271,7 +251,6 @@ const EnhancedTableToolbar = (props) => {
             </div>
 
             {buttonSelectDepartment && (
-
               <Select
                 labelId="university-label"
                 id="group_id"
@@ -279,7 +258,6 @@ const EnhancedTableToolbar = (props) => {
                 className={classes.multpleSelectField}
                 onChange={handleChangeFilter}
                 name="group_id"
-
               >
                 <MenuItem value="">
                   <em>Không chọn</em>
@@ -289,11 +267,8 @@ const EnhancedTableToolbar = (props) => {
                     {department.Value}
                   </MenuItem>
                 ))}
-                
               </Select>
-
-            )
-            }
+            )}
 
             <ClickAwayListener onClickAway={() => setIsOpenShowColumn(false)}>
               <div className={classes.toolButtonWrap}>
@@ -304,9 +279,8 @@ const EnhancedTableToolbar = (props) => {
                   >
                     <ViewColumnIcon className={classes.toolButtonIcon} />
                   </Button>
-                  
                 </Tooltip>
-                
+
                 {isOpenShowColumn && (
                   <div className={classes.toolColumn}>
                     <div className={classes.toolColumnTitle}>
@@ -338,15 +312,15 @@ const EnhancedTableToolbar = (props) => {
                 </Button>
               </Tooltip>
               {buttonShowTreeView && (
-            <Tooltip title="Tree View">
-            <Button
-              className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
-              onClick={showTreeView}
-            >
-              <AccountTreeIcon className={classes.toolButtonIcon} />
-            </Button>
-          </Tooltip>
-        )}
+                <Tooltip title="Tree View">
+                  <Button
+                    className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
+                    onClick={showTreeView}
+                  >
+                    <AccountTreeIcon className={classes.toolButtonIcon} />
+                  </Button>
+                </Tooltip>
+              )}
               {isOpenFilter && (
                 <div className={`${classes.toolColumn} ${classes.toolFilter}`}>
                   <div className={`${classes.toolColumnTitle} ${classes.toolFilterTitle}`}>

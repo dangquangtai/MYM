@@ -1,5 +1,6 @@
 export const headCells = [
   { id: 'id', numeric: false, disablePadding: false, label: 'Mã đăng ký', maxWidth: 150 },
+  { id: 'title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
   { id: 'department_name', numeric: false, disablePadding: false, label: 'Tên phòng ban', maxWidth: 150 },
   { id: 'department_parent', numeric: false, disablePadding: false, label: 'Trực thuộc phòng ban', maxWidth: 150 },
   { id: 'number_member', numeric: false, disablePadding: false, label: 'Số thành viên', maxWidth: 150 },
@@ -36,19 +37,19 @@ export const headCells = [
 ];
 
 export const bookingStatusList = [
-  'Chờ khách hàng',
-  'Chờ mentor',
-  'Đã lên lịch tư vấn',
-  'Đang tư vấn',
-  'Chờ Feedback',
-  'Khách hàng chưa xác nhận',
-  'Mentor chưa xác nhận',
-  'Mentor từ chối lịch',
-  'Khách hàng chưa Feedback',
-  'Meeting bị gián đoạn',
-  'Khách yêu cầu hủy',
-  'Mentor yêu cầu hủy',
-  'Chưa sử dụng',
-  'Đã sử dụng',
-  'Không giới hạn'
+  // 'Chờ khách hàng',
+  // 'Chờ mentor',
+  // 'Đã lên lịch tư vấn',
+  // 'Đang tư vấn',
+  // 'Chờ Feedback',
+  // 'Khách hàng chưa xác nhận',
+  // 'Mentor chưa xác nhận',
+  // 'Mentor từ chối lịch',
+  // 'Khách hàng chưa Feedback',
+  // 'Meeting bị gián đoạn',
+  // 'Khách yêu cầu hủy',
+  // 'Mentor yêu cầu hủy',
+  // 'Chưa sử dụng',
+  // 'Đã sử dụng',
+  // 'Không giới hạn'
 ];

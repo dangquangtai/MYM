@@ -8,6 +8,8 @@ export const initialState = {
   mentorDocument: false,
   departmentDocument: false,
   batchDocument: false,
+  podcastDocument: false,
+  episodeDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -22,6 +24,8 @@ const floatingMenuReducer = (state = initialState, action) => {
         mentorDocument: action.mentorDocument,
         departmentDocument: action.departmentDocument,
         batchDocument: action.batchDocument,
+        podcastDocument: action.podcastDocument,
+        episodeDocument: action.episodeDocument,
       };
     default:
       return state;

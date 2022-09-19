@@ -43,13 +43,23 @@ export const MentorProvider = ({ children }) => {
     });
   }
 
+  const getMentorbyCategory = async (id) => {
+    return axiosInstance.post(apiEndpoints.get_mentor_list_by_category_id, { outputtype: 'RawJson', category_id: id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { list } = response.data;
+        return list;
+      } else return [];
+    });
+  };
+
   return (
     <MentorContext.Provider
       value={{
         getMentorDetail,
         updateMentor,
         createMentor,
-        toggleActiveMentor
+        toggleActiveMentor,
+        getMentorbyCategory
       }}
     >
       {children}
