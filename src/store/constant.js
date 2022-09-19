@@ -4,7 +4,7 @@ export const drawerWidthIcon = 120;
 export const comanyCode = 'MYM';
 export const apiEndpoints = {
   upload: '/upload',
-  authenticate: '/Primary/?FlowAlias=hnn_api_authenticate_booking&action=api',
+  authenticate: '/Primary/?FlowAlias=bs_api_user_authenticate&action=api',
   login: '/Primary/?FlowAlias=portal_api_sgin_sign_in&action=api',
   home: '/Primary/?FlowAlias=portal_api_home_get_home_page&outputtype=RawJson&action=api',
   menu: '/Primary/?FlowAlias=portal_api_home_get_menu&outputtype=RawJson&action=api',
@@ -61,7 +61,7 @@ export const apiEndpoints = {
   get_mentor_list_by_category_id: '/Primary/?FlowAlias=bs_api_partner_get_all_mentor&action=api',
 
   get_all_active_episode: '/Primary/?FlowAlias=bs_media_api_get_list_episode_active&action=api',
-  get_all_inactive_episode: '/Primary/?FlowAlias=&action=api',
+  get_all_inactive_episode: '/Primary/?FlowAlias=bs_media_api_get_list_episode_inactive&action=api',
   get_episode_detail: '/Primary/?FlowAlias=bs_media_api_get_episode_detail_by_id&action=api',
   create_episode: '/Primary/?FlowAlias=bs_media_api_create_episode&action=api',
   update_episode: '/Primary/?FlowAlias=bs_media_api_update_episode&action=api',
@@ -85,17 +85,17 @@ export const departmentActions = {
 
 export const playlistActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_PLAYLIST_LIST',
-  inactive_list: '',
+  inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_PLAYLIST_LIST',
 };
 
 export const podcastActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_PODCAST_LIST',
-  inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTVIe_PODCAST_LIST',
+  inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_PODCAST_LIST',
 };
 
 export const episodeActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_EPISODE_LIST',
-  inactive_list: '',
+  inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_EPISODE_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';

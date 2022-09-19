@@ -312,7 +312,7 @@ const EpisodeModal = () => {
                                 rows={1}
                                 rowsMax={1}
                                 variant="outlined"
-                                name="episodes"
+                                name="episode_number"
                                 number
                                 value={episodeData.episode_number}
                                 className={classes.inputField}
@@ -335,6 +335,38 @@ const EpisodeModal = () => {
                                 value={episodeData.duration}
                                 className={classes.inputField}
                                 onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Source File:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="source_file_url"
+                                number
+                                value={episodeData.source_file_url}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Dành cho member:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Switch
+                                checked={episodeData.is_for_member}
+                                onChange={() => setEpisodeData({ ...episodeData, is_for_member: !episodeData.is_for_member })}
+                                name="is_for_member"
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
                             </Grid>
                           </Grid>

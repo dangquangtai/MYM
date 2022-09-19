@@ -41,7 +41,7 @@ import usePodcast from './../../../../hooks/usePodcast';
 import useMentor from './../../../../hooks/useMentor';
 import { withStyles } from '@material-ui/core/styles';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import DeleteIcon from '@material-ui/icons/Delete';
 import EpisodeModal from './../EpisodeModal/index';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -135,6 +135,7 @@ const PodcastModal = () => {
 
   const setDocumentToDefault = async () => {
     setPodcastData(initPodcastData);
+    setSelectedEpisodes([]);
     setTabIndex(0);
   };
   const setURL = (image) => {
@@ -156,10 +157,10 @@ const PodcastModal = () => {
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updatePodcast(podcastData);
+        await updatePodcast({ ...podcastData, list_episode_id: selectedEpisodes });
         handleOpenSnackbar(true, 'success', 'Cập nhật Podcast thành công!');
       } else {
-        await createPodcast(podcastData);
+        await createPodcast({ ...podcastData, list_episode_id: selectedEpisodes });
         handleOpenSnackbar(true, 'success', 'Tạo mới Podcast thành công!');
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'podcast' });
@@ -171,7 +172,7 @@ const PodcastModal = () => {
 
   const handleChangeEpisode = (e) => {
     const { name, value } = e.target;
-    setSelectedEpisodes([...selectedEpisodes, value]);
+    setSelectedEpisodes([...new Set(selectedEpisodes), value]);
     const newSelectionList = episodes.filter((val) => val.id !== value);
     setEpisodes(newSelectionList);
     setSelectedEpisode('');
@@ -179,6 +180,13 @@ const PodcastModal = () => {
 
   const filterObj = (value) => {
     return initEpisodes.filter((item) => item.id === value);
+  };
+
+  const handleDeleteEpisode = (id) => {
+    const newSelectionList = selectedEpisodes.filter((val) => val !== id);
+    setSelectedEpisodes(newSelectionList);
+    const newEpisodes = [...episodes, ...filterObj(id)];
+    setEpisodes(newEpisodes);
   };
 
   useEffect(() => {
@@ -210,7 +218,7 @@ const PodcastModal = () => {
   }, []);
 
   useEffect(() => {
-    setEpisodes(Object.values(initEpisodes)?.filter((item) => !selectedEpisodes.includes(item.id)));
+    setEpisodes(Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id)));
   }, [selectedEpisodes]);
 
   useEffect(() => {
@@ -488,6 +496,7 @@ const PodcastModal = () => {
                                     <StyledTableCell>Tập</StyledTableCell>
                                     <StyledTableCell align="left">Ảnh</StyledTableCell>
                                     <StyledTableCell align="left">Tiêu đề</StyledTableCell>
+                                    <StyledTableCell align="left">Xoá</StyledTableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -495,11 +504,20 @@ const PodcastModal = () => {
                                     const data = JSON.parse(JSON.stringify(filterObj(id)));
                                     return (
                                       <TableRow key={id}>
-                                        <StyledTableCell align="left">{data[0].episode_number}</StyledTableCell>
+                                        <StyledTableCell align="left">{data[0]?.episode_number}</StyledTableCell>
                                         <StyledTableCell align="left">
-                                          <img src={data[0].image_url} alt="" width="60" />
+                                          <img src={data[0]?.image_url} alt="" width="60" />
                                         </StyledTableCell>
-                                        <StyledTableCell align="left">{data[0].title}</StyledTableCell>
+                                        <StyledTableCell align="left">{data[0]?.title}</StyledTableCell>
+                                        <StyledTableCell align="left">
+                                          <IconButton
+                                            aria-label="delete"
+                                            className={classes.margin}
+                                            onClick={() => handleDeleteEpisode(id)}
+                                          >
+                                            <DeleteIcon fontSize="small" />
+                                          </IconButton>
+                                        </StyledTableCell>
                                       </TableRow>
                                     );
                                   })}

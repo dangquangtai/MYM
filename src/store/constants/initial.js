@@ -42,6 +42,7 @@ export const initPodcastData = {
   category_id: "",
   mentor_id: "",
   banner_url: "",
+  list_episode_id: [],
 }
 
 export const initEpisodeData = {
@@ -52,6 +53,7 @@ export const initEpisodeData = {
   is_for_member: false,
   duration: 0,
   episode_number: 0,
+  source_file_url: "",
 }
 
 export const genderList = [
