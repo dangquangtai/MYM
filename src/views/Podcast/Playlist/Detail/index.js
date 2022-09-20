@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Switch,
   Snackbar,
@@ -13,21 +14,21 @@ import {
   Tabs,
   Typography,
   TextField,
+  MenuItem,
+  Select
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import Alert from '../../../../component/Alert';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useView from '../../../../hooks/useView';
-import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions.js';
 import { view } from '../../../../store/constant';
-import PermissionModal from '../../../FloatingMenu/UploadFile/index.js';
-import useStyles from '../../../../utils/classes';
-import { initEpisodeData, userAvatar } from '../../../../store/constants/initial.js';
+import useView from '../../../../hooks/useView';
+import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
+import Alert from '../../../../component/Alert';
 import useMedia from '../../../../hooks/useMedia';
+import { initPlaylistData, userAvatar } from '../../../../store/constants/initial';
+import PermissionModal from '../../../../views/FloatingMenu/UploadFile/index.js';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import useStyles from './../../../../utils/classes';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -61,19 +62,17 @@ function a11yProps(index) {
   };
 }
 
-const EpisodeModal = () => {
+const PlaylistModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const { form_buttons: formButtons } = useView();
-  const { episodeDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { playlistDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const saveButton = formButtons.find((button) => button.name === view.episode.detail.save);
-  const { createEpisode, updateEpisode } = useMedia();
-
+  const saveButton = formButtons.find((button) => button.name === view.playlist.detail.save);
+  const { createPlaylist, updatePlaylist, getAllPodcast } = useMedia();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
-  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -81,11 +80,12 @@ const EpisodeModal = () => {
     text: '',
   });
 
-  const [episodeData, setEpisodeData] = useState(initEpisodeData);
+  const [playlistData, setplaylistData] = useState(initPlaylistData);
+  const [podcastList, setPodcastList] = useState([]);
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: FLOATING_MENU_CHANGE, podcastDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: false });
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -101,49 +101,63 @@ const EpisodeModal = () => {
   };
 
   const setDocumentToDefault = async () => {
-    setEpisodeData(initEpisodeData);
+    setplaylistData(initPlaylistData);
     setTabIndex(0);
   };
   const setURL = (image) => {
-    setEpisodeData({ ...episodeData, image_url: image });
+    setplaylistData({ ...playlistData, image_url: image });
   };
 
   const handleOpenDiaLog = () => {
     setOpenDiaLogUploadImage(true);
   };
+
   const handleCloseDiaLog = () => {
     setOpenDiaLogUploadImage(false);
   };
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setEpisodeData({ ...episodeData, [name]: value });
+    setplaylistData({ ...playlistData, [name]: value });
   };
 
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updateEpisode(episodeData);
-        handleOpenSnackbar(true, 'success', 'Cập nhật Episode thành công!');
+        await updatePlaylist(playlistData);
+        handleOpenSnackbar(true, 'success', 'Cập nhật Playlist thành công!');
       } else {
-        await createEpisode(episodeData);
-        handleOpenSnackbar(true, 'success', 'Tạo mới Episode thành công!');
+        await createPlaylist(playlistData);
+        handleOpenSnackbar(true, 'success', 'Tạo mới Playlist thành công!');
       }
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'episode' });
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'playlist' });
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
 
+  const handleChangePodcast = (e) => {
+    const { target: { value } } = e;
+    setplaylistData({ ...playlistData, podcast_id_list: value });
+  };
+
   useEffect(() => {
     if (!selectedDocument) return;
-    setEpisodeData({
-      ...initEpisodeData,
+    setplaylistData({
+      ...playlistData,
       ...selectedDocument,
       image_url: selectedDocument?.image_url || userAvatar,
     });
   }, [selectedDocument]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAllPodcast();
+      setPodcastList(res);
+    };
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
@@ -164,6 +178,7 @@ const EpisodeModal = () => {
         </Snackbar>
       )}
       <PermissionModal open={openDialogUploadImage || false} onSuccess={setURL} onClose={handleCloseDiaLog} />
+
       <Grid container>
         <Dialog
           open={openDialog || false}
@@ -223,9 +238,9 @@ const EpisodeModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={episodeData.image_url} alt="" />
+                          <img src={playlistData.image_url} alt="" />
                           <div>
-                            <div>Upload/Change Episode's Profile Image</div>
+                            <div>Upload/Change Playlist Image</div>
                             <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
                           </div>
                         </div>
@@ -241,7 +256,7 @@ const EpisodeModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="image_url"
-                                value={episodeData.image_url}
+                                value={playlistData.image_url}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -249,21 +264,11 @@ const EpisodeModal = () => {
                           </Grid>
                         </div>
                       </div>
-                      {/* <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
-                            <span>Chi tiết Episode</span>
-                          </div>
-                        </div>
-                      </div> */}
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={12}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <AccountCircleOutlinedIcon />
-                            <span>Thông tin Episode</span>
+                            <span>Chi tiết Podcast</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
@@ -278,7 +283,7 @@ const EpisodeModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="title"
-                                value={episodeData.title}
+                                value={playlistData.title}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -296,78 +301,44 @@ const EpisodeModal = () => {
                                 rowsMax={3}
                                 variant="outlined"
                                 name="description"
-                                value={episodeData.description}
+                                value={playlistData.description}
                                 className={classes.multilineInputField}
                                 onChange={handleChanges}
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tập số:</span>
+                        </div>
+                      </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <AccountCircleOutlinedIcon />
+                            <span>Podcast</span>
+                          </div>
+                        </div>
+
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Podcast:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="episode_number"
-                                number
-                                value={episodeData.episode_number}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Thời lượng:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="duration"
-                                number
-                                value={episodeData.duration}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Source File:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="source_file_url"
-                                number
-                                value={episodeData.source_file_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Dành cho member:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={episodeData.is_for_member}
-                                onChange={() => setEpisodeData({ ...episodeData, is_for_member: !episodeData.is_for_member })}
-                                name="is_for_member"
-                                color="primary"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                              />
+                            <Grid item lg={8} md={8} xs={12}>
+                              <Select
+                                labelId="demo-multiple-name-label"
+                                id="demo-multiple-name"
+                                multiple
+                                className={classes.multpleSelectField}
+                                value={playlistData?.podcast_id_list}
+                                onChange={handleChangePodcast}
+                              >
+                                {podcastList?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.title}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </Grid>
                           </Grid>
                         </div>
@@ -415,4 +386,4 @@ const EpisodeModal = () => {
   );
 };
 
-export default EpisodeModal;
+export default PlaylistModal;

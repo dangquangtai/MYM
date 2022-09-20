@@ -10,6 +10,7 @@ export const initialState = {
   batchDocument: false,
   podcastDocument: false,
   episodeDocument: false,
+  playlistDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -26,6 +27,7 @@ const floatingMenuReducer = (state = initialState, action) => {
         batchDocument: action.batchDocument,
         podcastDocument: action.podcastDocument,
         episodeDocument: action.episodeDocument,
+        playlistDocument: action.playlistDocument,
       };
     default:
       return state;

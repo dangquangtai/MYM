@@ -37,12 +37,11 @@ import { view } from '../../../../store/constant';
 import PermissionModal from '../../../FloatingMenu/UploadFile/index.js';
 import useStyles from './../../../../utils/classes';
 import { initPodcastData, userAvatar } from '../../../../store/constants/initial.js';
-import usePodcast from './../../../../hooks/usePodcast';
+import useMedia from './../../../../hooks/useMedia';
 import useMentor from './../../../../hooks/useMentor';
 import { withStyles } from '@material-ui/core/styles';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EpisodeModal from './../EpisodeModal/index';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -95,7 +94,7 @@ const PodcastModal = () => {
   const { podcastDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const saveButton = formButtons.find((button) => button.name === view.podcast.detail.save);
-  const { createPodcast, updatePodcast, getCounselingCategories, getAllEpisode } = usePodcast();
+  const { createPodcast, updatePodcast, getCounselingCategories, getAllEpisode } = useMedia();
   const { getMentorbyCategory } = useMentor();
   const [categories, setCategories] = useState([]);
   const [mentorList, setMentorList] = useState([]);

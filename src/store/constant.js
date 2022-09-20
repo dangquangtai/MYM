@@ -47,9 +47,11 @@ export const apiEndpoints = {
   get_department_detail: '/Primary/?FlowAlias=hnn_api_booking_department_get_detail_department_by_name&action=api',
 
   //Podcast
-  get_all_active_playlist: '/Primary/?FlowAlias=&action=api',
+  get_all_active_playlist: '/Primary/?FlowAlias=bs_media_api_get_list_playlist_active&action=api',
   get_all_inactive_playlist: '/Primary/?FlowAlias=&action=api',
-  get_playlist_detail: '/Primary/?FlowAlias=&action=api',
+  get_playlist_detail: '/Primary/?FlowAlias=bs_media_api_get_playlist_detail_by_id&action=api',
+  create_playlist: '/Primary/?FlowAlias=bs_media_api_create_new_playlist&action=api',
+  update_playlist: '/Primary/?FlowAlias=bs_media_api_update_playlist&action=api',
 
   get_all_active_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_active&action=api',
   get_all_inactive_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_inactive&action=api',

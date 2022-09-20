@@ -45,7 +45,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 import { format as formatDate } from 'date-fns';
 import useBatch from './../../hooks/useBatch';
-import usePodcast from './../../hooks/usePodcast';
+import useMedia from './../../hooks/useMedia';
 
 export default function GeneralTable(props) {
   const classes = useStyles();
@@ -61,6 +61,7 @@ export default function GeneralTable(props) {
     const initOptions = {
       id: tableColumns.includes('booking_id'),
       title: tableColumns.includes('title'),
+      description: tableColumns.includes('description'),
       fullname: tableColumns.includes('fullname'),
       department_name: tableColumns.includes('department_name'),
       department_parent: tableColumns.includes('department_parent'),
@@ -113,6 +114,7 @@ export default function GeneralTable(props) {
   const buttonAddAccount = menuButtons.find((button) => button.name === view.role.list.addnew);
   const buttonCreatePodcast = menuButtons.find((button) => button.name === view.podcast.list.create);
   const buttonCreateEpisode = menuButtons.find((button) => button.name === view.episode.list.create);
+  const buttonCreatePlaylist = menuButtons.find((button) => button.name === view.playlist.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -175,7 +177,7 @@ export default function GeneralTable(props) {
 
   const { activeBatch, activeCode, downloadBatch } = useBatch();
 
-  const { getPodcastDetail, getEpisodeDetail } = usePodcast();
+  const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -297,6 +299,10 @@ export default function GeneralTable(props) {
       detailDocument = await getEpisodeDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, episodeDocument: true });
+    } else if (documentType === 'playlist') {
+      detailDocument = await getPlaylistDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
     }
   };
 
@@ -518,6 +524,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, episodeDocument: true });
   };
 
+  const handleClickCreatePlaylist = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
+  };
+
   const handleDownload = (url) => {
     var link = document.createElement('a');
     link.download = 'Code.xlsx';
@@ -583,6 +594,8 @@ export default function GeneralTable(props) {
                 createPodcast={handleClickCreatePodcast}
                 buttonCreateEpisode={buttonCreateEpisode}
                 createEpisode={handleClickCreateEpisode}
+                buttonCreatePlaylist={buttonCreatePlaylist}
+                createPlaylist={handleClickCreatePlaylist}
               />
               <TableContainer>
                 <Table
@@ -743,6 +756,7 @@ export default function GeneralTable(props) {
                               </div>
                             </TableCell>
                           )}
+                          {displayOptions.description && <TableCell align="left">{row.description || ''} </TableCell>}
                           {displayOptions.batch_number && <TableCell align="left">{row.batch_number || ''}</TableCell>}
                           {displayOptions.university_name && (
                             <TableCell align="left">{row.university_name || ''}</TableCell>

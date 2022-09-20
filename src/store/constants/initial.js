@@ -56,6 +56,13 @@ export const initEpisodeData = {
   source_file_url: "",
 }
 
+export const initPlaylistData = {
+  title: "",
+  description: "",
+  image_url: "",
+  podcast_id_list: [],
+} 
+
 export const genderList = [
   'Nam',
   'Nữ'

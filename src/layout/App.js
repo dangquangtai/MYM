@@ -25,7 +25,7 @@ import { DepartmentProvider } from '../contexts/DepartmentContext';
 import { RoleProvider } from '../contexts/RoleContext';
 import { BatchProvider } from './../contexts/BatchContext';
 import { ChartProvider } from './../contexts/ChartContext';
-import { PodcastProvider } from './../contexts/PodcastContext';
+import { MediaProvider } from './../contexts/MediaContext';
 
 function loadLocaleData(locale) {
   switch (locale) {
@@ -75,10 +75,10 @@ const App = () => {
                                       <BatchProvider>
                                         <ChartProvider>
                                           <RoleProvider>
-                                            <PodcastProvider>
+                                            <MediaProvider>
                                               <Routes />
                                               <Snackbar />
-                                            </PodcastProvider>
+                                            </MediaProvider>
                                           </RoleProvider>
                                         </ChartProvider>
                                       </BatchProvider>

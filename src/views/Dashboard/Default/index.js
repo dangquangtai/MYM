@@ -5,11 +5,12 @@ import AccountWrapper from '../../Account';
 import DepartmentWrapper from '../../Department';
 import RoleWrapper from '../../Role';
 import { Grid } from '@material-ui/core';
-import { gridSpacing, accountActions, departmentActions, roleActions, podcastActions, episodeActions } from './../../../store/constant';
+import { gridSpacing, accountActions, departmentActions, roleActions, podcastActions, episodeActions, playlistActions } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
 import PodcastWrapper from './../../Podcast/Podcast';
 import EpisodeWrapper from './../../Podcast/Episode/index';
+import PlaylistWrapper from './../../Podcast/Playlist/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -21,6 +22,7 @@ const Default = () => {
 
   const availableRoleEndpoint = Object.values(roleActions);
 
+  const avaiablePlaylistEndpoint = Object.values(playlistActions);
   const availablePodcastEndpoint = Object.values(podcastActions);
   const availableEpisodeEndpoint = Object.values(episodeActions);
 
@@ -45,6 +47,7 @@ const Default = () => {
           {availableRoleEndpoint.includes(selectedFolder?.action) && <RoleWrapper />}
           {availablePodcastEndpoint.includes(selectedFolder?.action) && <PodcastWrapper />}
           {availableEpisodeEndpoint.includes(selectedFolder?.action) && <EpisodeWrapper />}
+          {avaiablePlaylistEndpoint.includes(selectedFolder?.action) && <PlaylistWrapper />}
         </Grid>
       )}
     </Grid>

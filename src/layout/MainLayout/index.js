@@ -27,6 +27,7 @@ import FormModal from '../../views/Role/Form';
 import BatchModal from './../../views/Batch/New/index';
 import PodcastModal from '../../views/Podcast/Podcast/Detail/index.js';
 import EpisodeModal from '../../views/Podcast/Episode/Detail';
+import PlaylistModal from '../../views/Podcast/Playlist/Detail/index.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,6 +101,8 @@ const MainLayout = ({ children }) => {
         return <PodcastModal />;
       case 'episode':
         return <EpisodeModal />;
+      case 'playlist':
+        return <PlaylistModal />;
 
     }
   }
