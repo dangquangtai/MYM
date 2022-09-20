@@ -12,6 +12,7 @@ export const headCells = [
   { id: 'image_url', numeric: false, disablePadding: false, label: 'Ảnh', maxWidth: 50 },
   { id: 'full_name', numeric: false, disablePadding: false, label: 'Tên', maxWidth: 150 },
   { id: 'email_address', numeric: false, disablePadding: false, label: 'Email', maxWidth: 100 },
+  { id: 'description', numeric: false, disablePadding: false, label: 'Mô tả', maxWidth: 100 },
   { id: 'number_phone', numeric: false, disablePadding: false, label: 'SĐT', maxWidth: 100 },
   { id: 'schedule', numeric: false, disablePadding: false, label: 'Lịch tư vấn', maxWidth: 100 },
   { id: 'career', numeric: false, disablePadding: false, label: 'Ngành', maxWidth: 100 },

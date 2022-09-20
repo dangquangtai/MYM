@@ -95,6 +95,7 @@ export const JWTProvider = ({ children }) => {
       password,
       outputtype: 'RawJson',
       guest: 'true',
+      company_code: comanyCode,
     });
     const loginResult = response.data;
     const { data: user } = loginResult;

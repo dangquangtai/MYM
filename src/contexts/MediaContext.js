@@ -3,11 +3,12 @@ import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import useView from '../hooks/useView';
 
-const PodcastContext = createContext({});
+const MediaContext = createContext({});
 
-export const PodcastProvider = ({ children }) => {
+export const MediaProvider = ({ children }) => {
   const { setView } = useView();
 
+  //Podcast
   const getPodcastDetail = async (id) => {
     return axiosInstance
       .post(apiEndpoints.get_podcast_detail, {
@@ -37,6 +38,23 @@ export const PodcastProvider = ({ children }) => {
     });
   };
 
+  const getAllPodcast = async () => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_active_podcast, {
+        outputtype: 'RawJson',
+        page: 1,
+        no_item_per_page: 100,
+        search_text: '',
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
+
+  //Episode
   const getEpisodeDetail = async (id) => {
     return axiosInstance
       .post(apiEndpoints.get_episode_detail, {
@@ -67,11 +85,43 @@ export const PodcastProvider = ({ children }) => {
   };
 
   const getAllEpisode = async (data) => {
-    return axiosInstance.post(apiEndpoints.get_all_active_episode, { outputtype: 'RawJson', ...data }).then((response) => {
-      if (response.status === 200 && response.data.return === 200) {
-        const { list } = response.data;
-        return list;
-      } else return {};
+    return axiosInstance
+      .post(apiEndpoints.get_all_active_episode, { outputtype: 'RawJson', ...data })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return {};
+      });
+  };
+
+  //Playlist
+  const getPlaylistDetail = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_playlist_detail, {
+        outputtype: 'RawJson',
+        playlist_id: id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return news;
+        } else return {};
+      });
+  };
+
+  const createPlaylist = async (data) => {
+    return axiosInstance.post(apiEndpoints.create_playlist, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
+  const updatePlaylist = async (data) => {
+    return axiosInstance.post(apiEndpoints.update_playlist, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
     });
   };
 
@@ -85,21 +135,25 @@ export const PodcastProvider = ({ children }) => {
   };
 
   return (
-    <PodcastContext.Provider
+    <MediaContext.Provider
       value={{
         getPodcastDetail,
         createPodcast,
         updatePodcast,
+        getAllPodcast,
         getCounselingCategories,
         getEpisodeDetail,
         createEpisode,
         updateEpisode,
-        getAllEpisode
+        getAllEpisode,
+        getPlaylistDetail,
+        createPlaylist,
+        updatePlaylist,
       }}
     >
       {children}
-    </PodcastContext.Provider>
+    </MediaContext.Provider>
   );
 };
 
-export default PodcastContext;
+export default MediaContext;

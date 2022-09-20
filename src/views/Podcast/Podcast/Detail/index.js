@@ -37,12 +37,11 @@ import { view } from '../../../../store/constant';
 import PermissionModal from '../../../FloatingMenu/UploadFile/index.js';
 import useStyles from './../../../../utils/classes';
 import { initPodcastData, userAvatar } from '../../../../store/constants/initial.js';
-import usePodcast from './../../../../hooks/usePodcast';
+import useMedia from './../../../../hooks/useMedia';
 import useMentor from './../../../../hooks/useMentor';
 import { withStyles } from '@material-ui/core/styles';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EpisodeModal from './../EpisodeModal/index';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -95,7 +94,7 @@ const PodcastModal = () => {
   const { podcastDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const saveButton = formButtons.find((button) => button.name === view.podcast.detail.save);
-  const { createPodcast, updatePodcast, getCounselingCategories, getAllEpisode } = usePodcast();
+  const { createPodcast, updatePodcast, getCounselingCategories, getAllEpisode } = useMedia();
   const { getMentorbyCategory } = useMentor();
   const [categories, setCategories] = useState([]);
   const [mentorList, setMentorList] = useState([]);
@@ -106,7 +105,10 @@ const PodcastModal = () => {
 
   const [tabIndex, setTabIndex] = React.useState(0);
   const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [dialogUpload, setDialogUpload] = useState({
+    open: false,
+    type: '',
+  });
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -139,14 +141,27 @@ const PodcastModal = () => {
     setTabIndex(0);
   };
   const setURL = (image) => {
-    setPodcastData({ ...podcastData, image_url: image });
+    if (dialogUpload.type === 'image') {
+      setPodcastData({ ...podcastData, image_url: image });
+    }
+    if (dialogUpload.type === 'banner') {
+      setPodcastData({ ...podcastData, banner_url: image });
+    }
   };
 
-  const handleOpenDiaLog = () => {
+  const handleOpenDiaLog = (type) => {
     setOpenDiaLogUploadImage(true);
+    setDialogUpload({
+      open: true,
+      type: type,
+    });
   };
   const handleCloseDiaLog = () => {
     setOpenDiaLogUploadImage(false);
+    setDialogUpload({
+      open: false,
+      type: '',
+    });
   };
 
   const handleChanges = (e) => {
@@ -195,6 +210,7 @@ const PodcastModal = () => {
       ...podcastData,
       ...selectedDocument,
       image_url: selectedDocument?.image_url || userAvatar,
+      banner_url: selectedDocument?.banner_url || userAvatar,
     });
     setSelectedEpisodes(selectedDocument?.list_episode?.map((episode) => episode.id));
   }, [selectedDocument]);
@@ -219,6 +235,10 @@ const PodcastModal = () => {
 
   useEffect(() => {
     setEpisodes(Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id)));
+    const episodes = selectedEpisodes.length;
+    const listEpisode = Object.values(initEpisodes)?.filter((item) => selectedEpisodes?.includes(item.id));
+    const duration = listEpisode.reduce((acc, cur) => acc + cur.duration, 0);
+    setPodcastData({ ...podcastData, duration: duration, episodes: episodes });
   }, [selectedEpisodes]);
 
   useEffect(() => {
@@ -247,12 +267,7 @@ const PodcastModal = () => {
           </Alert>
         </Snackbar>
       )}
-      <PermissionModal open={openDialogUploadImage || false} onSuccess={setURL} onClose={handleCloseDiaLog} />
-      <EpisodeModal
-        isOpen={isOpenModal}
-        handleClose={() => setIsOpenModal(false)}
-        list_episode={podcastData?.list_episode}
-      />
+      <PermissionModal open={dialogUpload.open || false} onSuccess={setURL} onClose={handleCloseDiaLog} />
       <Grid container>
         <Dialog
           open={openDialog || false}
@@ -314,8 +329,8 @@ const PodcastModal = () => {
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
                           <img src={podcastData.image_url} alt="" />
                           <div>
-                            <div>Upload/Change Mentor's Profile Image</div>
-                            <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
+                            <div>Upload/Change Podcast Image</div>
+                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
@@ -336,6 +351,22 @@ const PodcastModal = () => {
                               />
                             </Grid>
                           </Grid>
+                        </div>
+                      </div>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <span>Banner</span>
+                          </div>
+                        </div>
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                          <img className={classes.bannerImage} src={podcastData.banner_url} alt="" />
+                          <div>
+                            <div>Upload/Change Banner Image</div>
+                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Banner:</span>
@@ -428,6 +459,7 @@ const PodcastModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
+                                disabled
                                 fullWidth
                                 rows={1}
                                 rowsMax={1}
@@ -446,6 +478,7 @@ const PodcastModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
+                                disabled
                                 fullWidth
                                 rows={1}
                                 rowsMax={1}
