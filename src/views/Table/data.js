@@ -1,5 +1,6 @@
 export const headCells = [
   { id: 'id', numeric: false, disablePadding: false, label: 'Mã đăng ký', maxWidth: 150 },
+  { id: 'image_url', numeric: false, disablePadding: false, label: 'Ảnh', maxWidth: 50 },
   { id: 'title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
   { id: 'department_name', numeric: false, disablePadding: false, label: 'Tên phòng ban', maxWidth: 150 },
   { id: 'department_parent', numeric: false, disablePadding: false, label: 'Trực thuộc phòng ban', maxWidth: 150 },
@@ -9,7 +10,6 @@ export const headCells = [
   { id: 'batch_number', numeric: false, disablePadding: false, label: 'Mã lô', maxWidth: 100 },
   { id: 'university_name', numeric: false, disablePadding: false, label: 'Trường', maxWidth: 100 },
   { id: 'account_id', numeric: false, disablePadding: false, label: 'ID', maxWidth: 50 },
-  { id: 'image_url', numeric: false, disablePadding: false, label: 'Ảnh', maxWidth: 50 },
   { id: 'full_name', numeric: false, disablePadding: false, label: 'Tên', maxWidth: 150 },
   { id: 'email_address', numeric: false, disablePadding: false, label: 'Email', maxWidth: 100 },
   { id: 'description', numeric: false, disablePadding: false, label: 'Mô tả', maxWidth: 100 },
@@ -34,6 +34,10 @@ export const headCells = [
   { id: 'approval_role', numeric: false, disablePadding: false, label: 'Vai trò phê duyệt', maxWidth: 100 },
   { id: 'visible_for_selection', numeric: false, disablePadding: false, label: 'Hiển thị trong danh sách chọn', maxWidth: 150 },
   { id: 'active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 100 },
+  { id: 'episodes', numeric: false, disablePadding: false, label: 'Số tập', maxWidth: 100 },
+  { id: 'duration', numeric: false, disablePadding: false, label: 'Thời gian', maxWidth: 100 },
+  { id: 'created_by', numeric: false, disablePadding: false, label: 'Người tạo', maxWidth: 100 },
+  { id: 'created_date', numeric: false, disablePadding: false, label: 'Ngày tạo', maxWidth: 100 },
   { id: 'menuButtons', numeric: false, disablePadding: false, label: '', maxWidth: 150 },
 ];
 

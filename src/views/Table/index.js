@@ -60,6 +60,7 @@ export default function GeneralTable(props) {
   useEffect(() => {
     const initOptions = {
       id: tableColumns.includes('booking_id'),
+      image_url: tableColumns.includes('image_url'),
       title: tableColumns.includes('title'),
       description: tableColumns.includes('description'),
       fullname: tableColumns.includes('fullname'),
@@ -89,7 +90,6 @@ export default function GeneralTable(props) {
       uncomplete: tableColumns.includes('uncomplete'),
       note: tableColumns.includes('note'),
       account_id: tableColumns.includes('account_id'),
-      image_url: tableColumns.includes('image_url'),
       full_name: tableColumns.includes('full_name'),
       code_id: tableColumns.includes('code_id'),
       batch_number: tableColumns.includes('batch_number'),
@@ -97,6 +97,10 @@ export default function GeneralTable(props) {
       used_date: tableColumns.includes('used_date'),
       expiration_date: tableColumns.includes('expiration_date'),
       count: tableColumns.includes('count'),
+      duration: tableColumns.includes('duration'),
+      episodes: tableColumns.includes('episodes'),
+      created_date: tableColumns.includes('created_date'),
+      created_by: tableColumns.includes('created_by'),
       menuButtons: !!menuButtons.length || false,
     };
     setDisplayOptions(initOptions);
@@ -208,7 +212,7 @@ export default function GeneralTable(props) {
 
   const fetchDocument = (additionalQuery) => {
     const queries = { ...defaultQueries, ...additionalQuery };
-    getDocuments(url, documentType, selectedProject.id, selectedFolder.id, queries);
+    getDocuments(url, documentType, selectedProject?.id, selectedFolder?.id, queries);
   };
 
   const handleRequestSort = (event, property) => {
@@ -644,6 +648,19 @@ export default function GeneralTable(props) {
                               </div>
                             </TableCell>
                           )}
+                          {displayOptions.image_url && (
+                            <TableCell align="left">
+                              <>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
+                                  <img alt="" src={row.image_url} style={style.tableUserAvatar} />
+                                </span>
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
                           {displayOptions.title && (
                             <TableCell align="left">
                               <>
@@ -678,19 +695,6 @@ export default function GeneralTable(props) {
                                   onClick={(event) => openDetailDocument(event, row)}
                                 >
                                   {row.account_id}
-                                </span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.image_url && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  <img alt="" src={row.image_url} style={style.tableUserAvatar} />
                                 </span>
                                 &nbsp;&nbsp;
                               </>
@@ -857,7 +861,14 @@ export default function GeneralTable(props) {
                               )}
                             </TableCell>
                           )}
-
+                          {displayOptions.episodes && <TableCell align="left">{row.episodes || ''}</TableCell>}
+                          {displayOptions.duration && <TableCell align="left">{row.duration || ''}</TableCell>}
+                          {displayOptions.created_by && <TableCell align="left">{row.created_by || ''}</TableCell>}
+                          {displayOptions.created_date && (
+                            <TableCell align="left">
+                              {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
+                            </TableCell>
+                          )}
                           {displayOptions.active && (
                             <TableCell align="left">
                               <>

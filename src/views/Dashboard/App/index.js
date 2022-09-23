@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, CardContent, Typography, makeStyles, Grid, List, ListItem, ListItemText } from '@material-ui/core';
+import { makeStyles, Grid, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import useProject from './../../../hooks/useProject';
-import { APP_CHANGE, SELECTED_APP_CHANGE } from './../../../store/actions';
+import { SELECTED_APP_CHANGE } from './../../../store/actions';
+import { gridSpacing } from './../../../store/constant';
+import AppCard from './Card/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.common.black,
-    // height: '100vh',
+    height: '100vh',
     minHeight: '100%',
   },
   backButton: {
@@ -64,43 +66,25 @@ const App = () => {
   };
 
   return (
-    <Grid container justify="center" alignItems="center" className={classes.root}>
-      <Grid item xs={11} sm={7} md={6} lg={4}>
-        <Card className={classes.card}>
-          <CardContent className={classes.content}>
-            <Grid container direction="column" spacing={4} justify="center">
-              <Grid item xs={12}>
-                <Grid container justify="space-between">
-                  <Grid item>
-                    <Typography color="textPrimary" gutterBottom variant="h2">
-                      Chọn APP
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Chọn APP để vào hệ thống
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <RouterLink to="/" className={classes.icon}></RouterLink>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <List>
-                  {apps.map((app) => (
-                    <RouterLink className={classes.link} key={app.app_code} to="/dashboard/default" onClick={() => handleAppClick(app.id)}>
-                      <ListItem button>
-                        {/* <ListItemIcon>
-                          <InboxIcon />
-                        </ListItemIcon> */}
-                        <ListItemText primary={app.app_name} />
-                      </ListItem>
-                    </RouterLink>
-                  ))}
-                </List>
-              </Grid>
+    <Grid container justify="center" alignItems="center">
+      <Grid item xs={12} sm={12} md={12} lg={12}>
+        <Typography variant="h2" className={classes.margin}>
+          Apps
+        </Typography>
+        <Grid container spacing={gridSpacing} justify="center" alignItems="center">
+          {apps.map((app) => (
+            <Grid key={app.app_code} item lg={3} sm={6} xs={12}>
+              <RouterLink className={classes.link} to="/dashboard/default" onClick={() => handleAppClick(app.id)}>
+                <AppCard
+                  title={app.app_name}
+                  // description={app.app_description}
+                  image={app.icon}
+                  color={app.color}
+                />
+              </RouterLink>
             </Grid>
-          </CardContent>
-        </Card>
+          ))}
+        </Grid>
       </Grid>
     </Grid>
   );

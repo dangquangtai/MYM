@@ -503,7 +503,14 @@ const useStyles = makeStyles((theme) => ({
       color: '#FFF',
       background: '#3266FE',
     }
-  }
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
 }));
 
 

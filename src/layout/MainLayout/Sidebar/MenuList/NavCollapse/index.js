@@ -87,6 +87,8 @@ const NavCollapse = (props) => {
   });
   const menuIcon = (
     <CustomIcon
+      type={menu?.icon_type}
+      svg={menu?.svg}
       name={menu?.icon || ''}
       className={classes.listCustomIcon}
       color="inherit"

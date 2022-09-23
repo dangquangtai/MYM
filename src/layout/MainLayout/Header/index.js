@@ -1,12 +1,14 @@
 import React from 'react';
-import { Box, Grid, makeStyles, IconButton, Hidden } from '@material-ui/core';
+import { Box, Grid, makeStyles, Hidden } from '@material-ui/core';
 
-import MenuTwoToneIcon from '@material-ui/icons/MenuTwoTone';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
 import CompanySelectionSection from './CompanySelectionSection';
 import { drawerWidth, gridSpacing } from './../../../store/constant';
 import logo from '../../../assets/svgs/logo.png';
+import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { FOLDER_CHANGE, SELECTED_APP_CHANGE } from './../../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -37,8 +39,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
-  const { drawerToggle } = props;
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const handleLogoClick = () => {
+    dispatch({
+      type: SELECTED_APP_CHANGE,
+      app: "",
+    });
+    dispatch({
+      type: FOLDER_CHANGE,
+      folder: [],
+    });
+  }
 
   return (
     <React.Fragment>
@@ -49,7 +62,9 @@ const Header = (props) => {
               <Hidden smDown>
                 <Grid item>
                   <Box mt={0.5}>
-                    <img src={logo} alt="Logo" className={classes.logoSize} />
+                    <RouterLink to="/dashboard/app" onClick={handleLogoClick}>
+                      <img src={logo} alt="Logo" className={classes.logoSize} />
+                    </RouterLink>
                   </Box>
                 </Grid>
               </Hidden>

@@ -43,6 +43,7 @@ export const initPodcastData = {
   mentor_id: "",
   banner_url: "",
   list_episode_id: [],
+  is_for_member: false,
 }
 
 export const initEpisodeData = {
@@ -50,7 +51,6 @@ export const initEpisodeData = {
   title: "",
   image_url: "",
   description: "",
-  is_for_member: false,
   duration: 0,
   episode_number: 0,
   source_file_url: "",

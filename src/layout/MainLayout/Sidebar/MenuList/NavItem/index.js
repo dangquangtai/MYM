@@ -2,15 +2,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Avatar,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@material-ui/core';
+import { Avatar, ListItem, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import { pageUrls } from '../../../../../store/constant';
 
 import CustomIcon from '../CustomIcon/index';
@@ -52,6 +44,8 @@ const NavItem = (props) => {
 
   const itemIcon = (
     <CustomIcon
+      type={item?.type}
+      svg={item?.svg}
       name={item?.icon || ''}
       className={classes.listCustomIcon}
       color="inherit"
@@ -104,12 +98,7 @@ const NavItem = (props) => {
           }
           secondary={
             item.caption && (
-              <Typography
-                variant="caption"
-                className={classes.subMenuCaption}
-                display="block"
-                gutterBottom
-              >
+              <Typography variant="caption" className={classes.subMenuCaption} display="block" gutterBottom>
                 {item.caption}
               </Typography>
             )

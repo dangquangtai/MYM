@@ -11,9 +11,9 @@ const ProjectContext = createContext({
 export const ProjectProvider = ({ children }) => {
   const dispatch = useDispatch();
 
-  function getProjects(app_id) {
+  function getProjects(id) {
     axiosInstance
-      .post(apiEndpoints.get_project_list, { outputtype: 'RawJson', app_id: app_id })
+      .post(apiEndpoints.get_project_list, { outputtype: 'RawJson', app_id: id })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data: projects } = response.data;

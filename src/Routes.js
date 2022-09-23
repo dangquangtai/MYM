@@ -8,6 +8,7 @@ import MainLayout from './layout/MainLayout';
 import GuestGuard from './component/Auth/GuestGuard';
 import AuthGuard from './component/Auth/AuthGuard';
 import MinimalLayout from './layout/MinimalLayout';
+import AppLayout from './layout/AppLayout/index';
 
 const AuthLogin = lazy(() => import('./views/Login'));
 const App = lazy(() => import('./views/Dashboard/App/index.js'));
@@ -39,13 +40,24 @@ const Routes = () => {
                     <Route path="/login" component={AuthLogin} />
                     <Route path="/dashboard/app" component={App} />
                     <Route path="/dashboard/default" component={DashboardDefault} />
-                    {/* <Route path="/documents" component={DetailDocument} /> */}
                   </GuestGuard>
                 </NavMotion>
               </Switch>
             </MinimalLayout>
           </Route>
-          <Route path={['/dashboard/app', '/dashboard/default', '/users/logout']}>
+          <Route path={['/dashboard/app']}>
+            <AppLayout>
+              <Switch location={location} key={location.pathname}>
+                <NavMotion>
+                  <AuthGuard>
+                    <Route path="/dashboard/app" component={App} />
+                    <Route path="/dashboard/default" component={DashboardDefault} />
+                  </AuthGuard>
+                </NavMotion>
+              </Switch>
+            </AppLayout>
+          </Route>
+          <Route path={['/dashboard/default', '/users/logout']}>
             <MainLayout>
               <Switch location={location} key={location.pathname}>
                 <NavMotion>

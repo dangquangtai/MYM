@@ -15,9 +15,9 @@ import {
   Typography,
   TextField,
   MenuItem,
-  Select
+  Select,
+  Chip,
 } from '@material-ui/core';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { view } from '../../../../store/constant';
@@ -27,7 +27,7 @@ import Alert from '../../../../component/Alert';
 import useMedia from '../../../../hooks/useMedia';
 import { initPlaylistData, userAvatar } from '../../../../store/constants/initial';
 import PermissionModal from '../../../../views/FloatingMenu/UploadFile/index.js';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import { QueueMusic, History, DescriptionOutlined as DescriptionOutlinedIcon, RadioOutlined as RadioOutlinedIcon, ImageOutlined as ImageIcon } from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -138,7 +138,9 @@ const PlaylistModal = () => {
   };
 
   const handleChangePodcast = (e) => {
-    const { target: { value } } = e;
+    const {
+      target: { value },
+    } = e;
     setplaylistData({ ...playlistData, podcast_id_list: value });
   };
 
@@ -189,7 +191,7 @@ const PlaylistModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Chi tiết Podcast
+              Playlist
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -207,7 +209,7 @@ const PlaylistModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <AccountCircleOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
+                        <DescriptionOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
                         Nội dung
                       </Typography>
                     }
@@ -218,7 +220,7 @@ const PlaylistModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <DescriptionOutlinedIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
+                        <History className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
                         Lịch sử thay đổi
                       </Typography>
                     }
@@ -234,6 +236,7 @@ const PlaylistModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
+                            <ImageIcon />
                             <span>Hình ảnh</span>
                           </div>
                         </div>
@@ -264,11 +267,13 @@ const PlaylistModal = () => {
                           </Grid>
                         </div>
                       </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={12}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
-                            <span>Chi tiết Podcast</span>
+                            <QueueMusic />
+                            <span>Chi tiết Playlist</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
@@ -289,7 +294,7 @@ const PlaylistModal = () => {
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                          <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Mô tả:</span>
                             </Grid>
@@ -297,8 +302,8 @@ const PlaylistModal = () => {
                               <TextField
                                 fullWidth
                                 multiline
-                                rows={3}
-                                rowsMax={3}
+                                rows={4}
+                                rowsMax={4}
                                 variant="outlined"
                                 name="description"
                                 value={playlistData.description}
@@ -309,22 +314,19 @@ const PlaylistModal = () => {
                           </Grid>
                         </div>
                       </div>
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={12}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
-                            <span>Podcast</span>
+                            <RadioOutlinedIcon />
+                            <span>Danh sách Podcast</span>
                           </div>
                         </div>
-
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={12}>
+                            <Grid item lg={2} md={2} xs={12}>
                               <span className={classes.tabItemLabelField}>Podcast:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
+                            <Grid item lg={10} md={10} xs={12}>
                               <Select
                                 labelId="demo-multiple-name-label"
                                 id="demo-multiple-name"
@@ -332,6 +334,17 @@ const PlaylistModal = () => {
                                 className={classes.multpleSelectField}
                                 value={playlistData?.podcast_id_list}
                                 onChange={handleChangePodcast}
+                                renderValue={(selected) => (
+                                  <div className={classes.chips}>
+                                    {selected.map((value) => (
+                                      <Chip
+                                        key={value}
+                                        label={podcastList?.find((i) => i.id === value)?.title}
+                                        className={classes.chip}
+                                      />
+                                    ))}
+                                  </div>
+                                )}
                               >
                                 {podcastList?.map((item) => (
                                   <MenuItem key={item.id} value={item.id}>

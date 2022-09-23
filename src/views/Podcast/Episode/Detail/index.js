@@ -14,8 +14,6 @@ import {
   Typography,
   TextField,
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Alert from '../../../../component/Alert';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -27,7 +25,12 @@ import PermissionModal from '../../../FloatingMenu/UploadFile/index.js';
 import useStyles from '../../../../utils/classes';
 import { initEpisodeData, userAvatar } from '../../../../store/constants/initial.js';
 import useMedia from '../../../../hooks/useMedia';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import {
+  History as HistoryIcon,
+  DescriptionOutlined as DescriptionOutlinedIcon,
+  ImageOutlined as ImageIcon,
+  LibraryMusicOutlined as LibraryMusicOutlinedIcon,
+} from '@material-ui/icons';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -192,7 +195,7 @@ const EpisodeModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <AccountCircleOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
+                        <DescriptionOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
                         Nội dung
                       </Typography>
                     }
@@ -203,7 +206,7 @@ const EpisodeModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <DescriptionOutlinedIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
+                        <HistoryIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
                         Lịch sử thay đổi
                       </Typography>
                     }
@@ -219,6 +222,7 @@ const EpisodeModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
+                            <ImageIcon />
                             <span>Hình ảnh</span>
                           </div>
                         </div>
@@ -262,7 +266,7 @@ const EpisodeModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
+                            <LibraryMusicOutlinedIcon />
                             <span>Thông tin Episode</span>
                           </div>
                         </div>
@@ -292,8 +296,8 @@ const EpisodeModal = () => {
                               <TextField
                                 fullWidth
                                 multiline
-                                rows={3}
-                                rowsMax={3}
+                                rows={5}
+                                rowsMax={5}
                                 variant="outlined"
                                 name="description"
                                 value={episodeData.description}
@@ -353,20 +357,6 @@ const EpisodeModal = () => {
                                 value={episodeData.source_file_url}
                                 className={classes.inputField}
                                 onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Dành cho member:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={episodeData.is_for_member}
-                                onChange={() => setEpisodeData({ ...episodeData, is_for_member: !episodeData.is_for_member })}
-                                name="is_for_member"
-                                color="primary"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
                             </Grid>
                           </Grid>

@@ -22,11 +22,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Tooltip,
   IconButton,
   FormControl,
 } from '@material-ui/core';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Alert from '../../../../component/Alert';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -40,8 +38,17 @@ import { initPodcastData, userAvatar } from '../../../../store/constants/initial
 import useMedia from './../../../../hooks/useMedia';
 import useMentor from './../../../../hooks/useMentor';
 import { withStyles } from '@material-ui/core/styles';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {
+  Delete as DeleteIcon,
+  History as HistoryIcon,
+  DescriptionOutlined as DescriptionOutlinedIcon,
+  RadioOutlined as RadioIcon,
+  ImageOutlined as ImageIcon,
+  PanoramaOutlined as BannerIcon,
+  LibraryMusicOutlined as LibraryMusicOutlinedIcon,
+} from '@material-ui/icons';
+import { Autocomplete } from '@material-ui/lab';
+import { NoPaddingAutocomplete } from '../../../../component/Autocomplete/index.js';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -117,6 +124,7 @@ const PodcastModal = () => {
   });
 
   const [podcastData, setPodcastData] = useState(initPodcastData);
+  const [selectedMentor, setSelectedMentor] = useState({});
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
@@ -204,6 +212,11 @@ const PodcastModal = () => {
     setEpisodes(newEpisodes);
   };
 
+  const handleSelectMentor = (e, mentor) => {
+    setSelectedMentor(mentor);
+    setPodcastData({ ...podcastData, mentor_id: mentor.id });
+  };
+
   useEffect(() => {
     if (!selectedDocument) return;
     setPodcastData({
@@ -213,6 +226,7 @@ const PodcastModal = () => {
       banner_url: selectedDocument?.banner_url || userAvatar,
     });
     setSelectedEpisodes(selectedDocument?.list_episode?.map((episode) => episode.id));
+    setSelectedMentor(mentorList.find((mentor) => mentor.id === selectedDocument?.mentor_id));
   }, [selectedDocument]);
 
   useEffect(() => {
@@ -226,28 +240,26 @@ const PodcastModal = () => {
         no_item_per_page: 100,
         search_text: '',
       });
-      setEpisodes(res);
       setInitEpisodes(res);
     };
+    const fetchMentorList = async () => {
+      const res = await getMentorbyCategory();
+      setMentorList(res);
+    };
+    fetchMentorList();
     fetchCategories();
     fetchEpisodes();
   }, []);
 
   useEffect(() => {
-    setEpisodes(Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id)));
-    const episodes = selectedEpisodes.length;
+    setEpisodes(
+      Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id) && item.podcast_id === '')
+    );
+    const episodes = selectedEpisodes?.length || 0;
     const listEpisode = Object.values(initEpisodes)?.filter((item) => selectedEpisodes?.includes(item.id));
     const duration = listEpisode.reduce((acc, cur) => acc + cur.duration, 0);
     setPodcastData({ ...podcastData, duration: duration, episodes: episodes });
   }, [selectedEpisodes]);
-
-  useEffect(() => {
-    const fetchMentorList = async () => {
-      const res = await getMentorbyCategory(podcastData?.category_id);
-      setMentorList(res);
-    };
-    fetchMentorList();
-  }, [podcastData?.category_id]);
 
   return (
     <React.Fragment>
@@ -296,7 +308,7 @@ const PodcastModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <AccountCircleOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
+                        <DescriptionOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
                         Nội dung
                       </Typography>
                     }
@@ -307,7 +319,7 @@ const PodcastModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <DescriptionOutlinedIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
+                        <HistoryIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
                         Lịch sử thay đổi
                       </Typography>
                     }
@@ -323,6 +335,7 @@ const PodcastModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
+                            <ImageIcon />
                             <span>Hình ảnh</span>
                           </div>
                         </div>
@@ -356,40 +369,7 @@ const PodcastModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <span>Banner</span>
-                          </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img className={classes.bannerImage} src={podcastData.banner_url} alt="" />
-                          <div>
-                            <div>Upload/Change Banner Image</div>
-                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
-                          </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Banner:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="banner_url"
-                                value={podcastData.banner_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
-                      </div>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
+                            <RadioIcon />
                             <span>Chi tiết Podcast</span>
                           </div>
                         </div>
@@ -436,7 +416,7 @@ const PodcastModal = () => {
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Mentor:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
+                            {/* <Grid item lg={8} md={8} xs={8}>
                               <Select
                                 name="mentor_id"
                                 labelId="career-label"
@@ -451,6 +431,36 @@ const PodcastModal = () => {
                                   </MenuItem>
                                 ))}
                               </Select>
+                            </Grid> */}
+                            <Grid item lg={8} md={8} xs={8}>
+                              {/* <Select
+                                name="mentor_id"
+                                labelId="career-label"
+                                id="career-name"
+                                className={classes.multpleSelectField}
+                                value={podcastData.mentor_id}
+                                onChange={handleChanges}
+                              >
+                                {mentorList?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.fullname}
+                                  </MenuItem>
+                                ))}
+                              </Select> */}
+                              <NoPaddingAutocomplete
+                                fullWidth
+                                id="mentor"
+                                value={selectedMentor}
+                                options={mentorList}
+                                onChange={handleSelectMentor}
+                                getOptionLabel={(option) => option.fullname}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    variant="outlined"
+                                  />
+                                )}
+                              />
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -491,6 +501,22 @@ const PodcastModal = () => {
                               />
                             </Grid>
                           </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Dành cho member:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Switch
+                                checked={podcastData.is_for_member}
+                                onChange={() =>
+                                  setPodcastData({ ...podcastData, is_for_member: !podcastData.is_for_member })
+                                }
+                                name="is_for_member"
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                            </Grid>
+                          </Grid>
                         </div>
                       </div>
                     </Grid>
@@ -498,7 +524,41 @@ const PodcastModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
+                            <BannerIcon />
+                            <span>Banner</span>
+                          </div>
+                        </div>
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                          <img className={classes.bannerImage} src={podcastData.banner_url} alt="" />
+                          <div>
+                            <div>Upload/Change Banner Image</div>
+                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Banner:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="banner_url"
+                                value={podcastData.banner_url}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <LibraryMusicOutlinedIcon />
                             <span>Episode</span>
                           </div>
                         </div>
@@ -521,6 +581,19 @@ const PodcastModal = () => {
                               </Select>
                             </FormControl>
                           </div>
+                          {/* <div className={classes.tabItemNoteSelection}>
+                            <div className={classes.tabItemNoteSelectionLabel}>Episode: </div>
+                            <Autocomplete
+                              fullWidth
+                              id="combo-box-demo"
+                              options={Object.values(episodes)}
+                              getOptionLabel={(option) => option.title}
+                              className={classes.inputField}
+                              renderInput={(params) => (
+                                <TextField {...params} className={classes.inputField} variant="outlined" />
+                              )}
+                            />
+                          </div> */}
                           <div className={classes.selectedNoteListSection}>
                             <TableContainer component={Paper} className={classes.tableNote}>
                               <Table stickyHeader aria-label="sticky table">

@@ -165,7 +165,7 @@ const NotificationSection = () => {
   };
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
-    getTask();
+    // getTask();
   };
 
   const handleClose = (event) => {
@@ -187,7 +187,7 @@ const NotificationSection = () => {
     prevOpen.current = open;
   }, [open]);
   React.useEffect(() => {
-    getTask();
+    // getTask();
   }, []);
   return (
     <React.Fragment>

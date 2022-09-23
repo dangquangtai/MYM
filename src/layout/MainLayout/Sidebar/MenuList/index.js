@@ -16,13 +16,13 @@ const MenuList = (props) => {
     if (selectedProject) {
       getFolders(selectedProject, selectedApp);
     }
-  }, [selectedProject, selectedApp]);
+  }, [selectedApp, selectedProject]);
 
   const { folder } = useSelector((state) => state.folder);
   let childFolders = [{ ...folder, type: 'group' }];
   if (!showRootFolder) {
     childFolders =
-      folder && folder.children.length
+      folder && folder?.children?.length
         ? folder.children.map((folder) => {
             return {
               ...folder,
