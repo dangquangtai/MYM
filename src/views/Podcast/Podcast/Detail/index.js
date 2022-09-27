@@ -36,7 +36,7 @@ import PermissionModal from '../../../FloatingMenu/UploadFile/index.js';
 import useStyles from './../../../../utils/classes';
 import { initPodcastData, userAvatar } from '../../../../store/constants/initial.js';
 import useMedia from './../../../../hooks/useMedia';
-import useMentor from './../../../../hooks/useMentor';
+import usePartner from './../../../../hooks/usePartner';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Delete as DeleteIcon,
@@ -49,6 +49,7 @@ import {
 } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import { NoPaddingAutocomplete } from '../../../../component/Autocomplete/index.js';
+import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -102,7 +103,7 @@ const PodcastModal = () => {
   const { selectedDocument } = useSelector((state) => state.document);
   const saveButton = formButtons.find((button) => button.name === view.podcast.detail.save);
   const { createPodcast, updatePodcast, getCounselingCategories, getAllEpisode } = useMedia();
-  const { getMentorbyCategory } = useMentor();
+  const { getMentorbyCategory } = usePartner();
   const [categories, setCategories] = useState([]);
   const [mentorList, setMentorList] = useState([]);
   const [initEpisodes, setInitEpisodes] = useState({});
@@ -164,6 +165,7 @@ const PodcastModal = () => {
       type: type,
     });
   };
+
   const handleCloseDiaLog = () => {
     setOpenDiaLogUploadImage(false);
     setDialogUpload({
@@ -279,7 +281,14 @@ const PodcastModal = () => {
           </Alert>
         </Snackbar>
       )}
-      <PermissionModal open={dialogUpload.open || false} onSuccess={setURL} onClose={handleCloseDiaLog} />
+      <FirebaseUpload
+        open={dialogUpload.open || false}
+        onSuccess={setURL}
+        onClose={handleCloseDiaLog}
+        type="image"
+        folder="Podcast"
+      />
+      {/* <PermissionModal open={dialogUpload.open || false} onSuccess={setURL} onClose={handleCloseDiaLog} /> */}
       <Grid container>
         <Dialog
           open={openDialog || false}
@@ -454,12 +463,7 @@ const PodcastModal = () => {
                                 options={mentorList}
                                 onChange={handleSelectMentor}
                                 getOptionLabel={(option) => option.fullname}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    variant="outlined"
-                                  />
-                                )}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
                               />
                             </Grid>
                           </Grid>
