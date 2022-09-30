@@ -12,6 +12,7 @@ import confirmReducer from './confirmReducer';
 import taskReducer from './taskReducer.js';
 import documentReducer from './documentReducer.js';
 import appReducer from './appReducer.js';
+import metadataReducer from './metadataReducer.js';
 
 const reducer = combineReducers({
   customization: customizationReducer,
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   task: taskReducer,
   document: documentReducer,
   app: appReducer,
+  metadata: metadataReducer,
 });
 
 export default reducer;
