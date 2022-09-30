@@ -113,7 +113,7 @@ const EpisodeModal = () => {
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
-      setEpisodeData({ ...episodeData, image: image });
+      setEpisodeData({ ...episodeData, image_url: image });
     } else {
       setEpisodeData({ ...episodeData, soure_file_url: image });
     }

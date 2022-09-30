@@ -204,7 +204,7 @@ const PodcastModal = () => {
   };
 
   const filterObj = (value) => {
-    return initEpisodes.filter((item) => item.id === value);
+    return initEpisodes?.filter((item) => item.id === value);
   };
 
   const handleDeleteEpisode = (id) => {

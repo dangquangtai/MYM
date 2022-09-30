@@ -4,6 +4,7 @@ import PodcastTable from '../../Table';
 import { getUrlByAction } from '../../../utils/utils';
 import { DOCUMENT_CHANGE } from '../../../store/actions';
 // import axiosInstance from '../../services/axios';
+import { apiEndpoints } from './../../../store/constant';
 
 const PodcastWrapper = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const PodcastWrapper = () => {
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="podcast"
-        // setFeaturedUrl={}
+        setFeaturedUrl={apiEndpoints.set_featured_podcast}
       />
     </React.Fragment>
   );
