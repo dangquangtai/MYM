@@ -19,13 +19,14 @@ import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
 import { BookingProvider } from './../contexts/BookingContext';
 import { AccountProvider } from '../contexts/AccountContext';
-import { MentorProvider } from '../contexts/MentorContext';
+import { PartnerProvider } from '../contexts/PartnerContext';
 import { TaskProvider } from '../contexts/TaskContext.js';
 import { DepartmentProvider } from '../contexts/DepartmentContext';
 import { RoleProvider } from '../contexts/RoleContext';
 import { BatchProvider } from './../contexts/BatchContext';
 import { ChartProvider } from './../contexts/ChartContext';
 import { MediaProvider } from './../contexts/MediaContext';
+import { ShareProvider } from './../contexts/ShareContext';
 
 function loadLocaleData(locale) {
   switch (locale) {
@@ -70,20 +71,22 @@ const App = () => {
                             <TaskProvider>
                               <BookingProvider>
                                 <AccountProvider>
-                                  <MentorProvider>
+                                  <PartnerProvider>
                                     <DepartmentProvider>
                                       <BatchProvider>
                                         <ChartProvider>
                                           <RoleProvider>
                                             <MediaProvider>
-                                              <Routes />
-                                              <Snackbar />
+                                              <ShareProvider>
+                                                <Routes />
+                                                <Snackbar />
+                                              </ShareProvider>
                                             </MediaProvider>
                                           </RoleProvider>
                                         </ChartProvider>
                                       </BatchProvider>
                                     </DepartmentProvider>
-                                  </MentorProvider>
+                                  </PartnerProvider>
                                 </AccountProvider>
                               </BookingProvider>
                             </TaskProvider>

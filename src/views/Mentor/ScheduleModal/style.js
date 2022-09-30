@@ -5,7 +5,7 @@ export const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    minWidth: 550,
+    minWidth: 700,
     boxShadow: 24,
     background: '#FFFFFF',
     padding: '16px 32px',

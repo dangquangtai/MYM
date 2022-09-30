@@ -27,8 +27,15 @@ import Alert from '../../../../component/Alert';
 import useMedia from '../../../../hooks/useMedia';
 import { initPlaylistData, userAvatar } from '../../../../store/constants/initial';
 import PermissionModal from '../../../../views/FloatingMenu/UploadFile/index.js';
-import { QueueMusic, History, DescriptionOutlined as DescriptionOutlinedIcon, RadioOutlined as RadioOutlinedIcon, ImageOutlined as ImageIcon } from '@material-ui/icons';
+import {
+  QueueMusic,
+  History,
+  DescriptionOutlined as DescriptionOutlinedIcon,
+  RadioOutlined as RadioOutlinedIcon,
+  ImageOutlined as ImageIcon,
+} from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
+import FirebaseUpload from '../../../FloatingMenu/FirebaseUpload/index.js';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -179,8 +186,14 @@ const PlaylistModal = () => {
           </Alert>
         </Snackbar>
       )}
-      <PermissionModal open={openDialogUploadImage || false} onSuccess={setURL} onClose={handleCloseDiaLog} />
-
+      {/* <PermissionModal open={openDialogUploadImage || false} onSuccess={setURL} onClose={handleCloseDiaLog} /> */}
+      <FirebaseUpload
+        open={openDialogUploadImage}
+        onSuccess={setURL}
+        onClose={handleCloseDiaLog}
+        type="image"
+        folder="Podcast"
+      />
       <Grid container>
         <Dialog
           open={openDialog || false}

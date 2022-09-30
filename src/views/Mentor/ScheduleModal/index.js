@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { dateOfWeek, timeWorking, workingType } from '../../../store/constants/time';
+import { dateOfWeek, timeWorking } from '../../../store/constants/time';
 import { initMentorData, initVacationDay, initWorkingDay } from '../../../store/constants/initial';
-import {
-  Switch, Modal, Box, Button, Grid, TextField, MenuItem, Select
-} from '@material-ui/core';
+import { Switch, Modal, Box, Button, Grid, TextField, MenuItem, Select } from '@material-ui/core';
 import { style } from './style';
 import useStyles from '../Detail/classes';
 import { convertArrayToObject } from '../../../utils/convertArrayToObject';
@@ -11,67 +9,63 @@ import { v4 as uuidv4 } from 'uuid';
 import cloneDeep from 'lodash/cloneDeep';
 import uniqBy from 'lodash/uniqBy';
 import { convertDate } from '../../../utils/table.js';
+import { useSelector } from 'react-redux';
 
 export default function ScheduleModal({ isOpen, handleClose, submit, type, mentor }) {
   const classes = useStyles();
   const [errorWorking, setErrorWorking] = useState({
     isError: false,
-    text: ''
+    text: '',
   });
+  const { weekday } = useSelector((state) => state.metadata);
   const [mentorData, setMentorData] = useState(initMentorData);
 
-  const [workingDay, setWorkingDay] = useState(convertArrayToObject([
-    { ...initWorkingDay, id: uuidv4() }
-  ]))
+  const [workingDay, setWorkingDay] = useState(convertArrayToObject([{ ...initWorkingDay, id: uuidv4() }]));
 
-  const [vacationDay, setVacationDay] = useState(convertArrayToObject([
-    { ...initVacationDay, id: uuidv4() }
-  ]))
+  const [vacationDay, setVacationDay] = useState(convertArrayToObject([{ ...initVacationDay, id: uuidv4() }]));
 
-  const isDisableSubmit = () => {
-    if (type === 'working') {
-      return false;
-    } else {
-      return !mentorData.vacation_start || !mentorData.vacation_end;
-    }
-  }
 
   const validateWorkingDay = (name, value, id) => {
     const newWorkingDay = cloneDeep(workingDay);
     newWorkingDay[id][name] = value;
-    const arrayWorkingDay = Object.values(newWorkingDay).map(item => ({ ...item, time: item.hour + item.day }));
+    const arrayWorkingDay = Object.values(newWorkingDay).map((item) => ({ ...item, time: item.hour + item.day }));
     if (uniqBy(arrayWorkingDay, 'time').length === arrayWorkingDay.length) {
       setErrorWorking({
         isError: false,
-        text: ''
+        text: '',
       });
     } else {
       setErrorWorking({
         isError: true,
-        text: 'Các buổi làm việc không được trùng nhau'
+        text: 'Các buổi làm việc không được trùng nhau',
       });
     }
-  }
+  };
 
   const handleChangeMentor = (event) => {
-    const { target: { name, value } } = event;
+    const {
+      target: { name, value },
+    } = event;
     setMentorData({ ...mentorData, [name]: value });
-  }
+  };
 
   const handleChangeWorkingDay = (event, id) => {
-    const { target: { name, value, checked } } = event;
-    if (name === 'day' || name === 'hour') validateWorkingDay(name, value, id);
+    const {
+      target: { name, value, checked },
+    } = event;
     const newWorkingDay = cloneDeep(workingDay);
     newWorkingDay[id][name] = value || checked;
-    setWorkingDay(newWorkingDay)
-  }
+    setWorkingDay(newWorkingDay);
+  };
 
   const handleChangeVacationDay = (event, id) => {
-    const { target: { name, value, checked } } = event;
+    const {
+      target: { name, value, checked },
+    } = event;
     const newVacationDay = cloneDeep(vacationDay);
     newVacationDay[id][name] = value || checked;
-    setVacationDay(newVacationDay)
-  }
+    setVacationDay(newVacationDay);
+  };
 
   const handleAddWorkingDay = () => {
     const newId = uuidv4();
@@ -80,9 +74,9 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
       [newId]: {
         ...initWorkingDay,
         id: newId,
-      }
-    })
-  }
+      },
+    });
+  };
 
   const handleAdVacationDay = () => {
     const newId = uuidv4();
@@ -91,18 +85,18 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
       [newId]: {
         ...initVacationDay,
         id: newId,
-      }
-    })
-  }
+      },
+    });
+  };
 
   const handleSubmitModal = () => {
     submit({ ...mentorData, workday: Object.values(workingDay), vacation: Object.values(vacationDay) });
-  }
+  };
 
   useEffect(() => {
     setMentorData({ ...mentorData, ...mentor });
-    setWorkingDay(convertArrayToObject(mentor?.workday))
-    setVacationDay(convertArrayToObject(mentor?.vacation))
+    setWorkingDay(convertArrayToObject(mentor?.workday));
+    setVacationDay(convertArrayToObject(mentor?.vacation));
   }, [mentor]);
 
   return (
@@ -120,49 +114,111 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
           <div id="modal-modal-description" sx={{ mt: 2 }}>
             {type === 'working' ? (
               <div>
-                <Grid container spacing={1} className={classes.gridItemInfo} justify="space-between" alignItems="center">
-                  <div><b>Lịch làm việc</b></div>
-                  <Button className={classes.gridItemInfoButton} onClick={handleAddWorkingDay}>Thêm</Button>
+                <Grid
+                  container
+                  spacing={1}
+                  className={classes.gridItemInfo}
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <div>
+                    <b>Lịch làm việc</b>
+                  </div>
+                  <Button className={classes.gridItemInfoButton} onClick={handleAddWorkingDay}>
+                    Thêm
+                  </Button>
                 </Grid>
-                {Object.keys(workingDay).map(day => (
+                {Object.keys(workingDay).map((day) => (
                   <Grid key={day} spacing={1} container className={classes.gridItemInfo} alignItems="center">
-                    <Grid item lg={3} md={3} xs={12}>
-                      <Select
-                        name="day"
-                        labelId="date-label"
-                        className={classes.multpleSelectField}
-                        value={workingDay[day].day}
+                    <Grid item lg={2} md={4} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Chọn thứ"
+                        variant="outlined"
+                        select
+                        size="small"
+                        name="week_day"
+                        value={workingDay[day].week_day}
                         onChange={(e) => handleChangeWorkingDay(e, day)}
                       >
-                        {dateOfWeek?.map((item) => (
-                          <MenuItem
-                            key={item.value}
-                            value={item.value}
-                          >
-                            {item.label}
+                        {weekday?.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.value}
                           </MenuItem>
                         ))}
-                      </Select>
+                      </TextField>
                     </Grid>
-                    <Grid item lg={3} md={3} xs={12}>
-                      <Select
-                        name="hour"
-                        labelId="time1-label"
-                        className={classes.multpleSelectField}
-                        value={workingDay[day].hour}
+                    <Grid item lg={3} md={4} xs={12}>
+                      <Grid container spacing={1} alignItems="center">
+                        <Grid item lg={6} md={6} xs={6}>
+                          <TextField
+                            fullWidth
+                            variant="outlined"
+                            name="from_hour"
+                            label="Từ giờ"
+                            select
+                            size="small"
+                            value={workingDay[day].from_hour}
+                            onChange={(e) => handleChangeWorkingDay(e, day)}
+                          >
+                            {timeWorking?.map((item) => (
+                              <MenuItem key={item.value} value={item.value}>
+                                {item.label}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                        <Grid item lg={6} md={6} xs={6}>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            name="to_hour"
+                            label="Đến giờ"
+                            select
+                            size="small"
+                            value={workingDay[day].to_hour}
+                            onChange={(e) => handleChangeWorkingDay(e, day)}
+                          >
+                            {timeWorking?.map((item) => (
+                              <MenuItem key={item.value} value={item.value}>
+                                {item.label}
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item lg={3} md={6} xs={12}>
+                      <TextField
+                        id="datetime-local"
+                        variant="outlined"
+                        label="Thời gian bắt đầu"
+                        type="date"
+                        size="small"
+                        name="applicable_from_date"
+                        value={convertDate(workingDay[day].applicable_from_date)}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
                         onChange={(e) => handleChangeWorkingDay(e, day)}
-                      >
-                        {timeWorking?.map((item) => (
-                          <MenuItem
-                            key={item.value}
-                            value={item.value}
-                          >
-                            {item.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                      />
                     </Grid>
-                    <Grid item lg={4} md={4} xs={12}>
+                    <Grid item lg={3} md={6} xs={12}>
+                      <TextField
+                        id="datetime-local"
+                        variant="outlined"
+                        label="Thời gian kết thúc"
+                        type="date"
+                        size="small"
+                        name="applicable_to_date"
+                        value={convertDate(workingDay[day].applicable_to_date)}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onChange={(e) => handleChangeWorkingDay(e, day)}
+                      />
+                    </Grid>
+                    {/* <Grid item lg={4} md={4} xs={12}>
                       <Select
                         name="type"
                         labelId="time1-label"
@@ -179,8 +235,8 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
                           </MenuItem>
                         ))}
                       </Select>
-                    </Grid>
-                    <Grid item lg={2} md={2} xs={12}>
+                    </Grid> */}
+                    <Grid item lg={1} md={2} xs={12}>
                       <Switch
                         color="primary"
                         name="is_active"
@@ -189,58 +245,125 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
                         inputProps={{ 'aria-label': 'controlled' }}
                       />
                     </Grid>
-
                   </Grid>
                 ))}
               </div>
             ) : (
               <>
-                <Grid container spacing={1} className={classes.gridItemInfo} justify="space-between" alignItems="center">
-                  <div><b>Lịch nghỉ phép</b></div>
-                  <Button className={classes.gridItemInfoButton} onClick={handleAdVacationDay}>Thêm</Button>
+                <Grid
+                  container
+                  spacing={1}
+                  className={classes.gridItemInfo}
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <div>
+                    <b>Lịch nghỉ phép</b>
+                  </div>
+                  <Button className={classes.gridItemInfoButton} onClick={handleAdVacationDay}>
+                    Thêm
+                  </Button>
                 </Grid>
-                {Object.keys(vacationDay).map(day => (
+                {Object.keys(vacationDay).map((day) => (
                   <Grid key={day} spacing={1} container className={classes.gridItemInfo} alignItems="center">
-                    <Grid item lg={4} md={6} xs={6}>
+                  <Grid item lg={2} md={4} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Chọn thứ"
+                      variant="outlined"
+                      select
+                      size="small"
+                      name="week_day"
+                      value={vacationDay[day].week_day}
+                      onChange={(e) => handleChangeVacationDay(e, day)}
+                    >
+                      {weekday?.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.value}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item lg={3} md={4} xs={12}>
+                    <Grid container spacing={1} alignItems="center">
+                      <Grid item lg={6} md={6} xs={6}>
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          name="from_hour"
+                          label="Từ giờ"
+                          select
+                          size="small"
+                          value={vacationDay[day].from_hour}
+                          onChange={(e) => handleChangeVacationDay(e, day)}
+                        >
+                          {timeWorking?.map((item) => (
+                            <MenuItem key={item.value} value={item.value}>
+                              {item.label}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </Grid>
+                      <Grid item lg={6} md={6} xs={6}>
                       <TextField
-                        id="datetime-local"
-                        type="date"
-                        name="start"
-                        value={convertDate(vacationDay[day].start)}
-                        className={classes.inputField}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={(e) => handleChangeVacationDay(e, day)}
-                      />
-                    </Grid>
-                    <Grid item lg={2} md={6} xs={6} style={{ textAlign: 'center' }}>
-                      <span className={classes.tabItemLabelField}>đến</span>
-                    </Grid>
-                    <Grid item lg={4} md={6} xs={6}>
-                      <TextField
-                        id="datetime-local"
-                        type="date"
-                        name="end"
-                        value={convertDate(vacationDay[day].end)}
-                        className={classes.inputField}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={(e) => handleChangeVacationDay(e, day)}
-                      />
-                    </Grid>
-                    <Grid item lg={2} md={2} xs={12}>
-                      <Switch
-                        color="primary"
-                        name="is_active"
-                        checked={!!vacationDay[day].is_active}
-                        onChange={(e) => handleChangeVacationDay(e, day)}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                      />
+                          fullWidth
+                          variant="outlined"
+                          name="to_hour"
+                          label="Đến giờ"
+                          select
+                          size="small"
+                          value={vacationDay[day].to_hour}
+                          onChange={(e) => handleChangeVacationDay(e, day)}
+                        >
+                          {timeWorking?.map((item) => (
+                            <MenuItem key={item.value} value={item.value}>
+                              {item.label}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </Grid>
                     </Grid>
                   </Grid>
-                  
+                  <Grid item lg={3} md={6} xs={12}>
+                    <TextField
+                      id="datetime-local"
+                      variant="outlined"
+                      label="Thời gian bắt đầu"
+                      type="date"
+                      size="small"
+                      name="applicable_from_date"
+                      value={convertDate(vacationDay[day].applicable_from_date)}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => handleChangeVacationDay(e, day)}
+                    />
+                  </Grid>
+                  <Grid item lg={3} md={6} xs={12}>
+                    <TextField
+                      id="datetime-local"
+                      variant="outlined"
+                      label="Thời gian kết thúc"
+                      type="date"
+                      size="small"
+                      name="applicable_to_date"
+                      value={convertDate(vacationDay[day].applicable_to_date)}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => handleChangeVacationDay(e, day)}
+                    />
+                  </Grid>
+                  <Grid item lg={1} md={2} xs={12}>
+                    <Switch
+                      color="primary"
+                      name="is_active"
+                      checked={!!vacationDay[day].is_active}
+                      onChange={(e) => handleChangeVacationDay(e, day)}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  </Grid>
+                </Grid>
                 ))}
               </>
             )}
@@ -254,12 +377,7 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
           </div>
           <div id="modal-modal-footer">
             <div style={style.buttonWrap}>
-              <Button
-                type="button"
-                variant="contained"
-                style={style.buttonCancel}
-                onClick={handleClose}
-              >
+              <Button type="button" variant="contained" style={style.buttonCancel} onClick={handleClose}>
                 Huỷ bỏ
               </Button>
               <Button

@@ -25,11 +25,13 @@ import PermissionModal from '../../../FloatingMenu/UploadFile/index.js';
 import useStyles from '../../../../utils/classes';
 import { initEpisodeData, userAvatar } from '../../../../store/constants/initial.js';
 import useMedia from '../../../../hooks/useMedia';
+import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 import {
   History as HistoryIcon,
   DescriptionOutlined as DescriptionOutlinedIcon,
   ImageOutlined as ImageIcon,
   LibraryMusicOutlined as LibraryMusicOutlinedIcon,
+  GraphicEq as GraphicEqIcon,
 } from '@material-ui/icons';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -75,8 +77,10 @@ const EpisodeModal = () => {
   const { createEpisode, updateEpisode } = useMedia();
 
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [dialogUpload, setDialogUpload] = useState({
+    open: false,
+    type: '',
+  });
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -108,14 +112,25 @@ const EpisodeModal = () => {
     setTabIndex(0);
   };
   const setURL = (image) => {
-    setEpisodeData({ ...episodeData, image_url: image });
+    if (dialogUpload.type === 'image') {
+      setEpisodeData({ ...episodeData, image_url: image });
+    } else {
+      setEpisodeData({ ...episodeData, soure_file_url: image });
+    }
   };
 
-  const handleOpenDiaLog = () => {
-    setOpenDiaLogUploadImage(true);
+  const handleOpenDiaLog = (type) => {
+    setDialogUpload({
+      open: true,
+      type: type,
+    });
   };
-  const handleCloseDiaLog = () => {
-    setOpenDiaLogUploadImage(false);
+
+  const handleCloseUploadDiaLog = () => {
+    setDialogUpload({
+      open: false,
+      type: '',
+    });
   };
 
   const handleChanges = (e) => {
@@ -166,7 +181,13 @@ const EpisodeModal = () => {
           </Alert>
         </Snackbar>
       )}
-      <PermissionModal open={openDialogUploadImage || false} onSuccess={setURL} onClose={handleCloseDiaLog} />
+      <FirebaseUpload
+        open={dialogUpload.open || false}
+        onSuccess={setURL}
+        onClose={handleCloseUploadDiaLog}
+        folder={dialogUpload?.type === 'image' ? 'Podcast' : 'MP3'}
+        type={dialogUpload?.type}
+      />
       <Grid container>
         <Dialog
           open={openDialog || false}
@@ -229,8 +250,8 @@ const EpisodeModal = () => {
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
                           <img src={episodeData.image_url} alt="" />
                           <div>
-                            <div>Upload/Change Episode's Profile Image</div>
-                            <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
+                            <div>Upload/Change Episode Image</div>
+                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
@@ -253,14 +274,39 @@ const EpisodeModal = () => {
                           </Grid>
                         </div>
                       </div>
-                      {/* <div className={classes.tabItem}>
+                      <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
-                            <span>Chi tiết Episode</span>
+                            <GraphicEqIcon />
+                            <span>Audio</span>
                           </div>
                         </div>
-                      </div> */}
+                        <div
+                          className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody} ${classes.audioBody}`}
+                        >
+                          <div>Upload/Change Audio File</div>
+                          <Button onClick={() => handleOpenDiaLog('audio')}>Chọn Audio</Button>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Source File:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="source_file_url"
+                                value={episodeData.source_file_url}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div>
                     </Grid>
                     <Grid item lg={6} md={6} xs={12}>
                       <div className={classes.tabItem}>
@@ -342,7 +388,7 @@ const EpisodeModal = () => {
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                          {/* <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Source File:</span>
                             </Grid>
@@ -359,7 +405,7 @@ const EpisodeModal = () => {
                                 onChange={handleChanges}
                               />
                             </Grid>
-                          </Grid>
+                          </Grid> */}
                         </div>
                       </div>
                     </Grid>

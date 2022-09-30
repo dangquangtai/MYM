@@ -15,22 +15,31 @@ export const userAvatar = 'https://obs.multicampus.vn/wp-content/uploads/2019/01
 export const initMentorData = {
   fullname: "",
   email_address: "",
-  phone: "",
+  phone_number: "",
   title: "",
   description: "",
   image_url: "",
-  career: "",
-  advise: [],
   fb_url: "",
-  linkedIn_url: "",
-  is_active: false,
-  short_address: "",
-  experience: "",
-  degree: "",
-  alumnus: '',
-  gender: '',
+  linkedin_url: "",
+  address: "",
+  gender_id: '',
+  career_category_id: '',
+  category_id: '',
+  topic_id: '',
+  province_id: '',
+  is_certified: false,
   workday: [],
-  vacation: []
+  vacation: [],
+  counselling_category1_id: '',
+  counselling_category2_id: '',
+  counselling_category3_id: '',
+  career_category1_id: '',
+  career_category2_id: '',
+  career_category3_id: '',
+  counselling_topic1_id: [],
+  counselling_topic2_id: [],
+  counselling_topic3_id: [],
+
 }
 
 export const initPodcastData = {
@@ -69,18 +78,23 @@ export const genderList = [
 ]
 
 export const initWorkingDay = {
-  "day": '',
-  "hour": '',
-  "is_active": false,
-  "type": '',
+  "week_day": '',
+  "from_hour": '',
+  "to_hour": '',
+  "is_active": true,
   "id": '',
+  "applicable_to_date": '',
+  "applicable_from_date": '',
 }
 
 export const initVacationDay = {
-  "start": '',
-  "end": '',
-  "is_active": false,
+  "week_day": '',
+  "from_hour": '',
+  "to_hour": '',
+  "is_active": true,
   "id": '',
+  "applicable_to_date": '',
+  "applicable_from_date": '',
 }
 
 export const typeBatchList = [
