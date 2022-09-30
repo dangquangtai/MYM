@@ -20,3 +20,4 @@ export const NEWS_CHANGE = '@news/CHANGE';
 export const TASK_CHANGE = '@task/CHANGE_TASK';
 export const APP_CHANGE = '@app/CHANGE_APP';
 export const SELECTED_APP_CHANGE = '@app/SELECTED_APP_CHANGE';
+export const METADATA = '@share/METADATA';

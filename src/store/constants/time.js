@@ -31,6 +31,10 @@ export const dateOfWeek = [
 
 export const timeWorking = [
   {
+    label: '08:00',
+    value: '8',
+  },
+  {
     label: '09:00',
     value: '9',
   },
@@ -41,6 +45,10 @@ export const timeWorking = [
   {
     label: '11:00',
     value: '11',
+  },
+  {
+    label: '12:00',
+    value: '12',
   },
   {
     label: '13:00',
@@ -59,12 +67,28 @@ export const timeWorking = [
     value: '16',
   },
   {
+    label: '17:00',
+    value: '17',
+  },
+  {
+    label: '18:00',
+    value: '18',
+  },
+  {
     label: '19:00',
     value: '19',
   }, 
   {
     label: '20:00',
     value: '20',
+  },
+  {
+    label: '21:00',
+    value: '21',
+  }, 
+  {
+    label: '22:00',
+    value: '22',
   },
 ]
 

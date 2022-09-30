@@ -1,4 +1,13 @@
-import { apiEndpoints, accountActions, departmentActions, roleActions, podcastActions, episodeActions, playlistActions } from '../store/constant.js';
+import {
+  apiEndpoints,
+  accountActions,
+  departmentActions,
+  roleActions,
+  podcastActions,
+  episodeActions,
+  playlistActions,
+  mentorActions,
+} from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
   switch (selectedFolder ? selectedFolder.action : '') {
@@ -14,7 +23,6 @@ export function getUrlByAction(selectedFolder) {
     case departmentActions.list_inactive_department: {
       return apiEndpoints.get_all_inactive_department;
     }
-
     case roleActions.list_active_role: {
       return apiEndpoints.get_all_active_role_template;
     }
@@ -42,15 +50,13 @@ export function getUrlByAction(selectedFolder) {
     case episodeActions.inactive_list: {
       return apiEndpoints.get_all_inactive_episode;
     }
-
-    default: {
-      return '';
+    case mentorActions.active_list: {
+      return apiEndpoints.get_all_active_mentor;
     }
-  }
-}
+    case mentorActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_mentor;
+    }
 
-export function getUpdateUrlByAction(selectedFolder) {
-  switch (selectedFolder ? selectedFolder.action : '') {
     default: {
       return '';
     }

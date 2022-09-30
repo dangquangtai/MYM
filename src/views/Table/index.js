@@ -24,12 +24,12 @@ import StarIcon from '@material-ui/icons/Star';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import { useDispatch, useSelector } from 'react-redux';
-import { CONFIRM_CHANGE, DOCUMENT_CHANGE, FLOATING_MENU_CHANGE, TASK_CHANGE, VIEW_CHANGE } from '../../store/actions';
-import { bookingActions, gridSpacing, view } from '../../store/constant';
+import { CONFIRM_CHANGE, DOCUMENT_CHANGE, FLOATING_MENU_CHANGE, TASK_CHANGE } from '../../store/actions';
+import { gridSpacing, view } from '../../store/constant';
 import Modal from '../Table/Modal';
 import useAccount from '../../hooks/useAccount';
 import useBooking from './../../hooks/useBooking';
-import useMentor from '../../hooks/useMentor';
+import usePartner from '../../hooks/usePartner';
 import useDepartment from '../../hooks/useDepartment';
 import useConfirmPopup from './../../hooks/useConfirmPopup';
 import useTask from './../../hooks/useTask';
@@ -42,10 +42,18 @@ import { bookingStatusList } from './data';
 import { getComparator, stableSort, getTodayAndTomorrow } from '../../utils/table';
 import useRole from '../../hooks/useRole';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-
 import { format as formatDate } from 'date-fns';
-import useBatch from './../../hooks/useBatch';
 import useMedia from './../../hooks/useMedia';
+import axiosInstance from '../../services/axios';
+
+async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
+  return await axiosInstance
+    .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
+    .then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      else return false;
+    });
+}
 
 export default function GeneralTable(props) {
   const classes = useStyles();
@@ -102,6 +110,7 @@ export default function GeneralTable(props) {
       created_date: tableColumns.includes('created_date'),
       created_by: tableColumns.includes('created_by'),
       menuButtons: !!menuButtons.length || false,
+      is_featured: tableColumns.includes('is_featured'),
     };
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
@@ -116,9 +125,12 @@ export default function GeneralTable(props) {
   const buttonSelectDepartment = menuButtons.find((button) => button.name === view.role.list.select);
   const buttonSyncDepartment = menuButtons.find((button) => button.name === view.role.list.sync_department);
   const buttonAddAccount = menuButtons.find((button) => button.name === view.role.list.addnew);
+
   const buttonCreatePodcast = menuButtons.find((button) => button.name === view.podcast.list.create);
   const buttonCreateEpisode = menuButtons.find((button) => button.name === view.episode.list.create);
   const buttonCreatePlaylist = menuButtons.find((button) => button.name === view.playlist.list.create);
+
+  const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -127,7 +139,7 @@ export default function GeneralTable(props) {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [selectedRecord, setSelectedRecord] = React.useState({});
-  const { url, documentType, tableTitle } = props;
+  const { url, documentType, tableTitle, setFeaturedUrl } = props;
   const [pageCurrent, setPage] = React.useState(1);
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
@@ -177,9 +189,7 @@ export default function GeneralTable(props) {
 
   const { getAccountDetail, activeAccount } = useAccount();
 
-  const { getMentorDetail, toggleActiveMentor } = useMentor();
-
-  const { activeBatch, activeCode, downloadBatch } = useBatch();
+  const { getMentorDetail, toggleActiveMentor } = usePartner();
 
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
@@ -433,24 +443,6 @@ export default function GeneralTable(props) {
     reloadCurrentDocuments();
   };
 
-  const handleToggleActiveCode = async (event, id) => {
-    event.stopPropagation();
-    await activeCode({
-      id,
-      is_active: event.target.checked,
-    });
-    reloadCurrentDocuments();
-  };
-
-  const handleToggleActiveBatch = async (event, id) => {
-    event.stopPropagation();
-    await activeBatch({
-      id,
-      is_active: event.target.checked,
-    });
-    reloadCurrentDocuments();
-  };
-
   const handleNoteBooking = async (note, isSend) => {
     try {
       await setNoteBooking(selected[0], note, isSend);
@@ -542,6 +534,12 @@ export default function GeneralTable(props) {
     document.body.removeChild(link);
   };
 
+  const toggleSetFeatured = async (event, document, isFeatured) => {
+    event.stopPropagation();
+    await setFeatured(setFeaturedUrl, document.id, isFeatured);
+    fetchDocument();
+  };
+
   return (
     <React.Fragment>
       {isOpenModalNote && (
@@ -600,6 +598,8 @@ export default function GeneralTable(props) {
                 createEpisode={handleClickCreateEpisode}
                 buttonCreatePlaylist={buttonCreatePlaylist}
                 createPlaylist={handleClickCreatePlaylist}
+                buttonCreateMentor={buttonCreateMentor}
+                createMentor={handleClickCreateMentor}
               />
               <TableContainer>
                 <Table
@@ -661,19 +661,6 @@ export default function GeneralTable(props) {
                               </>
                             </TableCell>
                           )}
-                          {displayOptions.title && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.title}
-                                </span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
                           {displayOptions.fullname && (
                             <TableCell align="left">
                               <>
@@ -682,6 +669,19 @@ export default function GeneralTable(props) {
                                   onClick={(event) => openDetailDocument(event, row)}
                                 >
                                   {row.fullname}
+                                </span>
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
+                          {displayOptions.title && (
+                            <TableCell style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }} align="left">
+                              <>
+                                <span
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
+                                  {row.title}
                                 </span>
                                 &nbsp;&nbsp;
                               </>
@@ -869,6 +869,19 @@ export default function GeneralTable(props) {
                               {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
                             </TableCell>
                           )}
+                          {displayOptions.is_featured && (
+                            <TableCell align="left">
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    // color="primary"
+                                    checked={row.is_featured}
+                                    onClick={(event) => toggleSetFeatured(event, row, event.target.checked)}
+                                  />
+                                }
+                              />
+                            </TableCell>
+                          )}
                           {displayOptions.active && (
                             <TableCell align="left">
                               <>
@@ -911,30 +924,6 @@ export default function GeneralTable(props) {
                                               color="primary"
                                               checked={!!row.is_active}
                                               onClick={(event) => handleToggleActiveMentor(event, row.id)}
-                                            />
-                                          }
-                                        />
-                                      );
-                                    case 'code':
-                                      return (
-                                        <FormControlLabel
-                                          control={
-                                            <Switch
-                                              color="primary"
-                                              checked={row.is_active}
-                                              onClick={(event) => handleToggleActiveCode(event, row.id)}
-                                            />
-                                          }
-                                        />
-                                      );
-                                    case 'batch':
-                                      return (
-                                        <FormControlLabel
-                                          control={
-                                            <Switch
-                                              color="primary"
-                                              checked={row.is_active}
-                                              onClick={(event) => handleToggleActiveBatch(event, row.id)}
                                             />
                                           }
                                         />

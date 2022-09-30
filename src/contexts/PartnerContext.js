@@ -3,14 +3,14 @@ import { apiEndpoints } from '../store/constant';
 import axiosInstance from '../services/axios';
 import useView from '../hooks/useView';
 
-const MentorContext = createContext({});
+const PartnerContext = createContext({});
 
-export const MentorProvider = ({ children }) => {
+export const PartnerProvider = ({ children }) => {
   const { setView } = useView();
 
   const getMentorDetail = async (id) => {
     return axiosInstance
-      .post(apiEndpoints.get_mentor_detail_by_id, {
+      .post(apiEndpoints.get_mentor_detail, {
         outputtype: 'RawJson', id
       })
       .then((response) => {
@@ -24,8 +24,7 @@ export const MentorProvider = ({ children }) => {
 
   const createMentor = async (mentor) => {
     return axiosInstance.post(apiEndpoints.create_mentor, { outputtype: 'RawJson', ...mentor }).then((response) => {
-      if (response.status === 200 && response.data.return === 200) return true;
-      return false;
+      return response.data;
     });
   };
 
@@ -52,19 +51,47 @@ export const MentorProvider = ({ children }) => {
     });
   };
 
+  const getCareerAndTopic = async () => {
+    return axiosInstance.post(apiEndpoints.get_career_and_topic, { outputtype: 'RawJson'}).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const data = response.data;
+        return data;
+      } else return [];
+    });
+  };
+
+  const generateTimeslot = async (id) => {
+    return axiosInstance.post(apiEndpoints.generate_timeslot, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  }
+
+  const getTimeslot = async (id) => {
+    return axiosInstance.post(apiEndpoints.get_timeslot_by_mentor_id, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { list } = response.data;
+        return list;
+      } else return [];
+    });
+  };
+
   return (
-    <MentorContext.Provider
+    <PartnerContext.Provider
       value={{
         getMentorDetail,
         updateMentor,
         createMentor,
         toggleActiveMentor,
-        getMentorbyCategory
+        getMentorbyCategory,
+        getCareerAndTopic,
+        generateTimeslot,
+        getTimeslot
       }}
     >
       {children}
-    </MentorContext.Provider>
+    </PartnerContext.Provider>
   );
 };
 
-export default MentorContext;
+export default PartnerContext;

@@ -4,6 +4,7 @@ import Table from '../Table';
 import { getUrlByAction } from '../../utils/utils';
 import { DOCUMENT_CHANGE } from '../../store/actions';
 // import axiosInstance from '../../services/axios';
+import { apiEndpoints } from './../../store/constant';
 
 const MentorWrapper = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const MentorWrapper = () => {
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="mentor"
-        // setFeaturedUrl={}
+        setFeaturedUrl={apiEndpoints.set_featured_mentor}
       />
     </React.Fragment>
   );

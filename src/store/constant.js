@@ -11,7 +11,7 @@ export const apiEndpoints = {
   get_project_list: '/Primary/?FlowAlias=bs_menu_api_get_project_list&action=api',
   get_app_list: '/Primary/?FlowAlias=bs_menu_api_get_list_app&action=api',
   get_folders: '/Primary/?FlowAlias=bs_menu_api_get_menu_tree&action=api',
-
+  get_metadata: '/Primary/?FlowAlias=bs_api_mym_get_meta_data&Guest=true&outputtype=RawJson&action=api',
   // account
   get_all_account: '/Primary/?FlowAlias=hnn_acco_api_get_all_account_by_page&action=api',
   get_all_inaccount: '/Primary/?FlowAlias=hnn_acco_api_get_all_inaccount_by_page&action=api',
@@ -46,27 +46,50 @@ export const apiEndpoints = {
   get_department_type_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_department_type_list&action=api',
   get_department_detail: '/Primary/?FlowAlias=hnn_api_booking_department_get_detail_department_by_name&action=api',
 
-  //Podcast
+  // Meida
+  // // Playlist
   get_all_active_playlist: '/Primary/?FlowAlias=bs_media_api_get_list_playlist_active&action=api',
-  get_all_inactive_playlist: '/Primary/?FlowAlias=&action=api',
+  get_all_inactive_playlist: '/Primary/?FlowAlias=bs_media_api_get_list_playlist_inactive&action=api',
   get_playlist_detail: '/Primary/?FlowAlias=bs_media_api_get_playlist_detail_by_id&action=api',
   create_playlist: '/Primary/?FlowAlias=bs_media_api_create_new_playlist&action=api',
   update_playlist: '/Primary/?FlowAlias=bs_media_api_update_playlist&action=api',
-
+  // // Podcast
   get_all_active_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_active&action=api',
   get_all_inactive_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_inactive&action=api',
   get_podcast_detail: '/Primary/?FlowAlias=bs_media_api_get_podcast_detail_by_id&action=api',
   create_podcast: '/Primary/?FlowAlias=bs_media_api_create_podcast&action=api',
   update_podcast: '/Primary/?FlowAlias=bs_media_api_update_podcast&action=api',
+  set_featured_podcast: '/Primary/?FlowAlias=bs_media_api_set_featured_podcast&action=api',
 
   get_counseling_categoies: '/Primary/?FlowAlias=bs_partner_api_get_counseling_categoies&action=api',
-  get_mentor_list_by_category_id: '/Primary/?FlowAlias=bs_api_partner_get_all_mentor&action=api',
-
+  // // Episode
   get_all_active_episode: '/Primary/?FlowAlias=bs_media_api_get_list_episode_active&action=api',
   get_all_inactive_episode: '/Primary/?FlowAlias=bs_media_api_get_list_episode_inactive&action=api',
   get_episode_detail: '/Primary/?FlowAlias=bs_media_api_get_episode_detail_by_id&action=api',
   create_episode: '/Primary/?FlowAlias=bs_media_api_create_episode&action=api',
   update_episode: '/Primary/?FlowAlias=bs_media_api_update_episode&action=api',
+
+  // Partner
+  // // Mentor
+  get_mentor_list_by_category_id: '/Primary/?FlowAlias=bs_api_partner_get_all_mentor&action=api',
+  get_all_active_mentor: '/Primary/?FlowAlias=bs_api_partner_get_all_active_mentor&action=api',
+  get_all_inactive_mentor: '/Primary/?FlowAlias=bs_api_partner_get_all_inactive_mentor&action=api',
+  get_mentor_detail: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
+  create_mentor: '/Primary/?FlowAlias=bs_api_partner_create_mentor&action=api',
+  update_mentor: '/Primary/?FlowAlias=bs_api_partner_update_mentor&action=api',
+  set_active_mentor: '/Primary/?FlowAlias=bs_api_partner_set_active_mentor&action=api',
+  generate_timeslot: '/Primary/?FlowAlias=bs_api_partner_generate_timeslot&action=api',
+  set_featured_mentor: '/Primary/?FlowAlias=bs_api_partner_set_featured_mentor&action=api',
+  get_timeslot_by_mentor_id: '/Primary/?FlowAlias=bs_api_inventory_get_timeslot_by_mentor_id&action=api',
+
+  // // Counseling Category
+  get_all_active_counseling_category: '/Primary/?FlowAlias=bs_api_partner_get_all_active_counseling_category&action=api',
+  get_all_inactive_counseling_category: '/Primary/?FlowAlias=bs_api_partner_get_all_inactive_counseling_category&action=api',
+  get_counseling_category_detail: '/Primary/?FlowAlias=bs_api_partner_get_counseling_category_detail&action=api',
+  create_counseling_category: '/Primary/?FlowAlias=bs_api_partner_create_counseling_category&action=api',
+  update_counseling_category: '/Primary/?FlowAlias=bs_api_partner_update_counseling_category&action=api',
+
+  get_career_and_topic: '/Primary/?FlowAlias=bs_api_partner_get_career_and_topic&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -100,6 +123,11 @@ export const episodeActions = {
   inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_EPISODE_LIST',
 };
 
+export const mentorActions = {
+  active_list: 'MYM_PARTNER_MENTOR_OPEN_MENTOR_LIST',
+  inactive_list: 'MYM_PARTNER_MENTOR_OPEN_INACTIVE_MENTOR_LIST',
+};
+
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
   dashboard: '/dashboard/default',
@@ -116,16 +144,6 @@ export const view = {
     },
     detail: {
       save: 'USER_DETAIL_SAVE_FORM_BUTTON',
-    },
-  },
-  mentor: {
-    list: {
-      create: 'MENTOR_LIST_CREATE_MENU_BUTTON',
-    },
-    form: {
-      working: 'MENTOR_DETAIL_WORKDAY_FORM_BUTTON',
-      leave: 'MENTOR_DETAIL_LEAVE_FORM_BUTTON',
-      save: 'MENTOR_DETAIL_SAVE_FORM_BUTTON',
     },
   },
   department: {
@@ -169,6 +187,17 @@ export const view = {
     },
     detail: {
       save: 'MYM_MEDIA_PODCAST_EPISODE_SAVE_FORM_BUTTON',
+    },
+  },
+  mentor: {
+    list: {
+      create: 'MYM_PARTNER_MENTOR_MENTOR_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_MENTOR_MENTOR_SAVE_FORM_BUTTON',
+      workday: 'MYM_PARTNER_MENTOR_WORKDAY_FORM_BUTTON',
+      vacation: 'MYM_PARTNER_MENTOR_VACATION_FORM_BUTTON',
+      generate_timeslot: 'MYM_PARTNER_MENTOR_MENTOR_GENERATE_TIMESLOT_FORM_BUTTON',
     },
   },
 };

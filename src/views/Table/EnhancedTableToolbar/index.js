@@ -49,6 +49,8 @@ const EnhancedTableToolbar = (props) => {
     createEpisode,
     buttonCreatePlaylist,
     createPlaylist,
+    buttonCreateMentor,
+    createMentor,
   } = props;
 
   const filterRef = useRef(null);
@@ -233,6 +235,14 @@ const EnhancedTableToolbar = (props) => {
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createPlaylist}>
               {buttonCreatePlaylist.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonCreateMentor && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createMentor}>
+              {buttonCreateMentor.text}
             </Button>
           </Grid>
         )}

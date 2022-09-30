@@ -35,9 +35,10 @@ const useStyles = makeStyles((theme) => ({
     padding: '30px',
     border: '3px dashed #eeeeee',
     backgroundColor: '#fafafa',
-    color: '#bdbdbd',
+    color: '#6e6e6e',
     cursor: 'pointer',
     marginBottom: '20px',
+    fontSize: '15px',
   },
   progress: {
     marginTop: theme.spacing(2),
@@ -84,7 +85,9 @@ export default function FirebaseUpload(props) {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('File available at', downloadURL);
           setSelectedFile([]);
+          setProgresspercent(0);
           onSuccess(downloadURL);
+          setIsUploading(false);
           onClose();
         });
       }
@@ -99,7 +102,7 @@ export default function FirebaseUpload(props) {
       aria-describedby="simple-modal-description"
     >
       <div style={{ ...modalStyle, width: matchDownXs ? '100%' : '500px' }} className={classes.paper}>
-        <Typography variant="subtitle1">Tải file lên</Typography>
+        <Typography variant="h6">Tải file lên</Typography>
         <Divider className={classes.divider} />
         {!isUploading && (
           <Dropzone multiple={false}>
@@ -108,9 +111,9 @@ export default function FirebaseUpload(props) {
                 <div {...getRootProps({ className: classes.dropzone })}>
                   <input {...getInputProps()} />
                   {selectedFiles.length && selectedFiles[0].name ? (
-                    <div className="selected-file">{selectedFiles.length && selectedFiles[0].name}</div>
+                    <div  className="selected-file">{selectedFiles.length && selectedFiles[0].name}</div>
                   ) : (
-                    'Kéo thả file vào đây, hoặc click để bắt đầu chọn'
+                    'Kéo thả file hoặc bấm vào đây để bắt đầu chọn'
                   )}
                 </div>
               </section>
