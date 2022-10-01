@@ -180,6 +180,7 @@ const DetailDocumentDialog = () => {
     contact: '',
     email_address: '',
     consultant_id: '',
+    topic_name_list: [],
   });
   const [mentor, setMentor] = React.useState({
     fullname: '',
@@ -189,6 +190,7 @@ const DetailDocumentDialog = () => {
     date2: '',
     time1: '',
     time2: '',
+    main_career_category: '',
   });
   const [feedback, setFeedback] = React.useState({
     times: '',
@@ -199,7 +201,11 @@ const DetailDocumentDialog = () => {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    if (!selectedDocument) return;
+    if (!selectedDocument){
+      setDocument({topic_name_list:[]});
+      return;
+    }
+     
     setDocument({
       ...document,
       ...selectedDocument,
@@ -219,7 +225,7 @@ const DetailDocumentDialog = () => {
   }, [selectedDocument]);
 
   const getFeedbackDetail = async (id) => {
-    const data = await getFeedback(id);
+    let data = await getFeedback(id);
     if (data?.times) setFeedback({ ...data });
     else
       setFeedback({
@@ -231,17 +237,19 @@ const DetailDocumentDialog = () => {
   };
 
   const getConsultantDetail = async (id) => {
-    const cons = await getMentorDetail(id);
-    setMentor({ ...mentor, ...cons });
+    
+    let cons = await getMentorDetail(id);
+    setMentor({ ...mentor, ...cons, main_career_category: document.career_category_id});
   };
 
   const getLogDetail = async (id) => {
     const list = await getLog(id);
     if (list.length > 0) setLogs(list);
     else setLogs([]);
-  };
+  }; 
 
   const handleCloseDialog = () => {
+    setDocument({topic_name_list: ['']} );
     setDocumentToDefault();
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
     dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'mentor' });
@@ -253,6 +261,11 @@ const DetailDocumentDialog = () => {
     try {
       const { id, note } = document;
       await setNoteBooking(id, note);
+      setIsOpenSnackbar(true);
+      setSnackbarData({
+        type: 'success',
+        text: 'Thay đổi thông tin thành công!',
+      });
     } catch (error) {
       console.log('error update booking', error);
     }
@@ -296,18 +309,23 @@ const DetailDocumentDialog = () => {
       setEditMentor(null);
     } else if (type === 'mentor') {
       setEditProfile(null);
-      setEditMentor(mentor);
+      setEditMentor({...mentor, career_category_id: document.career_category_id});
     }
   };
 
   const handleSaveEdit = async (data, is_send_email = false) => {
     try {
       if (editProfile) {
-        await updateBooking({
+        const isSuccess = await updateBooking({
           ...document,
           ...data,
           is_send_email,
           outputtype: 'RawJson',
+        });
+        setIsOpenSnackbar(true);
+        setSnackbarData({
+          type: 'success',
+          text: 'Thay đổi thông tin thành công!',
         });
         if (is_send_email) {
           setIsOpenSnackbar(true);
@@ -316,6 +334,7 @@ const DetailDocumentDialog = () => {
             text: 'Hệ thống sẽ tự động gửi mail xác nhận tới địa chỉ email mới!',
           });
         }
+       
       } else if (editMentor) {
         const isSuccess = await updateBookingMentor(document.id, data);
         if (!isSuccess) {
@@ -366,6 +385,11 @@ const DetailDocumentDialog = () => {
       await setNoteBooking(document.id, note, isSend);
       const detailDocument = await getBookingDetail(document.id);
       setDocument({ ...document, ...detailDocument });
+      setIsOpenSnackbar(true);
+      setSnackbarData({
+        type: 'success',
+        text: 'Thay đổi thông tin thành công!',
+      });
     } catch (e) {
     } finally {
       setIsOpenModalNote(false);
@@ -475,14 +499,7 @@ const DetailDocumentDialog = () => {
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Mã đăng ký:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              {document?.id}
-                            </Grid>
-                          </Grid>
+                          
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Họ và tên:</span>
@@ -512,7 +529,15 @@ const DetailDocumentDialog = () => {
                               <span className={classes.tabItemLabelField}>Trình độ học vấn:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              {document.education}
+                              {document.education || document.degree_name}
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Giới tính:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              {document.gender_name}
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -536,23 +561,23 @@ const DetailDocumentDialog = () => {
                               <span className={classes.tabItemLabelField}>Ngành nghề:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              {document.career}
+                              {document.career || document.career_category_name}
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo}>
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Nhu cầu tư vấn:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              {document.demand}
+                            <Grid item lg={8} md={8} xs={8}> 
+                              {((document.topic_name_list != null ) ? document.topic_name_list.join(', ') : '')}
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Mã tư vấn:</span>
+                              <span className={classes.tabItemLabelField}>Tỉnh:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              {document.code}
+                              {document.province_name}
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -560,7 +585,7 @@ const DetailDocumentDialog = () => {
                               <span className={classes.tabItemLabelField}>Trường:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              {document.university_name}
+                              {document.university_name || document.current_school}
                             </Grid>
                           </Grid>
                           <Grid
@@ -624,7 +649,7 @@ const DetailDocumentDialog = () => {
                               <span className={classes.tabItemLabelField}>SĐT:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              {mentor.number_phone}
+                              {mentor.phone_number}
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -632,7 +657,7 @@ const DetailDocumentDialog = () => {
                               <span className={classes.tabItemLabelField}>Nghề nghiệp:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              {mentor.career}
+                              {mentor.title}
                             </Grid>
                           </Grid>
                         </div>
@@ -712,8 +737,7 @@ const DetailDocumentDialog = () => {
                         <div className={classes.tabItemNoteSection}>
                           <div className={classes.tabItemNoteTitleWrap}>
                             <div>
-                              {getDayOfWeek(document?.schedule?.split(' ')[0])} ngày {document?.schedule?.split(' ')[0]}{' '}
-                              - {document?.schedule?.split(' ')[1]}
+                             {document?.time_slot}
                             </div>
                             <div>{document.status}</div>
                           </div>

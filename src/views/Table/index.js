@@ -776,7 +776,7 @@ export default function GeneralTable(props) {
                             <TableCell align="left">{row.email_address || ''}</TableCell>
                           )}
                           {displayOptions.number_phone && <TableCell align="left">{row.number_phone || ''}</TableCell>}
-                          {displayOptions.schedule && <TableCell align="left">{row.schedule || ''}</TableCell>}
+                          {displayOptions.schedule && <TableCell align="left">{row.time_slot || ''}</TableCell>}
                           {displayOptions.career && <TableCell align="left">{row.career || ''}</TableCell>}
                           {displayOptions.assess && (
                             <TableCell align="left">
@@ -863,7 +863,7 @@ export default function GeneralTable(props) {
                             <TableCell align="left">
                               {row.status && (
                                 <span style={style.statusWrap} className={classes[getStatusType(row.status || 'none')]}>
-                                  {row.status}
+                                  {row.status_display}
                                 </span>
                               )}
                             </TableCell>

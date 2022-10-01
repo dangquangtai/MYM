@@ -98,7 +98,7 @@ export const apiEndpoints = {
   get_counselted_counselling_list_by_page:
     '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
   get_uncompleted_counselling_list_by_page:
-    '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
+    '/Primary/?FlowAlias=bs_api_counselling_get_uncompleted_counselling_list&action=api',
   get_cancel_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_cancel_counselling_list&action=api',
   get_handle_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_handle_counselling_list&action=api',
   get_booking_detail: '/Primary/?FlowAlias=bs_api_counselling_get_counselling_detail&action=api',
@@ -111,6 +111,8 @@ export const apiEndpoints = {
   set_note_booking: '/Primary/?FlowAlias=bs_api_counselling_update_note&action=api',
   get_list_note: '/Primary/?FlowAlias=bs_api_counselling_get_note_list&action=api',
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
+
+  get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
