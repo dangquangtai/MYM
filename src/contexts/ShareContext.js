@@ -13,7 +13,7 @@ export const ShareProvider = ({ children }) => {
 
   function getMetadata() {
     axiosInstance
-      .get(apiEndpoints.get_metadata)
+      .post(apiEndpoints.get_metadata, { outputtype: 'RawJson', guest: true })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { province_list: provinces, gender_list: genders, weekday_list: weekday } = response.data;

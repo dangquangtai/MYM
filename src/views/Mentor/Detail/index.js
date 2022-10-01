@@ -616,6 +616,23 @@ const MentorModal = () => {
                               />
                             </Grid>
                           </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Lịch trống gần nhất:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                disabled
+                                fullWidth
+                                type="datetime-local"
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                value={mentorData.next_available_date}
+                                className={classes.inputField}
+                              />
+                            </Grid>
+                          </Grid>
                         </div>
                       </div>
                     </Grid>
@@ -1102,6 +1119,7 @@ const MentorModal = () => {
                                     <TableCell align="center">From Date</TableCell>
                                     <TableCell align="center">To Date</TableCell>
                                     <TableCell align="center">Is Active</TableCell>
+                                    <TableCell align="center">Is Book</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -1119,6 +1137,7 @@ const MentorModal = () => {
                                       <TableCell align="center">
                                         <Switch checked={row.is_active} color="primary" disabled />
                                       </TableCell>
+                                      <TableCell align="center">{row.is_booked ? 'Đã đặt' : 'Chưa đặt'}</TableCell>
                                     </TableRow>
                                   ))}
                                 </TableBody>

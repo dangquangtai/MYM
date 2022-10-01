@@ -11,7 +11,7 @@ export const apiEndpoints = {
   get_project_list: '/Primary/?FlowAlias=bs_menu_api_get_project_list&action=api',
   get_app_list: '/Primary/?FlowAlias=bs_menu_api_get_list_app&action=api',
   get_folders: '/Primary/?FlowAlias=bs_menu_api_get_menu_tree&action=api',
-  get_metadata: '/Primary/?FlowAlias=bs_api_mym_get_meta_data&Guest=true&outputtype=RawJson&action=api',
+  get_metadata: '/Primary/?FlowAlias=bs_api_mym_get_meta_data&action=api',
   // account
   get_all_account: '/Primary/?FlowAlias=hnn_acco_api_get_all_account_by_page&action=api',
   get_all_inaccount: '/Primary/?FlowAlias=hnn_acco_api_get_all_inaccount_by_page&action=api',
