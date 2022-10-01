@@ -83,13 +83,34 @@ export const apiEndpoints = {
   get_timeslot_by_mentor_id: '/Primary/?FlowAlias=bs_api_inventory_get_timeslot_by_mentor_id&action=api',
 
   // // Counseling Category
-  get_all_active_counseling_category: '/Primary/?FlowAlias=bs_api_partner_get_all_active_counseling_category&action=api',
-  get_all_inactive_counseling_category: '/Primary/?FlowAlias=bs_api_partner_get_all_inactive_counseling_category&action=api',
+  get_all_active_counseling_category:
+    '/Primary/?FlowAlias=bs_api_partner_get_all_active_counseling_category&action=api',
+  get_all_inactive_counseling_category:
+    '/Primary/?FlowAlias=bs_api_partner_get_all_inactive_counseling_category&action=api',
   get_counseling_category_detail: '/Primary/?FlowAlias=bs_api_partner_get_counseling_category_detail&action=api',
   create_counseling_category: '/Primary/?FlowAlias=bs_api_partner_create_counseling_category&action=api',
   update_counseling_category: '/Primary/?FlowAlias=bs_api_partner_update_counseling_category&action=api',
 
   get_career_and_topic: '/Primary/?FlowAlias=bs_api_partner_get_career_and_topic&action=api',
+
+  // // Booking
+  get_log_data: '/Primary/?FlowAlias=bs_api_counselling_get_log_activity_list_by_counselling_id&action=api',
+  get_counselted_counselling_list_by_page:
+    '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_counselling_list_by_page:
+    '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
+  get_cancel_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_cancel_counselling_list&action=api',
+  get_handle_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_handle_counselling_list&action=api',
+  get_booking_detail: '/Primary/?FlowAlias=bs_api_counselling_get_counselling_detail&action=api',
+
+  get_mentors_list_by_career_category_id:
+    '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
+  update_booking: '/Primary/?FlowAlias=bs_api_counselling_update_infor_counselling&action=api',
+  get_list_counselling: '/Primary/?FlowAlias=bs_api_counselling_get_list_by_page&action=api',
+  update_booking_mentor: '/Primary/?FlowAlias=bs_api_counselling_update_mentor_and_timeslot&action=api',
+  set_note_booking: '/Primary/?FlowAlias=bs_api_counselling_update_note&action=api',
+  get_list_note: '/Primary/?FlowAlias=bs_api_counselling_get_note_list&action=api',
+  review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -126,6 +147,14 @@ export const episodeActions = {
 export const mentorActions = {
   active_list: 'MYM_PARTNER_MENTOR_OPEN_MENTOR_LIST',
   inactive_list: 'MYM_PARTNER_MENTOR_OPEN_INACTIVE_MENTOR_LIST',
+};
+
+export const counsellingActions = {
+  completed_list: 'MYM_BOOKING_COUNSELING_OPEN_COMPLETED_COUNSELLING_LIST',
+  all_list: 'MYM_BOOKING_COUNSELING_OPEN_COUNSELLING_LIST',
+  cancel_list: 'MYM_BOOKING_COUNSELING_OPEN_CANCEL_COUNSELLING_LIST',
+  handle_list: 'MYM_BOOKING_COUNSELING_OPEN_HANDLE_COUNSELLING_LIST',
+  uncompleted_list: 'MYM_BOOKING_COUNSELING_OPEN_UNCOMPLETED_COUNSELING_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -198,6 +227,13 @@ export const view = {
       workday: 'MYM_PARTNER_MENTOR_WORKDAY_FORM_BUTTON',
       vacation: 'MYM_PARTNER_MENTOR_VACATION_FORM_BUTTON',
       generate_timeslot: 'MYM_PARTNER_MENTOR_MENTOR_GENERATE_TIMESLOT_FORM_BUTTON',
+    },
+  },
+  counselling: {
+    list: {
+      review: 'MYM_BOOKING_COUNSELING_REVIEW',
+      note: 'MYM_BOOKING_COUNSELING_NOTE',
+      meeting: 'MYM_BOOKING_COUNSELING_MEETING',
     },
   },
 };

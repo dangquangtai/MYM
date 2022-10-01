@@ -132,6 +132,10 @@ export default function GeneralTable(props) {
 
   const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
 
+  const buttonBookingMeeting = menuButtons.find((button) => button.name === view.counselling.list.meeting);
+  const buttonBookingReview = menuButtons.find((button) => button.name === view.counselling.list.review);
+  const buttonBookingNote = menuButtons.find((button) => button.name === view.counselling.list.note);
+
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [modalType, setModalType] = React.useState('');
@@ -675,7 +679,10 @@ export default function GeneralTable(props) {
                             </TableCell>
                           )}
                           {displayOptions.title && (
-                            <TableCell style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }} align="left">
+                            <TableCell
+                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                              align="left"
+                            >
                               <>
                                 <span
                                   className={classes.tableItemName}
@@ -763,7 +770,7 @@ export default function GeneralTable(props) {
                           {displayOptions.description && <TableCell align="left">{row.description || ''} </TableCell>}
                           {displayOptions.batch_number && <TableCell align="left">{row.batch_number || ''}</TableCell>}
                           {displayOptions.university_name && (
-                            <TableCell align="left">{row.university_name || ''}</TableCell>
+                            <TableCell align="left">{row.university_name || row.current_school || ''}</TableCell>
                           )}
                           {displayOptions.email_address && (
                             <TableCell align="left">{row.email_address || ''}</TableCell>
@@ -960,6 +967,39 @@ export default function GeneralTable(props) {
                                       }
                                     >
                                       <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingReview && row.is_can_completed && (
+                                  <Tooltip title={buttonBookingReview.text}>
+                                    <Button
+                                      className={classes.handleButton}
+                                      onClick={() => handleOpenModal('review', row)}
+                                    >
+                                      <AssignmentTurnedInIcon className={classes.handleButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingNote && (
+                                  <Tooltip title={buttonBookingNote.text}>
+                                    <Button
+                                      className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                      onClick={() => handleOpenModal('note', row)}
+                                    >
+                                      <NoteAddSharpIcon className={classes.noteButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingMeeting && row.link_meeting !== null && (
+                                  <Tooltip title={buttonBookingMeeting.text}>
+                                    <Button className={`${classes.handleButton} ${classes.handleButtonMeeting}`}>
+                                      <a
+                                        href={row.link_meeting}
+                                        className={`${classes.handleButton} ${classes.handleButtonMeeting}`}
+                                        target="_blank"
+                                      >
+                                        <DuoIcon className={classes.handleButtonIconMeeting} />
+                                      </a>
                                     </Button>
                                   </Tooltip>
                                 )}

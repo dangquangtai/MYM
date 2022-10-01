@@ -9,15 +9,13 @@ export const BookingProvider = ({ children }) => {
   const { setView } = useView();
 
   const getBookingDetail = async (id) => {
-    return axiosInstance
-      .post(apiEndpoints.get_booking_detail, { outputtype: 'RawJson', id })
-      .then((response) => {
-        if (response.status === 200 && response.data.return === 200) {
-          const { data: news, view } = response.data;
-          setView({ ...view, action: 'detail' });
-          return news;
-        } else return {};
-      });
+    return axiosInstance.post(apiEndpoints.get_booking_detail, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { data: news, view } = response.data;
+        setView({ ...view, action: 'detail' });
+        return news;
+      } else return {};
+    });
   };
 
   const updateBooking = async (booking) => {
@@ -47,7 +45,6 @@ export const BookingProvider = ({ children }) => {
         outputtype: 'RawJson',
         id: id,
         action: action,
-
       })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) return true;
@@ -86,7 +83,7 @@ export const BookingProvider = ({ children }) => {
         outputtype: 'RawJson',
         id: id,
         note: note,
-        is_send: is_send
+        is_send: is_send,
       })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) return true;
@@ -106,11 +103,11 @@ export const BookingProvider = ({ children }) => {
         return false;
       })
       .catch(() => false);
-  }
+  };
 
   const getMentorDetail = async (id) => {
     return axiosInstance
-      .post(apiEndpoints.get_mentor_detail, { outputtype: 'RawJson', id })
+      .post(apiEndpoints.get_mentor_detail_by_id, { outputtype: 'RawJson', id, company_code: 'MYM' })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data: mentor } = response.data;
@@ -120,16 +117,14 @@ export const BookingProvider = ({ children }) => {
   };
 
   const getListUniversity = async () => {
-    return axiosInstance
-      .post(apiEndpoints.get_list_university, { outputtype: 'RawJson' })
-      .then((response) => {
-        if (response.status === 200 && response.data.return === 200) {
-          const {
-            data: { list: university },
-          } = response;
-          return university;
-        } else return {};
-      });
+    return axiosInstance.post(apiEndpoints.get_list_university, { outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const {
+          data: { list: university },
+        } = response;
+        return university;
+      } else return {};
+    });
   };
 
   const getFeedback = async (booking_id) => {
@@ -143,60 +138,62 @@ export const BookingProvider = ({ children }) => {
       });
   };
 
-  const getMentorList = async (conditions) => {
+  const getMentorListByCareer = async (id) => {
     return axiosInstance
-      .post(apiEndpoints.get_mentor_list, { outputtype: 'RawJson', ...conditions })
+      .post(apiEndpoints.get_mentor_list_by_category_id, { outputtype: 'RawJson', category_id: id })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { data } = response;
-          return data;
+          const { list } = response.data;
+          return list;
         } else return {};
       });
-  }
+  };
+  const getTimeslotList = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_timeslot_by_mentor_id, { outputtype: 'RawJson', id: id })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return {};
+      });
+  };
 
   const getCareerDemandList = async () => {
-    return axiosInstance
-      .post(apiEndpoints.get_career_demand, { outputtype: 'RawJson' })
-      .then((response) => {
-        if (response.status === 200 && response.data.return === 200) {
-          const { data } = response;
-          return data;
-        } else return {};
-      });
-  }
+    return axiosInstance.post(apiEndpoints.get_career_demand, { outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { data } = response;
+        return data;
+      } else return {};
+    });
+  };
 
   const getStatisticData = async () => {
-    return axiosInstance
-      .post(apiEndpoints.get_statistic_data, { outputtype: 'RawJson' })
-      .then((response) => {
-        if (response.status === 200 && response.data.return === 200) {
-          const { data } = response.data;
-          return data;
-        } else return {};
-      });
-  }
+    return axiosInstance.post(apiEndpoints.get_statistic_data, { outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { data } = response.data;
+        return data;
+      } else return {};
+    });
+  };
 
   const getLog = async (id) => {
-    return axiosInstance
-      .post(apiEndpoints.get_log_data, { id: id, outputtype: 'RawJson' })
-      .then((response) => {
-        if (response.status === 200 && response.data.return === 200) {
-          const { list } = response.data;
-          return list;
-        } else return {};
-      });
-  }
+    return axiosInstance.post(apiEndpoints.get_log_data, { id: id, outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { list } = response.data;
+        return list;
+      } else return {};
+    });
+  };
 
   const getLitsNote = async (id) => {
-    return axiosInstance
-      .post(apiEndpoints.get_list_note, { id: id, outputtype: 'RawJson' })
-      .then((response) => {
-        if (response.status === 200 && response.data.return === 200) {
-          const { list } = response.data;
-          return list;
-        } else return {};
-      });
-  }
+    return axiosInstance.post(apiEndpoints.get_list_note, { id: id, outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { list } = response.data;
+        return list;
+      } else return {};
+    });
+  };
 
   const getFullCalendar = async () => {
     return axiosInstance
@@ -208,7 +205,7 @@ export const BookingProvider = ({ children }) => {
         } else return [];
       })
       .catch(() => []);
-  }
+  };
 
   return (
     <BookingContext.Provider
@@ -222,14 +219,15 @@ export const BookingProvider = ({ children }) => {
         getMentorDetail,
         getListUniversity,
         getFeedback,
-        getMentorList,
+        getTimeslotList,
+        getMentorListByCareer,
         updateBookingMentor,
         getCareerDemandList,
         approveBooking,
         getStatisticData,
         getLog,
         getLitsNote,
-        getFullCalendar
+        getFullCalendar,
       }}
     >
       {children}
