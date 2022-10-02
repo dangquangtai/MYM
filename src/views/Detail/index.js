@@ -161,7 +161,7 @@ const DetailDocumentDialog = () => {
     feedback: tabs.includes('feedback'),
   };
 
-  const buttonSaveBooking = formButtons.find((button) => button.name === view.booking.detail.save);
+  const buttonSaveBooking = formButtons.find((button) => button.name === view.counselling.detail.save);
 
   const handleChangeTab = (event, newValue) => {
     if (newValue === 1) {
@@ -201,11 +201,11 @@ const DetailDocumentDialog = () => {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    if (!selectedDocument){
-      setDocument({topic_name_list:[]});
+    if (!selectedDocument) {
+      setDocument({ topic_name_list: [] });
       return;
     }
-     
+
     setDocument({
       ...document,
       ...selectedDocument,
@@ -237,19 +237,18 @@ const DetailDocumentDialog = () => {
   };
 
   const getConsultantDetail = async (id) => {
-    
     let cons = await getMentorDetail(id);
-    setMentor({ ...mentor, ...cons, main_career_category: document.career_category_id});
+    setMentor({ ...mentor, ...cons, main_career_category: document.career_category_id });
   };
 
   const getLogDetail = async (id) => {
     const list = await getLog(id);
     if (list.length > 0) setLogs(list);
     else setLogs([]);
-  }; 
+  };
 
   const handleCloseDialog = () => {
-    setDocument({topic_name_list: ['']} );
+    setDocument({ topic_name_list: [''] });
     setDocumentToDefault();
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
     dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'mentor' });
@@ -309,7 +308,7 @@ const DetailDocumentDialog = () => {
       setEditMentor(null);
     } else if (type === 'mentor') {
       setEditProfile(null);
-      setEditMentor({...mentor, career_category_id: document.career_category_id});
+      setEditMentor({ ...mentor, career_category_id: document.career_category_id });
     }
   };
 
@@ -334,7 +333,6 @@ const DetailDocumentDialog = () => {
             text: 'Hệ thống sẽ tự động gửi mail xác nhận tới địa chỉ email mới!',
           });
         }
-       
       } else if (editMentor) {
         const isSuccess = await updateBookingMentor(document.id, data);
         if (!isSuccess) {
@@ -499,7 +497,6 @@ const DetailDocumentDialog = () => {
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
-                          
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Họ và tên:</span>
@@ -568,8 +565,8 @@ const DetailDocumentDialog = () => {
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Nhu cầu tư vấn:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}> 
-                              {((document.topic_name_list != null ) ? document.topic_name_list.join(', ') : '')}
+                            <Grid item lg={8} md={8} xs={8}>
+                              {document.topic_name_list != null ? document.topic_name_list.join(', ') : ''}
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -667,6 +664,7 @@ const DetailDocumentDialog = () => {
                           <div className={classes.tabItemAssessTitle}>
                             Đánh giá
                             <img
+                              alt="icon-cup"
                               className={classes.tabItemAssessCup}
                               src="https://icons-for-free.com/download-icon-champion+cup+trophy+icon-1320166580183052831_256.png"
                             />
@@ -736,20 +734,24 @@ const DetailDocumentDialog = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemNoteSection}>
                           <div className={classes.tabItemNoteTitleWrap}>
-                            <div>
-                             {document?.time_slot}
-                            </div>
+                            <div>{document?.time_slot}</div>
                             <div>{document.status}</div>
                           </div>
 
                           {!!document.link_record ? (
                             <a href={document.link_record} target="_blank">
-                              <img src="https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/images%2Fmovie-850.png?alt=media&token=dfb9ed6a-9d7a-45b5-822d-ed124ed98cab" />
+                              <img
+                                alt="google meet"
+                                src="https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/images%2Fmovie-850.png?alt=media&token=dfb9ed6a-9d7a-45b5-822d-ed124ed98cab"
+                              />
                               <div>Xem lại record</div>
                             </a>
                           ) : (
                             <a href={document?.link_meeting || '#'} target="_blank">
-                              <img src="https://play-lh.googleusercontent.com/GBYSf20osBl2CRHbjGOyaOG5kQ3G4xbRau-dzScU9ozuXQJtnUZPkR3IqEDOo5OiVgU" />
+                              <img
+                                alt="record"
+                                src="https://play-lh.googleusercontent.com/GBYSf20osBl2CRHbjGOyaOG5kQ3G4xbRau-dzScU9ozuXQJtnUZPkR3IqEDOo5OiVgU"
+                              />
                               <div>Tham gia meeting</div>
                             </a>
                           )}

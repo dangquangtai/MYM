@@ -237,5 +237,8 @@ export const view = {
       note: 'MYM_BOOKING_COUNSELING_NOTE',
       meeting: 'MYM_BOOKING_COUNSELING_MEETING',
     },
+    detail: {
+      save: 'MYM_BOOKING_COUNSELING_SAVE_FORM_BUTTON',
+    },
   },
 };

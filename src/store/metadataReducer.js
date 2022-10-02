@@ -4,6 +4,9 @@ export const initialState = {
   provinces: [],
   genders: [],
   weekday: [],
+  degree: [],
+  careers: [],
+  topics: [],
 };
 
 const metadataReducer = (state = initialState, action) => {
@@ -13,7 +16,10 @@ const metadataReducer = (state = initialState, action) => {
         ...state,
         provinces: action.provinces,
         genders: action.genders,
-        weekday: action.weekday
+        weekday: action.weekday,
+        degree: action.degree,
+        careers: action.careers,
+        topics: action.topics,
       };
     default:
       return state;
