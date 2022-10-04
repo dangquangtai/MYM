@@ -46,7 +46,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { format as formatDate } from 'date-fns';
 import useMedia from './../../hooks/useMedia';
 import axiosInstance from '../../services/axios';
-
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
@@ -381,6 +381,7 @@ export default function GeneralTable(props) {
       setIsOpenModal(false);
       setModalType('');
       reloadCurrentDocuments();
+      console.log("xczxc")
     }
   };
 
@@ -998,7 +999,7 @@ export default function GeneralTable(props) {
                                       className={`${classes.handleButton} ${classes.handleButtonCancel}`}
                                       onClick={() => handleOpenModal('cancel',row)}
                                     >
-                                      <CancelIcon className={classes.noteButtonIcon} />
+                                      <DeleteForeverIcon className={classes.noteButtonIcon} />
                                     </Button>
                                   </Tooltip>
                                 )}
