@@ -106,8 +106,8 @@ const PodcastModal = () => {
   const { getMentorbyCategory } = usePartner();
   const [categories, setCategories] = useState([]);
   const [mentorList, setMentorList] = useState([]);
-  const [initEpisodes, setInitEpisodes] = useState({});
-  const [episodes, setEpisodes] = useState({});
+  const [initEpisodes, setInitEpisodes] = useState([]);
+  const [episodes, setEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState('');
   const [selectedEpisodes, setSelectedEpisodes] = useState([]);
 
