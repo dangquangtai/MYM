@@ -145,6 +145,16 @@ const MentorModal = () => {
   };
 
   const setDocumentToDefault = async () => {
+    setCareer({
+      one: [],
+      two: [],
+      three: [],
+    });
+    setTopic({
+      one: [],
+      two: [],
+      three: [],
+    });
     setTabIndex(0);
   };
   const setURL = (image) => {
@@ -162,7 +172,13 @@ const MentorModal = () => {
     const {
       target: { name, value },
     } = event;
-    setMentorData({ ...mentorData, [name]: value });
+    if (name === 'counselling_category1_id')
+      setMentorData((mentorData) => ({ ...mentorData, counselling_topic1_id: [] }));
+    if (name === 'counselling_category2_id')
+      setMentorData((mentorData) => ({ ...mentorData, counselling_topic2_id: [] }));
+    if (name === 'counselling_category3_id')
+      setMentorData((mentorData) => ({ ...mentorData, counselling_topic3_id: [] }));
+    setMentorData((mentorData) => ({ ...mentorData, [name]: value }));
   };
 
   const handleSubmitForm = async () => {
@@ -255,48 +271,28 @@ const MentorModal = () => {
 
   useEffect(() => {
     setCareer({
-      ...career,
       one: categories?.career?.filter((item) => item.counselling_category_id === mentorData?.counselling_category1_id),
-    });
-    setTopic({
-      ...topic,
-      one:
-        categories?.topic?.filter((item) => item.counselling_category_id === mentorData?.counselling_category1_id) ||
-        [],
-    });
-    setMentorData({...mentorData, career_category1_id: '', counselling_topic1_id: []})
-  }, [mentorData?.counselling_category1_id]);
-
-  useEffect(() => {
-    setCareer({
-      ...career,
       two: categories?.career?.filter((item) => item.counselling_category_id === mentorData?.counselling_category2_id),
-    });
-    setTopic({
-      ...topic,
-      two:
-        categories?.topic?.filter((item) => item.counselling_category_id === mentorData?.counselling_category2_id) ||
-        [],
-    });
-    setMentorData({...mentorData, career_category2_id: '', counselling_topic2_id: []})
-  }, [mentorData?.counselling_category2_id]);
-
-  useEffect(() => {
-    setCareer({
-      ...career,
       three: categories?.career?.filter(
         (item) => item.counselling_category_id === mentorData?.counselling_category3_id
       ),
     });
     setTopic({
-      ...topic,
+      one:
+        categories?.topic?.filter((item) => item.counselling_category_id === mentorData?.counselling_category1_id) ||
+        [],
+      two:
+        categories?.topic?.filter((item) => item.counselling_category_id === mentorData?.counselling_category2_id) ||
+        [],
       three:
         categories?.topic?.filter((item) => item.counselling_category_id === mentorData?.counselling_category3_id) ||
         [],
     });
-    setMentorData({...mentorData, career_category3_id: '', counselling_topic3_id: []})
-    // console.log(mentorData)
-  }, [mentorData?.counselling_category3_id]);
+  }, [
+    mentorData?.counselling_category1_id,
+    mentorData?.counselling_category2_id,
+    mentorData?.counselling_category3_id,
+  ]);
 
   return (
     <React.Fragment>
@@ -811,9 +807,9 @@ const MentorModal = () => {
                                   </div>
                                 )}
                               >
-                                {topic?.career?.map((item) => (
-                                  <MenuItem key={item} value={item}>
-                                    {item}
+                                {topic?.two?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.value}
                                   </MenuItem>
                                 ))}
                               </Select>

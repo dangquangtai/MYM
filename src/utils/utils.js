@@ -7,6 +7,7 @@ import {
   episodeActions,
   playlistActions,
   mentorActions,
+  counsellingActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -55,6 +56,21 @@ export function getUrlByAction(selectedFolder) {
     }
     case mentorActions.inactive_list: {
       return apiEndpoints.get_all_inactive_mentor;
+    }
+    case counsellingActions.completed_list: {
+      return apiEndpoints.get_counselted_counselling_list_by_page;
+    }
+    case counsellingActions.cancel_list: {
+      return apiEndpoints.get_cancel_counselling_list_by_page;
+    }
+    case counsellingActions.handle_list: {
+      return apiEndpoints.get_handle_counselling_list_by_page;
+    }
+    case counsellingActions.all_list: {
+      return apiEndpoints.get_list_counselling;
+    }
+    case counsellingActions.uncompleted_list: {
+      return apiEndpoints.get_uncompleted_counselling_list_by_page;
     }
 
     default: {

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Modal, Grid, TextField, MenuItem, Select } from '@material-ui/core';
-import { gridSpacing } from '../../../store/constant.js';
+import { counsellingActions, gridSpacing } from '../../../store/constant.js';
 import useStyles from '../classes';
 import useBooking from '../../../hooks/useBooking';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ClearIcon from '@material-ui/icons/Clear';
-
+import useMetaData from '../../../hooks/useMetaData';
+import { update } from 'lodash';
+import { useSelector } from 'react-redux';
 const labelDay = {
-  Monday: 'Thứ 2',
-  Tuesday: 'Thứ 3',
-  Wednesday: 'Thứ 4',
-  Thursday: 'Thứ 5',
-  Friday: 'Thứ 6',
-  Saturday: 'Thứ 7',
-  Sunday: 'Chủ nhật',
+  MYM_MONDAY: 'Thứ 2',
+  MYM_TUESDAY: 'Thứ 3',
+  MYM_WEDNESDAY: 'Thứ 4',
+  MYM_THURSDAY: 'Thứ 5',
+  MYM_FRIDAY: 'Thứ 6',
+  MYM_SATURDAY: 'Thứ 7',
+  MYM_SUNDAY: 'Chủ nhật',
 };
 
 const style = {
@@ -22,7 +24,7 @@ const style = {
     textAlign: 'center',
     marginBottom: '20px',
     fontWeight: 'bold',
-    position: 'relative'
+    position: 'relative',
   },
   buttonWrap: {
     marginTop: '12px',
@@ -43,147 +45,156 @@ const style = {
     top: 0,
     right: 0,
     padding: 0,
-    minWidth: '20px'
-  }
+    minWidth: '20px',
+  },
 };
 
 const labelSessionDate = {
   morning: 'Sáng',
   afternoon: 'Chiều',
   night: 'Tối',
-  weekend: 'Cuối tuần'
-}
+  weekend: 'Cuối tuần',
+};
 
 export default function EditModal({ profile, mentor, document, isOpen, handleClose, handleSubmit, handleGoBack }) {
-
-  const { getMentorList, getCareerDemandList, getMentorDetail } = useBooking();
-
+  const { getMentorListByCareer, getMentorDetail, getTimeslotList } = useBooking();
+  const { getCareerTopicList, getCareerCategoryList, getProvinceList, getDegreeList, getGenderList } = useMetaData();
   const classes = useStyles();
   const [isDisabledSaving, setIsDisabledSaving] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    career: '',
-    demand: ''
-  });
+  const [formData, setFormData] = useState({ email: '', number_phone: '' });
 
-  const [mentorFormData, setMentorFormData] = useState({
-    mentor_id: '',
-    schedule_id: '',
-    date: ''
-  });
+  const [mentorFormData, setMentorFormData] = useState({ id: '' });
 
-  const [currentMentor, setCurrentMentor] = useState({})
-
+  const [currentMentor, setCurrentMentor] = useState();
+  const [timeslot, setTimeslot] = useState([]);
   const [formDemand, setFormDemand] = useState([]);
 
   const [selectedMentor, setSelectedMentor] = useState({});
 
   const [mentorList, setMentorList] = useState([]);
 
-  const [careerDemandList, setCareerDemandList] = useState({
-    career: [],
-    demand: []
-  });
+  const {
+    provinces: provinceList,
+    genders: genderList,
+    degree: degreeList,
+    careers: careerCategoryList,
+    topics: careerTopicList,
+  } = useSelector((state) => state.metadata);
 
   const [sessionDate, setSessionDate] = useState({
     morning: false,
     afternoon: false,
     night: false,
-    weekend: false
+    weekend: false,
+  });
+
+  const [updateMentor, setUpdateMentor] = useState({
+    mentor_id: '',
+    timeslot_id: '',
+    id: '',
   });
 
   const handleSubmitForm = async () => {
     if (profile) {
       handleSubmit(formData, formData.email !== formData.email_address);
     } else {
-      handleSubmit(mentorFormData);
+      handleSubmit(updateMentor);
     }
-  }
+  };
 
   const handleChangeDemand = (event) => {
-    const { target: { value } } = event;
+    const {
+      target: { value },
+    } = event;
     setFormDemand(typeof value === 'string' ? value.split(',') : value);
     setFormData({ ...formData, demand: value.join(',') });
-  }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleMentorChange = async (e) => {
     if (e.target.name === 'mentor_id') {
-      const currentSelectedMentor = mentorList.find(item => item.id === e.target.value) || mentorList[0] || undefined;
-      if(currentSelectedMentor) {
-        setMentorFormData({ ...mentorFormData, [e.target.name]: e.target.value, schedule_id: currentSelectedMentor?.schedule[0]?.id || '' });
-        setSelectedMentor(currentSelectedMentor);
+      let currentSelectedMentor = mentorList.find((item) => item.id === e.target.value) || mentorList[0] || undefined;
+      if (currentSelectedMentor) {
+        let mentor = await getMentorDetail(e.target.value);
+        setMentorFormData(mentor);
       }
       const detailMentor = await getMentorDetail(e.target.value);
       setCurrentMentor(detailMentor);
+      let timeslotAPI = await getTimeslotList(e.target.value);
+      setTimeslot(timeslotAPI);
       return;
     }
     setMentorFormData({ ...mentorFormData, [e.target.name]: e.target.value, schedule_id: '' });
-  }
+  };
 
   const handleClickSchedule = (id) => {
     setMentorFormData({ ...mentorFormData, schedule_id: id, date: '' });
-  }
+    setUpdateMentor({ mentor_id: mentorFormData.id, timeslot_id: id });
+  };
 
-  const convertDateTime = (date, time) => {
+  const convertDateTime = (date, time, time2, datetime, datetime2) => {
     if (!date && !time) return '';
-    const hour = time.split('-');
-    return labelDay[date] + ' ' + hour[0] + 'h - ' + hour[1] + 'h';
+
+    return (
+      labelDay[date] +
+      ' ' +
+      time +
+      'h - ' +
+      time2 +
+      'h ' +
+      '( ' +
+      datetime.split('T')[0] +
+      ' - ' +
+      datetime2.split('T')[0] +
+      ' )'
+    );
   };
 
   const handleClickButtonSession = (type) => {
     const newSessionDate = { ...sessionDate, [type]: !sessionDate[type] };
     setSessionDate(newSessionDate);
     const session = Object.keys(newSessionDate)
-      .filter(item => newSessionDate[item])
-      .map(item => labelSessionDate[item])
+      .filter((item) => newSessionDate[item])
+      .map((item) => labelSessionDate[item])
       .join(',');
-    getAndSetListMentor({ session })
-  }
+    getAndSetListMentor({ session });
+  };
 
   const getAndSetListMentor = async (data) => {
-    const conditions = {
-      career: document.career,
-      demand: document.demand,
-      ...data
-    }
-    const mentors = await getMentorList(conditions);
-    const currentSelectedMentor = mentors.list.find(item => item.id === mentor.id) || mentors[0] || undefined;
-    if(currentSelectedMentor) {
-      setMentorFormData({ ...mentorFormData, mentor_id: mentor.id, schedule_id: currentSelectedMentor?.schedule[0]?.id || ''  });
-      setSelectedMentor(currentSelectedMentor);
-    }
-    setMentorList(mentors.list);
-  }
+    // const conditions = {
+    //   career: document.career,
+    //   demand: document.demand,
+    //   ...data
+    // }
+    let mentors = await getMentorListByCareer(mentor.career_category_id);
 
-  const getAndSetCareerAndDemandList = async () => {
-    const result = await getCareerDemandList();
-    setCareerDemandList({
-      career: result.career,
-      demand: result.demand
-    })
-  }
+    setMentorFormData({ id: mentor.id, ...mentor, schedule_id: document.time_slot_id });
 
+    setMentorList(mentors);
+    let timeslotapi = await getTimeslotList(mentor.id);
+    setTimeslot(timeslotapi);
+  };
 
   useEffect(() => {
     if (profile?.email_address) {
-      getAndSetCareerAndDemandList();
-      setFormDemand(profile.demand.split(','))
+      // getTocpicAndCareerCategory();
+      if (profile?.demand) {
+        setFormDemand(profile.demand.split(','));
+      }
       setFormData({
         email: profile.email_address,
-        phone: profile.number_phone,
-        ...profile
-      })
-
+        number_phone: profile.number_phone,
+        ...profile,
+      });
     }
     if (mentor && document) {
+      setCurrentMentor(mentor);
       getAndSetListMentor({
-        session: ""
+        session: '',
       });
-      setCurrentMentor(mentor)
     }
   }, [profile, mentor]);
 
@@ -199,22 +210,14 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
           <div id="modal-modal-title" style={style.title} variant="h6" component="h2">
             {mentor && (
               <div style={{ float: 'left' }}>
-                <Button
-                  className={classes.buttonClose}
-                  onClick={() => handleGoBack('profile')}
-                >
+                <Button className={classes.buttonClose} onClick={() => handleGoBack('profile')}>
                   <ArrowBackIcon />
                 </Button>
               </div>
             )}
+            <div>{profile ? 'Chỉnh sửa thông tin khách hàng' : 'Chỉnh sửa thông tin Mentor'}</div>
             <div>
-              {profile ? 'Chỉnh sửa thông tin khách hàng' : 'Chỉnh sửa thông tin Mentor'}
-            </div>
-            <div>
-              <Button
-                style={style.closeButton}
-                onClick={handleClose}
-              >
+              <Button style={style.closeButton} onClick={handleClose}>
                 <ClearIcon />
               </Button>
             </div>
@@ -223,7 +226,7 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
             {profile && (
               <>
                 <Grid container className={classes.gridItem} alignItems="center">
-                  <Grid item lg={4} md={4} xs={12} >
+                  <Grid item lg={4} md={4} xs={12}>
                     <span className={classes.tabItemLabelField}>Họ và tên:</span>
                   </Grid>
                   <Grid item lg={8} md={8} xs={12}>
@@ -266,8 +269,8 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                       rows={1}
                       rowsMax={1}
                       variant="outlined"
-                      name="phone"
-                      value={formData?.phone}
+                      name="number_phone"
+                      value={formData?.number_phone}
                       className={classes.inputField}
                       onChange={handleChange}
                     />
@@ -278,16 +281,21 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                     <span className={classes.tabItemLabelField}>Trình độ học vấn:</span>
                   </Grid>
                   <Grid item lg={8} md={8} xs={12}>
-                    <TextField
-                      fullWidth
-                      rows={1}
-                      rowsMax={1}
-                      variant="outlined"
-                      name="education"
-                      value={formData?.education}
-                      className={classes.inputField}
-                      onChange={handleChange}
-                    />
+                    <Select
+                      className={classes.multpleSelectField}
+                      value={formData.degree_id || ''}
+                      onChange={(event) => setFormData({ ...formData, degree_id: event.target.value })}
+                    >
+                      <MenuItem value="">
+                        <em>Không chọn</em>
+                      </MenuItem>
+                      {degreeList &&
+                        degreeList.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.value}
+                          </MenuItem>
+                        ))}
+                    </Select>
                   </Grid>
                 </Grid>
                 <Grid container className={classes.gridItem} alignItems="center">
@@ -330,21 +338,21 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                   </Grid>
                   <Grid item lg={8} md={8} xs={12}>
                     <Select
-                      name="career"
                       labelId="demo-multiple-name-label-1"
                       id="demo-multiple-name-1"
                       className={classes.multpleSelectField}
-                      value={formData.career}
-                      onChange={handleChange}
+                      value={formData.career_category_id || ''}
+                      onChange={(event) => setFormData({ ...formData, career_category_id: event.target.value })}
                     >
-                      {careerDemandList?.career?.map((item) => (
-                        <MenuItem
-                          key={item}
-                          value={item}
-                        >
-                          {item}
-                        </MenuItem>
-                      ))}
+                      <MenuItem value="">
+                        <em>Không chọn</em>
+                      </MenuItem>
+                      {careerCategoryList &&
+                        careerCategoryList.map((item) => (
+                          <MenuItem key={item.id} value={item.id} selected={formData.career_category_id === item.id}>
+                            {item.value}
+                          </MenuItem>
+                        ))}
                     </Select>
                   </Grid>
                 </Grid>
@@ -354,19 +362,14 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                   </Grid>
                   <Grid item lg={8} md={8} xs={12}>
                     <Select
-                      labelId="demo-multiple-name-label"
-                      id="demo-multiple-name"
-                      multiple
+                      multiple={true}
                       className={classes.multpleSelectField}
-                      value={formDemand}
-                      onChange={handleChangeDemand}
+                      value={formData.topic_id_list || []}
+                      onChange={(event) => setFormData({ ...formData, topic_id_list: event.target.value })}
                     >
-                      {careerDemandList.demand.map((item) => (
-                        <MenuItem
-                          key={item}
-                          value={item}
-                        >
-                          {item}
+                      {careerTopicList?.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.value}
                         </MenuItem>
                       ))}
                     </Select>
@@ -374,19 +377,40 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                 </Grid>
                 <Grid container className={classes.gridItem} alignItems="center">
                   <Grid item lg={4} md={4} xs={12}>
-                    <span className={classes.tabItemLabelField}>Mã tư vấn:</span>
+                    <span className={classes.tabItemLabelField}>Giới tính:</span>
                   </Grid>
                   <Grid item lg={8} md={8} xs={12}>
-                    <TextField
-                      disabled
-                      fullWidth
-                      rows={1}
-                      rowsMax={1}
-                      variant="outlined"
-                      name="id"
-                      defaultValue={profile.id}
-                      className={classes.inputField}
-                    />
+                    <Select
+                      className={classes.multpleSelectField}
+                      value={formData.gender_id || ''}
+                      onChange={(event) => setFormData({ ...formData, gender_id: event.target.value })}
+                    >
+                      {genderList &&
+                        genderList.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.value}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </Grid>
+                </Grid>
+                <Grid container className={classes.gridItem} alignItems="center">
+                  <Grid item lg={4} md={4} xs={12}>
+                    <span className={classes.tabItemLabelField}>Tỉnh:</span>
+                  </Grid>
+                  <Grid item lg={8} md={8} xs={12}>
+                    <Select
+                      className={classes.multpleSelectField}
+                      value={formData.province_id || ''}
+                      onChange={(event) => setFormData({ ...formData, province_id: event.target.value })}
+                    >
+                      {provinceList &&
+                        provinceList.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.value}
+                          </MenuItem>
+                        ))}
+                    </Select>
                   </Grid>
                 </Grid>
                 <Grid container className={classes.gridItem} alignItems="center">
@@ -395,13 +419,12 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                   </Grid>
                   <Grid item lg={8} md={8} xs={12}>
                     <TextField
-                      disabled
                       fullWidth
                       rows={1}
                       rowsMax={1}
                       variant="outlined"
-                      name="university_name"
-                      value={formData?.university_name}
+                      name="current_school"
+                      value={formData?.current_school}
                       className={classes.inputField}
                       onChange={handleChange}
                     />
@@ -427,11 +450,12 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                 </Grid>
               </>
             )}
+
             {mentor && (
               <Grid container>
-                <Grid item lg={6} md={6} xs={12} style={{ paddingRight: '20px', borderRight: '1px solid #000' }} >
+                <Grid item lg={6} md={6} xs={12} style={{ paddingRight: '20px', borderRight: '1px solid #000' }}>
                   <Grid container className={classes.gridItem} alignItems="center">
-                    <Grid item lg={4} md={4} xs={12} >
+                    <Grid item lg={4} md={4} xs={12}>
                       <span className={classes.tabItemLabelField}>Họ và tên:</span>
                     </Grid>
                     <Grid item lg={8} md={8} xs={12}>
@@ -440,67 +464,39 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                         labelId="demo-multiple-name-label-2"
                         id="demo-multiple-name-2"
                         className={classes.multpleSelectField}
-                        value={mentorFormData.mentor_id}
+                        value={mentorFormData.id}
                         onChange={handleMentorChange}
                       >
-                        {mentorList?.map(mentorInfo => (
-                          <MenuItem key={mentorInfo.id} value={mentorInfo.id} >{mentorInfo.fullname}</MenuItem>
+                        {mentorList?.map((mentorInfo) => (
+                          <MenuItem key={mentorInfo.id} value={mentorInfo.id}>
+                            {mentorInfo.fullname}
+                          </MenuItem>
                         ))}
                       </Select>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.gridItem} alignItems="center">
-                    <Grid item lg={4} md={4} xs={12} >
+                    <Grid item lg={4} md={4} xs={12}>
                       <span className={classes.tabItemLabelField}>Lịch cố định:</span>
-                    </Grid>
-                    <Grid item lg={8} md={8} xs={12} className={classes.buttonScheduleWrap}>
-                      <button className={`${classes.buttonSchedule} ${sessionDate.morning ? 'active' : ''}`} onClick={() => handleClickButtonSession('morning')}>
-                        Sáng
-                      </button>
-                      <button className={`${classes.buttonSchedule} ${sessionDate.afternoon ? 'active' : ''}`} onClick={() => handleClickButtonSession('afternoon')}>
-                        Chiều
-                      </button>
-                      <button className={`${classes.buttonSchedule} ${sessionDate.night ? 'active' : ''}`} onClick={() => handleClickButtonSession('night')}>
-                        Tối
-                      </button>
-                      <button className={`${classes.buttonSchedule} ${sessionDate.weekend ? 'active' : ''}`} onClick={() => handleClickButtonSession('weekend')}>
-                        Cuối tuần
-                      </button>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.gridItem} style={{ justifyContent: 'center' }} alignItems="center">
-                    {selectedMentor?.schedule?.map(item => (
+                    {timeslot?.map((item) => (
                       <div
                         key={item.id}
                         onClick={() => handleClickSchedule(item.id)}
-                        className={`${classes.mentorSchedule} ${mentorFormData.schedule_id === item.id ? 'active' : ''}`}
+                        className={`${classes.mentorSchedule} ${
+                          mentorFormData.schedule_id === item.id ? 'active' : ''
+                        }`}
                       >
-                        <div>{labelDay[item.day]}</div>
-                        <div>{item.date1}</div>
-                        <div>{item.hour}:00</div>
+                        <div>{item.weekday}</div>
+                        <div>{item.from_date.split('T')[0] || ''}</div>
+                        <div>{item.from_date.split('T')[1] || ''}</div>
                       </div>
                     ))}
                   </Grid>
-                  <Grid container className={classes.gridItem} alignItems="center">
-                    <Grid item lg={4} md={4} xs={12} >
-                      <span className={classes.tabItemLabelField}>Lịch linh động:</span>
-                    </Grid>
-                    <Grid item lg={8} md={8} xs={12}>
-                      <TextField
-                        id="datetime-local"
-                        type="datetime-local"
-                        name="date"
-                        value={mentorFormData.date}
-                        className={classes.inputField}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={handleMentorChange}
-                      />
-                    </Grid>
-                  </Grid>
                 </Grid>
-                <Grid item lg={6} md={6} xs={12} style={{ paddingLeft: '20px' }} >
+                <Grid item lg={6} md={6} xs={12} style={{ paddingLeft: '20px' }}>
                   <Grid container className={classes.gridItem} alignItems="center">
                     <Grid item lg={4} md={4} xs={12}>
                       <span className={classes.tabItemLabelField}>Họ và tên</span>
@@ -546,8 +542,8 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                         rows={1}
                         rowsMax={1}
                         variant="outlined"
-                        name="number_phone"
-                        value={currentMentor?.number_phone}
+                        name="phone_number"
+                        value={currentMentor?.phone_number}
                         className={classes.inputField}
                       />
                     </Grid>
@@ -592,16 +588,27 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                       <span className={classes.tabItemLabelField}>Workday 1:</span>
                     </Grid>
                     <Grid item lg={8} md={8} xs={12}>
-                      <TextField
-                        disabled
-                        fullWidth
-                        rows={1}
-                        rowsMax={1}
-                        variant="outlined"
-                        name="weakness"
-                        value={convertDateTime(currentMentor?.date1, currentMentor?.time1)}
-                        className={classes.inputField}
-                      />
+                      {currentMentor?.workday?.length > 0 && (
+                        <TextField
+                          disabled
+                          fullWidth
+                          rows={1}
+                          rowsMax={1}
+                          variant="outlined"
+                          name="weakness"
+                          value={
+                            currentMentor &&
+                            convertDateTime(
+                              currentMentor?.workday[0].week_day,
+                              currentMentor?.workday[0].from_hour,
+                              currentMentor?.workday[0].to_hour,
+                              currentMentor?.workday[0].applicable_from_date,
+                              currentMentor?.workday[0].applicable_to_date
+                            )
+                          }
+                          className={classes.inputField}
+                        />
+                      )}
                     </Grid>
                   </Grid>
                   <Grid container className={classes.gridItem} alignItems="center">
@@ -609,16 +616,24 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
                       <span className={classes.tabItemLabelField}>Workday 2:</span>
                     </Grid>
                     <Grid item lg={8} md={8} xs={12}>
-                      <TextField
-                        disabled
-                        fullWidth
-                        rows={1}
-                        rowsMax={1}
-                        variant="outlined"
-                        name="career"
-                        value={convertDateTime(currentMentor?.date2, currentMentor?.time2)}
-                        className={classes.inputField}
-                      />
+                      {currentMentor?.workday?.length > 1 && (
+                        <TextField
+                          disabled
+                          fullWidth
+                          rows={1}
+                          rowsMax={1}
+                          variant="outlined"
+                          name="career"
+                          value={convertDateTime(
+                            currentMentor?.workday[1].week_day,
+                            currentMentor?.workday[1].from_hour,
+                            currentMentor?.workday[1].to_hour,
+                            currentMentor?.workday[1].applicable_from_date,
+                            currentMentor?.workday[1].applicable_to_date
+                          )}
+                          className={classes.inputField}
+                        />
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
@@ -627,23 +642,20 @@ export default function EditModal({ profile, mentor, document, isOpen, handleClo
           </div>
           <div id="modal-modal-footer" sx={{ mt: 2 }}>
             <div style={style.buttonWrap}>
-              <Button
-                type="button"
-                variant="contained"
-                style={style.buttonCancel}
-                onClick={() => handleClose(true)}
-              >
+              <Button type="button" variant="contained" style={style.buttonCancel} onClick={() => handleClose(true)}>
                 Huỷ bỏ
               </Button>
-              <Button
-                disabled={isDisabledSaving}
-                type="button"
-                variant="contained"
-                style={style.buttonSubmit}
-                onClick={handleSubmitForm}
-              >
-                Lưu
-              </Button>
+              {(timeslot.length > 0 || profile) && (
+                <Button
+                  disabled={isDisabledSaving}
+                  type="button"
+                  variant="contained"
+                  style={style.buttonSubmit}
+                  onClick={handleSubmitForm}
+                >
+                  Lưu
+                </Button>
+              )}
             </div>
           </div>
         </Box>

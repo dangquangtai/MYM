@@ -27,7 +27,7 @@ import { BatchProvider } from './../contexts/BatchContext';
 import { ChartProvider } from './../contexts/ChartContext';
 import { MediaProvider } from './../contexts/MediaContext';
 import { ShareProvider } from './../contexts/ShareContext';
-
+import { MetaDataProvider } from './../contexts/MetaDataContext';
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -78,8 +78,11 @@ const App = () => {
                                           <RoleProvider>
                                             <MediaProvider>
                                               <ShareProvider>
+                                                <MetaDataProvider>
                                                 <Routes />
                                                 <Snackbar />
+                                                </MetaDataProvider>
+                                               
                                               </ShareProvider>
                                             </MediaProvider>
                                           </RoleProvider>
