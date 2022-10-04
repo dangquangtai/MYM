@@ -23,6 +23,7 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import StarIcon from '@material-ui/icons/Star';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
 import { CONFIRM_CHANGE, DOCUMENT_CHANGE, FLOATING_MENU_CHANGE, TASK_CHANGE } from '../../store/actions';
 import { gridSpacing, view } from '../../store/constant';
@@ -67,7 +68,7 @@ export default function GeneralTable(props) {
 
   useEffect(() => {
     const initOptions = {
-      id: tableColumns.includes('booking_id'),
+      id: tableColumns.includes('id'),
       image_url: tableColumns.includes('image_url'),
       title: tableColumns.includes('title'),
       description: tableColumns.includes('description'),
@@ -135,6 +136,7 @@ export default function GeneralTable(props) {
   const buttonBookingMeeting = menuButtons.find((button) => button.name === view.counselling.list.meeting);
   const buttonBookingReview = menuButtons.find((button) => button.name === view.counselling.list.review);
   const buttonBookingNote = menuButtons.find((button) => button.name === view.counselling.list.note);
+  const buttonBookingCancel = menuButtons.find((button) => button.name === view.counselling.list.cancel);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -183,7 +185,7 @@ export default function GeneralTable(props) {
 
   const { getDocuments } = useTask();
 
-  const { getBookingDetail, approveBooking, reviewBooking, setNoteBooking, setCompletedBooking, getListUniversity } =
+  const { getBookingDetail, approveBooking, reviewBooking, setNoteBooking, setCompletedBooking, getListUniversity , cancelBooking} =
     useBooking();
 
   const { activeDepartment, getDepartmentDetail } = useDepartment();
@@ -371,9 +373,9 @@ export default function GeneralTable(props) {
     }
   };
 
-  const handleCancelBooking = async (data) => {
+  const handleCancelBooking = async () => {
     try {
-      await reviewBooking(selected[0], data.status);
+      await cancelBooking(selected[0]);
     } catch (e) {
     } finally {
       setIsOpenModal(false);
@@ -647,7 +649,7 @@ export default function GeneralTable(props) {
                           {displayOptions.id && (
                             <TableCell align="left">
                               <div className={classes.tableItemID} onClick={(event) => openDetailDocument(event, row)}>
-                                <div>{row.id}</div>
+                                <div>{ row.case_number}</div>
                                 <div>{formatDateTime(row.created_date)}</div>
                               </div>
                             </TableCell>
@@ -987,6 +989,16 @@ export default function GeneralTable(props) {
                                       onClick={() => handleOpenModal('note', row)}
                                     >
                                       <NoteAddSharpIcon className={classes.noteButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonBookingCancel && (
+                                  <Tooltip title={buttonBookingCancel.text}>
+                                    <Button
+                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
+                                      onClick={() => handleOpenModal('cancel',row)}
+                                    >
+                                      <CancelIcon className={classes.noteButtonIcon} />
                                     </Button>
                                   </Tooltip>
                                 )}

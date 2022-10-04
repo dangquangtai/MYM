@@ -113,6 +113,7 @@ export const apiEndpoints = {
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
 
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
+  cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -236,6 +237,7 @@ export const view = {
       review: 'MYM_BOOKING_COUNSELING_REVIEW',
       note: 'MYM_BOOKING_COUNSELING_NOTE',
       meeting: 'MYM_BOOKING_COUNSELING_MEETING',
+      cancel: 'MYM_BOOKING_COUNSELING_CANCEL_COUNSELLING',
     },
     detail: {
       save: 'MYM_BOOKING_COUNSELING_SAVE_FORM_BUTTON',

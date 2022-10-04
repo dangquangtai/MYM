@@ -86,7 +86,7 @@ export default function BasicModal({
   const getTitle = () => {
     switch (type) {
       case 'cancel':
-        return 'Lý do huỷ đăng ký:';
+        return 'Xác nhận huỷ đăng ký:';
       case 'review':
         return 'Kết quả buổi đăng ký:';
     }
@@ -94,17 +94,17 @@ export default function BasicModal({
 
   const getRadioButton = (() => {
     switch (type) {
-      case 'cancel':
-        return [
-          {
-            value: 'mentee',
-            label: 'Khách yêu cầu hủy',
-          },
-          {
-            value: 'mentor',
-            label: 'Mentor yêu cầu hủy',
-          },
-        ];
+      // case 'cancel':
+      //   return [
+      //     {
+      //       value: 'mentee',
+      //       label: 'Khách yêu cầu hủy',
+      //     },
+      //     {
+      //       value: 'mentor',
+      //       label: 'Mentor yêu cầu hủy',
+      //     },
+      //   ];
       case 'review':
         return [
           {
@@ -135,10 +135,10 @@ export default function BasicModal({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!formData.status) {
-      setHelperText('Cần chọn ít nhất 1 trường!');
-      return;
-    }
+    // if (!formData.status) {
+    //   setHelperText('Cần chọn ít nhất 1 trường!');
+    //   return;
+    // }
 
     if (buttonCancelBooking) handleCancel(formData);
     if (buttonReviewBooking) handleReview(formData);
