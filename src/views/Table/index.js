@@ -104,7 +104,7 @@ export default function GeneralTable(props) {
       type: tableColumns.includes('type'),
       used_date: tableColumns.includes('used_date'),
       expiration_date: tableColumns.includes('expiration_date'),
-      count: tableColumns.includes('count'),
+      amount: tableColumns.includes('amount'),
       duration: tableColumns.includes('duration'),
       episodes: tableColumns.includes('episodes'),
       created_date: tableColumns.includes('created_date'),
@@ -850,7 +850,7 @@ export default function GeneralTable(props) {
                             </TableCell>
                           )}
                           {displayOptions.type && <TableCell align="left">{row.type || ''}</TableCell>}
-                          {displayOptions.count && <TableCell align="left">{row.count || ''}</TableCell>}
+                          {displayOptions.amount && <TableCell align="left">{row.amount || ''}</TableCell>}
                           {displayOptions.used_date && (
                             <TableCell align="left">{formatDateTime(row.used_date) || ''}</TableCell>
                           )}

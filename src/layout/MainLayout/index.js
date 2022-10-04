@@ -1,13 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import {
-  makeStyles,
-  useMediaQuery,
-  useTheme,
-  AppBar,
-  CssBaseline,
-  Toolbar,
-} from '@material-ui/core';
+import { makeStyles, useMediaQuery, useTheme, AppBar, CssBaseline, Toolbar } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { drawerWidth } from './../../store/constant';
 import Header from './Header';
@@ -92,20 +85,29 @@ const MainLayout = ({ children }) => {
       case 'mentor':
         return <MentorModal />;
       case 'department':
-        return <><TreeViewModal/><DepartmentModal /></>;
+        return (
+          <>
+            <TreeViewModal />
+            <DepartmentModal />
+          </>
+        );
       case 'role':
-        return <><RoleModal/><FormModal/></> ;
-      case 'batch':
-        return <BatchModal />;
-      case 'podcast': 
+        return (
+          <>
+            <RoleModal />
+            <FormModal />
+          </>
+        );
+      // case 'batch':
+      //   return <BatchModal />;
+      case 'podcast':
         return <PodcastModal />;
       case 'episode':
         return <EpisodeModal />;
       case 'playlist':
         return <PlaylistModal />;
-
     }
-  }
+  };
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
