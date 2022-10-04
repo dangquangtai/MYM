@@ -25,13 +25,11 @@ export const BookingProvider = ({ children }) => {
     });
   };
 
-  const cancelBooking = async (id, action, note) => {
+  const cancelBooking = async (id) => {
     return axiosInstance
-      .post(apiEndpoints.cancel_booking, {
+      .post(apiEndpoints.cancel_counselling, {
         outputtype: 'RawJson',
         id: id,
-        action: action,
-        note: note,
       })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) return true;
