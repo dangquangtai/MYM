@@ -45,10 +45,20 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { format as formatDate } from 'date-fns';
 import useMedia from './../../hooks/useMedia';
 import axiosInstance from '../../services/axios';
+import useMarketing from './../../hooks/useMarketing';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
+    .then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      else return false;
+    });
+}
+
+async function setActive(setActiveUrl, documentId, isActive) {
+  return await axiosInstance
+    .post(setActiveUrl, { outputtype: 'RawJson', id: documentId, value: isActive })
     .then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       else return false;
@@ -111,6 +121,7 @@ export default function GeneralTable(props) {
       created_by: tableColumns.includes('created_by'),
       menuButtons: !!menuButtons.length || false,
       is_featured: tableColumns.includes('is_featured'),
+      is_active: tableColumns.includes('is_active'),
     };
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
@@ -143,7 +154,7 @@ export default function GeneralTable(props) {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [selectedRecord, setSelectedRecord] = React.useState({});
-  const { url, documentType, tableTitle, setFeaturedUrl } = props;
+  const { url, documentType, tableTitle, setFeaturedUrl, setActiveUrl } = props;
   const [pageCurrent, setPage] = React.useState(1);
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
@@ -196,6 +207,8 @@ export default function GeneralTable(props) {
   const { getMentorDetail, toggleActiveMentor } = usePartner();
 
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
+
+  const { getBatchDetail } = useMarketing();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -321,6 +334,14 @@ export default function GeneralTable(props) {
       detailDocument = await getPlaylistDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
+    } else if (documentType === 'batch') {
+      detailDocument = await getBatchDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
+    } else if (documentType === 'voucher') {
+      detailDocument = await getPlaylistDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: true });
     }
   };
 
@@ -541,6 +562,12 @@ export default function GeneralTable(props) {
   const toggleSetFeatured = async (event, document, isFeatured) => {
     event.stopPropagation();
     await setFeatured(setFeaturedUrl, document.id, isFeatured);
+    fetchDocument();
+  };
+
+  const toggleSetActive = async (event, document, isActive) => {
+    event.stopPropagation();
+    await setActive(setActiveUrl, document.id, isActive);
     fetchDocument();
   };
 
@@ -874,6 +901,19 @@ export default function GeneralTable(props) {
                           {displayOptions.created_date && (
                             <TableCell align="left">
                               {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
+                            </TableCell>
+                          )}
+                          {displayOptions.is_active && (
+                            <TableCell align="left">
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    // color="primary"
+                                    checked={row.is_active}
+                                    onClick={(event) => toggleSetActive(event, row, event.target.checked)}
+                                  />
+                                }
+                              />
                             </TableCell>
                           )}
                           {displayOptions.is_featured && (

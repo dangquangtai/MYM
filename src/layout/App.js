@@ -28,6 +28,7 @@ import { ChartProvider } from './../contexts/ChartContext';
 import { MediaProvider } from './../contexts/MediaContext';
 import { ShareProvider } from './../contexts/ShareContext';
 import { MetaDataProvider } from './../contexts/MetaDataContext';
+import { MarketingProvider } from './../contexts/MarketingContext';
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -39,7 +40,6 @@ function loadLocaleData(locale) {
     default:
       return import('./../compiled-lang/en.json');
   }
-
 }
 
 // Configure JSS
@@ -79,10 +79,11 @@ const App = () => {
                                             <MediaProvider>
                                               <ShareProvider>
                                                 <MetaDataProvider>
-                                                <Routes />
-                                                <Snackbar />
+                                                  <MarketingProvider>
+                                                    <Routes />
+                                                    <Snackbar />
+                                                  </MarketingProvider>
                                                 </MetaDataProvider>
-                                               
                                               </ShareProvider>
                                             </MediaProvider>
                                           </RoleProvider>

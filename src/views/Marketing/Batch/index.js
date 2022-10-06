@@ -4,6 +4,7 @@ import BatchTable from '../../Table';
 import { getUrlByAction } from '../../../utils/utils';
 import { DOCUMENT_CHANGE } from '../../../store/actions';
 // import axiosInstance from '../../services/axios';
+import { apiEndpoints } from './../../../store/constant';
 
 const BatchWrapper = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const BatchWrapper = () => {
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="batch"
+        setActiveUrl={apiEndpoints.set_active_batch}
         // setFeaturedUrl={}
       />
     </React.Fragment>

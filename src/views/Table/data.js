@@ -44,6 +44,7 @@ export const headCells = [
   { id: 'duration', numeric: false, disablePadding: false, label: 'Thời gian', maxWidth: 100 },
   { id: 'created_by', numeric: false, disablePadding: false, label: 'Người tạo', maxWidth: 100 },
   { id: 'created_date', numeric: false, disablePadding: false, label: 'Ngày tạo', maxWidth: 100 },
+  { id: 'is_active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 150 },
   { id: 'is_featured', numeric: false, disablePadding: false, label: 'Nổi bật', maxWidth: 150 },
   { id: 'menuButtons', numeric: false, disablePadding: false, label: '', maxWidth: 150 },
 ];

@@ -11,11 +11,13 @@ export const initialState = {
   podcastDocument: false,
   episodeDocument: false,
   playlistDocument: false,
+  batchDocument: false,
+  voucherDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.FLOATING_MENU_CHANGE: 
+    case actionTypes.FLOATING_MENU_CHANGE:
       return {
         ...state,
         folder: action.folder,
@@ -28,6 +30,8 @@ const floatingMenuReducer = (state = initialState, action) => {
         podcastDocument: action.podcastDocument,
         episodeDocument: action.episodeDocument,
         playlistDocument: action.playlistDocument,
+        batchDocument: action.batchDocument,
+        voucherDocument: action.voucherDocument,
       };
     default:
       return state;

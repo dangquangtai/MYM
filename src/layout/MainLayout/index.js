@@ -17,10 +17,10 @@ import DepartmentModal from '../../views/Department/Detail';
 import RoleModal from '../../views/Role/Detail';
 import TreeViewModal from '../../views/Department/Tree_View';
 import FormModal from '../../views/Role/Form';
-import BatchModal from './../../views/Batch/New/index';
 import PodcastModal from '../../views/Podcast/Podcast/Detail/index.js';
 import EpisodeModal from '../../views/Podcast/Episode/Detail';
 import PlaylistModal from '../../views/Podcast/Playlist/Detail/index.js';
+import BatchModal from '../../views/Marketing/Batch/Detail/index.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,8 +98,8 @@ const MainLayout = ({ children }) => {
             <FormModal />
           </>
         );
-      // case 'batch':
-      //   return <BatchModal />;
+      case 'batch':
+        return <BatchModal />;
       case 'podcast':
         return <PodcastModal />;
       case 'episode':

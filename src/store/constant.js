@@ -82,6 +82,9 @@ export const apiEndpoints = {
   set_featured_mentor: '/Primary/?FlowAlias=bs_api_partner_set_featured_mentor&action=api',
   get_timeslot_by_mentor_id: '/Primary/?FlowAlias=bs_api_inventory_get_timeslot_by_mentor_id&action=api',
 
+  // // Partner
+  get_all_active_partner: '/Primary/?FlowAlias=bs_api_partner_get_all_active_partner&action=api',
+
   // // Counseling Category
   get_all_active_counseling_category:
     '/Primary/?FlowAlias=bs_api_partner_get_all_active_counseling_category&action=api',
@@ -266,6 +269,10 @@ export const view = {
   batch: {
     list: {
       create: 'MYM_MARKETING_VOUCHER_BATCH_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_MARKETING_VOUCHER_BATCH_SAVE_FORM_BUTTON',
+      generate: 'MYM_MARKETING_VOUCHER_BATCH_GENERATE_FORM_BUTTON',
     },
   },
 };
