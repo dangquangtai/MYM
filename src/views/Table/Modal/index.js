@@ -86,7 +86,7 @@ export default function BasicModal({
   const getTitle = () => {
     switch (type) {
       case 'cancel':
-        return 'Lý do huỷ đăng ký:';
+        return 'Xác nhận huỷ đăng ký:';
       case 'review':
         return 'Kết quả buổi đăng ký:';
     }
@@ -94,25 +94,25 @@ export default function BasicModal({
 
   const getRadioButton = (() => {
     switch (type) {
-      case 'cancel':
-        return [
-          {
-            value: 'mentee',
-            label: 'Khách yêu cầu hủy',
-          },
-          {
-            value: 'mentor',
-            label: 'Mentor yêu cầu hủy',
-          },
-        ];
+      // case 'cancel':
+      //   return [
+      //     {
+      //       value: 'mentee',
+      //       label: 'Khách yêu cầu hủy',
+      //     },
+      //     {
+      //       value: 'mentor',
+      //       label: 'Mentor yêu cầu hủy',
+      //     },
+      //   ];
       case 'review':
         return [
           {
-            value: 'completed',
+            value: 'approve',
             label: 'Hoàn thành',
           },
           {
-            value: 'uncompleted',
+            value: 'reject',
             label: 'Chưa hoàn thành',
           },
         ];

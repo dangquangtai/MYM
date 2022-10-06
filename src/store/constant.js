@@ -114,9 +114,9 @@ export const apiEndpoints = {
   set_note_booking: '/Primary/?FlowAlias=bs_api_counselling_update_note&action=api',
   get_list_note: '/Primary/?FlowAlias=bs_api_counselling_get_note_list&action=api',
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
-
+  cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
-
+  
   // Marketing
   // // Batch
   get_all_active_batch: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_batch&action=api',
@@ -128,6 +128,7 @@ export const apiEndpoints = {
   // // Voucher
   get_all_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_voucher&action=api',
   get_all_inactive_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_voucher&action=api',
+
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -261,6 +262,7 @@ export const view = {
       review: 'MYM_BOOKING_COUNSELING_REVIEW',
       note: 'MYM_BOOKING_COUNSELING_NOTE',
       meeting: 'MYM_BOOKING_COUNSELING_MEETING',
+      cancel: 'MYM_BOOKING_COUNSELING_CANCEL_COUNSELLING',
     },
     detail: {
       save: 'MYM_BOOKING_COUNSELING_SAVE_FORM_BUTTON',

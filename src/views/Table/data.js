@@ -50,19 +50,19 @@ export const headCells = [
 ];
 
 export const bookingStatusList = [
-  // 'Chờ khách hàng',
-  // 'Chờ mentor',
-  // 'Đã lên lịch tư vấn',
-  // 'Đang tư vấn',
-  // 'Chờ Feedback',
-  // 'Khách hàng chưa xác nhận',
-  // 'Mentor chưa xác nhận',
-  // 'Mentor từ chối lịch',
-  // 'Khách hàng chưa Feedback',
-  // 'Meeting bị gián đoạn',
-  // 'Khách yêu cầu hủy',
-  // 'Mentor yêu cầu hủy',
-  // 'Chưa sử dụng',
-  // 'Đã sử dụng',
-  // 'Không giới hạn'
+  'Chờ khách hàng',
+  'Chờ mentor',
+  'Đã lên lịch tư vấn',
+  'Đang tư vấn',
+  'Chờ Feedback',
+  'Khách hàng chưa xác nhận',
+  'Mentor chưa xác nhận',
+  'Mentor từ chối lịch',
+  'Khách hàng chưa Feedback',
+  'Meeting bị gián đoạn',
+  'Khách yêu cầu hủy',
+  'Mentor yêu cầu hủy',
+  'Chưa sử dụng',
+  'Đã sử dụng',
+  'Không giới hạn'
 ];
