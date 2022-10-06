@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Button,
-  Modal,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-
-} from '@material-ui/core';
+import { Box, Button, Modal, Radio, RadioGroup, FormControlLabel, FormControl } from '@material-ui/core';
 
 const style = {
   box: {
@@ -135,10 +126,10 @@ export default function BasicModal({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!formData.status) {
-      setHelperText('Cần chọn ít nhất 1 trường!');
-      return;
-    }
+    // if (!formData.status) {
+    //   setHelperText('Cần chọn ít nhất 1 trường!');
+    //   return;
+    // }
 
     if (buttonCancelBooking) handleCancel(formData);
     if (buttonReviewBooking) handleReview(formData);
@@ -149,16 +140,13 @@ export default function BasicModal({
   };
 
   const handleCloseModal = () => {
-    
     handleClose();
-    
   };
 
   useEffect(() => {
     const noteList = JSON.parse(sessionStorage.getItem('bookingNote')) || {};
     if (selectedBooking) {
-      if (noteList[selectedBooking])
-        setFormData({ ...formData, note: noteList[selectedBooking][type] || '' });
+      if (noteList[selectedBooking]) setFormData({ ...formData, note: noteList[selectedBooking][type] || '' });
       else setFormData({ ...formData, note: '' });
     }
   }, [isOpen, type, selectedBooking]);
@@ -185,43 +173,22 @@ export default function BasicModal({
                 onChange={handleChange}
               >
                 {getRadioButton?.map((button, index) => (
-                  <FormControlLabel
-                    key={index}
-                    value={button.value}
-                    control={<Radio />}
-                    label={button.label}
-                  />
+                  <FormControlLabel key={index} value={button.value} control={<Radio />} label={button.label} />
                 ))}
               </RadioGroup>
               {helperText && <div style={style.error}>{helperText}</div>}
-           
             </FormControl>
             <div style={style.buttonWrap}>
-              <Button
-                type="button"
-                variant="contained"
-                style={style.closeButton}
-                onClick={handleCloseModal}
-              >
+              <Button type="button" variant="contained" style={style.closeButton} onClick={handleCloseModal}>
                 Đóng
               </Button>
               {buttonCancelBooking && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  style={style.submitButton}
-                  onClick={handleSubmit}
-                >
+                <Button type="submit" variant="contained" style={style.submitButton} onClick={handleSubmit}>
                   Huỷ
                 </Button>
               )}
               {buttonReviewBooking && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  style={style.submitButton}
-                  onClick={handleSubmit}
-                >
+                <Button type="submit" variant="contained" style={style.submitButton} onClick={handleSubmit}>
                   Chọn
                 </Button>
               )}
