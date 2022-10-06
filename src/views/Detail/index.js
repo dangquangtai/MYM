@@ -735,7 +735,7 @@ const DetailDocumentDialog = () => {
                         <div className={classes.tabItemNoteSection}>
                           <div className={classes.tabItemNoteTitleWrap}>
                             <div>{document?.time_slot}</div>
-                            <div>{document.status}</div>
+                            <div>{document.status_display}</div>
                           </div>
 
                           {!!document.link_record ? (

@@ -108,11 +108,11 @@ export default function BasicModal({
       case 'review':
         return [
           {
-            value: 'completed',
+            value: 'approve',
             label: 'Hoàn thành',
           },
           {
-            value: 'uncompleted',
+            value: 'reject',
             label: 'Chưa hoàn thành',
           },
         ];
@@ -135,10 +135,10 @@ export default function BasicModal({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // if (!formData.status) {
-    //   setHelperText('Cần chọn ít nhất 1 trường!');
-    //   return;
-    // }
+    if (!formData.status) {
+      setHelperText('Cần chọn ít nhất 1 trường!');
+      return;
+    }
 
     if (buttonCancelBooking) handleCancel(formData);
     if (buttonReviewBooking) handleReview(formData);
