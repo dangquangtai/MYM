@@ -8,6 +8,8 @@ import {
   playlistActions,
   mentorActions,
   counsellingActions,
+  batchActions,
+  voucherActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -71,6 +73,15 @@ export function getUrlByAction(selectedFolder) {
     }
     case counsellingActions.uncompleted_list: {
       return apiEndpoints.get_uncompleted_counselling_list_by_page;
+    }
+    case batchActions.active_list: {
+      return apiEndpoints.get_all_active_batch;
+    }
+    case batchActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_batch;
+    }
+    case voucherActions.active_list: {
+      return apiEndpoints.get_all_active_voucher;
     }
 
     default: {

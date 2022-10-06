@@ -82,6 +82,9 @@ export const apiEndpoints = {
   set_featured_mentor: '/Primary/?FlowAlias=bs_api_partner_set_featured_mentor&action=api',
   get_timeslot_by_mentor_id: '/Primary/?FlowAlias=bs_api_inventory_get_timeslot_by_mentor_id&action=api',
 
+  // // Partner
+  get_all_active_partner: '/Primary/?FlowAlias=bs_api_partner_get_all_active_partner&action=api',
+
   // // Counseling Category
   get_all_active_counseling_category:
     '/Primary/?FlowAlias=bs_api_partner_get_all_active_counseling_category&action=api',
@@ -111,9 +114,21 @@ export const apiEndpoints = {
   set_note_booking: '/Primary/?FlowAlias=bs_api_counselling_update_note&action=api',
   get_list_note: '/Primary/?FlowAlias=bs_api_counselling_get_note_list&action=api',
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
-
-  get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
   cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
+  get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
+  
+  // Marketing
+  // // Batch
+  get_all_active_batch: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_batch&action=api',
+  get_all_inactive_batch: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_batch&action=api',
+  get_batch_detail: '/Primary/?FlowAlias=bs_api_marketing_get_batch_detail_by_id&action=api',
+  create_batch: '/Primary/?FlowAlias=bs_api_marketing_create_batch&action=api',
+  set_active_batch: '/Primary/?FlowAlias=bs_api_marketing_set_active_batch&action=api',
+
+  // // Voucher
+  get_all_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_voucher&action=api',
+  get_all_inactive_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_voucher&action=api',
+
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -158,6 +173,16 @@ export const counsellingActions = {
   cancel_list: 'MYM_BOOKING_COUNSELING_OPEN_CANCEL_COUNSELLING_LIST',
   handle_list: 'MYM_BOOKING_COUNSELING_OPEN_HANDLE_COUNSELLING_LIST',
   uncompleted_list: 'MYM_BOOKING_COUNSELING_OPEN_UNCOMPLETED_COUNSELING_LIST',
+};
+
+export const batchActions = {
+  active_list: 'MYM_MARKETING_VOUCHER_OPEN_ACTIVE_BATCH_LIST',
+  inactive_list: 'MYM_MARKETING_VOUCHER_OPEN_INACTIVE_BATCH_LIST',
+};
+
+export const voucherActions = {
+  active_list: 'MYM_MARKETING_VOUCHER_OPEN_ACTIVE_VOUCHER_LIST',
+  inactive_list: 'MYM_MARKETING_VOUCHER_OPEN_INACTIVE_VOUCHER_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -241,6 +266,15 @@ export const view = {
     },
     detail: {
       save: 'MYM_BOOKING_COUNSELING_SAVE_FORM_BUTTON',
+    },
+  },
+  batch: {
+    list: {
+      create: 'MYM_MARKETING_VOUCHER_BATCH_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_MARKETING_VOUCHER_BATCH_SAVE_FORM_BUTTON',
+      generate: 'MYM_MARKETING_VOUCHER_BATCH_GENERATE_FORM_BUTTON',
     },
   },
 };

@@ -11,7 +11,8 @@ export const PartnerProvider = ({ children }) => {
   const getMentorDetail = async (id) => {
     return axiosInstance
       .post(apiEndpoints.get_mentor_detail, {
-        outputtype: 'RawJson', id
+        outputtype: 'RawJson',
+        id,
       })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
@@ -40,19 +41,21 @@ export const PartnerProvider = ({ children }) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
-  }
+  };
 
   const getMentorbyCategory = async (id) => {
-    return axiosInstance.post(apiEndpoints.get_mentor_list_by_category_id, { outputtype: 'RawJson', category_id: id }).then((response) => {
-      if (response.status === 200 && response.data.return === 200) {
-        const { list } = response.data;
-        return list;
-      } else return [];
-    });
+    return axiosInstance
+      .post(apiEndpoints.get_mentor_list_by_category_id, { outputtype: 'RawJson', category_id: id })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
   };
 
   const getCareerAndTopic = async () => {
-    return axiosInstance.post(apiEndpoints.get_career_and_topic, { outputtype: 'RawJson'}).then((response) => {
+    return axiosInstance.post(apiEndpoints.get_career_and_topic, { outputtype: 'RawJson' }).then((response) => {
       if (response.status === 200 && response.data.return === 200) {
         const data = response.data;
         return data;
@@ -65,15 +68,28 @@ export const PartnerProvider = ({ children }) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
-  }
+  };
 
   const getTimeslot = async (id) => {
-    return axiosInstance.post(apiEndpoints.get_timeslot_by_mentor_id, { outputtype: 'RawJson', id }).then((response) => {
-      if (response.status === 200 && response.data.return === 200) {
-        const { list } = response.data;
-        return list;
-      } else return [];
-    });
+    return axiosInstance
+      .post(apiEndpoints.get_timeslot_by_mentor_id, { outputtype: 'RawJson', id })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
+
+  const getPartnerList = async (page = 1, no_item_per_page = 100, search_text = '') => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_active_partner, { outputtype: 'RawJson', page, no_item_per_page, search_text })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
   };
 
   return (
@@ -86,7 +102,8 @@ export const PartnerProvider = ({ children }) => {
         getMentorbyCategory,
         getCareerAndTopic,
         generateTimeslot,
-        getTimeslot
+        getTimeslot,
+        getPartnerList,
       }}
     >
       {children}
