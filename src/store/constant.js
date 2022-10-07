@@ -116,7 +116,7 @@ export const apiEndpoints = {
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
   cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
-  
+
   // Marketing
   // // Batch
   get_all_active_batch: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_batch&action=api',
@@ -124,11 +124,14 @@ export const apiEndpoints = {
   get_batch_detail: '/Primary/?FlowAlias=bs_api_marketing_get_batch_detail_by_id&action=api',
   create_batch: '/Primary/?FlowAlias=bs_api_marketing_create_batch&action=api',
   set_active_batch: '/Primary/?FlowAlias=bs_api_marketing_set_active_batch&action=api',
+  update_batch: '/Primary/?FlowAlias=bs_api_marketing_update_batch&action=api',
+  generate_voucher: '/Primary/?FlowAlias=bs_api_marketing_generate_voucher&action=api',
+  send_email_voucher: '/Primary/?FlowAlias=bs_api_marketing_send_email_voucher&action=api',
 
   // // Voucher
   get_all_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_voucher&action=api',
   get_all_inactive_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_voucher&action=api',
-
+  set_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_set_active_voucher&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -271,10 +274,12 @@ export const view = {
   batch: {
     list: {
       create: 'MYM_MARKETING_VOUCHER_BATCH_CREATE_MENU_BUTTON',
+      send_email: 'MYM_MARKETING_VOUCHER_BATCH_SEND_EMAIL_MENU_BUTTON',
     },
     detail: {
       save: 'MYM_MARKETING_VOUCHER_BATCH_SAVE_FORM_BUTTON',
       generate: 'MYM_MARKETING_VOUCHER_BATCH_GENERATE_FORM_BUTTON',
+      import: 'MYM_MARKETING_VOUCHER_BATCH_IMPORT_FORM_BUTTON',
     },
   },
 };

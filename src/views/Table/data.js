@@ -3,6 +3,7 @@ export const headCells = [
   { id: 'image_url', numeric: false, disablePadding: false, label: 'Ảnh', maxWidth: 50 },
   { id: 'fullname', numeric: false, disablePadding: false, label: 'Khách hàng', maxWidth: 150 },
   { id: 'title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
+  { id: 'voucher_code', numeric: false, disablePadding: false, label: 'Mã voucher', maxWidth: 150 },
   { id: 'department_name', numeric: false, disablePadding: false, label: 'Tên phòng ban', maxWidth: 150 },
   { id: 'department_parent', numeric: false, disablePadding: false, label: 'Trực thuộc phòng ban', maxWidth: 150 },
   { id: 'number_member', numeric: false, disablePadding: false, label: 'Số thành viên', maxWidth: 150 },
@@ -44,6 +45,7 @@ export const headCells = [
   { id: 'duration', numeric: false, disablePadding: false, label: 'Thời gian', maxWidth: 100 },
   { id: 'created_by', numeric: false, disablePadding: false, label: 'Người tạo', maxWidth: 100 },
   { id: 'created_date', numeric: false, disablePadding: false, label: 'Ngày tạo', maxWidth: 100 },
+  { id: 'is_used', numeric: false, disablePadding: false, label: 'Trạng thái', maxWidth: 100 },
   { id: 'is_active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 150 },
   { id: 'is_featured', numeric: false, disablePadding: false, label: 'Nổi bật', maxWidth: 150 },
   { id: 'menuButtons', numeric: false, disablePadding: false, label: '', maxWidth: 150 },
@@ -64,5 +66,5 @@ export const bookingStatusList = [
   'Mentor yêu cầu hủy',
   'Chưa sử dụng',
   'Đã sử dụng',
-  'Không giới hạn'
+  'Không giới hạn',
 ];

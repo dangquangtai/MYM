@@ -4,6 +4,7 @@ import VoucherTable from '../../Table';
 import { getUrlByAction } from '../../../utils/utils';
 import { DOCUMENT_CHANGE } from '../../../store/actions';
 // import axiosInstance from '../../services/axios';
+import { apiEndpoints } from './../../../store/constant';
 
 const VoucherWrapper = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const VoucherWrapper = () => {
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="voucher"
+        setActiveUrl={apiEndpoints.set_active_voucher}
         // setFeaturedUrl={}
       />
     </React.Fragment>

@@ -36,12 +36,28 @@ export const MarketingProvider = ({ children }) => {
     });
   };
 
+  const generateVoucher = async (id) => {
+    return axiosInstance.post(apiEndpoints.generate_voucher, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
+  const sendEmailVoucher = async (id) => {
+    return axiosInstance.post(apiEndpoints.send_email_voucher, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
   return (
     <MarketingContext.Provider
       value={{
         getBatchDetail,
         updateBatch,
         createBatch,
+        generateVoucher,
+        sendEmailVoucher,
       }}
     >
       {children}

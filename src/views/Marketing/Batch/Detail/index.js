@@ -21,9 +21,10 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useView from '../../../../hooks/useView';
-import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions.js';
+import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, CONFIRM_CHANGE } from '../../../../store/actions.js';
 import { view } from '../../../../store/constant';
 import useStyles from '../../../../utils/classes';
+import { convertDate } from './../../../../utils/table';
 import { initBatchData, userAvatar } from '../../../../store/constants/initial.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 import useMarketing from './../../../../hooks/useMarketing';
@@ -33,10 +34,9 @@ import {
   History as HistoryIcon,
   DescriptionOutlined as DescriptionOutlinedIcon,
   ImageOutlined as ImageIcon,
-  LibraryMusicOutlined as LibraryMusicOutlinedIcon,
-  GraphicEq as GraphicEqIcon,
 } from '@material-ui/icons';
 import { NoPaddingAutocomplete } from '../../../../component/Autocomplete/index.js';
+import useConfirmPopup from './../../../../hooks/useConfirmPopup';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -77,13 +77,13 @@ const BatchModal = () => {
   const { form_buttons: formButtons } = useView();
   const { batchDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const saveButton = formButtons.find((button) => button.name === view.batch.detail.save);
   const generateButton = formButtons.find((button) => button.name === view.batch.detail.generate);
+  const importButton = formButtons.find((button) => button.name === view.batch.detail.import);
 
-  const { createBatch, updateBatch } = useMarketing();
+  const { createBatch, generateVoucher } = useMarketing();
   const { getCounselingCategories } = useMedia();
   const { getPartnerList } = usePartner();
-
+  const { setConfirmPopup } = useConfirmPopup();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
@@ -117,6 +117,10 @@ const BatchModal = () => {
       type: type,
       text: text,
     });
+  };
+
+  const showConfirmPopup = ({ title = 'Thông báo', message = '', action = null, payload = null, onSuccess = null }) => {
+    setConfirmPopup({ type: CONFIRM_CHANGE, open: true, title, message, action, payload, onSuccess });
   };
 
   const setDocumentToDefault = async () => {
@@ -162,18 +166,25 @@ const BatchModal = () => {
 
   const handleSubmitForm = async () => {
     try {
-      if (selectedDocument?.id) {
-        await updateBatch(batchData);
-        handleOpenSnackbar(true, 'success', 'Cập nhật Batch thành công!');
-      } else {
-        await createBatch(batchData);
-        handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
-      }
+      await createBatch(batchData);
+      handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'batch' });
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
+  };
+
+  const handleClickGenerate = async () => {
+    showConfirmPopup({
+      title: 'Thông báo',
+      message: 'Bạn có chắc chắn muốn tạo voucher cho batch này?',
+      action: generateVoucher,
+      payload: batchData.id,
+      onSuccess: () => {
+        handleOpenSnackbar(true, 'success', 'Tạo voucher thành công!');
+      },
+    });
   };
 
   useEffect(() => {
@@ -311,7 +322,7 @@ const BatchModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <LibraryMusicOutlinedIcon />
+                            {/* <LibraryMusicOutlinedIcon /> */}
                             <span>Thông tin Batch</span>
                           </div>
                         </div>
@@ -340,10 +351,10 @@ const BatchModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                type="datetime-local"
+                                type="date"
                                 variant="outlined"
                                 name="applicable_from_date"
-                                value={batchData.applicable_from_date}
+                                value={convertDate(batchData.applicable_from_date)}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -356,10 +367,10 @@ const BatchModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                type="datetime-local"
+                                type="date"
                                 variant="outlined"
                                 name="applicable_to_date"
-                                value={batchData.applicable_to_date}
+                                value={convertDate(batchData.applicable_to_date)}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -372,7 +383,7 @@ const BatchModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <LibraryMusicOutlinedIcon />
+                            {/* <LibraryMusicOutlinedIcon /> */}
                             <span>Thông tin thêm</span>
                           </div>
                         </div>
@@ -524,8 +535,8 @@ const BatchModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <Select
                                 disabled={!batchData.is_for_counselling_service}
-                                name="couselling_category_id"
-                                value={batchData.couselling_category_id}
+                                name="counselling_category_id"
+                                value={batchData.counselling_category_id}
                                 className={classes.multpleSelectField}
                                 onChange={handleChanges}
                               >
@@ -569,19 +580,6 @@ const BatchModal = () => {
                                 getOptionLabel={(option) => option.name}
                                 renderInput={(params) => <TextField {...params} variant="outlined" />}
                               />
-                              {/* <Select
-                                name="partner_id"
-                                value={batchData.partner_id}
-                                className={classes.multpleSelectField}
-                                onChange={handleChanges}
-                              >
-                                <MenuItem value="">Không chọn</MenuItem>
-                                {partners?.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
-                                    {item.name}
-                                  </MenuItem>
-                                ))}
-                              </Select> */}
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -614,7 +612,7 @@ const BatchModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <ImageIcon />
+                            {/* <ImageIcon /> */}
                             <span>Mô tả</span>
                           </div>
                         </div>
@@ -641,7 +639,7 @@ const BatchModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <ImageIcon />
+                            {/* <ImageIcon /> */}
                             <span>Điều khoản</span>
                           </div>
                         </div>
@@ -681,9 +679,19 @@ const BatchModal = () => {
                 </Button>
               </Grid>
               <Grid item className={classes.gridItemInfoButtonWrap}>
-                {saveButton && selectedDocument?.id && (
-                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleSubmitForm}>
-                    {saveButton.text}
+                {importButton && selectedDocument?.id && (
+                  <Button variant="contained" className={classes.gridItemInfoButton} onClick={handleClickGenerate}>
+                    {importButton.text}
+                  </Button>
+                )}
+                {generateButton && selectedDocument?.id && (
+                  <Button
+                    disabled={batchData.is_generated}
+                    variant="contained"
+                    className={classes.gridItemInfoButton}
+                    onClick={handleClickGenerate}
+                  >
+                    {generateButton.text}
                   </Button>
                 )}
                 {!selectedDocument?.id && (
