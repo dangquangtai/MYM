@@ -11,7 +11,9 @@ export const AccountProvider = ({ children }) => {
   const getAccountDetail = async (id) => {
     return axiosInstance
       .post(apiEndpoints.get_account_detail, {
-         outputtype: 'RawJson' ,id})
+        outputtype: 'RawJson',
+        id,
+      })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data: news, view } = response.data;
@@ -23,8 +25,9 @@ export const AccountProvider = ({ children }) => {
   const getAllTask = async () => {
     return axiosInstance
       .post(apiEndpoints.get_all_task, {
-         outputtype: 'RawJson',
-         company_id: null,})
+        outputtype: 'RawJson',
+        company_id: null,
+      })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { list: news, view } = response.data;
@@ -36,13 +39,13 @@ export const AccountProvider = ({ children }) => {
   const getAllUser = async () => {
     return axiosInstance
       .post(apiEndpoints.get_all_account_list, {
-         outputtype: 'RawJson',
-         company_code: 'HNN',})
+        outputtype: 'RawJson',
+      })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { list: news, view } = response.data;
-          return news;
-        } else return {};
+          const { list } = response.data;
+          return list;
+        } else return [];
       });
   };
   const createAccount = async (account) => {
@@ -51,16 +54,16 @@ export const AccountProvider = ({ children }) => {
       return false;
     });
   };
-  const activeAccount = async ( account ) => {
+  const activeAccount = async (account) => {
     return axiosInstance
-     .post(apiEndpoints.active_account,{
-      outputtype: 'RawJson',
-      ...account,
-
-    }).then((response) => {
-      if (response.status === 200 && response.data.return === 200) return true;
-      return false;
-    });
+      .post(apiEndpoints.active_account, {
+        outputtype: 'RawJson',
+        ...account,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
   };
   const updateAccount = async (account) => {
     return axiosInstance.post(apiEndpoints.update_account, account).then((response) => {
