@@ -21,6 +21,7 @@ import PodcastModal from '../../views/Podcast/Podcast/Detail/index.js';
 import EpisodeModal from '../../views/Podcast/Episode/Detail';
 import PlaylistModal from '../../views/Podcast/Playlist/Detail/index.js';
 import BatchModal from '../../views/Marketing/Batch/Detail/index.js';
+import VoucherModal from './../../views/Marketing/Voucher/AssignModal/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,6 +107,8 @@ const MainLayout = ({ children }) => {
         return <EpisodeModal />;
       case 'playlist':
         return <PlaylistModal />;
+      case 'voucher':
+        return <VoucherModal />;
     }
   };
 

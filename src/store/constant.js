@@ -132,6 +132,7 @@ export const apiEndpoints = {
   get_all_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_voucher&action=api',
   get_all_inactive_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_voucher&action=api',
   set_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_set_active_voucher&action=api',
+  assign_voucher: '/Primary/?FlowAlias=bs_api_marketing_assign_voucher&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -280,6 +281,11 @@ export const view = {
       save: 'MYM_MARKETING_VOUCHER_BATCH_SAVE_FORM_BUTTON',
       generate: 'MYM_MARKETING_VOUCHER_BATCH_GENERATE_FORM_BUTTON',
       import: 'MYM_MARKETING_VOUCHER_BATCH_IMPORT_FORM_BUTTON',
+    },
+  },
+  voucher: {
+    list: {
+      assign: 'MYM_MARKETING_VOUCHER_VOUCHER_ASSIGN_MENU_BUTTON',
     },
   },
 };

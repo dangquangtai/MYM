@@ -156,6 +156,7 @@ export default function GeneralTable(props) {
 
   const buttonCreateBatch = menuButtons.find((button) => button.name === view.batch.list.create);
   const buttonSendEmail = menuButtons.find((button) => button.name === view.batch.list.send_email);
+  const buttonAssignVoucher = menuButtons.find((button) => button.name === view.voucher.list.assign);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -568,6 +569,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
   };
 
+  const handleClickAssignVoucher = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: true });
+  };
+
   const handleClickCreateBatch = () => {
     dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
@@ -665,6 +671,8 @@ export default function GeneralTable(props) {
                 createMentor={handleClickCreateMentor}
                 buttonCreateBatch={buttonCreateBatch}
                 createBatch={handleClickCreateBatch}
+                buttonAssignVoucher={buttonAssignVoucher}
+                assignVoucher={handleClickAssignVoucher}
               />
               <TableContainer>
                 <Table

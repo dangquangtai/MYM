@@ -53,6 +53,8 @@ const EnhancedTableToolbar = (props) => {
     createMentor,
     buttonCreateBatch,
     createBatch,
+    buttonAssignVoucher,
+    assignVoucher,
   } = props;
 
   const filterRef = useRef(null);
@@ -253,6 +255,14 @@ const EnhancedTableToolbar = (props) => {
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createBatch}>
               {buttonCreateBatch.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonAssignVoucher && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={assignVoucher}>
+              {buttonAssignVoucher.text}
             </Button>
           </Grid>
         )}
