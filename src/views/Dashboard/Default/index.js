@@ -17,6 +17,8 @@ import {
   counsellingActions,
   batchActions,
   voucherActions,
+  eventActions,
+  eventcategoryActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -27,6 +29,8 @@ import MentorWrapper from './../../Mentor/index';
 import BookingWrapper from './../../Booking/index';
 import BatchWrapper from './../../Marketing/Batch/index';
 import VoucherWrapper from './../../Marketing/Voucher/index';
+import EventWrapper from '../../Marketing/Event';
+import EventCategoryWrapper from '../../Marketing/EventCategory';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -45,6 +49,8 @@ const Default = () => {
   const availableCounsellingEndpoint = Object.values(counsellingActions);
   const availableBatchEndpoint = Object.values(batchActions);
   const availableVoucherEndpoint = Object.values(voucherActions);
+  const availableEventEndpoint = Object.values(eventActions);
+  const availableEventCategoryEndpoint = Object.values(eventcategoryActions);
 
   if (!selectedApp) {
     return <Redirect to="/dashboard/app" />;
@@ -72,6 +78,9 @@ const Default = () => {
           {availableCounsellingEndpoint.includes(selectedFolder?.action) && <BookingWrapper />}
           {availableBatchEndpoint.includes(selectedFolder?.action) && <BatchWrapper />}
           {availableVoucherEndpoint.includes(selectedFolder?.action) && <VoucherWrapper />}
+          {availableEventEndpoint.includes(selectedFolder?.action) && <EventWrapper />}
+          {availableEventCategoryEndpoint.includes(selectedFolder?.action) && <EventCategoryWrapper />}
+
         </Grid>
       )}
     </Grid>

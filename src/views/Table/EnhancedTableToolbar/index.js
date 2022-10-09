@@ -51,6 +51,10 @@ const EnhancedTableToolbar = (props) => {
     createPlaylist,
     buttonCreateMentor,
     createMentor,
+    buttonCreateEvent,
+    createEvent,
+    buttonCreateEventCategory,
+    createEventCategory,
     buttonCreateBatch,
     createBatch,
     buttonAssignVoucher,
@@ -250,7 +254,23 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
-
+        
+        {buttonCreateEvent && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createEvent}>
+              {buttonCreateEvent.text}
+            </Button>
+          </Grid>
+        )}
+        
+        {buttonCreateEventCategory && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createEventCategory}>
+              {buttonCreateEventCategory.text}
+            </Button>
+          </Grid>
+        )}
+        
         {buttonCreateBatch && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createBatch}>
