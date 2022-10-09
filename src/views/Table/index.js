@@ -13,6 +13,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  Chip,
 } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
@@ -50,6 +51,8 @@ import useMarketing from './../../hooks/useMarketing';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import useEventCategory from '../../hooks/useEventCategory';
 import useEvent from '../../hooks/useEvent';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
@@ -83,6 +86,7 @@ export default function GeneralTable(props) {
       id: tableColumns.includes('id'),
       image_url: tableColumns.includes('image_url'),
       title: tableColumns.includes('title'),
+      voucher_code: tableColumns.includes('voucher_code'),
       description: tableColumns.includes('description'),
       fullname: tableColumns.includes('fullname'),
       department_name: tableColumns.includes('department_name'),
@@ -129,6 +133,7 @@ export default function GeneralTable(props) {
       online: tableColumns.includes('online'),
       available:  tableColumns.includes('available'),
       menuButtons: !!menuButtons.length || false,
+      is_used: tableColumns.includes('is_used'),
       is_featured: tableColumns.includes('is_featured'),
       is_active: tableColumns.includes('is_active'),
     };
@@ -159,6 +164,9 @@ export default function GeneralTable(props) {
 
   const buttonCreateEvent = menuButtons.find((button) => button.name === view.event.list.create);
   const buttonCreateEventCategory = menuButtons.find((button) => button.name === view.eventcategory.list.create);
+  const buttonCreateBatch = menuButtons.find((button) => button.name === view.batch.list.create);
+  const buttonSendEmail = menuButtons.find((button) => button.name === view.batch.list.send_email);
+  const buttonAssignVoucher = menuButtons.find((button) => button.name === view.voucher.list.assign);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -207,8 +215,15 @@ export default function GeneralTable(props) {
 
   const { getDocuments } = useTask();
 
-  const { getBookingDetail, approveBooking, reviewBooking, setNoteBooking, setCompletedBooking, getListUniversity , cancelBooking} =
-    useBooking();
+  const {
+    getBookingDetail,
+    approveBooking,
+    reviewBooking,
+    setNoteBooking,
+    setCompletedBooking,
+    getListUniversity,
+    cancelBooking,
+  } = useBooking();
 
   const { activeDepartment, getDepartmentDetail } = useDepartment();
 
@@ -221,7 +236,7 @@ export default function GeneralTable(props) {
 
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
-  const { getBatchDetail } = useMarketing();
+  const { getBatchDetail, sendEmailVoucher } = useMarketing();
 
   const {getEventCategoryDetail} = useEventCategory();
   const { getEventDetail } = useEvent();
@@ -426,7 +441,7 @@ export default function GeneralTable(props) {
       setIsOpenModal(false);
       setModalType('');
       reloadCurrentDocuments();
-      console.log("xczxc")
+      console.log('xczxc');
     }
   };
 
@@ -585,6 +600,16 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, eventcategoryDocument: true });
   };
 
+  const handleClickAssignVoucher = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: true });
+  };
+
+  const handleClickCreateBatch = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
+  };
+
   const handleDownload = (url) => {
     var link = document.createElement('a');
     link.download = 'Code.xlsx';
@@ -604,6 +629,15 @@ export default function GeneralTable(props) {
     event.stopPropagation();
     await setActive(setActiveUrl, document.id, isActive);
     fetchDocument();
+  };
+
+  const handleClickSendEmail = async (id) => {
+    showConfirmPopup({
+      message: `Bạn chắc chắn muốn gửi Voucher vào email ?`,
+      action: sendEmailVoucher,
+      payload: id,
+      onSuccess: reloadCurrentDocuments,
+    });
   };
 
   return (
@@ -670,6 +704,10 @@ export default function GeneralTable(props) {
                 createEvent={handleClickCreateEvent}
                 buttonCreateEventCategory={buttonCreateEventCategory}
                 createEventCategory={handleClickCreateEventCategory}
+                buttonCreateBatch={buttonCreateBatch}
+                createBatch={handleClickCreateBatch}
+                buttonAssignVoucher={buttonAssignVoucher}
+                assignVoucher={handleClickAssignVoucher}
               />
               <TableContainer>
                 <Table
@@ -713,7 +751,7 @@ export default function GeneralTable(props) {
                           {displayOptions.id && (
                             <TableCell align="left">
                               <div className={classes.tableItemID} onClick={(event) => openDetailDocument(event, row)}>
-                                <div>{ row.case_number}</div>
+                                <div>{row.case_number}</div>
                                 <div>{formatDateTime(row.created_date)}</div>
                               </div>
                             </TableCell>
@@ -727,7 +765,6 @@ export default function GeneralTable(props) {
                                 >
                                   <img alt="" src={row.image_url} style={style.tableUserAvatar} />
                                 </span>
-                                &nbsp;&nbsp;
                               </>
                             </TableCell>
                           )}
@@ -740,7 +777,6 @@ export default function GeneralTable(props) {
                                 >
                                   {row.fullname}
                                 </span>
-                                &nbsp;&nbsp;
                               </>
                             </TableCell>
                           )}
@@ -757,7 +793,6 @@ export default function GeneralTable(props) {
                                 >
                                   {row.title}
                                 </span>
-                                &nbsp;&nbsp;
                               </>
                             </TableCell>
                           )}
@@ -834,6 +869,7 @@ export default function GeneralTable(props) {
                               </>
                             </TableCell>
                           )}
+                          {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
                           {displayOptions.account_id && (
                             <TableCell align="left">
                               <>
@@ -1002,7 +1038,10 @@ export default function GeneralTable(props) {
                           {displayOptions.status && (
                             <TableCell align="left">
                               {row.status && (
-                                <span style={style.statusWrap} className={classes[getStatusType(row.status_display || 'none')]}>
+                                <span
+                                  style={style.statusWrap}
+                                  className={classes[getStatusType(row.status_display || 'none')]}
+                                >
                                   {row.status_display}
                                 </span>
                               )}
@@ -1018,7 +1057,15 @@ export default function GeneralTable(props) {
                           )}
                           {displayOptions.category_code && <TableCell align="left"  onClick={(event) => openDetailDocument(event, row)} >{row.category_code|| ''}</TableCell>}
                           {displayOptions.category_name && <TableCell align="left" onClick={(event) => openDetailDocument(event, row)} >{row.category_name || ''} </TableCell>}
-
+                          {displayOptions.is_used && (
+                            <TableCell align="left">
+                              {row.is_used ? (
+                                <Chip label="Đã sử dụng" />
+                              ) : (
+                                <Chip color="primary" label="Chưa sử dụng" />
+                              )}
+                            </TableCell>
+                          )}
                           {displayOptions.is_active && (
                             <TableCell align="left">
                               <FormControlLabel
@@ -1146,11 +1193,11 @@ export default function GeneralTable(props) {
                                     </Button>
                                   </Tooltip>
                                 )}
-                                {buttonBookingCancel && row.time_slot &&(
+                                {buttonBookingCancel && row.time_slot && (
                                   <Tooltip title={buttonBookingCancel.text}>
                                     <Button
                                       className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                      onClick={() => handleOpenModal('cancel',row)}
+                                      onClick={() => handleOpenModal('cancel', row)}
                                     >
                                       <DeleteForeverIcon className={classes.noteButtonIcon} />
                                     </Button>
@@ -1166,6 +1213,16 @@ export default function GeneralTable(props) {
                                       >
                                         <DuoIcon className={classes.handleButtonIconMeeting} />
                                       </a>
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonSendEmail && row.is_generated && (
+                                  <Tooltip title={buttonSendEmail.text}>
+                                    <Button
+                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
+                                      onClick={() => handleClickSendEmail(row.id)}
+                                    >
+                                      <MailOutlineIcon className={classes.noteButtonIcon} />
                                     </Button>
                                   </Tooltip>
                                 )}

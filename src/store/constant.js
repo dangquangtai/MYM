@@ -116,7 +116,7 @@ export const apiEndpoints = {
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
   cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
-  
+
   // Marketing
   // // Batch
   get_all_active_batch: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_batch&action=api',
@@ -124,17 +124,23 @@ export const apiEndpoints = {
   get_batch_detail: '/Primary/?FlowAlias=bs_api_marketing_get_batch_detail_by_id&action=api',
   create_batch: '/Primary/?FlowAlias=bs_api_marketing_create_batch&action=api',
   set_active_batch: '/Primary/?FlowAlias=bs_api_marketing_set_active_batch&action=api',
+  update_batch: '/Primary/?FlowAlias=bs_api_marketing_update_batch&action=api',
+  generate_voucher: '/Primary/?FlowAlias=bs_api_marketing_generate_voucher&action=api',
+  send_email_voucher: '/Primary/?FlowAlias=bs_api_marketing_send_email_voucher&action=api',
 
   // // Voucher
   get_all_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_voucher&action=api',
   get_all_inactive_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_voucher&action=api',
-  //event
+  set_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_set_active_voucher&action=api',
+  assign_voucher: '/Primary/?FlowAlias=bs_api_marketing_assign_voucher&action=api',
+  
+  // // Event
   get_online_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_online_event_list_by_page&action=api',
   get_offline_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_offline_event_list_by_page&action=api',
   create_event: '/Primary/?FlowAlias=bs_api_marketing_create_event&action=api',
   get_detail_event:'/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
   update_event:'/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
-  //event category
+  // // Event Category
   get_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list_by_page&action=api',
   create_event_category: '/Primary/?FlowAlias=bs_api_marketing_create_new_event_category&action=api',
   get_detail_event_category:'/Primary/?FlowAlias=bs_api_marketing_get_event_category_detail&action=api',
@@ -290,10 +296,17 @@ export const view = {
   batch: {
     list: {
       create: 'MYM_MARKETING_VOUCHER_BATCH_CREATE_MENU_BUTTON',
+      send_email: 'MYM_MARKETING_VOUCHER_BATCH_SEND_EMAIL_MENU_BUTTON',
     },
     detail: {
       save: 'MYM_MARKETING_VOUCHER_BATCH_SAVE_FORM_BUTTON',
       generate: 'MYM_MARKETING_VOUCHER_BATCH_GENERATE_FORM_BUTTON',
+      import: 'MYM_MARKETING_VOUCHER_BATCH_IMPORT_FORM_BUTTON',
+    },
+  },
+  voucher: {
+    list: {
+      assign: 'MYM_MARKETING_VOUCHER_VOUCHER_ASSIGN_MENU_BUTTON',
     },
   },
   event: {

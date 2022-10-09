@@ -54,7 +54,11 @@ const EnhancedTableToolbar = (props) => {
     buttonCreateEvent,
     createEvent,
     buttonCreateEventCategory,
-    createEventCategory
+    createEventCategory,
+    buttonCreateBatch,
+    createBatch,
+    buttonAssignVoucher,
+    assignVoucher,
   } = props;
 
   const filterRef = useRef(null);
@@ -250,6 +254,7 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
+        
         {buttonCreateEvent && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createEvent}>
@@ -257,6 +262,7 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
+        
         {buttonCreateEventCategory && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createEventCategory}>
@@ -264,6 +270,23 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
+        
+        {buttonCreateBatch && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createBatch}>
+              {buttonCreateBatch.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonAssignVoucher && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={assignVoucher}>
+              {buttonAssignVoucher.text}
+            </Button>
+          </Grid>
+        )}
+
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
           {numSelected > 0 && (
             <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
