@@ -48,7 +48,8 @@ import useMedia from './../../hooks/useMedia';
 import axiosInstance from '../../services/axios';
 import useMarketing from './../../hooks/useMarketing';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
+import useEventCategory from '../../hooks/useEventCategory';
+import useEvent from '../../hooks/useEvent';
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
@@ -121,6 +122,12 @@ export default function GeneralTable(props) {
       episodes: tableColumns.includes('episodes'),
       created_date: tableColumns.includes('created_date'),
       created_by: tableColumns.includes('created_by'),
+      category_code: tableColumns.includes('category_code'),
+      category_name: tableColumns.includes('category_name'),
+      address: tableColumns.includes('address'),
+      price: tableColumns.includes('price'),
+      online: tableColumns.includes('online'),
+      available:  tableColumns.includes('available'),
       menuButtons: !!menuButtons.length || false,
       is_featured: tableColumns.includes('is_featured'),
       is_active: tableColumns.includes('is_active'),
@@ -149,6 +156,9 @@ export default function GeneralTable(props) {
   const buttonBookingReview = menuButtons.find((button) => button.name === view.counselling.list.review);
   const buttonBookingNote = menuButtons.find((button) => button.name === view.counselling.list.note);
   const buttonBookingCancel = menuButtons.find((button) => button.name === view.counselling.list.cancel);
+
+  const buttonCreateEvent = menuButtons.find((button) => button.name === view.event.list.create);
+  const buttonCreateEventCategory = menuButtons.find((button) => button.name === view.eventcategory.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -212,6 +222,9 @@ export default function GeneralTable(props) {
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
   const { getBatchDetail } = useMarketing();
+
+  const {getEventCategoryDetail} = useEventCategory();
+  const { getEventDetail } = useEvent();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -345,6 +358,16 @@ export default function GeneralTable(props) {
       detailDocument = await getPlaylistDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: true });
+    }
+    else if (documentType === 'eventcategory') {
+      detailDocument = await getEventCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, eventcategoryDocument: true });
+    }
+    else if (documentType === 'event') {
+      detailDocument = await getEventDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: true });
     }
   };
 
@@ -553,6 +576,14 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
   };
+  const handleClickCreateEvent = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: true });
+  };
+  const handleClickCreateEventCategory = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, eventcategoryDocument: true });
+  };
 
   const handleDownload = (url) => {
     var link = document.createElement('a');
@@ -635,6 +666,10 @@ export default function GeneralTable(props) {
                 createPlaylist={handleClickCreatePlaylist}
                 buttonCreateMentor={buttonCreateMentor}
                 createMentor={handleClickCreateMentor}
+                buttonCreateEvent={buttonCreateEvent}
+                createEvent={handleClickCreateEvent}
+                buttonCreateEventCategory={buttonCreateEventCategory}
+                createEventCategory={handleClickCreateEventCategory}
               />
               <TableContainer>
                 <Table
@@ -713,6 +748,7 @@ export default function GeneralTable(props) {
                             <TableCell
                               style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                               align="left"
+                              onClick={(event) => openDetailDocument(event, row)}
                             >
                               <>
                                 <span
@@ -721,6 +757,79 @@ export default function GeneralTable(props) {
                                 >
                                   {row.title}
                                 </span>
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
+                           {displayOptions.address && (
+                            <TableCell
+                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                              align="left"
+                           
+                            >
+                              <>
+                                <span
+                                  className={classes.tableItemName}
+                                
+                                >
+                                  {row.address}
+                                </span>
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
+                           {displayOptions.price && (
+                            <TableCell
+                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                              align="left"
+                    
+                            >
+                              <>
+                                <span
+                                  className={classes.tableItemName}
+                                >
+                                  {row.price}
+                                </span>
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
+                           {displayOptions.online && (
+                            <TableCell
+                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                              align="left"
+                    
+                            >
+                              <>
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    // color="primary"
+                                    checked={row.is_online_event}
+                                
+                                  />
+                                }
+                              />
+                                &nbsp;&nbsp;
+                              </>
+                            </TableCell>
+                          )}
+                           {displayOptions.available && (
+                            <TableCell
+                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                              align="left"
+                    
+                            >
+                              <>
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    color="primary"
+                                    checked={row.is_available_for_booking}
+                                
+                                  />
+                                }
+                              />
                                 &nbsp;&nbsp;
                               </>
                             </TableCell>
@@ -907,6 +1016,9 @@ export default function GeneralTable(props) {
                               {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
                             </TableCell>
                           )}
+                          {displayOptions.category_code && <TableCell align="left"  onClick={(event) => openDetailDocument(event, row)} >{row.category_code|| ''}</TableCell>}
+                          {displayOptions.category_name && <TableCell align="left" onClick={(event) => openDetailDocument(event, row)} >{row.category_name || ''} </TableCell>}
+
                           {displayOptions.is_active && (
                             <TableCell align="left">
                               <FormControlLabel

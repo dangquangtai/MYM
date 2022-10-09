@@ -51,6 +51,10 @@ const EnhancedTableToolbar = (props) => {
     createPlaylist,
     buttonCreateMentor,
     createMentor,
+    buttonCreateEvent,
+    createEvent,
+    buttonCreateEventCategory,
+    createEventCategory
   } = props;
 
   const filterRef = useRef(null);
@@ -246,7 +250,20 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
-
+        {buttonCreateEvent && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createEvent}>
+              {buttonCreateEvent.text}
+            </Button>
+          </Grid>
+        )}
+        {buttonCreateEventCategory && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createEventCategory}>
+              {buttonCreateEventCategory.text}
+            </Button>
+          </Grid>
+        )}
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
           {numSelected > 0 && (
             <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">

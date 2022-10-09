@@ -91,6 +91,16 @@ export const PartnerProvider = ({ children }) => {
         } else return [];
       });
   };
+  const getMentorList = async () => {
+    return axiosInstance
+      .post(apiEndpoints.get_mentor_list, { outputtype: 'RawJson' })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
 
   return (
     <PartnerContext.Provider
@@ -104,6 +114,7 @@ export const PartnerProvider = ({ children }) => {
         generateTimeslot,
         getTimeslot,
         getPartnerList,
+        getMentorList,
       }}
     >
       {children}

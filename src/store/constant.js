@@ -81,7 +81,7 @@ export const apiEndpoints = {
   generate_timeslot: '/Primary/?FlowAlias=bs_api_partner_generate_timeslot&action=api',
   set_featured_mentor: '/Primary/?FlowAlias=bs_api_partner_set_featured_mentor&action=api',
   get_timeslot_by_mentor_id: '/Primary/?FlowAlias=bs_api_inventory_get_timeslot_by_mentor_id&action=api',
-
+  get_mentor_list: '/Primary/?FlowAlias=bs_api_partner_get_mentor_list&action=api',
   // // Partner
   get_all_active_partner: '/Primary/?FlowAlias=bs_api_partner_get_all_active_partner&action=api',
 
@@ -128,6 +128,18 @@ export const apiEndpoints = {
   // // Voucher
   get_all_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_voucher&action=api',
   get_all_inactive_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_voucher&action=api',
+  //event
+  get_online_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_online_event_list_by_page&action=api',
+  get_offline_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_offline_event_list_by_page&action=api',
+  create_event: '/Primary/?FlowAlias=bs_api_marketing_create_event&action=api',
+  get_detail_event:'/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
+  update_event:'/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
+  //event category
+  get_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list_by_page&action=api',
+  create_event_category: '/Primary/?FlowAlias=bs_api_marketing_create_new_event_category&action=api',
+  get_detail_event_category:'/Primary/?FlowAlias=bs_api_marketing_get_event_category_detail&action=api',
+  update_event_category:'/Primary/?FlowAlias=bs_api_marketing_update_event_category&action=api',
+  get_event_category_list: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list&action=api',
 
 };
 export const apiDomain = 'https://upload.truebpm.vn';
@@ -156,7 +168,14 @@ export const podcastActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_PODCAST_LIST',
   inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_PODCAST_LIST',
 };
+export const eventActions = {
+  online_list: 'MYM_MARKETING_EVENT_OPEN_ONLINE_EVENT_LIST',
+  offline_list: 'MYM_MARKETING_EVENT_OPEN_OFFLINE_EVENT_LIST',
+}
+export const eventcategoryActions = {
+  list: 'MYM_MARKETING_EVENT_OPEN_EVENT_CATEGORY_LIST',
 
+}
 export const episodeActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_EPISODE_LIST',
   inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_EPISODE_LIST',
@@ -275,6 +294,24 @@ export const view = {
     detail: {
       save: 'MYM_MARKETING_VOUCHER_BATCH_SAVE_FORM_BUTTON',
       generate: 'MYM_MARKETING_VOUCHER_BATCH_GENERATE_FORM_BUTTON',
+    },
+  },
+  event: {
+    list: {
+      create: 'MYM_MARKETING_EVENT_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_MARKETING_EVENT_SAVE',
+    
+    },
+  },
+  eventcategory: {
+    list: {
+      create: 'MYM_MARKETING_VOUCHER_CATEGORY_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_MARKETING_VOUCHER_CATEGORY_CREATE_FORM_BUTTON',
+    
     },
   },
 };

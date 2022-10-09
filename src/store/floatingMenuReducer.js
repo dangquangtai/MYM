@@ -13,6 +13,8 @@ export const initialState = {
   playlistDocument: false,
   batchDocument: false,
   voucherDocument: false,
+  eventDocument: false,
+  eventcategoryDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -32,6 +34,8 @@ const floatingMenuReducer = (state = initialState, action) => {
         playlistDocument: action.playlistDocument,
         batchDocument: action.batchDocument,
         voucherDocument: action.voucherDocument,
+        eventDocument: action.eventDocument,
+        eventcategoryDocument: action.eventcategoryDocument,
       };
     default:
       return state;

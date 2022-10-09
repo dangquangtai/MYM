@@ -21,7 +21,8 @@ import PodcastModal from '../../views/Podcast/Podcast/Detail/index.js';
 import EpisodeModal from '../../views/Podcast/Episode/Detail';
 import PlaylistModal from '../../views/Podcast/Playlist/Detail/index.js';
 import BatchModal from '../../views/Marketing/Batch/Detail/index.js';
-
+import EventCategoryModal from '../../views/Marketing/EventCategory/Detail/index.js';
+import EventModal from '../../views/Marketing/Event/Detail';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -106,6 +107,10 @@ const MainLayout = ({ children }) => {
         return <EpisodeModal />;
       case 'playlist':
         return <PlaylistModal />;
+      case 'eventcategory':
+        return <EventCategoryModal/>;
+      case 'event':
+          return <EventModal/>; 
     }
   };
 

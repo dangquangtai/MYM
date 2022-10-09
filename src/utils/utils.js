@@ -10,6 +10,8 @@ import {
   counsellingActions,
   batchActions,
   voucherActions,
+  eventActions,
+  eventcategoryActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -83,7 +85,15 @@ export function getUrlByAction(selectedFolder) {
     case voucherActions.active_list: {
       return apiEndpoints.get_all_active_voucher;
     }
-
+    case eventActions.online_list: {
+      return apiEndpoints.get_online_event;
+    }
+    case eventActions.offline_list: {
+      return apiEndpoints.get_offline_event;
+    }
+    case eventcategoryActions.list: {
+      return apiEndpoints.get_event_category;
+    }
     default: {
       return '';
     }

@@ -32,6 +32,10 @@ export const headCells = [
   { id: 'role_template_name', numeric: false, disablePadding: false, label: 'Role template', maxWidth: 100 },
   { id: 'apply_to_department_type', numeric: false, disablePadding: false, label: 'Các phòng ban', maxWidth: 100 },
   { id: 'approval_role', numeric: false, disablePadding: false, label: 'Vai trò phê duyệt', maxWidth: 100 },
+  { id: 'address', numeric: false, disablePadding: false, label: 'Địa chỉ', maxWidth: 100 },
+  { id: 'price', numeric: false, disablePadding: false, label: 'Giá', maxWidth: 100 },
+  { id: 'online', numeric: false, disablePadding: false, label: 'Trực tuyến', maxWidth: 100 },
+  { id: 'available', numeric: false, disablePadding: false, label: 'Khả dụng', maxWidth: 100 },
   {
     id: 'visible_for_selection',
     numeric: false,
@@ -46,6 +50,8 @@ export const headCells = [
   { id: 'created_date', numeric: false, disablePadding: false, label: 'Ngày tạo', maxWidth: 100 },
   { id: 'is_active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 150 },
   { id: 'is_featured', numeric: false, disablePadding: false, label: 'Nổi bật', maxWidth: 150 },
+  { id: 'category_code', numeric: false, disablePadding: false, label: 'Mã', maxWidth: 150 },
+  { id: 'category_name', numeric: false, disablePadding: false, label: 'Tên danh mục', maxWidth: 150 },
   { id: 'menuButtons', numeric: false, disablePadding: false, label: '', maxWidth: 150 },
 ];
 

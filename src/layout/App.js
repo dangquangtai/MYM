@@ -29,6 +29,8 @@ import { MediaProvider } from './../contexts/MediaContext';
 import { ShareProvider } from './../contexts/ShareContext';
 import { MetaDataProvider } from './../contexts/MetaDataContext';
 import { MarketingProvider } from './../contexts/MarketingContext';
+import { EventProvider } from './../contexts/EventContext';
+import { EventCategoryProvider } from './../contexts/EventCategoryContext';
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -80,8 +82,12 @@ const App = () => {
                                               <ShareProvider>
                                                 <MetaDataProvider>
                                                   <MarketingProvider>
-                                                    <Routes />
-                                                    <Snackbar />
+                                                    <EventProvider>
+                                                      <EventCategoryProvider>
+                                                      <Routes />
+                                                      <Snackbar />
+                                                      </EventCategoryProvider>
+                                                    </EventProvider>
                                                   </MarketingProvider>
                                                 </MetaDataProvider>
                                               </ShareProvider>
