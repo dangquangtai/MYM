@@ -4,6 +4,7 @@ import EpisodeTable from '../../Table';
 import { getUrlByAction } from '../../../utils/utils';
 import { DOCUMENT_CHANGE } from '../../../store/actions';
 // import axiosInstance from '../../services/axios';
+import { apiEndpoints } from './../../../store/constant';
 
 const EpisodeWrapper = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const EpisodeWrapper = () => {
         categories={categories}
         documentType="episode"
         // setFeaturedUrl={}
+        setActiveUrl={apiEndpoints.set_active_episode}
       />
     </React.Fragment>
   );

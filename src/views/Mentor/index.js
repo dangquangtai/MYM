@@ -32,6 +32,7 @@ const MentorWrapper = () => {
         categories={categories}
         documentType="mentor"
         setFeaturedUrl={apiEndpoints.set_featured_mentor}
+        setActiveUrl={apiEndpoints.set_active_mentor}
       />
     </React.Fragment>
   );

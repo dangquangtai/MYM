@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PlaylistTable from '../../Table';
 import { getUrlByAction } from '../../../utils/utils';
 import { DOCUMENT_CHANGE } from '../../../store/actions';
+import { apiEndpoints } from './../../../store/constant';
 
 const PlaylistWrapper = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const PlaylistWrapper = () => {
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="playlist"
+        setActiveUrl={apiEndpoints.set_active_playlist}
         // setFeaturedUrl={}
       />
     </React.Fragment>

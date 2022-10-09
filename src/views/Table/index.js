@@ -131,7 +131,7 @@ export default function GeneralTable(props) {
       address: tableColumns.includes('address'),
       price: tableColumns.includes('price'),
       online: tableColumns.includes('online'),
-      available:  tableColumns.includes('available'),
+      available: tableColumns.includes('available'),
       menuButtons: !!menuButtons.length || false,
       is_used: tableColumns.includes('is_used'),
       is_featured: tableColumns.includes('is_featured'),
@@ -238,7 +238,7 @@ export default function GeneralTable(props) {
 
   const { getBatchDetail, sendEmailVoucher } = useMarketing();
 
-  const {getEventCategoryDetail} = useEventCategory();
+  const { getEventCategoryDetail } = useEventCategory();
   const { getEventDetail } = useEvent();
 
   useEffect(() => {
@@ -369,17 +369,11 @@ export default function GeneralTable(props) {
       detailDocument = await getBatchDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
-    } else if (documentType === 'voucher') {
-      detailDocument = await getPlaylistDetail(selectedDocument.id);
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
-      dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: true });
-    }
-    else if (documentType === 'eventcategory') {
+    } else if (documentType === 'eventcategory') {
       detailDocument = await getEventCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, eventcategoryDocument: true });
-    }
-    else if (documentType === 'event') {
+    } else if (documentType === 'event') {
       detailDocument = await getEventDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: true });
@@ -441,7 +435,6 @@ export default function GeneralTable(props) {
       setIsOpenModal(false);
       setModalType('');
       reloadCurrentDocuments();
-      console.log('xczxc');
     }
   };
 
@@ -543,6 +536,7 @@ export default function GeneralTable(props) {
   };
 
   const [group_name, setGroup] = React.useState();
+
   const handleFilterChange = (data) => {
     fetchDocument(data);
     setGroup(data.group_id);
@@ -796,75 +790,55 @@ export default function GeneralTable(props) {
                               </>
                             </TableCell>
                           )}
-                           {displayOptions.address && (
+                          {displayOptions.address && (
                             <TableCell
                               style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                               align="left"
-                           
                             >
                               <>
-                                <span
-                                  className={classes.tableItemName}
-                                
-                                >
-                                  {row.address}
-                                </span>
+                                <span className={classes.tableItemName}>{row.address}</span>
                                 &nbsp;&nbsp;
                               </>
                             </TableCell>
                           )}
-                           {displayOptions.price && (
+                          {displayOptions.price && (
                             <TableCell
                               style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                               align="left"
-                    
                             >
                               <>
-                                <span
-                                  className={classes.tableItemName}
-                                >
-                                  {row.price}
-                                </span>
+                                <span className={classes.tableItemName}>{row.price}</span>
                                 &nbsp;&nbsp;
                               </>
                             </TableCell>
                           )}
-                           {displayOptions.online && (
+                          {displayOptions.online && (
                             <TableCell
                               style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                               align="left"
-                    
                             >
                               <>
-                              <FormControlLabel
-                                control={
-                                  <Switch
-                                    // color="primary"
-                                    checked={row.is_online_event}
-                                
-                                  />
-                                }
-                              />
+                                <FormControlLabel
+                                  control={
+                                    <Switch
+                                      // color="primary"
+                                      checked={row.is_online_event}
+                                    />
+                                  }
+                                />
                                 &nbsp;&nbsp;
                               </>
                             </TableCell>
                           )}
-                           {displayOptions.available && (
+                          {displayOptions.available && (
                             <TableCell
                               style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                               align="left"
-                    
                             >
                               <>
-                              <FormControlLabel
-                                control={
-                                  <Switch
-                                    color="primary"
-                                    checked={row.is_available_for_booking}
-                                
-                                  />
-                                }
-                              />
+                                <FormControlLabel
+                                  control={<Switch color="primary" checked={row.is_available_for_booking} />}
+                                />
                                 &nbsp;&nbsp;
                               </>
                             </TableCell>
@@ -1055,8 +1029,20 @@ export default function GeneralTable(props) {
                               {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
                             </TableCell>
                           )}
-                          {displayOptions.category_code && <TableCell align="left"  onClick={(event) => openDetailDocument(event, row)} >{row.category_code|| ''}</TableCell>}
-                          {displayOptions.category_name && <TableCell align="left" onClick={(event) => openDetailDocument(event, row)} >{row.category_name || ''} </TableCell>}
+                          {displayOptions.category_code && (
+                            <TableCell
+                              align="left"
+                              className={classes.tableItemName}
+                              onClick={(event) => openDetailDocument(event, row)}
+                            >
+                              {row.category_code || ''}
+                            </TableCell>
+                          )}
+                          {displayOptions.category_name && (
+                            <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
+                              {row.category_name || ''}{' '}
+                            </TableCell>
+                          )}
                           {displayOptions.is_used && (
                             <TableCell align="left">
                               {row.is_used ? (

@@ -53,6 +53,7 @@ export const apiEndpoints = {
   get_playlist_detail: '/Primary/?FlowAlias=bs_media_api_get_playlist_detail_by_id&action=api',
   create_playlist: '/Primary/?FlowAlias=bs_media_api_create_new_playlist&action=api',
   update_playlist: '/Primary/?FlowAlias=bs_media_api_update_playlist&action=api',
+  set_active_playlist: '/Primary/?FlowAlias=bs_media_api_set_active_playlist&action=api',
   // // Podcast
   get_all_active_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_active&action=api',
   get_all_inactive_podcast: '/Primary/?FlowAlias=bs_media_api_get_list_podcast_inactive&action=api',
@@ -60,6 +61,7 @@ export const apiEndpoints = {
   create_podcast: '/Primary/?FlowAlias=bs_media_api_create_podcast&action=api',
   update_podcast: '/Primary/?FlowAlias=bs_media_api_update_podcast&action=api',
   set_featured_podcast: '/Primary/?FlowAlias=bs_media_api_set_featured_podcast&action=api',
+  set_active_podcast: '/Primary/?FlowAlias=bs_media_api_set_active_podcast&action=api',
 
   get_counseling_categoies: '/Primary/?FlowAlias=bs_partner_api_get_counseling_categoies&action=api',
   // // Episode
@@ -68,6 +70,7 @@ export const apiEndpoints = {
   get_episode_detail: '/Primary/?FlowAlias=bs_media_api_get_episode_detail_by_id&action=api',
   create_episode: '/Primary/?FlowAlias=bs_media_api_create_episode&action=api',
   update_episode: '/Primary/?FlowAlias=bs_media_api_update_episode&action=api',
+  set_active_episode: '/Primary/?FlowAlias=bs_media_api_set_active_episode&action=api',
 
   // Partner
   // // Mentor
@@ -133,20 +136,19 @@ export const apiEndpoints = {
   get_all_inactive_voucher: '/Primary/?FlowAlias=bs_api_marketing_get_all_inactive_voucher&action=api',
   set_active_voucher: '/Primary/?FlowAlias=bs_api_marketing_set_active_voucher&action=api',
   assign_voucher: '/Primary/?FlowAlias=bs_api_marketing_assign_voucher&action=api',
-  
+
   // // Event
   get_online_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_online_event_list_by_page&action=api',
   get_offline_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_offline_event_list_by_page&action=api',
   create_event: '/Primary/?FlowAlias=bs_api_marketing_create_event&action=api',
-  get_detail_event:'/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
-  update_event:'/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
+  get_detail_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
+  update_event: '/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
   // // Event Category
   get_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list_by_page&action=api',
   create_event_category: '/Primary/?FlowAlias=bs_api_marketing_create_new_event_category&action=api',
-  get_detail_event_category:'/Primary/?FlowAlias=bs_api_marketing_get_event_category_detail&action=api',
-  update_event_category:'/Primary/?FlowAlias=bs_api_marketing_update_event_category&action=api',
+  get_detail_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_detail&action=api',
+  update_event_category: '/Primary/?FlowAlias=bs_api_marketing_update_event_category&action=api',
   get_event_category_list: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list&action=api',
-
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -177,11 +179,10 @@ export const podcastActions = {
 export const eventActions = {
   online_list: 'MYM_MARKETING_EVENT_OPEN_ONLINE_EVENT_LIST',
   offline_list: 'MYM_MARKETING_EVENT_OPEN_OFFLINE_EVENT_LIST',
-}
+};
 export const eventcategoryActions = {
   list: 'MYM_MARKETING_EVENT_OPEN_EVENT_CATEGORY_LIST',
-
-}
+};
 export const episodeActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_EPISODE_LIST',
   inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_EPISODE_LIST',
@@ -315,7 +316,6 @@ export const view = {
     },
     detail: {
       save: 'MYM_MARKETING_EVENT_SAVE',
-    
     },
   },
   eventcategory: {
@@ -324,7 +324,6 @@ export const view = {
     },
     detail: {
       save: 'MYM_MARKETING_VOUCHER_CATEGORY_CREATE_FORM_BUTTON',
-    
     },
   },
 };

@@ -32,6 +32,7 @@ const PodcastWrapper = () => {
         categories={categories}
         documentType="podcast"
         setFeaturedUrl={apiEndpoints.set_featured_podcast}
+        setActiveUrl={apiEndpoints.set_active_podcast}
       />
     </React.Fragment>
   );
