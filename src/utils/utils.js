@@ -12,6 +12,8 @@ import {
   voucherActions,
   eventActions,
   eventcategoryActions,
+  prepaidcardActions,
+  prepaidcardBatchActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -93,6 +95,12 @@ export function getUrlByAction(selectedFolder) {
     }
     case eventcategoryActions.list: {
       return apiEndpoints.get_event_category;
+    }
+    case prepaidcardActions.active_list: {
+      return apiEndpoints.get_all_prepaid_card;
+    }
+    case prepaidcardBatchActions.active_list: {
+      return apiEndpoints.get_all_prepaid_card_batch;
     }
     default: {
       return '';
