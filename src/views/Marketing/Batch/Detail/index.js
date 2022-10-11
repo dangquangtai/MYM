@@ -125,6 +125,7 @@ const BatchModal = () => {
 
   const setDocumentToDefault = async () => {
     setBatchData(initBatchData);
+    console.log("batch")
     setTabIndex(0);
   };
   const setURL = (image) => {

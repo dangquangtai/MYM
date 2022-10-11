@@ -16,7 +16,15 @@ import {
   Select,
   MenuItem,
   FormControl,
-  FormControlLabel
+  FormControlLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableContainer,
+  TableHead
+
+
 } from '@material-ui/core';
 import Alert from '../../../../component/Alert';
 import PropTypes from 'prop-types';
@@ -28,9 +36,10 @@ import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions.js';
 import { view } from '../../../../store/constant';
 import useStyles from '../../../../utils/classes';
-import { initBatchData, userAvatar } from '../../../../store/constants/initial.js';
+import { initEvent, userAvatar } from '../../../../store/constants/initial.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 import useEvent from './../../../../hooks/useEvent';
+import useBooking from './../../../../hooks/useBooking';
 import usePartner from './../../../../hooks/usePartner';
 import useEventCategory from './../../../../hooks/useEventCategory';
 import {
@@ -40,9 +49,7 @@ import {
   LibraryMusicOutlined as LibraryMusicOutlinedIcon,
   GraphicEq as GraphicEqIcon,
 } from '@material-ui/icons';
-import { NoPaddingAutocomplete } from '../../../../component/Autocomplete/index.js';
-import { connectStorageEmulator } from 'firebase/storage';
-import { isEmpty } from 'lodash';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -79,55 +86,29 @@ function a11yProps(index) {
 const EventModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const [event, setEvent] = useState(initEvent);
   const { form_buttons: formButtons } = useView();
   const { eventDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const { getEventCategoryList} = useEventCategory();
+  const { getEventCategoryList } = useEventCategory();
   const { getMentorList } = usePartner();
   const [mentorList, setMentorList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedMentor, setSelectedMentor] = useState('');
   const [selectedMentorList, setSelectedMentorList] = useState([]);
   const [mentorListSelection, setMentorListSelection] = useState([]);
-  const { createEvent , updateEvent } = useEvent();
+  const { createEvent, updateEvent } = useEvent();
+  const { getCounsellingByEvent } = useBooking();
   const {
     provinces: provinceList,
-    genders: genderList,
-    degree: degreeList,
-    careers: careerCategoryList,
-    topics: careerTopicList,
   } = useSelector((state) => state.metadata);
-  const [event, setEvent] = React.useState({
-    from_date: '',
-    to_date: '',
-    close_registration_date: '',
-    open_registration_date: '',
-    online_url: '',
-    image_url: '',
-    address: '',
-    map_lat: '',
-    mat_long: '',
-    map_url: '',
-    mentor_list:[],
-    address_title: '',
-    title: '',
-    category_id_1: '',
-    category_id_2: '',
-    category_id_3: '',
-    category_id_4: '',
-    mentor_id_list: [],
-    is_active: false,
-    is_featured: false,
-    is_online_event: false,
-    
-  });
+  const [bookingList, setBooking] = useState([]);
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
     type: '',
     text: '',
   });
-  const buttoncreateEvent =formButtons.find((button) => button.name === view.event.detail.save);
+  const buttoncreateEvent = formButtons.find((button) => button.name === view.event.detail.save);
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
     type: '',
@@ -135,29 +116,9 @@ const EventModal = () => {
   const [tabIndex, setTabIndex] = React.useState(0);
 
 
- 
+
   const handleCloseDialog = () => {
-    setEvent({ from_date: '',
-    to_date: '',
-    close_registration_date: '',
-    open_registration_date: '',
-    online_url: '',
-    image_url: '',
-    address: '',
-    map_lat: '',
-    mat_long: '',
-    map_url: '',
-    mentor_list:[],
-    address_title: '',
-    title: '',
-    category_id_1: '',
-    category_id_2: '',
-    category_id_3: '',
-    category_id_4: '',
-    mentor_id_list: [],
-    is_active: false,
-    is_featured: false,
-    is_online_event: false,});
+    setEvent(initEvent);
     setDocumentToDefault();
     dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: false });
   };
@@ -175,17 +136,18 @@ const EventModal = () => {
   };
 
   const setDocumentToDefault = async () => {
- 
+    setEvent(initEvent);
+    console.log('event', event)
     setTabIndex(0);
   };
   const setURL = (image) => {
-    if (dialogUpload.type ==='image'){
-      setEvent({...event,image_url: image});
+    if (dialogUpload.type === 'image') {
+      setEvent({ ...event, image_url: image });
     }
     else {
-      setEvent({...event,map_url: image});
+      setEvent({ ...event, map_url: image });
     }
-    
+
   };
 
   const handleOpenDiaLog = (type) => {
@@ -202,66 +164,56 @@ const EventModal = () => {
     });
   };
   const handleChangeMentorSelection = (e) => {
-    if(!!selectedMentorList){
+    if (!!selectedMentorList) {
       setSelectedMentorList([...selectedMentorList, e.target.value])
-    } else{
+    } else {
       setSelectedMentorList([e.target.value])
     }
-    
+
     let newSelectionList = JSON.parse(JSON.stringify(mentorListSelection));
-      newSelectionList.map((mentor,index)=>{
-        if(!!mentor && mentor.id==e.target.value){
-          delete newSelectionList[index];
-          setMentorListSelection(newSelectionList);
-          setSelectedMentor('');
-          return  ;
-        }
-      })
-   
+    newSelectionList.map((mentor, index) => {
+      if (!!mentor && mentor.id == e.target.value) {
+        delete newSelectionList[index];
+        setMentorListSelection(newSelectionList);
+        setSelectedMentor('');
+        return;
+      }
+    })
+
   };
   const handleChangeMentorSelectionDefault = (id) => {
     let newSelectionList = JSON.parse(JSON.stringify(mentorListSelection));
-      newSelectionList.map((mentor,index)=>{
-        if(!!mentor && mentor.id===id){
-          console.log(mentor.id)
-          delete newSelectionList[index];
-          setMentorListSelection(newSelectionList);
-          setSelectedMentor('');
-          return;
-        }
-      })
+    newSelectionList.map((mentor, index) => {
+      if (!!mentor && mentor.id === id) {
+
+        delete newSelectionList[index];
+        setMentorListSelection(newSelectionList);
+        setSelectedMentor('');
+        return;
+      }
+    })
   };
   const handleChanges = (e) => {
     const { name, value } = e.target;
     setEvent({ ...event, [name]: value });
   };
-
-  const handleSelectPartner = (e, partner) => {
-   
-  };
-
-  const handleSelectEvent = (e, event) => {
-   
-  
-  };
-
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        let check = await updateEvent(event,selectedMentorList);
-        if (check){
+        let check = await updateEvent(event, selectedMentorList);
+        if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
           handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
         }
       } else {
-        let check = await createEvent(event,selectedMentorList);
-        if (check){
+        let check = await createEvent(event, selectedMentorList);
+        if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
           handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
         }
-       
+
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'event' });
       handleCloseDialog();
@@ -269,97 +221,47 @@ const EventModal = () => {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
-  const handleRemoveSelected= (id) => {
+  const handleRemoveSelected = (id) => {
     const newSelectedList = selectedMentorList.filter((item) => item !== id);
     setSelectedMentorList(newSelectedList);
-  
-    if(mentorList.length >0 ){
-      mentorList.map((mentor)=>(
-        mentor.id===id &&(
-          setMentorListSelection([...mentorListSelection,mentor])
+
+    if (mentorList.length > 0) {
+      mentorList.map((mentor) => (
+        mentor.id === id && (
+          setMentorListSelection([...mentorListSelection, mentor])
         )))
     }
-  
-   
-    
   };
+  const fetchData = async () => {
+    let data = await getMentorList();
+    setMentorList(data);
+    setMentorListSelection(data);
+    data = await getEventCategoryList();
+    setCategoryList(data);
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      let data =await getMentorList();
-      setMentorList(data);
-      setMentorListSelection(data);
-      data = await getEventCategoryList();
-      setCategoryList(data);
-    };
     setSelectedMentorList('');
     fetchData();
-    setEvent( {
-      from_date: '',
-    to_date: '',
-    close_registration_date: '',
-    open_registration_date: '',
-    online_url: '',
-    image_url: '',
-    address: '',
-    map_lat: '',
-    mat_long: '',
-    map_url: '',
-    mentor_list:[],
-    address_title: '',
-    title: '',
-    category_id_1: '',
-    category_id_2: '',
-    category_id_3: '',
-    category_id_4: '',
-    mentor_id_list: [],
-    is_active: false,
-    is_featured: false,
-    is_online_event: false,
-  });
-   
+
   }, []);
 
   useEffect(() => {
-    const fetch = async () =>{
-      let data =await getMentorList();
-      setMentorList(data);
-      setMentorListSelection(data);
-      data = await getEventCategoryList();
-      setCategoryList(data);
-    }
-    fetch();
-    setEvent({ from_date: '',
-    to_date: '',
-    close_registration_date: '',
-    open_registration_date: '',
-    online_url: '',
-    image_url: '',
-    address: '',
-    map_lat: '',
-    mat_long: '',
-    map_url: '',
-    mentor_list:[],
-    address_title: '',
-    title: '',
-    category_id_1: '',
-    category_id_2: '',
-    category_id_3: '',
-    category_id_4: '',
-    mentor_id_list: [],
-    is_active: false,
-    is_featured: false,
-    is_online_event: false,
-    province_id: ''});
+    fetchData();
     if (!selectedDocument) return;
     setEvent(selectedDocument);
+    const fetchBooking = async () => {
+      let data = await getCounsellingByEvent(selectedDocument.id, 1, 10, '', '', 'desc');
+      setBooking(data);
+    }
+    fetchBooking();
     setSelectedMentorList(selectedDocument.mentor_id_list);
-   
+
   }, [selectedDocument]);
 
   return (
     <React.Fragment>
-       {snackbarStatus.isOpen && (
+      {snackbarStatus.isOpen && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open={snackbarStatus.isOpen}
@@ -392,7 +294,7 @@ const EventModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Chi tiết 
+              Chi tiết
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -422,11 +324,22 @@ const EventModal = () => {
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
                         <DescriptionOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
-                        Danh sách booking
+                        Mô tả chi tiết
                       </Typography>
                     }
                     value={1}
                     {...a11yProps(1)}
+                  />
+                  <Tab
+                    className={classes.unUpperCase}
+                    label={
+                      <Typography className={classes.tabLabels} component="span" variant="subtitle1">
+                        <DescriptionOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
+                        Danh sách booking
+                      </Typography>
+                    }
+                    value={2}
+                    {...a11yProps(2)}
                   />
                 </Tabs>
               </Grid>
@@ -442,7 +355,7 @@ const EventModal = () => {
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
-                        <Grid container className={classes.gridItemInfo} alignItems="center">
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Tiêu đề:</span>
                             </Grid>
@@ -468,7 +381,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="address"
-                                value={event.address  }
+                                value={event.address}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -484,7 +397,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="address_title"
-                                value={event.address_title  }
+                                value={event.address_title}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -516,267 +429,162 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="online_url"
-                                value={event.online_url  }
+                                value={event.online_url}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Map long:</span>
+                        
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Tỉnh:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="text"
-                                variant="outlined"
-                                name="map_long"
-                                value={event.map_long  }
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Map lat:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="text"
-                                variant="outlined"
-                                name="map_lat"
-                                value={event.map_lat  }
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
+                            <Grid item lg={8} md={8} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={event.province_id}
+                                onChange={(e) => setEvent({ ...event, province_id: e.target.value })}
+                              >
+                                {provinceList &&
+                                  provinceList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id} selected={event.province_id === item.id}>
+                                      {item.value}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
-                          <Grid item lg={4} md={4} xs={12}>
-                            <span className={classes.tabItemLabelField}>Tỉnh:</span>
-                          </Grid>
-                          <Grid item lg={8} md={8} xs={12}>
-                            <Select
-                              className={classes.multpleSelectField}
-                              value={event.province_id}
-                              onChange={(e) => setEvent({...event, province_id: e.target.value })}
-                            >
-                              {provinceList &&
-                                provinceList.map((item) => (
-                                  <MenuItem key={item.id} value={item.id} selected={event.province_id===item.id}>
-                                    {item.value}
-                                  </MenuItem>
-                                ))}
-                            </Select>
-                          </Grid>
-                        </Grid>
-                        <Grid container className={classes.gridItem} alignItems="center">
-                          <Grid item lg={4} md={4} xs={12}>
-                            <span className={classes.tabItemLabelField}>Danh mục:</span>
-                          </Grid>
-                          <Grid item lg={8} md={8} xs={12}>
-                            <Select
-                              className={classes.multpleSelectField}
-                              value={event.category_id_1  }
-                              onChange={(e) => setEvent({...event, category_id_1: e.target.value })}
-                            >
-                              {categoryList &&
-                                categoryList.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
-                                    {item.category_name}
-                                  </MenuItem>
-                                ))}
-                            </Select>
-                          </Grid>
-                        </Grid>
-                        <Grid container className={classes.gridItem} alignItems="center">
-                          <Grid item lg={4} md={4} xs={12}>
-                            <span className={classes.tabItemLabelField}>Danh mục:</span>
-                          </Grid>
-                          <Grid item lg={8} md={8} xs={12}>
-                            <Select
-                              className={classes.multpleSelectField}
-                              value={event.category_id_2 }
-                             
-                             
-                              onChange={(e) => setEvent({ ...event, category_id_2: e.target.value })}
-                            >
-                              {categoryList &&
-                                categoryList.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
-                                    {item.category_name}
-                                  </MenuItem>
-                                ))}
-                            </Select>
-                          </Grid>
-                        </Grid>
-                        <Grid container className={classes.gridItem} alignItems="center">
-                          <Grid item lg={4} md={4} xs={12}>
-                            <span className={classes.tabItemLabelField}>Danh mục:</span>
-                          </Grid>
-                          <Grid item lg={8} md={8} xs={12}>
-                            <Select
-                              className={classes.multpleSelectField}
-                              value={event.category_id_3}
-                             
-                             
-                              onChange={(e) => setEvent({ ...event, category_id_3: e.target.value })}
-                            >
-                              {categoryList &&
-                                categoryList.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
-                                    {item.category_name}
-                                  </MenuItem>
-                                ))}
-                            </Select>
-                          </Grid>
-                        </Grid>
-                        <Grid container className={classes.gridItem} alignItems="center">
-                          <Grid item lg={4} md={4} xs={12}>
-                            <span className={classes.tabItemLabelField}>Danh mục:</span>
-                          </Grid>
-                          <Grid item lg={8} md={8} xs={12}>
-                            <Select
-                              className={classes.multpleSelectField}
-                              value={event.category_id_4}
-                             
-                             
-                              onChange={(e) => setEvent({ ...event, category_id_4: e.target.value })}
-                            >
-                              {categoryList &&
-                                categoryList.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
-                                    {item.category_name}
-                                  </MenuItem>
-                                ))}
-                            </Select>
-                          </Grid>
-                        </Grid>
-                        <Grid container className={classes.gridItem} alignItems="center">
-                          <Grid item lg={2} md={2} xs={2}>
-                            <span className={classes.tabItemLabelField}>Active:</span>
-                          </Grid>
-                          <Grid item lg={2} md={2} xs={2}>
-                          <FormControlLabel
-                                control={
-                                  <Switch
-                                    // color="primary"
-                                    checked={event.is_active}
-                                    onClick={(e) => setEvent( {...event, is_active: e.target.checked} )}
-                                  />
-                                }
-                              />
-                          </Grid>
-                          <Grid item lg={2} md={2} xs={2}>
-                            <span className={classes.tabItemLabelField}>Feature:</span>
-                          </Grid>
-                          <Grid item lg={2} md={2} xs={2}>
-                          <FormControlLabel
-                                control={
-                                  <Switch
-                                    checked={event.is_featured}
-                                    onClick={(e) => setEvent( {...event, is_featured: e.target.checked} )}
-                                  />
-                                }
-                              />
-                          </Grid>
-                          <Grid item lg={2} md={2} xs={2}>
-                            <span className={classes.tabItemLabelField}>Online Event:</span>
-                          </Grid>
-                          <Grid item lg={2} md={2} xs={2}>
-                          <FormControlLabel
-                                control={
-                                  <Switch
-                                    checked={event.is_online_event}
-                                    onClick={(e) => setEvent( {...event, is_online_event: e.target.checked} )}
-                                  />
-                                }
-                              />
-                          </Grid>
-                        </Grid>
-                        
-                      
-                          </div>
-                          </div>
-                        <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <LibraryMusicOutlinedIcon />
-                            <span>Thông tin thời gian</span>
-                          </div>
-                        </div>
-                          <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Thời gian bắt đầu:</span>
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh mục 1:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="datetime-local"
-                                variant="outlined"
-                                name="from_date"
-                                value={event.from_date  }
-                                className={classes.inputField}
-                                onChange={handleChanges}
+                            <Grid item lg={8} md={8} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={event.category_id_1}
+                                onChange={(e) => setEvent({ ...event, category_id_1: e.target.value })}
+                              >
+                                <MenuItem value={' '} selected={event.category_id_1 === ' '}>
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {categoryList &&
+                                  categoryList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.category_name}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh mục 2:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={event.category_id_2}
+                                onChange={(e) => setEvent({ ...event, category_id_2: e.target.value })}
+                              >
+                                <MenuItem value={' '} selected={event.category_id_2 === ' '}>
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {categoryList &&
+                                  categoryList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.category_name}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh mục 3:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={event.category_id_3}
+                                onChange={(e) => setEvent({ ...event, category_id_3: e.target.value })}
+                              >
+                                <MenuItem value={' '} selected={event.category_id_3 === ' '}>
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {categoryList &&
+                                  categoryList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.category_name}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh mục 4:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={event.category_id_4}
+                                onChange={(e) => setEvent({ ...event, category_id_4: e.target.value })}
+                              >
+                                <MenuItem value={' '} selected={event.category_id_4 === ' '}>
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {categoryList &&
+                                  categoryList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.category_name}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={2}>
+                              <span className={classes.tabItemLabelField}>Active:</span>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <Switch
+                                onClick={() => setEvent({ ...event, is_active: !event.is_active })}
+                                checked={event.is_active}
+                                name='is_active'
+                                inputProps={{ 'aria-label': 'primary checkbox' }}
                               />
                             </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Thời gian kết thúc:</span>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <span className={classes.tabItemLabelField}>Feature:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="datetime-local"
-                                variant="outlined"
-                                name="to_date"
-                                value={event.to_date  }
-                                className={classes.inputField}
-                                onChange={handleChanges}
+                            <Grid item lg={2} md={2} xs={2}>
+
+                              <Switch
+                                checked={event.is_featured}
+                                onClick={(e) => setEvent({ ...event, is_featured: e.target.checked })}
                               />
+
                             </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Thời gian bắt đầu đăng ký:</span>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <span className={classes.tabItemLabelField}>Online Event:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="datetime-local"
-                                variant="outlined"
-                                name="open_registration_date"
-                                value={event.open_registration_date  }
-                                className={classes.inputField}
-                                onChange={handleChanges}
+                            <Grid item lg={2} md={2} xs={2}>
+
+                              <Switch
+                                checked={event.is_online_event}
+                                onClick={(e) => setEvent({ ...event, is_online_event: e.target.checked })}
                               />
+
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Thời gian kết thúc đăng ký:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="datetime-local"
-                                variant="outlined"
-                                name="close_registration_date"
-                                value={event.close_registration_date  }
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
+
+
                         </div>
                       </div>
-                      </Grid>
-                      <Grid item lg={6} md={6} xs={6}>
+
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={6}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
@@ -843,9 +651,123 @@ const EventModal = () => {
                               />
                             </Grid>
                           </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Map long:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="text"
+                                variant="outlined"
+                                name="map_long"
+                                value={event.map_long}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Map lat:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="text"
+                                variant="outlined"
+                                name="map_lat"
+                                value={event.map_lat}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
                         </div>
                       </div>
+                     
+                    </Grid>
+
+                  </Grid>
+                </TabPanel>
+                <TabPanel value={tabIndex} index={1}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={6} md={6} xs={6}>
                       <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <LibraryMusicOutlinedIcon />
+                            <span>Thông tin thời gian</span>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thời gian bắt đầu:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="datetime-local"
+                                variant="outlined"
+                                name="from_date"
+                                value={event.from_date}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thời gian kết thúc:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="datetime-local"
+                                variant="outlined"
+                                name="to_date"
+                                value={event.to_date}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thời gian bắt đầu đăng ký:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="datetime-local"
+                                variant="outlined"
+                                name="open_registration_date"
+                                value={event.open_registration_date}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thời gian kết thúc đăng ký:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="datetime-local"
+                                variant="outlined"
+                                name="close_registration_date"
+                                value={event.close_registration_date}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div>
+                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <ImageIcon />
@@ -859,63 +781,186 @@ const EventModal = () => {
                               id="note_id"
                               onChange={handleChangeMentorSelection}
                               displayEmpty
-                             
+
                             >
                               {Object.values(mentorListSelection)?.map((mentor, index) => (
-                                 !!mentor  && (
+                                !!mentor && (
                                   <MenuItem key={index} value={mentor.id}>
-                                  {mentor.fullname}
-                                </MenuItem>
+                                    {mentor.fullname}
+                                  </MenuItem>
                                 )
                               ))}
                             </Select>
                           </FormControl>
                         </div>
                         <div className={classes.selectedNoteListSection}>
-                        
-                          {!!selectedMentorList &&  selectedMentorList.map((id) => (
+
+                          {!!selectedMentorList && selectedMentorList.map((id) => (
                             handleChangeMentorSelectionDefault(id),
-                              mentorList.map((mentor)=>(
-                                mentor.id===id &&(
+                            mentorList.map((mentor) => (
+                              mentor.id === id && (
                                 <div key={id} className={classes.selectedNoteItem}>
-                                <div>{mentor.fullname}</div>
-                                <CloseOutlinedIcon
-                                  onClick={() => handleRemoveSelected(id)}
-                                  style={style.selectedItemCloseIcon}
-                                />
-                              </div>
-                                )
-                                
+                                  <div>{mentor.fullname}</div>
+                                  <CloseOutlinedIcon
+                                    onClick={() => handleRemoveSelected(id)}
+                                    style={style.selectedItemCloseIcon}
+                                  />
+                                </div>
                               )
-                                
-                              )
+
+                            )
+
+                            )
                           ))}
                         </div>
                       </div>
                     </Grid>
-                   
-                  </Grid>
-                </TabPanel>
-                <TabPanel value={tabIndex} index={1}>
-                  <Grid container spacing={1}>
                     <Grid item lg={6} md={6} xs={6}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <LibraryMusicOutlinedIcon />
-                            <span>Thông tin</span>
+                            <span>Mô tả chi tiết</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
-                      
                           <Grid container className={classes.gridItemInfo} alignItems="center">
-                           
+                            <Grid item lg={12} md={12} xs={12}>
+                              <span className={classes.tabItemLabelField}>Mô tả:</span>
+                            </Grid>
+                            <Grid item lg={12} md={12} xs={12}>
+                              <TextField
+                                fullWidth
+                                variant="outlined"
+                                name="description"
+                                multiline
+                                rows={6}
+                                rowsMax={6}
+                                value={event.description}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
                           </Grid>
-                         </div>
-                         </div>
-                      </Grid>
+                        </div>
+                      </div>
                     </Grid>
-                
+                  </Grid>
+
+                </TabPanel>
+                <TabPanel value={tabIndex} index={2}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={12} md={12} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <LibraryMusicOutlinedIcon />
+                            <span>Tổng số booking : {bookingList.length || 0}</span>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <TableContainer>
+                            <Table
+                              stickyHeader
+                              className={classes.table}
+                              aria-labelledby="tableTitle"
+                              size={'medium'}
+                            // aria-label="enhanced table"
+                            >
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell padding="checkbox">
+                                    Mã đăng ký
+                                  </TableCell>
+                                  <TableCell padding="checkbox">
+                                    Ngày đăng ký
+                                  </TableCell>
+                                  <TableCell padding="checkbox">
+                                    Khách hàng
+                                  </TableCell>
+                                  <TableCell padding="checkbox">
+                                    Email
+                                  </TableCell>
+                                  <TableCell padding="checkbox">
+                                    Trường
+                                  </TableCell>
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {bookingList.map((row, index) => {
+                                   
+                                    const labelId = `enhanced-table-checkbox-${index}`;
+                                    return (
+                                      <TableRow
+                                        className={classes.tableRow}
+                                        hover
+                                       
+                                        tabIndex={-1}
+                                        key={row.id}
+                                   
+                                      >
+                                        <TableCell padding="checkbox">
+                                          <>
+                                            <span
+                                              className={classes.tableItemName}
+
+                                            >
+                                              {row.case_number}
+                                            </span>
+                                          </>
+                                        </TableCell>
+                                        <TableCell padding="checkbox">
+                                          <>
+                                            <span
+                                              className={classes.tableItemName}
+
+                                            >
+                                              {row.created_date}
+                                            </span>
+                                          </>
+                                        </TableCell>
+                                        <TableCell padding="checkbox">
+                                          <>
+                                            <span
+                                              className={classes.tableItemName}
+
+                                            >
+                                              {row.fullname}
+                                            </span>
+                                          </>
+                                        </TableCell>
+                                        <TableCell padding="checkbox">
+                                          <>
+                                            <span
+                                              className={classes.tableItemName}
+
+                                            >
+                                              {row.email_address}
+                                            </span>
+                                          </>
+                                        </TableCell>
+                                        <TableCell padding="checkbox">
+                                          <>
+                                            <span
+                                              className={classes.tableItemName}
+
+                                            >
+                                              {row.current_school}
+                                            </span>
+                                          </>
+                                        </TableCell>
+                                      </TableRow>
+                                  );})}
+                          </TableBody>
+                        </Table>
+                          </TableContainer>
+
+
+                        </div>
+                      </div>
+                    </Grid>
+                  </Grid>
+
                 </TabPanel>
               </Grid>
             </Grid>
