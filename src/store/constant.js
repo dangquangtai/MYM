@@ -108,6 +108,7 @@ export const apiEndpoints = {
   get_cancel_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_cancel_counselling_list&action=api',
   get_handle_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_handle_counselling_list&action=api',
   get_booking_detail: '/Primary/?FlowAlias=bs_api_counselling_get_counselling_detail&action=api',
+  get_counselling_by_evnet_id: '/Primary/?FlowAlias=bs_api_booking_get_counselling_list_by_event_id&action=api',
 
   get_mentors_list_by_career_category_id:
     '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
@@ -143,6 +144,7 @@ export const apiEndpoints = {
   create_event: '/Primary/?FlowAlias=bs_api_marketing_create_event&action=api',
   get_detail_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
   update_event: '/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
+  set_active_event: '/Primary/?FlowAlias=bs_api_marketing_active_event&action=api',
   // // Event Category
   get_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list_by_page&action=api',
   create_event_category: '/Primary/?FlowAlias=bs_api_marketing_create_new_event_category&action=api',

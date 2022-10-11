@@ -115,4 +115,29 @@ export const initVacationDay = {
   applicable_from_date: '',
 };
 
+export const initEvent ={
+    from_date: '',
+    to_date: '',
+    close_registration_date: '',
+    open_registration_date: '',
+    online_url: '',
+    image_url: '',
+    address: '',
+    map_lat: '',
+    mat_long: '',
+    map_url: '',
+    mentor_list:[],
+    address_title: '',
+    title: '',
+    category_id_1: ' ',
+    category_id_2: ' ',
+    category_id_3: ' ',
+    category_id_4: ' ',
+    mentor_id_list: [],
+    is_active: false,
+    is_featured: false,
+    is_online_event: false,
+    province_id: '',
+    description: '',
+};
 export const typeBatchList = ['Miễn phí', 'Tính phí', 'Khuyến mãi'];

@@ -31,7 +31,7 @@ const EventWrapper = () => {
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="event"
-        // setActiveUrl={apiEndpoints.set_active_batch}
+        setActiveUrl={apiEndpoints.set_active_event}
         // setFeaturedUrl={}
       />
     </React.Fragment>
