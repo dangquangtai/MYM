@@ -99,6 +99,14 @@ export const apiEndpoints = {
 
   get_career_and_topic: '/Primary/?FlowAlias=bs_api_partner_get_career_and_topic&action=api',
 
+  // // List Mentor
+  get_all_list_mentor: '/Primary/?FlowAlias=bs_api_partner_get_all_list_mentor&action=api',
+  get_list_mentor_detail: '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_detail&action=api',
+  create_list_mentor: '/Primary/?FlowAlias=bs_api_partner_create_list_mentor&action=api',
+  update_list_mentor: '/Primary/?FlowAlias=bs_api_partner_update_list_mentor&action=api',
+  set_active_list_mentor: '/Primary/?FlowAlias=bs_api_partner_set_active_list_mentor&action=api',
+  set_featured_list_mentor: '/Primary/?FlowAlias=bs_api_partner_set_featured_list_mentor&action=api',
+
   // // Booking
   get_log_data: '/Primary/?FlowAlias=bs_api_counselling_get_log_activity_list_by_counselling_id&action=api',
   get_counselted_counselling_list_by_page:
@@ -235,6 +243,10 @@ export const prepaidcardActions = {
   active_list: 'MYM_PAYMENT_PREPAIDCARD_OPEN_PREPAIDCARD_LIST',
 };
 
+export const listMentorActions = {
+  active_list: 'MYM_PARTNER_MENTOR_OPEN_LIST_MENTOR_LIST',
+};
+
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
   dashboard: '/dashboard/default',
@@ -361,6 +373,14 @@ export const view = {
     detail: {
       generate: 'MYM_PAYMENT_PREPAIDCARD_BATCH_GENERATE_FORM_BUTTON',
       import: 'MYM_PAYMENT_PREPAIDCARD_BATCH_IMPORT_FORM_BUTTON',
+    },
+  },
+  mentorlist: {
+    list: {
+      create: 'MYM_PARTNER_MENTOR_MENTORLIST_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',
     },
   },
 };

@@ -92,13 +92,44 @@ export const PartnerProvider = ({ children }) => {
       });
   };
   const getMentorList = async () => {
+    return axiosInstance.post(apiEndpoints.get_mentor_list, { outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { list } = response.data;
+        return list;
+      } else return [];
+    });
+  };
+
+  const getMentorListDetail = async (id) => {
     return axiosInstance
-      .post(apiEndpoints.get_mentor_list, { outputtype: 'RawJson' })
+      .post(apiEndpoints.get_list_mentor_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { list } = response.data;
-          return list;
-        } else return [];
+          const { data: news, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return news;
+        } else return {};
+      });
+  };
+
+  const createMentorList = async (mentor) => {
+    return axiosInstance
+      .post(apiEndpoints.create_list_mentor, { outputtype: 'RawJson', ...mentor })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
+
+  const updateMentorList = async (mentor) => {
+    return axiosInstance
+      .post(apiEndpoints.update_list_mentor, { outputtype: 'RawJson', ...mentor })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
       });
   };
 
@@ -115,6 +146,9 @@ export const PartnerProvider = ({ children }) => {
         getTimeslot,
         getPartnerList,
         getMentorList,
+        getMentorListDetail,
+        createMentorList,
+        updateMentorList,
       }}
     >
       {children}

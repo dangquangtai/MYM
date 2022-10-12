@@ -11,10 +11,10 @@ export const initialState = {
   podcastDocument: false,
   episodeDocument: false,
   playlistDocument: false,
-  batchDocument: false,
   voucherDocument: false,
   eventDocument: false,
   eventcategoryDocument: false,
+  mentorListDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -32,10 +32,10 @@ const floatingMenuReducer = (state = initialState, action) => {
         podcastDocument: action.podcastDocument,
         episodeDocument: action.episodeDocument,
         playlistDocument: action.playlistDocument,
-        batchDocument: action.batchDocument,
         voucherDocument: action.voucherDocument,
         eventDocument: action.eventDocument,
         eventcategoryDocument: action.eventcategoryDocument,
+        mentorListDocument: action.mentorListDocument,
       };
     default:
       return state;

@@ -59,6 +59,8 @@ const EnhancedTableToolbar = (props) => {
     createBatch,
     buttonAssignVoucher,
     assignVoucher,
+    buttonCreateMentorList,
+    createMentorList,
   } = props;
 
   const filterRef = useRef(null);
@@ -254,7 +256,7 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
-        
+
         {buttonCreateEvent && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createEvent}>
@@ -262,7 +264,7 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
-        
+
         {buttonCreateEventCategory && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createEventCategory}>
@@ -270,7 +272,7 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
-        
+
         {buttonCreateBatch && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createBatch}>
@@ -283,6 +285,14 @@ const EnhancedTableToolbar = (props) => {
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={assignVoucher}>
               {buttonAssignVoucher.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonCreateMentorList && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createMentorList}>
+              {buttonCreateMentorList.text}
             </Button>
           </Grid>
         )}
