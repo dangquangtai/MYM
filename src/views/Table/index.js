@@ -156,6 +156,7 @@ export default function GeneralTable(props) {
   const buttonCreatePlaylist = menuButtons.find((button) => button.name === view.playlist.list.create);
 
   const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
+  const buttonCreateMentorList = menuButtons.find((button) => button.name === view.mentorlist.list.create);
 
   const buttonBookingMeeting = menuButtons.find((button) => button.name === view.counselling.list.meeting);
   const buttonBookingReview = menuButtons.find((button) => button.name === view.counselling.list.review);
@@ -232,7 +233,7 @@ export default function GeneralTable(props) {
 
   const { getAccountDetail, activeAccount } = useAccount();
 
-  const { getMentorDetail, toggleActiveMentor } = usePartner();
+  const { getMentorDetail, toggleActiveMentor, getMentorListDetail } = usePartner();
 
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
@@ -377,6 +378,10 @@ export default function GeneralTable(props) {
       detailDocument = await getEventDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: true });
+    } else if (documentType === 'mentorlist') {
+      detailDocument = await getMentorListDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
     }
   };
 
@@ -604,6 +609,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
   };
 
+  const handleClickMentorList = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
+  };
+
   const handleDownload = (url) => {
     var link = document.createElement('a');
     link.download = 'Code.xlsx';
@@ -702,6 +712,8 @@ export default function GeneralTable(props) {
                 createBatch={handleClickCreateBatch}
                 buttonAssignVoucher={buttonAssignVoucher}
                 assignVoucher={handleClickAssignVoucher}
+                buttonCreateMentorList={buttonCreateMentorList}
+                createMentorList={handleClickMentorList}
               />
               <TableContainer>
                 <Table

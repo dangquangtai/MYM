@@ -24,6 +24,7 @@ import BatchModal from '../../views/Marketing/Batch/Detail/index.js';
 import EventCategoryModal from '../../views/Marketing/EventCategory/Detail/index.js';
 import EventModal from '../../views/Marketing/Event/Detail';
 import VoucherModal from './../../views/Marketing/Voucher/AssignModal/index';
+import MentorListModal from './../../views/Partner/ListMentor/Detail/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,11 +111,13 @@ const MainLayout = ({ children }) => {
       case 'playlist':
         return <PlaylistModal />;
       case 'eventcategory':
-        return <EventCategoryModal/>;
+        return <EventCategoryModal />;
       case 'event':
-          return <EventModal/>; 
+        return <EventModal />;
       case 'voucher':
         return <VoucherModal />;
+      case 'mentorlist':
+        return <MentorListModal />;
     }
   };
 

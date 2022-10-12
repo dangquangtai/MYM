@@ -99,6 +99,14 @@ export const apiEndpoints = {
 
   get_career_and_topic: '/Primary/?FlowAlias=bs_api_partner_get_career_and_topic&action=api',
 
+  // // List Mentor
+  get_all_list_mentor: '/Primary/?FlowAlias=bs_api_partner_get_all_list_mentor&action=api',
+  get_list_mentor_detail: '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_detail&action=api',
+  create_list_mentor: '/Primary/?FlowAlias=bs_api_partner_create_list_mentor&action=api',
+  update_list_mentor: '/Primary/?FlowAlias=bs_api_partner_update_list_mentor&action=api',
+  set_active_list_mentor: '/Primary/?FlowAlias=bs_api_partner_set_active_list_mentor&action=api',
+  set_featured_list_mentor: '/Primary/?FlowAlias=bs_api_partner_set_featured_list_mentor&action=api',
+
   // // Booking
   get_log_data: '/Primary/?FlowAlias=bs_api_counselling_get_log_activity_list_by_counselling_id&action=api',
   get_counselted_counselling_list_by_page:
@@ -151,6 +159,20 @@ export const apiEndpoints = {
   get_detail_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_detail&action=api',
   update_event_category: '/Primary/?FlowAlias=bs_api_marketing_update_event_category&action=api',
   get_event_category_list: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list&action=api',
+
+  // Payment
+  // // Prepaid Card Batch
+  get_all_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_get_all_prepaid_card_batch&action=api',
+  get_prepaid_card_batch_detail: '/Primary/?FlowAlias=bs_api_payment_get_prepaid_card_batch_detail_by_id&action=api',
+  create_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_create_prepaid_card_batch&action=api',
+  set_active_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card_batch&action=api',
+  generate_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_generate_prepaid_card&action=api',
+  send_email_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_send_email_prepaid_card&action=api',
+
+  // // Prepaid Card
+  get_all_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_get_all_prepaid_card&action=api',
+  set_active_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card&action=api',
+  assign_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_assign_prepaid_card&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -211,6 +233,18 @@ export const batchActions = {
 export const voucherActions = {
   active_list: 'MYM_MARKETING_VOUCHER_OPEN_ACTIVE_VOUCHER_LIST',
   inactive_list: 'MYM_MARKETING_VOUCHER_OPEN_INACTIVE_VOUCHER_LIST',
+};
+
+export const prepaidcardBatchActions = {
+  active_list: 'MYM_PAYMENT_PREPAIDCARD_OPEN_BATCH_LIST',
+};
+
+export const prepaidcardActions = {
+  active_list: 'MYM_PAYMENT_PREPAIDCARD_OPEN_PREPAIDCARD_LIST',
+};
+
+export const listMentorActions = {
+  active_list: 'MYM_PARTNER_MENTOR_OPEN_LIST_MENTOR_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -326,6 +360,27 @@ export const view = {
     },
     detail: {
       save: 'MYM_MARKETING_VOUCHER_CATEGORY_CREATE_FORM_BUTTON',
+    },
+  },
+  prepaidcard: {
+    assign: 'MYM_PAYMENT_PREPAIDCARD_ASSIGN_MENU_BUTTON',
+  },
+  prepaidcardbatch: {
+    list: {
+      create: 'MYM_PAYMENT_PREPAIDCARD_BATCH_CREATE_MENU_BUTTON',
+      send_email: 'MYM_PAYMENT_PREPAIDCARD_BATCH_SEND_EMAIL_MENU_BUTTON',
+    },
+    detail: {
+      generate: 'MYM_PAYMENT_PREPAIDCARD_BATCH_GENERATE_FORM_BUTTON',
+      import: 'MYM_PAYMENT_PREPAIDCARD_BATCH_IMPORT_FORM_BUTTON',
+    },
+  },
+  mentorlist: {
+    list: {
+      create: 'MYM_PARTNER_MENTOR_MENTORLIST_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',
     },
   },
 };
