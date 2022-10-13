@@ -25,6 +25,7 @@ import EventCategoryModal from '../../views/Marketing/EventCategory/Detail/index
 import EventModal from '../../views/Marketing/Event/Detail';
 import VoucherModal from './../../views/Marketing/Voucher/AssignModal/index';
 import MentorListModal from './../../views/Partner/ListMentor/Detail/index';
+import CardBatchModal from './../../views/Payment/Batch/Detail/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,6 +119,8 @@ const MainLayout = ({ children }) => {
         return <VoucherModal />;
       case 'mentorlist':
         return <MentorListModal />;
+      case 'cardbatch':
+        return <CardBatchModal />;
     }
   };
 

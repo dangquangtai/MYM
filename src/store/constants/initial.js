@@ -103,6 +103,19 @@ export const initBatchData = {
   terms_condition: '',
 };
 
+export const initCardBatchData = {
+  title: '',
+  description: '',
+  image_url: '',
+  counselling_category_id: '',
+  prefix: '',
+  value: 0,
+  amount: 0,
+  available_from_date: '',
+  available_to_date: '',
+  is_generated: false,
+};
+
 export const genderList = ['Nam', 'Nữ'];
 
 export const initWorkingDay = {

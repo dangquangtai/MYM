@@ -363,7 +363,9 @@ export const view = {
     },
   },
   prepaidcard: {
-    assign: 'MYM_PAYMENT_PREPAIDCARD_ASSIGN_MENU_BUTTON',
+    list: {
+      assign: 'MYM_PAYMENT_PREPAIDCARD_ASSIGN_MENU_BUTTON',
+    },
   },
   prepaidcardbatch: {
     list: {
