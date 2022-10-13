@@ -185,7 +185,7 @@ const PodcastModal = () => {
         await updatePodcast({ ...podcastData, list_episode_id: selectedEpisodes });
         handleOpenSnackbar(true, 'success', 'Cập nhật Podcast thành công!');
       } else {
-        await createPodcast({ ...podcastData, list_episode_id: selectedEpisodes });
+        await createPodcast({ ...podcastData, list_episode_id: selectedEpisodes || [] });
         handleOpenSnackbar(true, 'success', 'Tạo mới Podcast thành công!');
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'podcast' });
@@ -243,6 +243,7 @@ const PodcastModal = () => {
         search_text: '',
       });
       setInitEpisodes(res);
+      setEpisodes(res);
     };
     const fetchMentorList = async () => {
       const res = await getMentorbyCategory();
@@ -254,9 +255,13 @@ const PodcastModal = () => {
   }, []);
 
   useEffect(() => {
-    setEpisodes(
-      Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id) && item.podcast_id === '')
-    );
+    if (selectedDocument) {
+      setEpisodes(
+        Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id) && item.podcast_id === '')
+      );
+    } else {
+      setEpisodes(Object.values(initEpisodes).filter((item) => item.podcast_id === ''));
+    }
     const episodes = selectedEpisodes?.length || 0;
     const listEpisode = Object.values(initEpisodes)?.filter((item) => selectedEpisodes?.includes(item.id));
     const duration = listEpisode.reduce((acc, cur) => acc + cur.duration, 0);
@@ -354,25 +359,6 @@ const PodcastModal = () => {
                             <div>Upload/Change Podcast Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={podcastData.image_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                       <div className={classes.tabItem}>
@@ -538,25 +524,6 @@ const PodcastModal = () => {
                             <div>Upload/Change Banner Image</div>
                             <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
                           </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Banner:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="banner_url"
-                                value={podcastData.banner_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                       <div className={classes.tabItem}>

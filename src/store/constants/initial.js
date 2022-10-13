@@ -103,6 +103,19 @@ export const initBatchData = {
   terms_condition: '',
 };
 
+export const initCardBatchData = {
+  title: '',
+  description: '',
+  image_url: '',
+  counselling_category_id: '',
+  prefix: '',
+  value: 0,
+  amount: 0,
+  available_from_date: '',
+  available_to_date: '',
+  is_generated: false,
+};
+
 export const genderList = ['Nam', 'Nữ'];
 
 export const initWorkingDay = {
@@ -134,7 +147,7 @@ export const initEvent = {
   image_url: '',
   address: '',
   map_lat: '',
-  mat_long: '',
+  map_long: '',
   map_url: '',
   mentor_list: [],
   address_title: '',
@@ -149,5 +162,6 @@ export const initEvent = {
   is_online_event: false,
   province_id: '',
   description: '',
+  price: 0,
 };
 export const typeBatchList = ['Miễn phí', 'Tính phí', 'Khuyến mãi'];
