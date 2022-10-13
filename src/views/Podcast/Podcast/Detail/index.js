@@ -185,7 +185,7 @@ const PodcastModal = () => {
         await updatePodcast({ ...podcastData, list_episode_id: selectedEpisodes });
         handleOpenSnackbar(true, 'success', 'Cập nhật Podcast thành công!');
       } else {
-        await createPodcast({ ...podcastData, list_episode_id: selectedEpisodes });
+        await createPodcast({ ...podcastData, list_episode_id: selectedEpisodes || [] });
         handleOpenSnackbar(true, 'success', 'Tạo mới Podcast thành công!');
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'podcast' });
@@ -243,6 +243,7 @@ const PodcastModal = () => {
         search_text: '',
       });
       setInitEpisodes(res);
+      setEpisodes(res);
     };
     const fetchMentorList = async () => {
       const res = await getMentorbyCategory();
@@ -254,9 +255,13 @@ const PodcastModal = () => {
   }, []);
 
   useEffect(() => {
-    setEpisodes(
-      Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id) && item.podcast_id === '')
-    );
+    if (selectedDocument) {
+      setEpisodes(
+        Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id) && item.podcast_id === '')
+      );
+    } else {
+      setEpisodes(Object.values(initEpisodes).filter((item) => item.podcast_id === ''));
+    }
     const episodes = selectedEpisodes?.length || 0;
     const listEpisode = Object.values(initEpisodes)?.filter((item) => selectedEpisodes?.includes(item.id));
     const duration = listEpisode.reduce((acc, cur) => acc + cur.duration, 0);

@@ -4,9 +4,9 @@ import Alert from '../../../../component/Alert/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE } from '../../../../store/actions.js';
 import useMarketing from './../../../../hooks/useMarketing';
-import { NoPaddingAutocomplete } from './../../../../component/Autocomplete/index';
 import useAccount from './../../../../hooks/useAccount';
 import { Autocomplete } from '@material-ui/lab';
+import usePayment from './../../../../hooks/usePayment';
 
 const style = {
   box: {
@@ -64,14 +64,14 @@ const style = {
   },
 };
 
-const VoucherModal = () => {
+const CardModal = () => {
   const dispatch = useDispatch();
-  const { assignVoucher, getBatchList } = useMarketing();
+  const { assignCard, getCardBatchList } = usePayment();
   const { getAllUser } = useAccount();
-  const { voucherDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { cardDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const [accounts, setAccounts] = useState([]);
   const [batch, setBatch] = useState([]);
-  const [voucher, setVoucher] = React.useState({
+  const [card, setCard] = React.useState({
     account_id: '',
     batch_id: '',
     amount: 5,
@@ -81,7 +81,7 @@ const VoucherModal = () => {
     const fetch = async () => {
       const accounts = await getAllUser();
       setAccounts(accounts);
-      const batch = await getBatchList();
+      const batch = await getCardBatchList();
       setBatch(batch);
     };
     fetch();
@@ -89,8 +89,8 @@ const VoucherModal = () => {
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'voucher' });
-    dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: false });
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'prepaidcard' });
+    dispatch({ type: FLOATING_MENU_CHANGE, cardDocument: false });
   };
 
   const [snackbarStatus, setSnackbarStatus] = useState({
@@ -107,11 +107,11 @@ const VoucherModal = () => {
     });
   };
 
-  const handleAssignVoucher = async () => {
+  const handleAssignCard = async () => {
     try {
-      const res = await assignVoucher(voucher);
-      if (res) handleOpenSnackbar(true, 'success', 'Voucher assigned successfully');
-      else handleOpenSnackbar(true, 'error', 'Voucher assigned failed');
+      const res = await assignCard(card);
+      if (res) handleOpenSnackbar(true, 'success', 'Card assigned successfully');
+      else handleOpenSnackbar(true, 'error', 'Card assigned failed');
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại');
@@ -120,8 +120,8 @@ const VoucherModal = () => {
 
   const handleChange = (e) => {
     const value = e.target.value;
-    setVoucher({
-      ...voucher,
+    setCard({
+      ...card,
       [e.target.name]: value,
     });
   };
@@ -162,7 +162,7 @@ const VoucherModal = () => {
                 size="small"
                 fullWidth
                 options={accounts}
-                onChange={(e, acc) => setVoucher({ ...voucher, account_id: acc?.account_id })}
+                onChange={(e, acc) => setCard({ ...card, account_id: acc?.account_id })}
                 getOptionLabel={(option) => option.email_address}
                 renderInput={(params) => <TextField label="Tài khoản" {...params} variant="outlined" />}
               />
@@ -186,7 +186,7 @@ const VoucherModal = () => {
                 label="Số lượng"
                 variant="outlined"
                 onChange={handleChange}
-                value={voucher.amount}
+                value={card.amount}
                 type="number"
                 size="small"
                 name="amount"
@@ -198,7 +198,7 @@ const VoucherModal = () => {
               <Button type="button" variant="contained" style={style.closeButton} onClick={handleCloseDialog}>
                 Đóng
               </Button>
-              <Button type="submit" variant="contained" style={style.submitButton} onClick={handleAssignVoucher}>
+              <Button type="submit" variant="contained" style={style.submitButton} onClick={handleAssignCard}>
                 Lưu
               </Button>
             </div>
@@ -209,4 +209,4 @@ const VoucherModal = () => {
   );
 };
 
-export default VoucherModal;
+export default CardModal;

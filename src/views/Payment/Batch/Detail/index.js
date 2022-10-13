@@ -99,7 +99,7 @@ const CardBatchModal = () => {
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: FLOATING_MENU_CHANGE, podcastDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: false });
   };
 
   const handleChangeTab = (event, newValue) => {

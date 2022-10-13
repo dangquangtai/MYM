@@ -53,6 +53,17 @@ export const PaymentProvider = ({ children }) => {
     });
   };
 
+  const getCardBatchList = async (page = 1, no_item_per_page = 100, search_text = '') => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_prepaid_card_batch, { outputtype: 'RawJson', page, no_item_per_page, search_text })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
+
   return (
     <PaymentContext.Provider
       value={{
@@ -61,6 +72,7 @@ export const PaymentProvider = ({ children }) => {
         generateCard,
         sendEmailCard,
         assignCard,
+        getCardBatchList,
       }}
     >
       {children}
