@@ -89,6 +89,7 @@ export default function GeneralTable(props) {
       title: tableColumns.includes('title'),
       voucher_code: tableColumns.includes('voucher_code'),
       card_code: tableColumns.includes('card_code'),
+      card_serial: tableColumns.includes('card_serial'),
       description: tableColumns.includes('description'),
       fullname: tableColumns.includes('fullname'),
       department_name: tableColumns.includes('department_name'),
@@ -584,55 +585,55 @@ export default function GeneralTable(props) {
   };
 
   const handleClickCreateMentor = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, mentorDocument: true });
   };
 
   const handleClickCreatePodcast = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, podcastDocument: true });
   };
 
   const handleClickCreateEpisode = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, episodeDocument: true });
   };
 
   const handleClickCreatePlaylist = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
   };
   const handleClickCreateEvent = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: true });
   };
   const handleClickCreateEventCategory = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, eventcategoryDocument: true });
   };
 
   const handleClickAssignVoucher = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: true });
   };
 
   const handleClickCreateBatch = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
   };
 
   const handleClickMentorList = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
   };
 
   const handleClickAssignCard = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardDocument: true });
   };
 
   const handleClickCreateCardBatch = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: true });
   };
 
@@ -893,6 +894,7 @@ export default function GeneralTable(props) {
                           )}
                           {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
                           {displayOptions.card_code && <TableCell align="left">{row.card_code}</TableCell>}
+                          {displayOptions.card_serial && <TableCell align="left">{row.card_serial}</TableCell>}
                           {displayOptions.account_id && (
                             <TableCell align="left">
                               <>

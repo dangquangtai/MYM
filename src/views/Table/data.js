@@ -5,6 +5,7 @@ export const headCells = [
   { id: 'title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
   { id: 'voucher_code', numeric: false, disablePadding: false, label: 'Mã voucher', maxWidth: 150 },
   { id: 'card_code', numeric: false, disablePadding: false, label: 'Mã thẻ', maxWidth: 150 },
+  { id: 'card_serial', numeric: false, disablePadding: false, label: 'Serial thẻ', maxWidth: 150 },
   { id: 'department_name', numeric: false, disablePadding: false, label: 'Tên phòng ban', maxWidth: 150 },
   { id: 'department_parent', numeric: false, disablePadding: false, label: 'Trực thuộc phòng ban', maxWidth: 150 },
   { id: 'number_member', numeric: false, disablePadding: false, label: 'Số thành viên', maxWidth: 150 },

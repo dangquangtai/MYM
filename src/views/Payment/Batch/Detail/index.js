@@ -307,7 +307,7 @@ const CardBatchModal = () => {
                                 variant="outlined"
                                 name="description"
                                 value={cardBatchData.description}
-                                className={classes.inputField}
+                                className={classes.multilineInputField}
                                 onChange={handleChanges}
                               />
                             </Grid>

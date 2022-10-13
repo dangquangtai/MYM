@@ -233,7 +233,10 @@ const EventModal = () => {
   useEffect(() => {
     fetchData();
     if (!selectedDocument) return;
-    setEvent(selectedDocument);
+    setEvent({
+      ...initEvent,
+      ...selectedDocument,
+    });
     const fetchBooking = async () => {
       let data = await getCounsellingByEvent(selectedDocument.id, 1, 10, '', '', 'desc');
       setBooking(data);
