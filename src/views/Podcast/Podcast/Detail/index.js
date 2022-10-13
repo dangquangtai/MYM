@@ -360,25 +360,6 @@ const PodcastModal = () => {
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
                         </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={podcastData.image_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
                       </div>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
@@ -543,25 +524,6 @@ const PodcastModal = () => {
                             <div>Upload/Change Banner Image</div>
                             <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
                           </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Banner:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="banner_url"
-                                value={podcastData.banner_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                       <div className={classes.tabItem}>

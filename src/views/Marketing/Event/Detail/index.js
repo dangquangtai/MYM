@@ -22,9 +22,7 @@ import {
   TableCell,
   TableRow,
   TableContainer,
-  TableHead
-
-
+  TableHead,
 } from '@material-ui/core';
 import Alert from '../../../../component/Alert';
 import PropTypes from 'prop-types';
@@ -49,7 +47,6 @@ import {
   LibraryMusicOutlined as LibraryMusicOutlinedIcon,
   GraphicEq as GraphicEqIcon,
 } from '@material-ui/icons';
-
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -99,9 +96,7 @@ const EventModal = () => {
   const [mentorListSelection, setMentorListSelection] = useState([]);
   const { createEvent, updateEvent } = useEvent();
   const { getCounsellingByEvent } = useBooking();
-  const {
-    provinces: provinceList,
-  } = useSelector((state) => state.metadata);
+  const { provinces: provinceList } = useSelector((state) => state.metadata);
   const [bookingList, setBooking] = useState([]);
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -114,8 +109,6 @@ const EventModal = () => {
     type: '',
   });
   const [tabIndex, setTabIndex] = React.useState(0);
-
-
 
   const handleCloseDialog = () => {
     setEvent(initEvent);
@@ -137,17 +130,15 @@ const EventModal = () => {
 
   const setDocumentToDefault = async () => {
     setEvent(initEvent);
-    console.log('event', event)
+    console.log('event', event);
     setTabIndex(0);
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
       setEvent({ ...event, image_url: image });
-    }
-    else {
+    } else {
       setEvent({ ...event, map_url: image });
     }
-
   };
 
   const handleOpenDiaLog = (type) => {
@@ -165,9 +156,9 @@ const EventModal = () => {
   };
   const handleChangeMentorSelection = (e) => {
     if (!!selectedMentorList) {
-      setSelectedMentorList([...selectedMentorList, e.target.value])
+      setSelectedMentorList([...selectedMentorList, e.target.value]);
     } else {
-      setSelectedMentorList([e.target.value])
+      setSelectedMentorList([e.target.value]);
     }
 
     let newSelectionList = JSON.parse(JSON.stringify(mentorListSelection));
@@ -178,20 +169,18 @@ const EventModal = () => {
         setSelectedMentor('');
         return;
       }
-    })
-
+    });
   };
   const handleChangeMentorSelectionDefault = (id) => {
     let newSelectionList = JSON.parse(JSON.stringify(mentorListSelection));
     newSelectionList.map((mentor, index) => {
       if (!!mentor && mentor.id === id) {
-
         delete newSelectionList[index];
         setMentorListSelection(newSelectionList);
         setSelectedMentor('');
         return;
       }
-    })
+    });
   };
   const handleChanges = (e) => {
     const { name, value } = e.target;
@@ -213,7 +202,6 @@ const EventModal = () => {
         } else {
           handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
         }
-
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'event' });
       handleCloseDialog();
@@ -226,10 +214,7 @@ const EventModal = () => {
     setSelectedMentorList(newSelectedList);
 
     if (mentorList.length > 0) {
-      mentorList.map((mentor) => (
-        mentor.id === id && (
-          setMentorListSelection([...mentorListSelection, mentor])
-        )))
+      mentorList.map((mentor) => mentor.id === id && setMentorListSelection([...mentorListSelection, mentor]));
     }
   };
   const fetchData = async () => {
@@ -238,12 +223,11 @@ const EventModal = () => {
     setMentorListSelection(data);
     data = await getEventCategoryList();
     setCategoryList(data);
-  }
+  };
 
   useEffect(() => {
     setSelectedMentorList('');
     fetchData();
-
   }, []);
 
   useEffect(() => {
@@ -253,10 +237,9 @@ const EventModal = () => {
     const fetchBooking = async () => {
       let data = await getCounsellingByEvent(selectedDocument.id, 1, 10, '', '', 'desc');
       setBooking(data);
-    }
+    };
     fetchBooking();
     setSelectedMentorList(selectedDocument.mentor_id_list);
-
   }, [selectedDocument]);
 
   return (
@@ -435,7 +418,7 @@ const EventModal = () => {
                               />
                             </Grid>
                           </Grid>
-                        
+
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={12}>
                               <span className={classes.tabItemLabelField}>Tỉnh:</span>
@@ -551,7 +534,7 @@ const EventModal = () => {
                               <Switch
                                 onClick={() => setEvent({ ...event, is_active: !event.is_active })}
                                 checked={event.is_active}
-                                name='is_active'
+                                name="is_active"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                               />
                             </Grid>
@@ -559,30 +542,23 @@ const EventModal = () => {
                               <span className={classes.tabItemLabelField}>Feature:</span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
-
                               <Switch
                                 checked={event.is_featured}
                                 onClick={(e) => setEvent({ ...event, is_featured: e.target.checked })}
                               />
-
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
                               <span className={classes.tabItemLabelField}>Online Event:</span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
-
                               <Switch
                                 checked={event.is_online_event}
                                 onClick={(e) => setEvent({ ...event, is_online_event: e.target.checked })}
                               />
-
                             </Grid>
                           </Grid>
-
-
                         </div>
                       </div>
-
                     </Grid>
                     <Grid item lg={6} md={6} xs={6}>
                       <div className={classes.tabItem}>
@@ -598,25 +574,6 @@ const EventModal = () => {
                             <div>Upload/Change Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình </Button>
                           </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={event.image_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                       <div className={classes.tabItem}>
@@ -685,9 +642,7 @@ const EventModal = () => {
                           </Grid>
                         </div>
                       </div>
-                     
                     </Grid>
-
                   </Grid>
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
@@ -767,7 +722,7 @@ const EventModal = () => {
                           </Grid>
                         </div>
                       </div>
-                       <div className={classes.tabItem}>
+                      <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <ImageIcon />
@@ -777,41 +732,37 @@ const EventModal = () => {
                         <div className={classes.tabItemNoteSelection}>
                           <div className={classes.tabItemNoteSelectionLabel}>Danh sách mentor: </div>
                           <FormControl fullWidth>
-                            <Select
-                              id="note_id"
-                              onChange={handleChangeMentorSelection}
-                              displayEmpty
-
-                            >
-                              {Object.values(mentorListSelection)?.map((mentor, index) => (
-                                !!mentor && (
-                                  <MenuItem key={index} value={mentor.id}>
-                                    {mentor.fullname}
-                                  </MenuItem>
-                                )
-                              ))}
+                            <Select id="note_id" onChange={handleChangeMentorSelection} displayEmpty>
+                              {Object.values(mentorListSelection)?.map(
+                                (mentor, index) =>
+                                  !!mentor && (
+                                    <MenuItem key={index} value={mentor.id}>
+                                      {mentor.fullname}
+                                    </MenuItem>
+                                  )
+                              )}
                             </Select>
                           </FormControl>
                         </div>
                         <div className={classes.selectedNoteListSection}>
-
-                          {!!selectedMentorList && selectedMentorList.map((id) => (
-                            handleChangeMentorSelectionDefault(id),
-                            mentorList.map((mentor) => (
-                              mentor.id === id && (
-                                <div key={id} className={classes.selectedNoteItem}>
-                                  <div>{mentor.fullname}</div>
-                                  <CloseOutlinedIcon
-                                    onClick={() => handleRemoveSelected(id)}
-                                    style={style.selectedItemCloseIcon}
-                                  />
-                                </div>
+                          {!!selectedMentorList &&
+                            selectedMentorList.map(
+                              (id) => (
+                                handleChangeMentorSelectionDefault(id),
+                                mentorList.map(
+                                  (mentor) =>
+                                    mentor.id === id && (
+                                      <div key={id} className={classes.selectedNoteItem}>
+                                        <div>{mentor.fullname}</div>
+                                        <CloseOutlinedIcon
+                                          onClick={() => handleRemoveSelected(id)}
+                                          style={style.selectedItemCloseIcon}
+                                        />
+                                      </div>
+                                    )
+                                )
                               )
-
-                            )
-
-                            )
-                          ))}
+                            )}
                         </div>
                       </div>
                     </Grid>
@@ -846,7 +797,6 @@ const EventModal = () => {
                       </div>
                     </Grid>
                   </Grid>
-
                 </TabPanel>
                 <TabPanel value={tabIndex} index={2}>
                   <Grid container spacing={1}>
@@ -865,102 +815,57 @@ const EventModal = () => {
                               className={classes.table}
                               aria-labelledby="tableTitle"
                               size={'medium'}
-                            // aria-label="enhanced table"
+                              // aria-label="enhanced table"
                             >
                               <TableHead>
                                 <TableRow>
-                                  <TableCell padding="checkbox">
-                                    Mã đăng ký
-                                  </TableCell>
-                                  <TableCell padding="checkbox">
-                                    Ngày đăng ký
-                                  </TableCell>
-                                  <TableCell padding="checkbox">
-                                    Khách hàng
-                                  </TableCell>
-                                  <TableCell padding="checkbox">
-                                    Email
-                                  </TableCell>
-                                  <TableCell padding="checkbox">
-                                    Trường
-                                  </TableCell>
+                                  <TableCell padding="checkbox">Mã đăng ký</TableCell>
+                                  <TableCell padding="checkbox">Ngày đăng ký</TableCell>
+                                  <TableCell padding="checkbox">Khách hàng</TableCell>
+                                  <TableCell padding="checkbox">Email</TableCell>
+                                  <TableCell padding="checkbox">Trường</TableCell>
                                 </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {bookingList.map((row, index) => {
-                                   
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-                                    return (
-                                      <TableRow
-                                        className={classes.tableRow}
-                                        hover
-                                       
-                                        tabIndex={-1}
-                                        key={row.id}
-                                   
-                                      >
-                                        <TableCell padding="checkbox">
-                                          <>
-                                            <span
-                                              className={classes.tableItemName}
-
-                                            >
-                                              {row.case_number}
-                                            </span>
-                                          </>
-                                        </TableCell>
-                                        <TableCell padding="checkbox">
-                                          <>
-                                            <span
-                                              className={classes.tableItemName}
-
-                                            >
-                                              {row.created_date}
-                                            </span>
-                                          </>
-                                        </TableCell>
-                                        <TableCell padding="checkbox">
-                                          <>
-                                            <span
-                                              className={classes.tableItemName}
-
-                                            >
-                                              {row.fullname}
-                                            </span>
-                                          </>
-                                        </TableCell>
-                                        <TableCell padding="checkbox">
-                                          <>
-                                            <span
-                                              className={classes.tableItemName}
-
-                                            >
-                                              {row.email_address}
-                                            </span>
-                                          </>
-                                        </TableCell>
-                                        <TableCell padding="checkbox">
-                                          <>
-                                            <span
-                                              className={classes.tableItemName}
-
-                                            >
-                                              {row.current_school}
-                                            </span>
-                                          </>
-                                        </TableCell>
-                                      </TableRow>
-                                  );})}
-                          </TableBody>
-                        </Table>
+                              </TableHead>
+                              <TableBody>
+                                {bookingList.map((row, index) => {
+                                  const labelId = `enhanced-table-checkbox-${index}`;
+                                  return (
+                                    <TableRow className={classes.tableRow} hover tabIndex={-1} key={row.id}>
+                                      <TableCell padding="checkbox">
+                                        <>
+                                          <span className={classes.tableItemName}>{row.case_number}</span>
+                                        </>
+                                      </TableCell>
+                                      <TableCell padding="checkbox">
+                                        <>
+                                          <span className={classes.tableItemName}>{row.created_date}</span>
+                                        </>
+                                      </TableCell>
+                                      <TableCell padding="checkbox">
+                                        <>
+                                          <span className={classes.tableItemName}>{row.fullname}</span>
+                                        </>
+                                      </TableCell>
+                                      <TableCell padding="checkbox">
+                                        <>
+                                          <span className={classes.tableItemName}>{row.email_address}</span>
+                                        </>
+                                      </TableCell>
+                                      <TableCell padding="checkbox">
+                                        <>
+                                          <span className={classes.tableItemName}>{row.current_school}</span>
+                                        </>
+                                      </TableCell>
+                                    </TableRow>
+                                  );
+                                })}
+                              </TableBody>
+                            </Table>
                           </TableContainer>
-
-
                         </div>
                       </div>
                     </Grid>
                   </Grid>
-
                 </TabPanel>
               </Grid>
             </Grid>
