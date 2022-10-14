@@ -16,7 +16,7 @@ export const initialState = {
   eventcategoryDocument: false,
   mentorListDocument: false,
   partnerDocument: false,
-  partnerCategoryDocument: false
+  partnerCategoryDocument: false,
   cardBatchDocument: false,
   cardDocument: false,
 };
