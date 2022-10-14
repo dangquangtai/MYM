@@ -69,6 +69,7 @@ const EnhancedTableToolbar = (props) => {
     createCardBatch,
     buttonAssignCard,
     assignCard,
+    handleSyncRole,
   } = props;
 
   const filterRef = useRef(null);
@@ -107,9 +108,7 @@ const EnhancedTableToolbar = (props) => {
     setFilter({ ...filter, group_id: group_id });
     handleFilterChange(filter);
   };
-  const handleSyncRole = async () => {
-    await syncRole();
-  };
+  
   const handleResetFilter = () => {
     setFilter((pre) => ({
       ...pre,

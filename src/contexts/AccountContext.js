@@ -57,8 +57,8 @@ export const AccountProvider = ({ children }) => {
       })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { list } = response.data;
-          return list;
+          const { list,all_user } = response.data;
+          return {list , all_user};
         } else return [];
       });
   };
