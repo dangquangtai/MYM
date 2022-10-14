@@ -97,9 +97,6 @@ const EventModal = () => {
   const { getCounsellingByEvent } = useBooking();
 
   const [eventData, setEvent] = useState(initEvent);
-  const {
-    provinces: provinceList,
-  } = useSelector((state) => state.metadata);
 
   const { provinces: provinceList } = useSelector((state) => state.metadata);
 
@@ -140,10 +137,8 @@ const EventModal = () => {
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
-
       setEvent({ ...eventData, image_url: image });
-    }
-    else {
+    } else {
       setEvent({ ...eventData, map_url: image });
     }
   };
@@ -194,7 +189,6 @@ const EventModal = () => {
     setEvent({ ...eventData, [name]: value });
   };
   const handleSubmitForm = async () => {
-   
     try {
       if (selectedDocument?.id) {
         let check = await updateEvent(eventData, selectedMentorList);
@@ -245,7 +239,6 @@ const EventModal = () => {
     setEvent({
       ...initEvent,
       ...selectedDocument,
-
     });
     const fetchBooking = async () => {
       let data = await getCounsellingByEvent(selectedDocument.id, 1, 10, '', '', 'desc');
@@ -368,7 +361,7 @@ const EventModal = () => {
                                 variant="outlined"
                                 onChange={handleChanges}
                                 className={classes.inputField}
-                                value={ eventData.title || ''}
+                                value={eventData.title || ''}
                               />
                             </Grid>
                           </Grid>
@@ -449,7 +442,11 @@ const EventModal = () => {
                               >
                                 {provinceList &&
                                   provinceList.map((item) => (
-                                    <MenuItem key={item.id} value={item.id} selected={eventData.province_id === item.id}>
+                                    <MenuItem
+                                      key={item.id}
+                                      value={item.id}
+                                      selected={eventData.province_id === item.id}
+                                    >
                                       {item.value}
                                     </MenuItem>
                                   ))}
@@ -550,14 +547,9 @@ const EventModal = () => {
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
                               <Switch
-
                                 onChange={() => setEvent({ ...eventData, is_active: !eventData.is_active })}
                                 checked={eventData.is_active}
-                              
-                                name='is_active'
-
-                              
-
+                                name="is_active"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                               />
                             </Grid>
@@ -926,12 +918,20 @@ const EventModal = () => {
               </Grid>
               <Grid item className={classes.gridItemInfoButtonWrap}>
                 {buttoncreateEvent && selectedDocument?.id && (
-                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={()=>handleSubmitForm()}>
+                  <Button
+                    variant="contained"
+                    style={{ background: 'rgb(97, 42, 255)' }}
+                    onClick={() => handleSubmitForm()}
+                  >
                     {buttoncreateEvent.text}
                   </Button>
                 )}
                 {!selectedDocument?.id && (
-                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={()=>handleSubmitForm()}>
+                  <Button
+                    variant="contained"
+                    style={{ background: 'rgb(97, 42, 255)' }}
+                    onClick={() => handleSubmitForm()}
+                  >
                     Tạo mới
                   </Button>
                 )}
