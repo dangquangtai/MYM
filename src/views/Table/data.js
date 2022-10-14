@@ -39,6 +39,7 @@ export const headCells = [
   { id: 'price', numeric: false, disablePadding: false, label: 'Giá', maxWidth: 100 },
   { id: 'online', numeric: false, disablePadding: false, label: 'Trực tuyến', maxWidth: 100 },
   { id: 'available', numeric: false, disablePadding: false, label: 'Khả dụng', maxWidth: 100 },
+  { id: 'name', numeric: false, disablePadding: false, label: 'Mentor', maxWidth: 100 },
   {
     id: 'visible_for_selection',
     numeric: false,

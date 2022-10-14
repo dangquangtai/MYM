@@ -139,6 +139,7 @@ export default function GeneralTable(props) {
       is_used: tableColumns.includes('is_used'),
       is_featured: tableColumns.includes('is_featured'),
       is_active: tableColumns.includes('is_active'),
+      name: tableColumns.includes('mentor'),
     };
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
@@ -157,6 +158,9 @@ export default function GeneralTable(props) {
   const buttonCreatePodcast = menuButtons.find((button) => button.name === view.podcast.list.create);
   const buttonCreateEpisode = menuButtons.find((button) => button.name === view.episode.list.create);
   const buttonCreatePlaylist = menuButtons.find((button) => button.name === view.playlist.list.create);
+
+  const buttonCreatePartner = menuButtons.find((button) => button.name === view.partner.list.create);
+  const buttonCreatePartnerCategory = menuButtons.find((button) => button.name === view.partner_category.list.create);
 
   const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
   const buttonCreateMentorList = menuButtons.find((button) => button.name === view.mentorlist.list.create);
@@ -240,7 +244,7 @@ export default function GeneralTable(props) {
 
   const { getAccountDetail, activeAccount } = useAccount();
 
-  const { getMentorDetail, toggleActiveMentor, getMentorListDetail } = usePartner();
+  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail,getPartnerCategoryDetail } = usePartner();
 
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
@@ -396,7 +400,18 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: true });
     }
+    else if (documentType === 'partner') {
+      detailDocument = await getPartnerDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, partnerDocument: true });
+    }
+    else if (documentType === 'partner_category') {
+      detailDocument = await getPartnerCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
+    }
   };
+  
 
   const openDialogCreate = () => {
     if (documentType === 'account') {
@@ -626,6 +641,14 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
   };
+  const handleClickCreatePartner = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, partnerDocument: true });
+  };
+  const handleClickCreatePartnerCategory = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
+  };
 
   const handleClickAssignCard = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
@@ -747,6 +770,10 @@ export default function GeneralTable(props) {
                 assignVoucher={handleClickAssignVoucher}
                 buttonCreateMentorList={buttonCreateMentorList}
                 createMentorList={handleClickMentorList}
+                buttonCreatePartner = {buttonCreatePartner}
+                createPartner ={handleClickCreatePartner}
+                buttonCreatePartnerCategory = {buttonCreatePartnerCategory}
+                createPanertCategory = {handleClickCreatePartnerCategory}
                 buttonCreateCardBatch={butttonCreateCardBatch}
                 createCardBatch={handleClickCreateCardBatch}
                 buttonAssignCard={buttonAssignCard}

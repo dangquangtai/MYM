@@ -86,7 +86,19 @@ export const apiEndpoints = {
   get_timeslot_by_mentor_id: '/Primary/?FlowAlias=bs_api_inventory_get_timeslot_by_mentor_id&action=api',
   get_mentor_list: '/Primary/?FlowAlias=bs_api_partner_get_mentor_list&action=api',
   // // Partner
-  get_all_active_partner: '/Primary/?FlowAlias=bs_api_partner_get_all_active_partner&action=api',
+  get_all_active_partner: '/Primary/?FlowAlias=bs_api_partner_get_partner_list_active_by_page&action=api',
+  get_all_inactive_partner: '/Primary/?FlowAlias=bs_api_partner_get_partner_list_inactive_by_page&action=api',
+  get_partner_detail: '/Primary/?FlowAlias=bs_api_partner_get_partner_detail_by_partner_id&action=api',
+  create_partner: '/Primary/?FlowAlias=bs_api_partner_get_new_partner&action=api',
+  update_partner: '/Primary/?FlowAlias=bs_api_partner_update_partner&action=api',
+  set_active_partner: '/Primary/?FlowAlias=bs_api_partner_set_active_partner&action=api',
+  set_featured_partner: '/Primary/?FlowAlias=bs_api_partner_set_featured_partner&action=api',
+
+  // partner category
+  get_all_active_partner_category: '/Primary/?FlowAlias=bs_api_partner_get_all_partner_category&action=api',
+  create_partner_category: '/Primary/?FlowAlias=bs_api_partner_create_new_partner_category&action=api',
+  get_partner_category_detail:'/Primary/?FlowAlias=bs_api_partner_get_partner_category_detail&action=api',
+  update_partner_category: '/Primary/?FlowAlias=bs_api_partner_update_partner_category&action=api',
 
   // // Counseling Category
   get_all_active_counseling_category:
@@ -246,7 +258,13 @@ export const prepaidcardActions = {
 export const listMentorActions = {
   active_list: 'MYM_PARTNER_MENTOR_OPEN_LIST_MENTOR_LIST',
 };
-
+export const partnerActions = {
+  active_list: 'MYM_PARTNER_COMPANY_OPEN_ACTIVE_PARTNER_LIST',
+  inactive_list: 'MYM_PARTNER_COMPANY_OPEN_INACTIVE_PARTNER_LIST'
+};
+export const partnerCategoryActions = {
+  active_list: 'MYM_PARTNER_COMPANY_OPEN_CATEGORY_LIST',
+};
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
   dashboard: '/dashboard/default',
@@ -383,6 +401,24 @@ export const view = {
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',
+    },
+  },
+  partner: {
+    list: {
+      create: 'MYM_PARTNER_MENTOR_PARTNER_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_MENTOR_PARTNER_SAVE_FORM_BUTTON',
+    },
+   
+  
+  },
+  partner_category: {
+    list: {
+      create: 'MYM_PARTNER_MENTOR_PARTNER_CATEGORY_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_MENTOR_PARTNER_CATRGORY_SAVE_FORM_BUTTON',
     },
   },
 };

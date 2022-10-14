@@ -15,6 +15,8 @@ export const initialState = {
   eventDocument: false,
   eventcategoryDocument: false,
   mentorListDocument: false,
+  partnerDocument: false,
+  partnerCategoryDocument: false
   cardBatchDocument: false,
   cardDocument: false,
 };
@@ -38,6 +40,8 @@ const floatingMenuReducer = (state = initialState, action) => {
         eventDocument: action.eventDocument,
         eventcategoryDocument: action.eventcategoryDocument,
         mentorListDocument: action.mentorListDocument,
+        partnerDocument: action.partnerDocument,
+        partnerCategoryDocument: action.partnerCategoryDocument,
         cardBatchDocument: action.cardBatchDocument,
         cardDocument: action.cardDocument,
       };
