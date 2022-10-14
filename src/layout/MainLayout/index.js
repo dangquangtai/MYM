@@ -27,6 +27,8 @@ import VoucherModal from './../../views/Marketing/Voucher/AssignModal/index';
 import MentorListModal from './../../views/Partner/ListMentor/Detail/index';
 import PartnerModal from '../../views/Partner/Partner/Detail';
 import PartnerCategoryModal from '../../views/Partner/Partner/Partner Category/Detail';
+import CardBatchModal from './../../views/Payment/Batch/Detail/index';
+import CardModal from './../../views/Payment/PrepaidCard/AssignModal/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,6 +126,10 @@ const MainLayout = ({ children }) => {
         return <PartnerModal />;
         case 'partner_category':
           return <PartnerCategoryModal />;
+      case 'cardbatch':
+        return <CardBatchModal />;
+      case 'prepaidcard':
+        return <CardModal />;
     }
   };
 

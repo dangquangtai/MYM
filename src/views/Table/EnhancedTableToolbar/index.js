@@ -65,6 +65,10 @@ const EnhancedTableToolbar = (props) => {
     createPartner,
     buttonCreatePartnerCategory,
     createPanertCategory,
+    buttonCreateCardBatch,
+    createCardBatch,
+    buttonAssignCard,
+    assignCard,
   } = props;
 
   const filterRef = useRef(null);
@@ -311,6 +315,22 @@ const EnhancedTableToolbar = (props) => {
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createPanertCategory}>
               {buttonCreatePartnerCategory.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonCreateCardBatch && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createCardBatch}>
+              {buttonCreateCardBatch.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonAssignCard && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={assignCard}>
+              {buttonAssignCard.text}
             </Button>
           </Grid>
         )}
