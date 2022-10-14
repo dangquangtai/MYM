@@ -1,0 +1,8 @@
+.MuiTreeItem-label{
+    font-size: 20px !important;
+    font-weight: 'bold';
+}
+.MuiTreeItem-iconContainer{
+    font-size: 20px !important;
+    font-weight: 500;
+}

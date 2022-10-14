@@ -96,7 +96,7 @@ const RoleModal = () => {
   const [departmentTypes, setDepartmentType] = React.useState();
   useEffect(() => {
     getDepartmentParent({
-      company_code: 'HNN', 
+    
       parent_department_code: null,});
     if (!selectedDocument) return;
     setRole({

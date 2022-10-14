@@ -48,6 +48,20 @@ export const AccountProvider = ({ children }) => {
         } else return [];
       });
   };
+  const getAllUserByDept = async (department_code,role_template_code) => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_account_by_department_and_role_template, {
+        department_code: department_code,
+        role_template_code: role_template_code,
+        outputtype: 'RawJson',
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
   const createAccount = async (account) => {
     return axiosInstance.post(apiEndpoints.create_account, account).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
@@ -66,7 +80,22 @@ export const AccountProvider = ({ children }) => {
       });
   };
   const updateAccount = async (account) => {
-    return axiosInstance.post(apiEndpoints.update_account, account).then((response) => {
+    return axiosInstance.post(apiEndpoints.update_account, {
+      ...account, outputtype: 'RawJson',}).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+  const assignAccount = async (account) => {
+    return axiosInstance.post(apiEndpoints.assign_account_to_dept, {
+      ...account ,outputtype: 'RawJson'}).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+  const removeAccount = async (account) => {
+    return axiosInstance.post(apiEndpoints.remove_account_from_dept, {
+      ...account, outputtype: 'RawJson',}).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
     });
@@ -81,6 +110,9 @@ export const AccountProvider = ({ children }) => {
         activeAccount,
         getAllTask,
         getAllUser,
+        getAllUserByDept,
+        assignAccount,
+        removeAccount,
       }}
     >
       {children}
