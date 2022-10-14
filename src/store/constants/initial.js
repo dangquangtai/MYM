@@ -40,6 +40,23 @@ export const initMentorData = {
   counselling_topic2_id: [],
   counselling_topic3_id: [],
 };
+export const initPartnerData = {
+  id: '',
+  title: '',
+  name: '',
+  is_active: false,
+  is_featured: false,
+  image_url: '',
+  
+};
+
+export const initPartnerCategoryData = {
+  id: '',
+  title: '',
+  created_date:'',
+  created_by:'',
+  
+};
 
 export const initMentorListData = {
   id: '',
@@ -101,6 +118,19 @@ export const initBatchData = {
   source: '',
   prefix: '',
   terms_condition: '',
+};
+
+export const initCardBatchData = {
+  title: '',
+  description: '',
+  image_url: '',
+  counselling_category_id: '',
+  prefix: '',
+  value: 0,
+  amount: 0,
+  available_from_date: '',
+  available_to_date: '',
+  is_generated: false,
 };
 
 export const genderList = ['Nam', 'Nữ'];

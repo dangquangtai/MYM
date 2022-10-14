@@ -53,6 +53,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import useEventCategory from '../../hooks/useEventCategory';
 import useEvent from '../../hooks/useEvent';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import usePayment from './../../hooks/usePayment';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -88,6 +89,8 @@ export default function GeneralTable(props) {
       image_url: tableColumns.includes('image_url'),
       title: tableColumns.includes('title'),
       voucher_code: tableColumns.includes('voucher_code'),
+      card_code: tableColumns.includes('card_code'),
+      card_serial: tableColumns.includes('card_serial'),
       description: tableColumns.includes('description'),
       fullname: tableColumns.includes('fullname'),
       department_name: tableColumns.includes('department_name'),
@@ -137,6 +140,7 @@ export default function GeneralTable(props) {
       is_used: tableColumns.includes('is_used'),
       is_featured: tableColumns.includes('is_featured'),
       is_active: tableColumns.includes('is_active'),
+      name: tableColumns.includes('mentor'),
     };
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
@@ -156,6 +160,9 @@ export default function GeneralTable(props) {
   const buttonCreateEpisode = menuButtons.find((button) => button.name === view.episode.list.create);
   const buttonCreatePlaylist = menuButtons.find((button) => button.name === view.playlist.list.create);
 
+  const buttonCreatePartner = menuButtons.find((button) => button.name === view.partner.list.create);
+  const buttonCreatePartnerCategory = menuButtons.find((button) => button.name === view.partner_category.list.create);
+
   const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
   const buttonCreateMentorList = menuButtons.find((button) => button.name === view.mentorlist.list.create);
 
@@ -169,6 +176,10 @@ export default function GeneralTable(props) {
   const buttonCreateBatch = menuButtons.find((button) => button.name === view.batch.list.create);
   const buttonSendEmail = menuButtons.find((button) => button.name === view.batch.list.send_email);
   const buttonAssignVoucher = menuButtons.find((button) => button.name === view.voucher.list.assign);
+
+  const butttonCreateCardBatch = menuButtons.find((button) => button.name === view.prepaidcardbatch.list.create);
+  const buttonSendEmailCard = menuButtons.find((button) => button.name === view.prepaidcardbatch.list.send_email);
+  const buttonAssignCard = menuButtons.find((button) => button.name === view.prepaidcard.list.assign);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -234,7 +245,7 @@ export default function GeneralTable(props) {
 
   const { getAccountDetail, activeAccount } = useAccount();
 
-  const { getMentorDetail, toggleActiveMentor, getMentorListDetail } = usePartner();
+  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail,getPartnerCategoryDetail } = usePartner();
 
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
@@ -242,6 +253,8 @@ export default function GeneralTable(props) {
 
   const { getEventCategoryDetail } = useEventCategory();
   const { getEventDetail } = useEvent();
+
+  const { getCardBatchDetail, sendEmailCard } = usePayment();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -379,8 +392,23 @@ export default function GeneralTable(props) {
       detailDocument = await getMentorListDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
+    } else if (documentType === 'cardbatch') {
+      detailDocument = await getCardBatchDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: true });
+    }
+    else if (documentType === 'partner') {
+      detailDocument = await getPartnerDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, partnerDocument: true });
+    }
+    else if (documentType === 'partner_category') {
+      detailDocument = await getPartnerCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
     }
   };
+  
 
   const openDialogCreate = () => {
     if (documentType === 'account') {
@@ -579,46 +607,64 @@ export default function GeneralTable(props) {
   };
 
   const handleClickCreateMentor = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, mentorDocument: true });
   };
 
   const handleClickCreatePodcast = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, podcastDocument: true });
   };
 
   const handleClickCreateEpisode = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, episodeDocument: true });
   };
 
   const handleClickCreatePlaylist = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
   };
   const handleClickCreateEvent = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: true });
   };
   const handleClickCreateEventCategory = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, eventcategoryDocument: true });
   };
 
   const handleClickAssignVoucher = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, voucherDocument: true });
   };
 
   const handleClickCreateBatch = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, batchDocument: true });
   };
 
   const handleClickMentorList = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
+  };
+  const handleClickCreatePartner = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, partnerDocument: true });
+  };
+  const handleClickCreatePartnerCategory = () => {
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
+  };
+
+  const handleClickAssignCard = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, cardDocument: true });
+  };
+
+  const handleClickCreateCardBatch = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: true });
   };
 
   const handleDownload = (url) => {
@@ -643,12 +689,22 @@ export default function GeneralTable(props) {
   };
 
   const handleClickSendEmail = async (id) => {
-    showConfirmPopup({
-      message: `Bạn chắc chắn muốn gửi Voucher vào email ?`,
-      action: sendEmailVoucher,
-      payload: id,
-      onSuccess: reloadCurrentDocuments,
-    });
+    if (documentType === 'batch') {
+      showConfirmPopup({
+        message: `Bạn chắc chắn muốn gửi Voucher vào email ?`,
+        action: sendEmailVoucher,
+        payload: id,
+        onSuccess: reloadCurrentDocuments,
+      });
+    }
+    if (documentType === 'cardbatch') {
+      showConfirmPopup({
+        message: `Bạn chắc chắn muốn gửi Prepaid Card vào email ?`,
+        action: sendEmailCard,
+        payload: id,
+        onSuccess: reloadCurrentDocuments,
+      });
+    }
   };
   
   return (
@@ -731,6 +787,14 @@ export default function GeneralTable(props) {
                 assignVoucher={handleClickAssignVoucher}
                 buttonCreateMentorList={buttonCreateMentorList}
                 createMentorList={handleClickMentorList}
+                buttonCreatePartner = {buttonCreatePartner}
+                createPartner ={handleClickCreatePartner}
+                buttonCreatePartnerCategory = {buttonCreatePartnerCategory}
+                createPanertCategory = {handleClickCreatePartnerCategory}
+                buttonCreateCardBatch={butttonCreateCardBatch}
+                createCardBatch={handleClickCreateCardBatch}
+                buttonAssignCard={buttonAssignCard}
+                assignCard={handleClickAssignCard}
               />
               <TableContainer>
                 <Table
@@ -873,6 +937,8 @@ export default function GeneralTable(props) {
                             </TableCell>
                           )}
                           {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
+                          {displayOptions.card_code && <TableCell align="left">{row.card_code}</TableCell>}
+                          {displayOptions.card_serial && <TableCell align="left">{row.card_serial}</TableCell>}
                           {displayOptions.account_id && (
                             <TableCell align="left">
                               <>
@@ -1233,6 +1299,16 @@ export default function GeneralTable(props) {
                                 )}
                                 {buttonSendEmail && row.is_generated && (
                                   <Tooltip title={buttonSendEmail.text}>
+                                    <Button
+                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
+                                      onClick={() => handleClickSendEmail(row.id)}
+                                    >
+                                      <MailOutlineIcon className={classes.noteButtonIcon} />
+                                    </Button>
+                                  </Tooltip>
+                                )}
+                                {buttonSendEmailCard && row.is_generated && (
+                                  <Tooltip title={buttonSendEmailCard.text}>
                                     <Button
                                       className={`${classes.handleButton} ${classes.handleButtonCancel}`}
                                       onClick={() => handleClickSendEmail(row.id)}

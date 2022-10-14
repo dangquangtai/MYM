@@ -15,6 +15,8 @@ import {
   prepaidcardActions,
   prepaidcardBatchActions,
   listMentorActions,
+  partnerActions,
+  partnerCategoryActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -103,6 +105,15 @@ export function getUrlByAction(selectedFolder) {
     }
     case listMentorActions.active_list: {
       return apiEndpoints.get_all_list_mentor;
+    }
+    case partnerActions.active_list: {
+      return apiEndpoints.get_all_active_partner;
+    }
+    case partnerActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_partner;
+    }
+    case partnerCategoryActions.active_list: {
+      return apiEndpoints.get_all_active_partner_category;
     }
     default: {
       return '';

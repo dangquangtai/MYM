@@ -31,6 +31,7 @@ import { MetaDataProvider } from './../contexts/MetaDataContext';
 import { MarketingProvider } from './../contexts/MarketingContext';
 import { EventProvider } from './../contexts/EventContext';
 import { EventCategoryProvider } from './../contexts/EventCategoryContext';
+import { PaymentProvider } from '../contexts/PaymentContext.js';
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -84,8 +85,10 @@ const App = () => {
                                                   <MarketingProvider>
                                                     <EventProvider>
                                                       <EventCategoryProvider>
-                                                      <Routes />
-                                                      <Snackbar />
+                                                        <PaymentProvider>
+                                                          <Routes />
+                                                          <Snackbar />
+                                                        </PaymentProvider>
                                                       </EventCategoryProvider>
                                                     </EventProvider>
                                                   </MarketingProvider>

@@ -20,13 +20,11 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { view } from '../../../../store/constant';
-import useView from '../../../../hooks/useView';
-import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
-import Alert from '../../../../component/Alert';
-import useMedia from '../../../../hooks/useMedia';
-import { initPlaylistData, userAvatar } from '../../../../store/constants/initial';
-import PermissionModal from '../../../../views/FloatingMenu/UploadFile/index.js';
+import { view } from '../../../../../store/constant';
+import useView from '../../../../../hooks/useView';
+import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../../store/actions';
+import Alert from '../../../../../component/Alert';
+import { initMentorListData, initPartnerCategoryData, initPartnerData, userAvatar } from '../../../../../store/constants/initial';
 import {
   QueueMusic,
   History,
@@ -34,8 +32,11 @@ import {
   RadioOutlined as RadioOutlinedIcon,
   ImageOutlined as ImageIcon,
 } from '@material-ui/icons';
-import useStyles from './../../../../utils/classes';
-import FirebaseUpload from '../../../FloatingMenu/FirebaseUpload/index.js';
+import useStyles from './../../../../../utils/classes';
+import usePartner from './../../../../../hooks/usePartner';
+import useMedia from './../../../../../hooks/useMedia';
+import { Autocomplete } from '@material-ui/lab';
+import FirebaseUpload from './../../../../FloatingMenu/FirebaseUpload/index';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -69,15 +70,16 @@ function a11yProps(index) {
   };
 }
 
-const PlaylistModal = () => {
+const PartnerCategoryModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const { form_buttons: formButtons } = useView();
-  const { playlistDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { partnerCategoryDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const saveButton = formButtons.find((button) => button.name === view.playlist.detail.save);
-  const { createPlaylist, updatePlaylist, getAllPodcast } = useMedia();
+  const saveButton = formButtons.find((button) => button.name === view.partner_category.detail.save);
+  const { createPartnerCategory, updatePartnerCategory, getMentorList, getPartnerCategoryList } = usePartner();
+  const { getCounselingCategories } = useMedia();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
 
@@ -87,8 +89,14 @@ const PlaylistModal = () => {
     text: '',
   });
 
-  const [playlistData, setplaylistData] = useState(initPlaylistData);
-  const [podcastList, setPodcastList] = useState([]);
+//   const [mentorListData, setMentorListData] = useState(initMentorListData);
+//   const [partnerData, setpartnerData] = useState(initPartnerData);
+ const [partnerCategoryData, setpartnerCategoryData] = useState(initPartnerCategoryData);
+  const [categories, setCategories] = useState([]);
+  const [listMentor, setListMentor] = useState([]);
+  const [partner, setpartner] =  useState([]);
+  const [selectedMentor, setSelectedMentor] = useState([]);
+  const [selectedPartner, setselectedPartner] = useState([]);
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
@@ -107,12 +115,13 @@ const PlaylistModal = () => {
     });
   };
 
+//   const setURL = (image) => {
+//     setpartnerCategoryData({ ...partnerCategoryData, image_url: image });
+//   };
+
   const setDocumentToDefault = async () => {
-    setplaylistData(initPlaylistData);
+    setpartnerCategoryData(initPartnerCategoryData);
     setTabIndex(0);
-  };
-  const setURL = (image) => {
-    setplaylistData({ ...playlistData, image_url: image });
   };
 
   const handleOpenDiaLog = () => {
@@ -125,48 +134,52 @@ const PlaylistModal = () => {
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setplaylistData({ ...playlistData, [name]: value });
+    setpartnerCategoryData({ ...partnerCategoryData, [name]: value });
   };
+
+//   const handleChangeMentor = (e, value) => {
+//     setSelectedMentor(value);
+//     setpartnerData({ ...partnerData, mentor_id_list: value.map((item) => item.id) });
+//   };
 
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updatePlaylist(playlistData);
-        handleOpenSnackbar(true, 'success', 'Cập nhật Playlist thành công!');
+        await updatePartnerCategory(partnerCategoryData);
+        handleOpenSnackbar(true, 'success', 'Cập nhật partner thành công!');
       } else {
-        await createPlaylist(playlistData);
-        handleOpenSnackbar(true, 'success', 'Tạo mới Playlist thành công!');
+        await createPartnerCategory(partnerCategoryData);
+        handleOpenSnackbar(true, 'success', 'Tạo mới partner thành công!');
       }
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'playlist' });
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'partner_category' });
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
 
-  const handleChangePodcast = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setplaylistData({ ...playlistData, podcast_id_list: value });
-  };
+//   console.log('mentorListData', partnerCategoryData);
 
   useEffect(() => {
     if (!selectedDocument) return;
-    setplaylistData({
-      ...playlistData,
+    setpartnerCategoryData({
+      ...partnerCategoryData,
       ...selectedDocument,
-      image_url: selectedDocument?.image_url || userAvatar,
+    //   image_url: selectedDocument.image_url || userAvatar,
     });
   }, [selectedDocument]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await getAllPodcast();
-      setPodcastList(res);
-    };
-    fetchData();
-  }, []);
+//   useEffect(() => {
+//     const fetch = async () => {
+//       const data = await getPartnerCategoryList();
+//       setCategories(data);
+//       const res = await getMentorList();
+//       setListMentor(res);
+//     };
+//     fetch();
+//   }, []);
+
+
 
   return (
     <React.Fragment>
@@ -186,25 +199,24 @@ const PlaylistModal = () => {
           </Alert>
         </Snackbar>
       )}
-      {/* <PermissionModal open={openDialogUploadImage || false} onSuccess={setURL} onClose={handleCloseDiaLog} /> */}
-      <FirebaseUpload
-        open={openDialogUploadImage}
+      {/* <FirebaseUpload
+        open={openDialogUploadImage || false}
         onSuccess={setURL}
         onClose={handleCloseDiaLog}
         type="image"
-        folder="Podcast"
-      />
+        folder="Mentor"
+      /> */}
       <Grid container>
         <Dialog
           open={openDialog || false}
           TransitionComponent={Transition}
           keepMounted
           onClose={handleCloseDialog}
-          className={classes.useradddialog}
+          className={classes.partnerdialog}
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Playlist
+              Partner Category
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -245,8 +257,8 @@ const PlaylistModal = () => {
               <Grid item xs={12}>
                 <TabPanel value={tabIndex} index={0}>
                   <Grid container spacing={1}>
-                    <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
+                    <Grid item lg={12} md={12} xs={12}>
+                      {/* <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <ImageIcon />
@@ -254,26 +266,24 @@ const PlaylistModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={playlistData.image_url} alt="" />
+                          <img src={partnerCategoryData.image_url} alt="image_url" />
                           <div>
-                            <div>Upload/Change Playlist Image</div>
+                            <div>Upload/Change Image</div>
                             <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
                           </div>
                         </div>
-                      </div>
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={12}>
+                      </div> */}
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <QueueMusic />
-                            <span>Chi tiết Playlist</span>
+                            <span>Chi tiết Partner Category</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tiêu đề:</span>
+                              <span className={classes.tabItemLabelField}>Tên trường:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -282,13 +292,13 @@ const PlaylistModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="title"
-                                value={playlistData.title}
+                                value={partnerCategoryData.title}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItem} alignItems="center">
+                          {/* <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Mô tả:</span>
                             </Grid>
@@ -300,57 +310,50 @@ const PlaylistModal = () => {
                                 rowsMax={4}
                                 variant="outlined"
                                 name="description"
-                                value={playlistData.description}
+                                value={partnerData.title}
                                 className={classes.multilineInputField}
                                 onChange={handleChanges}
                               />
                             </Grid>
-                          </Grid>
-                        </div>
-                      </div>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <RadioOutlinedIcon />
-                            <span>Danh sách Podcast</span>
-                          </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={2} md={2} xs={12}>
-                              <span className={classes.tabItemLabelField}>Podcast:</span>
+                          </Grid> */}
+                          {/* <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Danh mục:</span>
                             </Grid>
-                            <Grid item lg={10} md={10} xs={12}>
+                            <Grid item lg={8} md={8} xs={8}>
                               <Select
-                                labelId="demo-multiple-name-label"
-                                id="demo-multiple-name"
-                                multiple
+                                name="category_id"
                                 className={classes.multpleSelectField}
-                                value={playlistData?.podcast_id_list}
-                                onChange={handleChangePodcast}
-                                renderValue={(selected) => (
-                                  <div className={classes.chips}>
-                                    {selected.map((value) => (
-                                      <Chip
-                                        key={value}
-                                        label={podcastList?.find((i) => i.id === value)?.title}
-                                        className={classes.chip}
-                                      />
-                                    ))}
-                                  </div>
-                                )}
+                                value={partnerCategoryData.category_id || ''}
+                                onChange={handleChanges}
                               >
-                                {podcastList?.map((item) => (
+                                {categories?.map((item) => (
                                   <MenuItem key={item.id} value={item.id}>
                                     {item.title}
                                   </MenuItem>
                                 ))}
                               </Select>
                             </Grid>
-                          </Grid>
+                          </Grid> */}
+                          {/* <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Ẩn:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Switch
+                                checked={mentorListData.is_hidden}
+                                onChange={() =>
+                                  setMentorListData({ ...mentorListData, is_hidden: !mentorListData.is_hidden })
+                                }
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                            </Grid>
+                          </Grid> */}
                         </div>
                       </div>
                     </Grid>
+                 
                   </Grid>
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
@@ -393,4 +396,4 @@ const PlaylistModal = () => {
   );
 };
 
-export default PlaylistModal;
+export default PartnerCategoryModal;

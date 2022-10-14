@@ -4,6 +4,8 @@ export const headCells = [
   { id: 'fullname', numeric: false, disablePadding: false, label: 'Khách hàng', maxWidth: 150 },
   { id: 'title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
   { id: 'voucher_code', numeric: false, disablePadding: false, label: 'Mã voucher', maxWidth: 150 },
+  { id: 'card_code', numeric: false, disablePadding: false, label: 'Mã thẻ', maxWidth: 150 },
+  { id: 'card_serial', numeric: false, disablePadding: false, label: 'Serial thẻ', maxWidth: 150 },
   { id: 'department_name', numeric: false, disablePadding: false, label: 'Tên phòng ban', maxWidth: 150 },
   { id: 'department_parent', numeric: false, disablePadding: false, label: 'Trực thuộc phòng ban', maxWidth: 150 },
   { id: 'number_member', numeric: false, disablePadding: false, label: 'Số thành viên', maxWidth: 150 },
@@ -37,6 +39,7 @@ export const headCells = [
   { id: 'price', numeric: false, disablePadding: false, label: 'Giá', maxWidth: 100 },
   { id: 'online', numeric: false, disablePadding: false, label: 'Trực tuyến', maxWidth: 100 },
   { id: 'available', numeric: false, disablePadding: false, label: 'Khả dụng', maxWidth: 100 },
+  { id: 'name', numeric: false, disablePadding: false, label: 'Mentor', maxWidth: 100 },
   {
     id: 'visible_for_selection',
     numeric: false,

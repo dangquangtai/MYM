@@ -25,11 +25,10 @@ import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, CONFIRM_CHANGE } from '../../../
 import { view } from '../../../../store/constant';
 import useStyles from '../../../../utils/classes';
 import { convertDate } from './../../../../utils/table';
-import { initBatchData, userAvatar } from '../../../../store/constants/initial.js';
+import { initCardBatchData, userAvatar } from '../../../../store/constants/initial.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
-import useMarketing from './../../../../hooks/useMarketing';
 import useMedia from './../../../../hooks/useMedia';
-import usePartner from './../../../../hooks/usePartner';
+import usePayment from './../../../../hooks/usePayment';
 import {
   History as HistoryIcon,
   DescriptionOutlined as DescriptionOutlinedIcon,
@@ -75,14 +74,13 @@ const CardBatchModal = () => {
   const dispatch = useDispatch();
 
   const { form_buttons: formButtons } = useView();
-  const { batchDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { cardBatchDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const generateButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.generate);
   const importButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.import);
 
-  const { createBatch, generateVoucher } = useMarketing();
+  const { createCardBatch, generateCard } = usePayment();
   const { getCounselingCategories } = useMedia();
-  const { getPartnerList } = usePartner();
   const { setConfirmPopup } = useConfirmPopup();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [dialogUpload, setDialogUpload] = useState({
@@ -96,15 +94,12 @@ const CardBatchModal = () => {
     text: '',
   });
 
-  const [batchData, setBatchData] = useState(initBatchData);
+  const [cardBatchData, setCardBatchData] = useState(initCardBatchData);
   const [counsellings, setCounsellings] = useState([]);
-  const [partners, setPartners] = useState([]);
-  const [selectedPartner, setSelectedPartner] = useState('');
-  const [selectedEvent, setSelectedEvent] = useState('');
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: FLOATING_MENU_CHANGE, podcastDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: false });
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -124,16 +119,11 @@ const CardBatchModal = () => {
   };
 
   const setDocumentToDefault = async () => {
-    setBatchData(initBatchData);
-    console.log('batch');
+    setCardBatchData(initCardBatchData);
     setTabIndex(0);
   };
   const setURL = (image) => {
-    if (dialogUpload.type === 'image') {
-      setBatchData({ ...batchData, image_url: image });
-    } else {
-      setBatchData({ ...batchData, soure_file_url: image });
-    }
+    setCardBatchData({ ...cardBatchData, image_url: image });
   };
 
   const handleOpenDiaLog = (type) => {
@@ -152,22 +142,12 @@ const CardBatchModal = () => {
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setBatchData({ ...batchData, [name]: value });
-  };
-
-  const handleSelectPartner = (e, partner) => {
-    setSelectedPartner(partner);
-    setBatchData({ ...batchData, partner_id: partner?.id });
-  };
-
-  const handleSelectEvent = (e, event) => {
-    setSelectedEvent(event);
-    setBatchData({ ...batchData, event_id: event?.id });
+    setCardBatchData({ ...cardBatchData, [name]: value });
   };
 
   const handleSubmitForm = async () => {
     try {
-      await createBatch(batchData);
+      await createCardBatch(cardBatchData);
       handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'batch' });
       handleCloseDialog();
@@ -179,9 +159,9 @@ const CardBatchModal = () => {
   const handleClickGenerate = async () => {
     showConfirmPopup({
       title: 'Thông báo',
-      message: 'Bạn có chắc chắn muốn tạo voucher cho batch này?',
-      action: generateVoucher,
-      payload: batchData.id,
+      message: 'Bạn có chắc chắn muốn tạo card cho batch này?',
+      action: generateCard,
+      payload: cardBatchData.id,
       onSuccess: () => {
         handleOpenSnackbar(true, 'success', 'Tạo voucher thành công!');
       },
@@ -189,24 +169,12 @@ const CardBatchModal = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const counsellings = await getCounselingCategories();
-      setCounsellings(counsellings);
-      const partners = await getPartnerList();
-      setPartners(partners);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     if (!selectedDocument) return;
-    setBatchData({
-      ...initBatchData,
+    setCardBatchData({
+      ...initCardBatchData,
       ...selectedDocument,
       image_url: selectedDocument?.image_url || userAvatar,
     });
-    setSelectedPartner(partners.find((partner) => partner.id === selectedDocument?.partner_id));
-    setSelectedEvent(counsellings.find((counselling) => counselling.id === selectedDocument?.event_id));
   }, [selectedDocument]);
 
   return (
@@ -294,30 +262,11 @@ const CardBatchModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={batchData.image_url} alt="" />
+                          <img src={cardBatchData.image_url} alt="" />
                           <div>
                             <div>Upload/Change Batch Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={batchData.image_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                       <div className={classes.tabItem}>
@@ -339,7 +288,7 @@ const CardBatchModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="title"
-                                value={batchData.title}
+                                value={cardBatchData.title}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -347,32 +296,18 @@ const CardBatchModal = () => {
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Áp dụng từ ngày:</span>
+                              <span className={classes.tabItemLabelField}>Mô tả:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                type="date"
+                                multiline
+                                rows={4}
+                                rowsMax={5}
                                 variant="outlined"
-                                name="applicable_from_date"
-                                value={convertDate(batchData.applicable_from_date)}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Áp dụng đến ngày:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="date"
-                                variant="outlined"
-                                name="applicable_to_date"
-                                value={convertDate(batchData.applicable_to_date)}
-                                className={classes.inputField}
+                                name="description"
+                                value={cardBatchData.description}
+                                className={classes.multilineInputField}
                                 onChange={handleChanges}
                               />
                             </Grid>
@@ -391,6 +326,38 @@ const CardBatchModal = () => {
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Áp dụng từ ngày:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="date"
+                                variant="outlined"
+                                name="available_from_date"
+                                value={convertDate(cardBatchData.available_from_date)}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Áp dụng đến ngày:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="date"
+                                variant="outlined"
+                                name="available_to_date"
+                                value={convertDate(cardBatchData.available_to_date)}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Prefix:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
@@ -400,24 +367,7 @@ const CardBatchModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="prefix"
-                                value={batchData.prefix}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Nguồn:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="source"
-                                value={batchData.source}
+                                value={cardBatchData.prefix}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -434,7 +384,7 @@ const CardBatchModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="amount"
-                                value={batchData.amount}
+                                value={cardBatchData.amount}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -450,211 +400,8 @@ const CardBatchModal = () => {
                                 rows={1}
                                 rowsMax={1}
                                 variant="outlined"
-                                name="voucher_value"
-                                value={batchData.voucher_value}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>QR Code:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={batchData.is_qrcode_generated}
-                                onChange={() =>
-                                  setBatchData({ ...batchData, is_qrcode_generated: !batchData.is_qrcode_generated })
-                                }
-                                name="is_qrcode_generated"
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Dành cho sự kiện:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={batchData.is_for_event}
-                                onChange={() => setBatchData({ ...batchData, is_for_event: !batchData.is_for_event })}
-                                name="is_for_event"
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Áp dụng cho sự kiện:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Select
-                                disabled={!batchData.is_for_event}
-                                name="event_id"
-                                labelId="career-label"
-                                id="career-name"
-                                className={classes.multpleSelectField}
-                                value={batchData.event_id}
-                                onChange={handleChanges}
-                              >
-                                <MenuItem value="">Không chọn</MenuItem>
-                                {/* {events?.map((event) => (
-                                    <MenuItem key={event.id} value={event.id}>
-                                        {event.name}
-                                    </MenuItem>
-                                ))} */}
-                              </Select>
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Dành cho dịch vụ:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={batchData.is_for_counselling_service}
-                                onChange={() =>
-                                  setBatchData({
-                                    ...batchData,
-                                    is_for_counselling_service: !batchData.is_for_counselling_service,
-                                  })
-                                }
-                                name="is_for_counselling_service"
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Áp dụng cho dịch vụ:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Select
-                                disabled={!batchData.is_for_counselling_service}
-                                name="counselling_category_id"
-                                value={batchData.counselling_category_id}
-                                className={classes.multpleSelectField}
-                                onChange={handleChanges}
-                              >
-                                <MenuItem value="">Không chọn</MenuItem>
-                                {counsellings?.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
-                                    {item.category_name}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Dành cho đối tác:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={batchData.is_partner_limit}
-                                onChange={() =>
-                                  setBatchData({ ...batchData, is_partner_limit: !batchData.is_partner_limit })
-                                }
-                                name="is_partner_limit"
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Áp dụng cho đối tác:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <NoPaddingAutocomplete
-                                disabled={!batchData.is_partner_limit}
-                                fullWidth
-                                id="mentor"
-                                value={selectedPartner}
-                                options={partners}
-                                onChange={handleSelectPartner}
-                                getOptionLabel={(option) => option.name}
-                                renderInput={(params) => <TextField {...params} variant="outlined" />}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Của bên thứ 3:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={batchData.is_third_party_voucher}
-                                onChange={() =>
-                                  setBatchData({
-                                    ...batchData,
-                                    is_third_party_voucher: !batchData.is_third_party_voucher,
-                                  })
-                                }
-                                name="is_third_party_voucher"
-                                color="primary"
-                                inputProps={{ 'aria-label': 'primary checkbox' }}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
-                      </div>
-                    </Grid>
-                  </Grid>
-                </TabPanel>
-                <TabPanel value={tabIndex} index={1}>
-                  <Grid container spacing={1}>
-                    <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            {/* <ImageIcon /> */}
-                            <span>Mô tả</span>
-                          </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={12}>
-                              <TextField
-                                fullWidth
-                                multiline
-                                rows={5}
-                                rowsMax={8}
-                                variant="outlined"
-                                name="benefit_description"
-                                value={batchData.benefit_description}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
-                      </div>
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            {/* <ImageIcon /> */}
-                            <span>Điều khoản</span>
-                          </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={12}>
-                              <TextField
-                                fullWidth
-                                multiline
-                                rows={5}
-                                rowsMax={8}
-                                variant="outlined"
-                                name="terms_condition"
-                                value={batchData.terms_condition}
+                                name="value"
+                                value={cardBatchData.value}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -665,6 +412,7 @@ const CardBatchModal = () => {
                     </Grid>
                   </Grid>
                 </TabPanel>
+                <TabPanel value={tabIndex} index={1}></TabPanel>
               </Grid>
             </Grid>
           </DialogContent>
@@ -687,7 +435,7 @@ const CardBatchModal = () => {
                 )}
                 {generateButton && selectedDocument?.id && (
                   <Button
-                    disabled={batchData.is_generated}
+                    disabled={cardBatchData.is_generated}
                     variant="contained"
                     className={classes.gridItemInfoButton}
                     onClick={handleClickGenerate}

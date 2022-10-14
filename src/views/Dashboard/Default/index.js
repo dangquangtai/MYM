@@ -22,6 +22,8 @@ import {
   prepaidcardBatchActions,
   prepaidcardActions,
   listMentorActions,
+  partnerActions,
+  partnerCategoryActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -37,6 +39,8 @@ import EventCategoryWrapper from '../../Marketing/EventCategory';
 import CardBatchWrapper from './../../Payment/Batch/index';
 import PrepaidCardWrapper from './../../Payment/PrepaidCard/index';
 import ListMentorWrapper from './../../Partner/ListMentor/index';
+import PartnerWrapper from '../../Partner/Partner';
+import PartnerCategoryWrapper from '../../Partner/Partner/Partner Category';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -60,6 +64,8 @@ const Default = () => {
   const availablePrepaidcardBatchEndpoint = Object.values(prepaidcardBatchActions);
   const availablePrepaidcardEndpoint = Object.values(prepaidcardActions);
   const availableListMentorEndpoint = Object.values(listMentorActions);
+  const avalablePartnerEndpoint = Object.values(partnerActions);
+  const availablePartnerCategoryEndpoint = Object.values(partnerCategoryActions);
 
   if (!selectedApp) {
     return <Redirect to="/dashboard/app" />;
@@ -92,6 +98,8 @@ const Default = () => {
           {availablePrepaidcardBatchEndpoint.includes(selectedFolder?.action) && <CardBatchWrapper />}
           {availablePrepaidcardEndpoint.includes(selectedFolder?.action) && <PrepaidCardWrapper />}
           {availableListMentorEndpoint.includes(selectedFolder?.action) && <ListMentorWrapper />}
+          {avalablePartnerEndpoint.includes(selectedFolder?.action) && <PartnerWrapper />}
+          {availablePartnerCategoryEndpoint.includes(selectedFolder?.action) && <PartnerCategoryWrapper />}
         </Grid>
       )}
     </Grid>
