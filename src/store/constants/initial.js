@@ -40,6 +40,23 @@ export const initMentorData = {
   counselling_topic2_id: [],
   counselling_topic3_id: [],
 };
+export const initPartnerData = {
+  id: '',
+  title: '',
+  name: '',
+  is_active: false,
+  is_featured: false,
+  image_url: '',
+  
+};
+
+export const initPartnerCategoryData = {
+  id: '',
+  title: '',
+  created_date:'',
+  created_by:'',
+  
+};
 
 export const initMentorListData = {
   id: '',
