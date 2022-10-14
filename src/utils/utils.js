@@ -23,10 +23,10 @@ export function getUrlByAction(selectedFolder) {
       return apiEndpoints.get_all_active_account;
     }
     case accountActions.list_inactive_user: {
-      return apiEndpoints.get_all_inactive_account;
+      return apiEndpoints.get_all_deactive_account;
     }
     case departmentActions.list_active_department: {
-      return apiEndpoints.get_all_active_department;
+      return apiEndpoints.get_tree_view_data;
     }
     case departmentActions.list_inactive_department: {
       return apiEndpoints.get_all_inactive_department;
@@ -37,9 +37,7 @@ export function getUrlByAction(selectedFolder) {
     case roleActions.list_inactive_role: {
       return apiEndpoints.get_all_inactive_role_template;
     }
-    case roleActions.list_role: {
-      return apiEndpoints.get_all_account_by_department;
-    }
+  
     case playlistActions.active_list: {
       return apiEndpoints.get_all_active_playlist;
     }

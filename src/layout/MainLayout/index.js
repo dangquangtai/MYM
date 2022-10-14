@@ -13,10 +13,8 @@ import ConfirmPopup from '../../views/ConfirmPopup';
 import DetailDocumentDialog from '../../views/Detail/index.js';
 import AccountModal from '../../views/FormAccount';
 import MentorModal from '../../views/Mentor/Detail';
-import DepartmentModal from '../../views/Department/Detail';
 import RoleModal from '../../views/Role/Detail';
-import TreeViewModal from '../../views/Department/Tree_View';
-import FormModal from '../../views/Role/Form';
+import DepartmentModal from '../../views/Department/Detail';
 import PodcastModal from '../../views/Podcast/Podcast/Detail/index.js';
 import EpisodeModal from '../../views/Podcast/Episode/Detail';
 import PlaylistModal from '../../views/Podcast/Playlist/Detail/index.js';
@@ -91,7 +89,7 @@ const MainLayout = ({ children }) => {
       case 'department':
         return (
           <>
-            <TreeViewModal />
+         
             <DepartmentModal />
           </>
         );
@@ -99,7 +97,7 @@ const MainLayout = ({ children }) => {
         return (
           <>
             <RoleModal />
-            <FormModal />
+         
           </>
         );
       case 'batch':

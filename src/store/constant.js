@@ -13,39 +13,44 @@ export const apiEndpoints = {
   get_folders: '/Primary/?FlowAlias=bs_menu_api_get_menu_tree&action=api',
   get_metadata: '/Primary/?FlowAlias=bs_api_mym_get_meta_data&action=api',
   // account
-  get_all_account: '/Primary/?FlowAlias=hnn_acco_api_get_all_account_by_page&action=api',
-  get_all_inaccount: '/Primary/?FlowAlias=hnn_acco_api_get_all_inaccount_by_page&action=api',
-  get_all_account_by_department: '/Primary/?FlowAlias=hnn_api_get_all_acount_by_department&action=api',
-  get_account_detail: '/Primary/?FlowAlias=hnn_api_booking_get_account_by_id&action=api',
-  create_account: '/Primary/?FlowAlias=hnn_api_booking_user_create_account&action=api',
-  update_account: '/Primary/?FlowAlias=hnn_api_booking_user_update_account&action=api',
-  active_account: '/Primary/?FlowAlias=hnn_api_user_active_account&action=api',
+  get_all_active_account: '/Primary/?FlowAlias=bs_user_api_get_all_active_account_by_page&action=api',
+  get_all_deactive_account: '/Primary/?FlowAlias=bs_user_api_get_all_deactive_account_by_page&action=api',
+  get_account_detail: '/Primary/?FlowAlias=bs_api_user_get_account_by_id&action=api',
+  create_account: '/Primary/?FlowAlias=bs_api_user_create_account_by_host&action=api',
+  update_account: '/Primary/?FlowAlias=bs_api_user_update_account_by_id&action=api',
+  get_all_account_by_department_and_role_template: '/Primary/?FlowAlias=bs_api_user_get_all_acount_by_departmentand_role_template&action=api',
+  assign_account_to_dept: '/Primary/?FlowAlias=bs_api_user_api_assign_account_to_department&action=api',
+  remove_account_from_dept: '/Primary/?FlowAlias=bs_api_user_api_remove_account_from_department&action=api',
+  active_account: '/Primary/?FlowAlias=bs_api_user_active_account&action=api',
+
   get_all_task: '/Primary/?FlowAlias=hnn_api_booking_get_all_task&action=api',
-  get_all_account_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_all_account&action=api',
+
+  
 
   //role template
-  get_all_active_role_template: '/Primary/?FlowAlias=hnn_api_role_get_all_active_role_template_by_page&action=api',
-  active_role_template: '/Primary/?FlowAlias=hnn_api_role_active_role&action=api',
-  get_detail_role_template: '/Primary/?FlowAlias=hnn_api_role_get_detail_role_template&action=api',
-  get_all_inactive_role_template: '/Primary/?FlowAlias=hnn_api_role_get_all_inactive_role_template_by_page&action=api',
-  create_role_template: '/Primary/?FlowAlias=hnn_api_role_create_role&action=api',
-  get_all_group: '/Primary/?FlowAlias=hnn_api_role_get_all_group&action=api',
+  get_all_active_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_all_active_role_template_by_page&action=api',
+  active_role_template: '/Primary/?FlowAlias=bs_api_role_template_active_role_template&action=api',
+  get_detail_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_detail_role_template&action=api',
+  get_all_inactive_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_all_inactive_role_template_by_page&action=api',
+  create_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
+  update_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
 
+
+  get_all_role_template_by_department_code: '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
   add_account_to_group: '/Primary/?FlowAlias=bs_api_user_add_acount_to_group&action=api',
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
   //department
 
   sync_group_for_department: '/Primary/?FlowAlias=hnn_api_role_sync_group_for_department&action=api',
   get_tree_view_data: '/Primary/?FlowAlias=bs_api_dept_get_tree_view_data&action=api',
-  get_all_active_department: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
-  get_all_inactive_department: '/Primary/?FlowAlias=hnn_api_dept_get_all_inactive_department_by_page&action=api',
-  deactive_department: '/Primary/?FlowAlias=hnn_api_booking_user_deactive_department&action=api',
-  create_department: '/Primary/?FlowAlias=hnn_api_booking_user_create_department&action=api',
-  update_department: '/Primary/?FlowAlias=hnn_api_booking_user_update_department&action=api',
-  get_department_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_department_list&action=api',
-  get_department_type_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_department_type_list&action=api',
-  get_department_detail: '/Primary/?FlowAlias=hnn_api_booking_department_get_detail_department_by_name&action=api',
-
+ 
+  deactive_department: '/Primary/?FlowAlias=bs_api_dept_deactive_department&action=api',
+  create_department: '/Primary/?FlowAlias=bs_api_dept_create_department&action=api',
+  update_department: '/Primary/?FlowAlias=bs_api_dept_update_department&action=api',
+  get_department_list: '/Primary/?FlowAlias=bs_api_dept_get_department_list&action=api',
+  get_department_type_list: '/Primary/?FlowAlias=bs_api_dept_get_department_type_list&action=api',
+  get_department_detail: '/Primary/?FlowAlias=bs_api_dept_get_detail_department_by_name&action=api',
+ 
   // Meida
   // // Playlist
   get_all_active_playlist: '/Primary/?FlowAlias=bs_media_api_get_list_playlist_active&action=api',
@@ -178,17 +183,17 @@ export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
 
 export const roleActions = {
-  list_active_role: 'HNN_ACTIONE_OPEN_ACTIVE_ROLE_TEMPLATE_LIST',
-  list_inactive_role: 'HNN_ACTIONE_OPEN_INACTIVE_ROLE_TEMPLATE_LIST',
-  list_role: 'HNN_ACTION_OPEN_ROLE_LIST',
+  list_active_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_DEACTIVE_LIST',
+  list_inactive_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_ACTIVE_LIST',
+
 };
 export const accountActions = {
-  list_active_user: 'HNN_ACTION_OPEN_ACTIVE_USER_LIST',
-  list_inactive_user: 'HNN_ACTION_OPEN_INACTIVE_USER_LIST',
+  list_active_user: 'MYM_ORGANISATION_HOME_OPEN_ACTIVE_USER_LIST',
+  list_inactive_user: 'MYM_ORGANISATION_HOME_OPEN_USER_DEACTIVE_LIST',
 };
 export const departmentActions = {
-  list_active_department: 'HNN_ACTION_OPEN_ACTIVE_DEPT_LIST',
-  list_inactive_department: 'HNN_ACTION_OPEN_INACTIVE_DEPT_LIST',
+  list_active_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_ACTIVE_LIST',
+  list_inactive_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_DEACTIVE_LIST',
 };
 
 export const playlistActions = {
@@ -259,7 +264,7 @@ export const view = {
   },
   user: {
     list: {
-      create: 'USER_LIST_CREATE_MENU_BUTTON',
+      create: 'MYM_ORGANISATION_HOME_CREATE_USER_MENU_BUTTON',
     },
     detail: {
       save: 'USER_DETAIL_SAVE_FORM_BUTTON',

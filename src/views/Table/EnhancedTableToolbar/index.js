@@ -145,11 +145,7 @@ const EnhancedTableToolbar = (props) => {
   const { selectedFolder } = useSelector((state) => state.folder);
   const [dataDepartmentList, setDepartment] = React.useState();
   useEffect(() => {
-    async function initDepartmentList() {
-      const data = await getDepartmentList();
-      setDepartment(data);
-    }
-    initDepartmentList();
+   
   }, []);
 
   useEffect(() => {
@@ -381,7 +377,7 @@ const EnhancedTableToolbar = (props) => {
                   <FilterListIcon className={classes.toolButtonIcon} />
                 </Button>
               </Tooltip>
-              {buttonShowTreeView && (
+              {/* {buttonShowTreeView && (
                 <Tooltip title="Tree View">
                   <Button
                     className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
@@ -390,7 +386,7 @@ const EnhancedTableToolbar = (props) => {
                     <AccountTreeIcon className={classes.toolButtonIcon} />
                   </Button>
                 </Tooltip>
-              )}
+              )} */}
               {isOpenFilter && (
                 <div className={`${classes.toolColumn} ${classes.toolFilter}`}>
                   <div className={`${classes.toolColumnTitle} ${classes.toolFilterTitle}`}>

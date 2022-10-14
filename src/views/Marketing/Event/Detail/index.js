@@ -86,7 +86,6 @@ function a11yProps(index) {
 const EventModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [event, setEvent] = useState(initEvent);
   const { form_buttons: formButtons } = useView();
   const { eventDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
@@ -99,6 +98,7 @@ const EventModal = () => {
   const [mentorListSelection, setMentorListSelection] = useState([]);
   const { createEvent, updateEvent } = useEvent();
   const { getCounsellingByEvent } = useBooking();
+  const [eventData, setEvent] = useState(initEvent);
   const {
     provinces: provinceList,
   } = useSelector((state) => state.metadata);
@@ -137,15 +137,16 @@ const EventModal = () => {
 
   const setDocumentToDefault = async () => {
     setEvent(initEvent);
-    console.log('event', event)
+   
+
     setTabIndex(0);
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
-      setEvent({ ...event, image_url: image });
+      setEvent({ ...eventData, image_url: image });
     }
     else {
-      setEvent({ ...event, map_url: image });
+      setEvent({ ...eventData, map_url: image });
     }
 
   };
@@ -195,19 +196,20 @@ const EventModal = () => {
   };
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setEvent({ ...event, [name]: value });
+    setEvent({ ...eventData, [name]: value });
   };
   const handleSubmitForm = async () => {
+   
     try {
       if (selectedDocument?.id) {
-        let check = await updateEvent(event, selectedMentorList);
+        let check = await updateEvent(eventData, selectedMentorList);
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
           handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
         }
       } else {
-        let check = await createEvent(event, selectedMentorList);
+        let check = await createEvent(eventData, selectedMentorList);
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
@@ -248,8 +250,12 @@ const EventModal = () => {
 
   useEffect(() => {
     fetchData();
-    if (!selectedDocument) return;
-    setEvent(selectedDocument);
+    if (!selectedDocument) {
+      return;}
+    setEvent({
+     
+      ...selectedDocument
+    });
     const fetchBooking = async () => {
       let data = await getCounsellingByEvent(selectedDocument.id, 1, 10, '', '', 'desc');
       setBooking(data);
@@ -362,12 +368,17 @@ const EventModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
+                                autoFocus
+                                rows={1}
+                                rowsMax={1}
+                                margin="normal"
+                                name="title"
+                                size="medium"
                                 type="text"
                                 variant="outlined"
-                                name="title"
-                                value={event.title}
-                                className={classes.inputField}
                                 onChange={handleChanges}
+                                className={classes.inputField}
+                                value={ eventData.title || ''}
                               />
                             </Grid>
                           </Grid>
@@ -381,7 +392,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="address"
-                                value={event.address}
+                                value={eventData.address}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -397,7 +408,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="address_title"
-                                value={event.address_title}
+                                value={eventData.address_title}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -413,7 +424,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="price"
-                                value={event.price || 0}
+                                value={eventData.price || 0}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -429,7 +440,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="online_url"
-                                value={event.online_url}
+                                value={eventData.online_url}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -443,12 +454,12 @@ const EventModal = () => {
                             <Grid item lg={8} md={8} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
-                                value={event.province_id}
-                                onChange={(e) => setEvent({ ...event, province_id: e.target.value })}
+                                value={eventData.province_id}
+                                onChange={(e) => setEvent({ ...eventData, province_id: e.target.value })}
                               >
                                 {provinceList &&
                                   provinceList.map((item) => (
-                                    <MenuItem key={item.id} value={item.id} selected={event.province_id === item.id}>
+                                    <MenuItem key={item.id} value={item.id} selected={eventData.province_id === item.id}>
                                       {item.value}
                                     </MenuItem>
                                   ))}
@@ -462,10 +473,10 @@ const EventModal = () => {
                             <Grid item lg={8} md={8} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
-                                value={event.category_id_1}
-                                onChange={(e) => setEvent({ ...event, category_id_1: e.target.value })}
+                                value={eventData.category_id_1}
+                                onChange={(e) => setEvent({ ...eventData, category_id_1: e.target.value })}
                               >
-                                <MenuItem value={' '} selected={event.category_id_1 === ' '}>
+                                <MenuItem value={' '} selected={eventData.category_id_1 === ' '}>
                                   <em>Không chọn</em>
                                 </MenuItem>
                                 {categoryList &&
@@ -484,10 +495,10 @@ const EventModal = () => {
                             <Grid item lg={8} md={8} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
-                                value={event.category_id_2}
-                                onChange={(e) => setEvent({ ...event, category_id_2: e.target.value })}
+                                value={eventData.category_id_2}
+                                onChange={(e) => setEvent({ ...eventData, category_id_2: e.target.value })}
                               >
-                                <MenuItem value={' '} selected={event.category_id_2 === ' '}>
+                                <MenuItem value={' '} selected={eventData.category_id_2 === ' '}>
                                   <em>Không chọn</em>
                                 </MenuItem>
                                 {categoryList &&
@@ -506,10 +517,10 @@ const EventModal = () => {
                             <Grid item lg={8} md={8} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
-                                value={event.category_id_3}
-                                onChange={(e) => setEvent({ ...event, category_id_3: e.target.value })}
+                                value={eventData.category_id_3}
+                                onChange={(e) => setEvent({ ...eventData, category_id_3: e.target.value })}
                               >
-                                <MenuItem value={' '} selected={event.category_id_3 === ' '}>
+                                <MenuItem value={' '} selected={eventData.category_id_3 === ' '}>
                                   <em>Không chọn</em>
                                 </MenuItem>
                                 {categoryList &&
@@ -528,10 +539,10 @@ const EventModal = () => {
                             <Grid item lg={8} md={8} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
-                                value={event.category_id_4}
-                                onChange={(e) => setEvent({ ...event, category_id_4: e.target.value })}
+                                value={eventData.category_id_4}
+                                onChange={(e) => setEvent({ ...eventData, category_id_4: e.target.value })}
                               >
-                                <MenuItem value={' '} selected={event.category_id_4 === ' '}>
+                                <MenuItem value={' '} selected={eventData.category_id_4 === ' '}>
                                   <em>Không chọn</em>
                                 </MenuItem>
                                 {categoryList &&
@@ -549,8 +560,9 @@ const EventModal = () => {
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
                               <Switch
-                                onClick={() => setEvent({ ...event, is_active: !event.is_active })}
-                                checked={event.is_active}
+                                onChange={() => setEvent({ ...eventData, is_active: !eventData.is_active })}
+                                checked={eventData.is_active}
+                              
                                 name='is_active'
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
                               />
@@ -561,8 +573,8 @@ const EventModal = () => {
                             <Grid item lg={2} md={2} xs={2}>
 
                               <Switch
-                                checked={event.is_featured}
-                                onClick={(e) => setEvent({ ...event, is_featured: e.target.checked })}
+                                checked={eventData.is_featured}
+                                onChange={(e) => setEvent({ ...eventData, is_featured: e.target.checked })}
                               />
 
                             </Grid>
@@ -572,8 +584,8 @@ const EventModal = () => {
                             <Grid item lg={2} md={2} xs={2}>
 
                               <Switch
-                                checked={event.is_online_event}
-                                onClick={(e) => setEvent({ ...event, is_online_event: e.target.checked })}
+                                checked={eventData.is_online_event}
+                                onChange={(e) => setEvent({ ...eventData, is_online_event: e.target.checked })}
                               />
 
                             </Grid>
@@ -593,7 +605,7 @@ const EventModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={event.image_url} alt="" />
+                          <img src={eventData.image_url} alt="" />
                           <div>
                             <div>Upload/Change Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình </Button>
@@ -611,7 +623,7 @@ const EventModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="image_url"
-                                value={event.image_url}
+                                value={eventData.image_url}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -627,7 +639,7 @@ const EventModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={event.map_url} alt="" />
+                          <img src={eventData.map_url} alt="" />
                           <div>
                             <div>Upload/Change Image</div>
                             <Button onClick={() => handleOpenDiaLog('map')}>Chọn hình </Button>
@@ -645,7 +657,7 @@ const EventModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="map_url"
-                                value={event.map_url}
+                                value={eventData.map_url}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -661,7 +673,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="map_long"
-                                value={event.map_long}
+                                value={eventData.map_long}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -677,7 +689,7 @@ const EventModal = () => {
                                 type="text"
                                 variant="outlined"
                                 name="map_lat"
-                                value={event.map_lat}
+                                value={eventData.map_lat}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -711,7 +723,7 @@ const EventModal = () => {
                                 type="datetime-local"
                                 variant="outlined"
                                 name="from_date"
-                                value={event.from_date}
+                                value={eventData.from_date}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -727,7 +739,7 @@ const EventModal = () => {
                                 type="datetime-local"
                                 variant="outlined"
                                 name="to_date"
-                                value={event.to_date}
+                                value={eventData.to_date}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -743,7 +755,7 @@ const EventModal = () => {
                                 type="datetime-local"
                                 variant="outlined"
                                 name="open_registration_date"
-                                value={event.open_registration_date}
+                                value={eventData.open_registration_date}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -759,7 +771,7 @@ const EventModal = () => {
                                 type="datetime-local"
                                 variant="outlined"
                                 name="close_registration_date"
-                                value={event.close_registration_date}
+                                value={eventData.close_registration_date}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -836,7 +848,7 @@ const EventModal = () => {
                                 multiline
                                 rows={6}
                                 rowsMax={6}
-                                value={event.description}
+                                value={eventData.description}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -978,12 +990,12 @@ const EventModal = () => {
               </Grid>
               <Grid item className={classes.gridItemInfoButtonWrap}>
                 {buttoncreateEvent && selectedDocument?.id && (
-                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleSubmitForm}>
+                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={()=>handleSubmitForm()}>
                     {buttoncreateEvent.text}
                   </Button>
                 )}
                 {!selectedDocument?.id && (
-                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleSubmitForm}>
+                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={()=>handleSubmitForm()}>
                     Tạo mới
                   </Button>
                 )}

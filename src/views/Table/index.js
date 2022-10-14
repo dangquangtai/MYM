@@ -39,6 +39,7 @@ import useView from './../../hooks/useView';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import NoteModal from './NoteModal';
+import TreeViewModal from '../Department/Tree_View';
 import { style, useStyles } from './style';
 import { bookingStatusList } from './data';
 import { getComparator, stableSort, getTodayAndTomorrow } from '../../utils/table';
@@ -93,7 +94,7 @@ export default function GeneralTable(props) {
       department_parent: tableColumns.includes('department_parent'),
       number_member: tableColumns.includes('number_member'),
       university_name: tableColumns.includes('university'),
-      email_address: tableColumns.includes('email'),
+      email_address: tableColumns.includes('email_address'),
       number_phone: tableColumns.includes('number_phone'),
       career: tableColumns.includes('career'),
       assess: tableColumns.includes('assess'),
@@ -346,10 +347,6 @@ export default function GeneralTable(props) {
       detailDocument = await getMentorDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, mentorDocument: true });
-    } else if (documentType === 'department') {
-      detailDocument = await getDepartmentDetail(selectedDocument.department_code);
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
-      dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
     } else if (documentType === 'role') {
       detailDocument = await getRoleDetail(selectedDocument.role_template_id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
@@ -397,11 +394,21 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
+  const handleOpenCreateDepartment = () =>{
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
+  }
   const showTreeView = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
   };
-
+  const handleUpdateDepartment =async (department_code) =>{
+      let detailDocument = await getDepartmentDetail(department_code);
+      console.log(detailDocument,'data')
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
+    
+  }
   const showFormAddAccount = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, accountDocument: true });
@@ -591,7 +598,7 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
   };
   const handleClickCreateEvent = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, eventDocument: true });
   };
   const handleClickCreateEventCategory = () => {
@@ -643,9 +650,10 @@ export default function GeneralTable(props) {
       onSuccess: reloadCurrentDocuments,
     });
   };
-
+  
   return (
     <React.Fragment>
+      
       {isOpenModalNote && (
         <NoteModal
           isOpen={isOpenModalNote}
@@ -670,6 +678,15 @@ export default function GeneralTable(props) {
             <div style={style.tableTitle}>{tableTitle}</div>
           </Grid>
         </Grid>
+        {documentType=== 'department' &&(
+        <TreeViewModal
+        handleUpdateDepartment={handleUpdateDepartment}
+        handleCreateDepartment={handleOpenCreateDepartment}
+        documents={documents}
+
+        />
+      )}
+      {documentType !== 'department' &&(
         <Grid item xs={12}>
           <Card className={classes.root}>
             <Paper className={classes.paper}>
@@ -889,7 +906,7 @@ export default function GeneralTable(props) {
                                   className={classes.tableItemName}
                                   onClick={(event) => openDetailDocument(event, row)}
                                 >
-                                  {row.parent_department_code}
+                                  {row.parent_department_name}
                                 </span>
                                 &nbsp;&nbsp;
                               </>
@@ -1246,6 +1263,7 @@ export default function GeneralTable(props) {
             </Paper>
           </Card>
         </Grid>
+        )}
       </Grid>
     </React.Fragment>
   );

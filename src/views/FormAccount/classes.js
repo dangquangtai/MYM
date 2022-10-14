@@ -42,20 +42,20 @@ const useStyles = makeStyles((theme) => ({
   },
   tabItemMentorAvatarBody: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    '& > img': {
+    justifyContent: 'space-around',
+    '& img': {
       height: '120px',
       width: '120px',
-      borderRadius: '50%',
+      borderRadius: '5px',
       marginBottom: '16px',
       border: '1px solid #ddd',
       objectFit: 'cover',
       padding: '4px',
-      boxShadow: 'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px'
+      boxShadow: 'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
     },
-    '& > button': {
+    '& button': {
       marginTop: '8px',
       padding: '6px 16px',
       color: '#FFF',
@@ -63,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
       '&:hover': {
         color: '#FFF',
         background: '#3266FE',
-      }
-    }
+      },
+    },
   },
   multpleSelectField: {
     padding: '1px 12px',
