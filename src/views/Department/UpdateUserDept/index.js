@@ -45,10 +45,11 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
   const { getRoletemplateByDept } = useRole();
   const [roletemplateList, setRoleList] = useState([]);
   const [useDeptList, setUserDeptList] = useState([]);
+  const [userSelectionList , setUserSelection] = useState([]);
   const [userDepart, setUserDeptSelected] = useState({
     department_code: '',
     role_template_code: '',
-    user_id: '',
+    email_address: '',
   })
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -56,14 +57,17 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
     text: '',
   });
 
-  const handleAssignAccount= async (id) => {
-    let data = await assignAccount({id: id,department_code: department_code, role_template_code: userDepart.role_template_code}); 
+  const handleAssignAccount= async () => {
+    let data = await assignAccount({email_address: userDepart.email_address,department_code: department_code, role_template_code: userDepart.role_template_code}); 
     if (data){
       setSnackbarStatus({
         isOpen: true,
         type: 'success',
         text: 'Thêm thành công!',
       });
+      let data = await getAllUserByDept(department_code, userDepart.role_template_code);
+      setUserDeptList(data.list);
+      setUserSelection(data.all_user);
     } else {
       setSnackbarStatus({
         isOpen: true,
@@ -72,14 +76,17 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
       });
     }
   };
-  const handleRemoveAccount= async (id) => {
-    let data = await removeAccount({id: id,department_code: department_code, role_template_code: userDepart.role_template_code}) ;
+  const handleRemoveAccount= async (email_address) => {
+    let data = await removeAccount({email_address: email_address,department_code: department_code, role_template_code: userDepart.role_template_code}) ;
     if (data){
       setSnackbarStatus({
         isOpen: true,
         type: 'success',
         text: 'Xoá thành công!',
       });
+      let data = await getAllUserByDept(department_code, userDepart.role_template_code);
+      setUserDeptList(data.list);
+      setUserSelection(data.all_user);
     } else {
       setSnackbarStatus({
         isOpen: true,
@@ -91,7 +98,8 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
   const handleChangeRole = async (e) => {
     setUserDeptSelected({ ...userDepart, role_template_code: e.target.value, department_code: department_code })
     let data = await getAllUserByDept(department_code, e.target.value);
-    setUserDeptList(data);
+    setUserDeptList(data.list);
+    setUserSelection(data.all_user);
   }
 
   useEffect(() => {
@@ -99,7 +107,14 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
       let data = await getRoletemplateByDept(department_code);
       setRoleList(data);
     }
-    fetchdata();
+    if(!!department_code){
+      fetchdata();
+    }
+    setUserDeptSelected({
+      department_code: '',
+      role_template_code: '',
+      email_address: '',
+    })
   }, [isOpen]);
 
   return (
@@ -140,7 +155,7 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
 
             <Grid container className={classes.gridItem} alignItems="center">
               <Grid item lg={2} md={2} xs={12}>
-                <span className={classes.tabItemLabelField}>Role:</span>
+                <span className={classes.tabItemLabelField}>Chức danh:</span>
               </Grid>
               <Grid item lg={4} md={4} xs={12}>
                 <Select
@@ -157,17 +172,17 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
                 </Select>
               </Grid>
               <Grid item lg={2} md={2} xs={12}>
-                <span className={classes.tabItemLabelField}>Account:</span>
+                <span className={classes.tabItemLabelField}>Tài khoản:</span>
               </Grid>
               <Grid item lg={2} md={2} xs={12}>
                 <Select
                   className={classes.multpleSelectField}
-                  value={userDepart.user_id || ''}
-                // onChange={(event) => handleChangeRole(event)}
+                  value={userDepart.email_address || ''}
+                onChange={(event) => setUserDeptSelected({...userDepart, email_address: event.target.value})}
                 >
-                  {useDeptList &&
-                    useDeptList.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
+                  {userSelectionList &&
+                    userSelectionList.map((item) => (
+                      <MenuItem key={item.email_address} value={item.email_address}>
                         {item.email_address}
                       </MenuItem>
                     ))}
@@ -248,7 +263,7 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
                             </>
                           </TableCell>
                           <TableCell>
-                          <Button type="button" variant="contained" className={classes.handleButton} onClick={()=> handleRemoveAccount()}>
+                          <Button type="button" variant="contained" className={classes.handleButton} onClick={()=> handleRemoveAccount(row.email_address)}>
                                     <DeleteForeverIcon className={classes.noteButtonIcon} />
                             </Button>
                           </TableCell>

@@ -173,12 +173,13 @@ const TreeViewModal = (props) => {
           </Button>
         </Grid>
         <Grid item lg={12} md={12} xs={12}>
-          <div className={classes.tabItemBody}>
+          <div className={classes.tabItemBody} style={{  overflow: 'hidden', textOverflow: 'ellipsis',maxHeight:500,minHeight:500,background:'#FFF' }} >
             {dataShow && (
               <TreeView
                 aria-label="file system navigator"
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
+                
                 sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
               >
                 <>

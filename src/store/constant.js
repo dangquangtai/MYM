@@ -41,7 +41,7 @@ export const apiEndpoints = {
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
   //department
 
-  sync_group_for_department: '/Primary/?FlowAlias=hnn_api_role_sync_group_for_department&action=api',
+  sync_group_for_department: '/Primary/?FlowAlias=bs_api_role_template_sync_group_for_department&action=api',
   get_tree_view_data: '/Primary/?FlowAlias=bs_api_dept_get_tree_view_data&action=api',
  
   deactive_department: '/Primary/?FlowAlias=bs_api_dept_deactive_department&action=api',
@@ -299,11 +299,11 @@ export const view = {
   },
   role: {
     list: {
-      create: 'ROLE_TEMPLATE_LIST_CREATE_MENU_BUTTON',
+      create: 'MYM_ORGANISATION_HOME_ROLE_TEMPLATE_CREATE_MENU_BUTTON',
       select: 'ROLE_LIST_SELECT_DEPARTMENT_BUTTON',
       remove: 'ROLE_LIST_REMOVE_ACCOUNT_MENU_BUTTON',
       addnew: 'ROLE_LIST_ADD_ACCOUNT_MENU_BUTTON',
-      sync_department: 'ROLE_TEMPLATE_LIST_SYNC_DEPARTMENT_MENU_BUTTON',
+      sync_department: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_ROLE',
     },
     detail: {},
   },

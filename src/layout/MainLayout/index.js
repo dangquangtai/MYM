@@ -11,7 +11,7 @@ import Loading from './Loading';
 import useLoading from './../../hooks/useLoading';
 import ConfirmPopup from '../../views/ConfirmPopup';
 import DetailDocumentDialog from '../../views/Detail/index.js';
-import AccountModal from '../../views/FormAccount';
+import AccountModal from '../../views/Account/Detail';
 import MentorModal from '../../views/Mentor/Detail';
 import RoleModal from '../../views/Role/Detail';
 import DepartmentModal from '../../views/Department/Detail';

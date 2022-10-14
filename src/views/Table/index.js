@@ -706,7 +706,10 @@ export default function GeneralTable(props) {
       });
     }
   };
-  
+  const handleSyncRole = async () => {
+    let data = await syncRole();
+
+  };
   return (
     <React.Fragment>
       
@@ -757,6 +760,7 @@ export default function GeneralTable(props) {
                 getListUniversity={getListUniversity}
                 btnCreateNewAccount={buttonAccountCreate}
                 createNewAccount={openDialogCreate}
+                handleSyncRole={handleSyncRole}
                 btnCreateNewDept={buttonDeptCreate}
                 createNewDept={openDialogCreate}
                 buttonCreateRole={buttonCreateRole}

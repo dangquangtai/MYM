@@ -24,16 +24,16 @@ import {
   ImageOutlined as ImageIcon,
 } from '@material-ui/icons';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import Alert from '../../component/Alert/index.js';
+import Alert from '../../../component/Alert/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { gridSpacing, view } from '../../store/constant.js';
-import useView from '../../hooks/useView';
+import { gridSpacing, view } from '../../../store/constant.js';
+import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
-import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../store/actions.js';
-import useAccount from '../../hooks/useAccount.js';
-import FirebaseUpload from '../FloatingMenu/FirebaseUpload/index.js';
-import { initAccount } from '../../store/constants/initial.js';
+import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
+import useAccount from '../../../hooks/useAccount.js';
+import FirebaseUpload from '../../FloatingMenu/FirebaseUpload/index.js';
+import { initAccount } from '../../../store/constants/initial.js';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -124,7 +124,7 @@ const AccountModal = () => {
   };
   const handleUpdateAccount = async () => {
     try {
-      if (!account.id) {
+      if (!account.account_id) {
         let check = await createAccount({
           ...account,
           outputtype: 'RawJson',
@@ -497,7 +497,7 @@ const AccountModal = () => {
                   Đóng
                 </Button>
               </Grid>
-              {!account.id && (
+              {!account.account_id && (
                 <Grid item>
                   <Button
                     variant="contained"
@@ -508,7 +508,7 @@ const AccountModal = () => {
                   </Button>
                 </Grid>
               )}
-              {buttonSave && (
+              {buttonSave && !! account.account_id && (
                 <Grid item>
                   <Button
                     variant="contained"
