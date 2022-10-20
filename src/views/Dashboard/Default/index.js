@@ -24,6 +24,8 @@ import {
   listMentorActions,
   partnerActions,
   partnerCategoryActions,
+  fileActions,
+  fileCategoryActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -41,6 +43,9 @@ import PrepaidCardWrapper from './../../Payment/PrepaidCard/index';
 import ListMentorWrapper from './../../Partner/ListMentor/index';
 import PartnerWrapper from '../../Partner/Partner';
 import PartnerCategoryWrapper from '../../Partner/Partner/Partner Category';
+import FileWrapper from './../../Document/File/index';
+import FileCategoryWrapper from './../../Document/FileCategory/index';
+import Calendar from './../../Booking/FullCalendar/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -66,6 +71,8 @@ const Default = () => {
   const availableListMentorEndpoint = Object.values(listMentorActions);
   const avalablePartnerEndpoint = Object.values(partnerActions);
   const availablePartnerCategoryEndpoint = Object.values(partnerCategoryActions);
+  const availableFileEndpoint = Object.values(fileActions);
+  const availableFileCategoryEndpoint = Object.values(fileCategoryActions);
 
   if (!selectedApp) {
     return <Redirect to="/dashboard/app" />;
@@ -73,14 +80,8 @@ const Default = () => {
 
   return (
     <Grid container spacing={gridSpacing}>
-      {!getUrlByAction(selectedFolder) && projects[0]?.selected && (
-        <>
-          <Summnary />
-        </>
-      )}
-      {/* {(selectedFolder?.action === bookingActions.full_calendar) && (
-        <FullCalendar />
-      )} */}
+      {!getUrlByAction(selectedFolder) && <Summnary />}
+      {selectedFolder?.action === counsellingActions.calendar && <Calendar />}
       {getUrlByAction(selectedFolder) && (
         <Grid item xs={12}>
           {availableAccountEndpoint.includes(selectedFolder?.action) && <AccountWrapper />}
@@ -100,6 +101,8 @@ const Default = () => {
           {availableListMentorEndpoint.includes(selectedFolder?.action) && <ListMentorWrapper />}
           {avalablePartnerEndpoint.includes(selectedFolder?.action) && <PartnerWrapper />}
           {availablePartnerCategoryEndpoint.includes(selectedFolder?.action) && <PartnerCategoryWrapper />}
+          {availableFileEndpoint.includes(selectedFolder?.action) && <FileWrapper />}
+          {availableFileCategoryEndpoint.includes(selectedFolder?.action) && <FileCategoryWrapper />}
         </Grid>
       )}
     </Grid>

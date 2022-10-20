@@ -472,8 +472,8 @@ const MentorModal = () => {
                               <TextField
                                 fullWidth
                                 multiline
-                                rows={2}
-                                rowsMax={3}
+                                rows={4}
+                                rowsMax={5}
                                 variant="outlined"
                                 name="description"
                                 value={mentorData?.description}

@@ -19,6 +19,8 @@ export const initialState = {
   partnerCategoryDocument: false,
   cardBatchDocument: false,
   cardDocument: false,
+  fileDocument: false,
+  fileCategoryDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -44,6 +46,8 @@ const floatingMenuReducer = (state = initialState, action) => {
         partnerCategoryDocument: action.partnerCategoryDocument,
         cardBatchDocument: action.cardBatchDocument,
         cardDocument: action.cardDocument,
+        fileDocument: action.fileDocument,
+        fileCategoryDocument: action.fileCategoryDocument,
       };
     default:
       return state;

@@ -54,6 +54,7 @@ import useEventCategory from '../../hooks/useEventCategory';
 import useEvent from '../../hooks/useEvent';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import usePayment from './../../hooks/usePayment';
+import useDocument from './../../hooks/useDocument';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -180,6 +181,9 @@ export default function GeneralTable(props) {
   const buttonSendEmailCard = menuButtons.find((button) => button.name === view.prepaidcardbatch.list.send_email);
   const buttonAssignCard = menuButtons.find((button) => button.name === view.prepaidcard.list.assign);
 
+  const buttonCreateFile = menuButtons.find((button) => button.name === view.file.list.create);
+  const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
+
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [modalType, setModalType] = React.useState('');
@@ -255,6 +259,8 @@ export default function GeneralTable(props) {
   const { getEventDetail } = useEvent();
 
   const { getCardBatchDetail, sendEmailCard } = usePayment();
+
+  const { getFileDetail, getFileCategoryDetail } = useDocument();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -404,6 +410,14 @@ export default function GeneralTable(props) {
       detailDocument = await getPartnerCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
+    } else if (documentType === 'file') {
+      detailDocument = await getFileDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, fileDocument: true });
+    } else if (documentType === 'fileCategory') {
+      detailDocument = await getFileCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, fileCategoryDocument: true });
     }
   };
 
@@ -645,11 +659,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
   };
   const handleClickCreatePartner = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, partnerDocument: true });
   };
   const handleClickCreatePartnerCategory = () => {
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: {}, documentType });
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
   };
 
@@ -661,6 +675,16 @@ export default function GeneralTable(props) {
   const handleClickCreateCardBatch = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: true });
+  };
+
+  const handleClickCreateFile = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, fileDocument: true });
+  };
+
+  const handleClickCreateFileCategory = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, fileCategoryDocument: true });
   };
 
   const handleDownload = (url) => {
@@ -792,6 +816,10 @@ export default function GeneralTable(props) {
                   createCardBatch={handleClickCreateCardBatch}
                   buttonAssignCard={buttonAssignCard}
                   assignCard={handleClickAssignCard}
+                  buttonCreateFile={buttonCreateFile}
+                  createFile={handleClickCreateFile}
+                  buttonCreateFileCategory={buttonCreateFileCategory}
+                  createFileCategory={handleClickCreateFileCategory}
                 />
                 <TableContainer>
                   <Table

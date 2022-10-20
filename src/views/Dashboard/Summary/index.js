@@ -38,8 +38,8 @@ const Summnary = () => {
   const [dataRatting, setDataRatting] = useState({ series: [], categories: [], colors: [] });
   const [formData, setFormData] = useState({
     from_date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    to_date: new Date(Date.now() + (3600 * 1000 * 24)),
-  })
+    to_date: new Date(Date.now() + 3600 * 1000 * 24),
+  });
 
   useEffect(() => {
     getStatistic();
@@ -122,7 +122,7 @@ const Summnary = () => {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   return (
     <React.Fragment>

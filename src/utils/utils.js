@@ -17,6 +17,8 @@ import {
   listMentorActions,
   partnerActions,
   partnerCategoryActions,
+  fileActions,
+  fileCategoryActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -39,7 +41,7 @@ export function getUrlByAction(selectedFolder) {
     case roleActions.list_inactive_role: {
       return apiEndpoints.get_all_inactive_role_template;
     }
-  
+
     case playlistActions.active_list: {
       return apiEndpoints.get_all_active_playlist;
     }
@@ -114,6 +116,15 @@ export function getUrlByAction(selectedFolder) {
     }
     case partnerCategoryActions.active_list: {
       return apiEndpoints.get_all_active_partner_category;
+    }
+    case fileActions.active_list: {
+      return apiEndpoints.get_all_active_file;
+    }
+    case fileActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_file;
+    }
+    case fileCategoryActions.active_list: {
+      return apiEndpoints.get_file_category_list;
     }
     default: {
       return '';
