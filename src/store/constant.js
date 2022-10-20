@@ -174,6 +174,7 @@ export const apiEndpoints = {
   get_detail_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
   update_event: '/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
   set_active_event: '/Primary/?FlowAlias=bs_api_marketing_active_event&action=api',
+  get_all_event: '/Primary/?FlowAlias=bs_api_marketing_get_all_event_list_by_page&action=api',
   // // Event Category
   get_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list_by_page&action=api',
   create_event_category: '/Primary/?FlowAlias=bs_api_marketing_create_new_event_category&action=api',
@@ -189,6 +190,7 @@ export const apiEndpoints = {
   set_active_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card_batch&action=api',
   generate_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_generate_prepaid_card&action=api',
   send_email_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_send_email_prepaid_card&action=api',
+  update_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_update_prepaid_card_batch&action=api',
 
   // // Prepaid Card
   get_all_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_get_all_prepaid_card&action=api',
@@ -430,6 +432,7 @@ export const view = {
     detail: {
       generate: 'MYM_PAYMENT_PREPAIDCARD_BATCH_GENERATE_FORM_BUTTON',
       import: 'MYM_PAYMENT_PREPAIDCARD_BATCH_IMPORT_FORM_BUTTON',
+      save: 'MYM_PAYMENT_PREPAIDCARD_BATCH_SAVE_FORM_BUTTON',
     },
   },
   mentorlist: {

@@ -78,8 +78,9 @@ const CardBatchModal = () => {
   const { selectedDocument } = useSelector((state) => state.document);
   const generateButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.generate);
   const importButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.import);
+  const saveButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.save);
 
-  const { createCardBatch, generateCard } = usePayment();
+  const { createCardBatch, generateCard, updateCardBatch } = usePayment();
   const { getCounselingCategories } = useMedia();
   const { setConfirmPopup } = useConfirmPopup();
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -147,8 +148,13 @@ const CardBatchModal = () => {
 
   const handleSubmitForm = async () => {
     try {
-      await createCardBatch(cardBatchData);
-      handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
+      if (selectedDocument.id) {
+        await updateCardBatch(cardBatchData);
+        handleOpenSnackbar(true, 'success', 'Cập nhật thành công');
+      } else {
+        await createCardBatch(cardBatchData);
+        handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
+      }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'batch' });
       handleCloseDialog();
     } catch (error) {
@@ -441,6 +447,16 @@ const CardBatchModal = () => {
                     onClick={handleClickGenerate}
                   >
                     {generateButton.text}
+                  </Button>
+                )}
+                {saveButton && selectedDocument?.id && (
+                  <Button
+                    disabled={cardBatchData.is_generated}
+                    variant="contained"
+                    style={{ background: 'rgb(97, 42, 255)' }}
+                    onClick={handleSubmitForm}
+                  >
+                    {saveButton.text}
                   </Button>
                 )}
                 {!selectedDocument?.id && (

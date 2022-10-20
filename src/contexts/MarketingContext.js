@@ -68,6 +68,17 @@ export const MarketingProvider = ({ children }) => {
       });
   };
 
+  const getEventList = async (page = 1, no_item_per_page = 100, search_text = '') => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_event, { outputtype: 'RawJson', page, no_item_per_page, search_text })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
+
   return (
     <MarketingContext.Provider
       value={{
@@ -78,6 +89,7 @@ export const MarketingProvider = ({ children }) => {
         sendEmailVoucher,
         assignVoucher,
         getBatchList,
+        getEventList,
       }}
     >
       {children}

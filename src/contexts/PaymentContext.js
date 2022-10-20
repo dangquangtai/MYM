@@ -32,6 +32,18 @@ export const PaymentProvider = ({ children }) => {
       });
   };
 
+  const updateCardBatch = async (data) => {
+    return axiosInstance
+      .post(apiEndpoints.update_prepaid_card_batch, {
+        outputtype: 'RawJson',
+        ...data,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
+
   const generateCard = async (id) => {
     return axiosInstance.post(apiEndpoints.generate_prepaid_card, { outputtype: 'RawJson', id }).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
@@ -73,6 +85,7 @@ export const PaymentProvider = ({ children }) => {
         sendEmailCard,
         assignCard,
         getCardBatchList,
+        updateCardBatch,
       }}
     >
       {children}
