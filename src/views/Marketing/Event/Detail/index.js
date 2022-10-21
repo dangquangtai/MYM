@@ -32,7 +32,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions.js';
-import { view } from '../../../../store/constant';
+import { tinyMCESecretKey, view } from '../../../../store/constant';
 import useStyles from '../../../../utils/classes';
 import { initEvent, userAvatar } from '../../../../store/constants/initial.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
@@ -47,6 +47,7 @@ import {
   LibraryMusicOutlined as LibraryMusicOutlinedIcon,
   GraphicEq as GraphicEqIcon,
 } from '@material-ui/icons';
+import { Editor } from '@tinymce/tinymce-react';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -95,6 +96,7 @@ const EventModal = () => {
   const [mentorListSelection, setMentorListSelection] = useState([]);
   const { createEvent, updateEvent } = useEvent();
   const { getCounsellingByEvent } = useBooking();
+  const editorRef = React.useRef(null);
 
   const [eventData, setEvent] = useState(initEvent);
 
@@ -134,6 +136,7 @@ const EventModal = () => {
   const setDocumentToDefault = async () => {
     setEvent(initEvent);
     setTabIndex(0);
+    editorRef.current.setContent('');
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
@@ -165,7 +168,7 @@ const EventModal = () => {
 
     let newSelectionList = JSON.parse(JSON.stringify(mentorListSelection));
     newSelectionList.map((mentor, index) => {
-      if (!!mentor && mentor.id == e.target.value) {
+      if (!!mentor && mentor.id === e.target.value) {
         delete newSelectionList[index];
         setMentorListSelection(newSelectionList);
         setSelectedMentor('');
@@ -191,13 +194,20 @@ const EventModal = () => {
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        let check = await updateEvent(eventData, selectedMentorList);
+        let check = await updateEvent(
+          { ...eventData, description: editorRef.current.getContent({ format: 'text' }) },
+          selectedMentorList
+        );
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
           handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
         }
       } else {
+        createEvent(
+          { ...eventData, description: editorRef.current.getContent({ format: 'text' }) },
+          selectedMentorList
+        );
         let check = await createEvent(eventData, selectedMentorList);
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
@@ -810,21 +820,19 @@ const EventModal = () => {
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={12} md={12} xs={12}>
-                              <span className={classes.tabItemLabelField}>Mô tả:</span>
-                            </Grid>
-                            <Grid item lg={12} md={12} xs={12}>
-                              <TextField
-                                fullWidth
-                                variant="outlined"
-                                name="description"
-                                multiline
-                                rows={6}
-                                rowsMax={6}
-                                value={eventData.description}
-                                className={classes.inputField}
-                                onChange={handleChanges}
+                          <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                              <Editor
+                                apiKey={tinyMCESecretKey}
+                                onInit={(evt, editor) => (editorRef.current = editor)}
+                                initialValue={eventData.description}
+                                init={{
+                                  height: 500,
+                                  menubar: false,
+                                  plugins: 'emoticons',
+                                  toolbar: 'undo redo | ' + 'emoticons',
+                                  content_style: 'body { font-family:Roboto,sans-serif; font-size:15px }',
+                                }}
                               />
                             </Grid>
                           </Grid>
