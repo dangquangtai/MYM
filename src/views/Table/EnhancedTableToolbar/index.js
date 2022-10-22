@@ -10,6 +10,7 @@ import CachedIcon from '@material-ui/icons/Cached';
 import ClearIcon from '@material-ui/icons/Clear';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
+import TextField from '@material-ui/core/TextField';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -18,29 +19,29 @@ import { gridSpacing } from '../../../store/constant';
 import useToolbarStyles from './classes';
 import { headCells, bookingStatusList } from '../data';
 import { useSelector } from 'react-redux';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import { useDispatch } from 'react-redux';
+import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE } from '../../../store/actions.js';
+import { useState } from 'react';
+import { Autocomplete } from '@material-ui/lab';
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    handlePressEnterToSearch,
     handleShowColumn,
     handleFilterChange,
     displayOptions,
-    getDepartmentList,
     data,
     btnCreateNewAccount,
     createNewAccount,
     btnCreateNewDept,
     createNewDept,
-
+    buttonDeptUpdate,
+    buttonAddAccount,
+    roletemplateList,
     buttonCreateRole,
     createNewRole,
-    buttonShowTreeView,
-    showTreeView,
     buttonSelectDepartment,
     buttonSyncDepartment,
-    buttonAddAccount,
     showFormAddAccount,
     syncRole,
     buttonCreatePodcast,
@@ -70,6 +71,19 @@ const EnhancedTableToolbar = (props) => {
     buttonAssignCard,
     assignCard,
     handleSyncRole,
+    department_code_selected,
+    userList,
+    handleAssignAccount,
+    handleUpdateDepartment,
+    setSelectedRoleTemplate,
+    buttonCreateProcessRole,
+    buttonUpdateProcessRole,
+    buttonUpdateDeptRole,
+    createNewProcessRole,
+    deptList,
+    handleClickProcessRoleDetail,
+    setSelectedDepartment,
+    handleAddDeptUser
   } = props;
 
   const filterRef = useRef(null);
@@ -87,9 +101,10 @@ const EnhancedTableToolbar = (props) => {
     university_id: '',
     status: '',
     search_text: '',
-    group_id: '',
+    department_code:'',
+    role_template_code:'Member',
   });
-
+  const dispatch = useDispatch();
   const handleCloseInput = () => {
     setFilter({ ...filter, search_text: '' });
     handleFilterChange({ ...filter, search_text: '' });
@@ -108,7 +123,11 @@ const EnhancedTableToolbar = (props) => {
     setFilter({ ...filter, group_id: group_id });
     handleFilterChange(filter);
   };
-  
+  const handleSubmitAssign = () =>{
+    handleAssignAccount(user)
+  }
+  const [user,setUserSelected]=useState();
+  const [dept,setDeptSelected]=useState();
   const handleResetFilter = () => {
     setFilter((pre) => ({
       ...pre,
@@ -131,9 +150,14 @@ const EnhancedTableToolbar = (props) => {
   };
 
   const handleChangeFilter = (event) => {
-    const newFilter = { ...filter, [event.target.name]: event.target.value };
+
+    setSelectedRoleTemplate(event.target.value)
+
+    const newFilter = { ...filter, [event.target.name]: event.target.value, department_code: department_code_selected,
+      };
     setFilter(newFilter);
     handleFilterChange(newFilter);
+
   };
 
   const handleRefresh = () => {
@@ -151,6 +175,7 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
   const [dataDepartmentList, setDepartment] = React.useState();
+  const [roletemplate, setRoleTemplate] = React.useState();
   useEffect(() => {
    
   }, []);
@@ -162,7 +187,6 @@ const EnhancedTableToolbar = (props) => {
       search_text: '',
     });
   }, [selectedFolder]);
-
   useEffect(() => {
     if (data.length) {
       const keysData = Object.keys(data[0]);
@@ -204,6 +228,14 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
+        {buttonDeptUpdate && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={handleUpdateDepartment}>
+              {buttonDeptUpdate.text}
+            </Button>
+          </Grid>
+        )}
+       
 
         {buttonCreateRole && (
           <Grid item>
@@ -212,14 +244,7 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
-
-        {buttonAddAccount && (
-          <Grid item>
-            <Button variant="contained" color={'primary'} onClick={showFormAddAccount}>
-              {buttonAddAccount.text}
-            </Button>
-          </Grid>
-        )}
+     
         {buttonSyncDepartment && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={handleSyncRole}>
@@ -329,6 +354,23 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
+         {buttonCreateProcessRole && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createNewProcessRole}>
+              {buttonCreateProcessRole.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonUpdateProcessRole && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={handleClickProcessRoleDetail} >
+              {buttonUpdateProcessRole.text}
+            </Button>
+          </Grid>
+        )}
+
+       
 
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
           {numSelected > 0 && (
@@ -338,165 +380,231 @@ const EnhancedTableToolbar = (props) => {
           )}
         </Grid>
 
-        <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
+        <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}  style={{minWidth:1000,maxWidth:1000}}>
           <Grid container justify="flex-end" alignItems="center">
-            <div className={classes.toolSearchWrap}>
-              <SearchIcon />
-              <input
-                className={classes.toolSearchInput}
-                value={filter.search_text}
-                onChange={handleChangeSearch}
-                onKeyUp={handleEnterSearch}
-              />
-              <Button className={classes.toolButtonSearch} onClick={handleCloseInput}>
-                <ClearIcon className={classes.toolButtonIcon} />
-              </Button>
-            </div>
-
-            {buttonSelectDepartment && (
-              <Select
-                labelId="university-label"
-                id="group_id"
-                value={filter.group_id}
-                className={classes.multpleSelectField}
-                onChange={handleChangeFilter}
-                name="group_id"
-              >
-                <MenuItem value="">
-                  <em>Không chọn</em>
-                </MenuItem>
-                {dataDepartmentList?.map((department, index) => (
-                  <MenuItem key={department.Key} value={department.Key}>
-                    {department.Value}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-
-            <ClickAwayListener onClickAway={() => setIsOpenShowColumn(false)}>
-              <div className={classes.toolButtonWrap}>
-                <Tooltip title="View Columns">
-                  <Button
-                    className={`${classes.toolButton} ${isOpenShowColumn ? classes.toolButtonActive : ''}`}
-                    onClick={() => setIsOpenShowColumn(!isOpenShowColumn)}
+          { (documentType === 'department' || documentType === 'processrole') &&(<>
+                  {documentType === 'processrole' &&(
+                    <Autocomplete
+                    style={{minWidth:250,maxWidth:250}}
+                     size="small"
+                     fullWidth
+                     options={deptList}
+                     onChange={(e,dept) => setSelectedDepartment(dept?.department_code)}
+                     getOptionLabel={(option) => option.department_name}
+                     renderInput={(params) => <TextField label="Phòng ban" {...params} variant="outlined" />}
+                 />
+                  )
+                  }
+                  <span  style={{minWidth:100,maxWidth:100}}>Chức danh:  </span>
+                  <Select
+                  style={{minWidth:150,maxWidth:150}}
+                    className={classes.multpleSelectField}
+                    onChange={handleChangeFilter}
+                    defaultValue={'Member'}
+                    name='role_template_code'
+                    value={filter.role_template_code}
                   >
-                    <ViewColumnIcon className={classes.toolButtonIcon} />
-                  </Button>
-                </Tooltip>
-
-                {isOpenShowColumn && (
-                  <div className={classes.toolColumn}>
-                    <div className={classes.toolColumnTitle}>
-                      <div>Show Columns</div>
-                      <Button className={classes.toolButtonSearch} onClick={() => setIsOpenShowColumn(false)}>
-                        <ClearIcon className={classes.toolButtonIcon} />
-                      </Button>
-                    </div>
-                    <div className={classes.toolColumnBody}>
-                      {columnNames.map((columnName, index) => (
-                        <div key={columnName.id} className={classes.toolColumnNameWrap}>
-                          <Checkbox
-                            checked={columnName.isSelected}
-                            onChange={() => handleChangeColumnName(index, columnName.id)}
-                            style={{ position: 'relative !important' }}
-                          />
-                          <span>{columnName.label}</span>
-                        </div>
+                    {roletemplateList &&
+                      roletemplateList.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.value}
+                        </MenuItem>
                       ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </ClickAwayListener>
-            <div ref={filterRef} className={classes.toolButtonWrap}>
-              <Tooltip title="Filter Table">
-                <Button className={classes.toolButton} onClick={() => setIsOpenFilter(!isOpenFilter)}>
-                  <FilterListIcon className={classes.toolButtonIcon} />
-                </Button>
-              </Tooltip>
-              {/* {buttonShowTreeView && (
-                <Tooltip title="Tree View">
-                  <Button
-                    className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
-                    onClick={showTreeView}
-                  >
-                    <AccountTreeIcon className={classes.toolButtonIcon} />
-                  </Button>
-                </Tooltip>
-              )} */}
-              {isOpenFilter && (
-                <div className={`${classes.toolColumn} ${classes.toolFilter}`}>
-                  <div className={`${classes.toolColumnTitle} ${classes.toolFilterTitle}`}>
-                    <div className={classes.toolFilterTitleBlock}>
-                      <div>Filters</div>
-                      <Button
-                        className={`${classes.toolButtonSearch} ${classes.toolResetButton}`}
-                        onClick={handleResetFilter}
-                      >
-                        Reset
-                      </Button>
-                    </div>
-                    <Button className={classes.toolButtonSearch} onClick={() => setIsOpenFilter(false)}>
-                      <ClearIcon className={classes.toolButtonIcon} />
-                    </Button>
-                  </div>
-                  <div className={`${classes.toolColumnBody} ${classes.toolFilterBody}`}>
-                    <div className={classes.toolFilterItem}>
-                      <FormControl fullWidth>
-                        <InputLabel shrink id="university-label">
-                          Trường
-                        </InputLabel>
-                        <Select
-                          labelId="university-label"
-                          id="univeristy_id"
-                          onChange={handleChangeFilter}
-                          displayEmpty
-                          name="university_id"
-                          value={filter.university_id}
-                        >
-                          <MenuItem value="">Tất cả</MenuItem>
-                          {universityList?.map((university, index) => (
-                            <MenuItem key={index} value={university.id}>
-                              {university.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </div>
-                    <div className={classes.toolFilterItem}>
-                      <FormControl fullWidth>
-                        <InputLabel shrink id="status-label">
-                          Trạng thái
-                        </InputLabel>
-                        <Select
-                          labelId="status-label"
-                          id="status_id"
-                          onChange={handleChangeFilter}
-                          displayEmpty
-                          name="status"
-                          value={filter.status}
-                        >
-                          <MenuItem value="">Tất cả</MenuItem>
-                          {statusList?.map((status, index) => (
-                            <MenuItem key={index} value={status}>
-                              {status}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </div>
-                  </div>
-                </div>
-              )}
+                  </Select>
+                 
+              
+                
+                <div className={classes.toolSearchWrap}>
+            
+             
+                <Autocomplete
+                 style={{minWidth:300,maxWidth:300}}
+                  size="small"
+                  fullWidth
+                  options={userList}
+                  onChange={(e, u) => setUserSelected(u.email_address)}
+                  getOptionLabel={(option) => option.email_address}
+                  renderInput={(params) => <TextField label="Tài khoản" {...params} variant="outlined" />}
+              />
             </div>
-            <Tooltip title="Refresh">
-              <Button
-                className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
-                onClick={handleRefresh}
-              >
-                <CachedIcon className={classes.toolButtonIcon} />
-              </Button>
-            </Tooltip>
+            {buttonAddAccount && (
+
+            <Button variant="contained" color={'primary'} onClick={handleSubmitAssign}>
+              {buttonAddAccount.text}
+            </Button>
+        
+        )}
+                 {documentType === 'processrole' &&(
+                    <Button style={{minWidth:100,maxWidth:100}} variant="contained" color={'primary'} onClick={()=>handleAddDeptUser(user,department_code_selected+'_'+filter.role_template_code)}>
+                    {'Thêm'}
+                  </Button>
+                  )} 
+          </>
+          )}
+          
+            { (documentType != 'department' && documentType != 'processrole') &&(
+<>
+           
+               <div className={classes.toolSearchWrap}>
+               <SearchIcon />
+               <input
+                 className={classes.toolSearchInput}
+                 value={filter.search_text}
+                 onChange={handleChangeSearch}
+                 onKeyUp={handleEnterSearch}
+               />
+               <Button className={classes.toolButtonSearch} onClick={handleCloseInput}>
+                 <ClearIcon className={classes.toolButtonIcon} />
+               </Button>
+             </div>
+ 
+             {buttonSelectDepartment && (
+               <Select
+                 labelId="university-label"
+                 id="group_id"
+                 value={filter.group_id}
+                 className={classes.multpleSelectField}
+                 onChange={handleChangeFilter}
+                 name="group_id"
+               >
+                 <MenuItem value="">
+                   <em>Không chọn</em>
+                 </MenuItem>
+                 {dataDepartmentList?.map((department, index) => (
+                   <MenuItem key={department.Key} value={department.Key}>
+                     {department.Value}
+                   </MenuItem>
+                 ))}
+               </Select>
+             )}
+ 
+             <ClickAwayListener onClickAway={() => setIsOpenShowColumn(false)}>
+               <div className={classes.toolButtonWrap}>
+                 <Tooltip title="View Columns">
+                   <Button
+                     className={`${classes.toolButton} ${isOpenShowColumn ? classes.toolButtonActive : ''}`}
+                     onClick={() => setIsOpenShowColumn(!isOpenShowColumn)}
+                   >
+                     <ViewColumnIcon className={classes.toolButtonIcon} />
+                   </Button>
+                 </Tooltip>
+ 
+                 {isOpenShowColumn && (
+                   <div className={classes.toolColumn}>
+                     <div className={classes.toolColumnTitle}>
+                       <div>Show Columns</div>
+                       <Button className={classes.toolButtonSearch} onClick={() => setIsOpenShowColumn(false)}>
+                         <ClearIcon className={classes.toolButtonIcon} />
+                       </Button>
+                     </div>
+                     <div className={classes.toolColumnBody}>
+                       {columnNames.map((columnName, index) => (
+                         <div key={columnName.id} className={classes.toolColumnNameWrap}>
+                           <Checkbox
+                             checked={columnName.isSelected}
+                             onChange={() => handleChangeColumnName(index, columnName.id)}
+                             style={{ position: 'relative !important' }}
+                           />
+                           <span>{columnName.label}</span>
+                         </div>
+                       ))}
+                     </div>
+                   </div>
+                 )}
+               </div>
+             </ClickAwayListener>
+             <div ref={filterRef} className={classes.toolButtonWrap}>
+               <Tooltip title="Filter Table">
+                 <Button className={classes.toolButton} onClick={() => setIsOpenFilter(!isOpenFilter)}>
+                   <FilterListIcon className={classes.toolButtonIcon} />
+                 </Button>
+               </Tooltip>
+               {/* {buttonShowTreeView && (
+                 <Tooltip title="Tree View">
+                   <Button
+                     className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
+                     onClick={showTreeView}
+                   >
+                     <AccountTreeIcon className={classes.toolButtonIcon} />
+                   </Button>
+                 </Tooltip>
+               )} */}
+               {isOpenFilter && (
+                 <div className={`${classes.toolColumn} ${classes.toolFilter}`}>
+                   <div className={`${classes.toolColumnTitle} ${classes.toolFilterTitle}`}>
+                     <div className={classes.toolFilterTitleBlock}>
+                       <div>Filters</div>
+                       <Button
+                         className={`${classes.toolButtonSearch} ${classes.toolResetButton}`}
+                         onClick={handleResetFilter}
+                       >
+                         Reset
+                       </Button>
+                     </div>
+                     <Button className={classes.toolButtonSearch} onClick={() => setIsOpenFilter(false)}>
+                       <ClearIcon className={classes.toolButtonIcon} />
+                     </Button>
+                   </div>
+                   <div className={`${classes.toolColumnBody} ${classes.toolFilterBody}`}>
+                     <div className={classes.toolFilterItem}>
+                       <FormControl fullWidth>
+                         <InputLabel shrink id="university-label">
+                           Trường
+                         </InputLabel>
+                         <Select
+                           labelId="university-label"
+                           id="univeristy_id"
+                           onChange={handleChangeFilter}
+                           displayEmpty
+                           name="university_id"
+                           value={filter.university_id}
+                         >
+                           <MenuItem value="">Tất cả</MenuItem>
+                           {universityList?.map((university, index) => (
+                             <MenuItem key={index} value={university.id}>
+                               {university.name}
+                             </MenuItem>
+                           ))}
+                         </Select>
+                       </FormControl>
+                     </div>
+                     <div className={classes.toolFilterItem}>
+                       <FormControl fullWidth>
+                         <InputLabel shrink id="status-label">
+                           Trạng thái
+                         </InputLabel>
+                         <Select
+                           labelId="status-label"
+                           id="status_id"
+                           onChange={handleChangeFilter}
+                           displayEmpty
+                           name="status"
+                           value={filter.status}
+                         >
+                           <MenuItem value="">Tất cả</MenuItem>
+                           {statusList?.map((status, index) => (
+                             <MenuItem key={index} value={status}>
+                               {status}
+                             </MenuItem>
+                           ))}
+                         </Select>
+                       </FormControl>
+                     </div>
+                   </div>
+                 </div>
+               )}
+             </div>
+             <Tooltip title="Refresh">
+               <Button
+                 className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
+                 onClick={handleRefresh}
+               >
+                 <CachedIcon className={classes.toolButtonIcon} />
+               </Button>
+             </Tooltip>
+             </>
+             )}
+           
           </Grid>
         </Grid>
       </Grid>

@@ -54,7 +54,8 @@ import useEventCategory from '../../hooks/useEventCategory';
 import useEvent from '../../hooks/useEvent';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import usePayment from './../../hooks/usePayment';
-
+import ProcessRoleDeptModal from './../ProcessRole/DepartmentRole/index';
+import useProcessRole from './../../hooks/useProcessRole'
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
@@ -80,7 +81,6 @@ export default function GeneralTable(props) {
   const { menu_buttons: menuButtons, columns: tableColumns } = useView();
   const [displayOptions, setDisplayOptions] = React.useState({});
   const { selectedFolder } = useSelector((state) => state.folder);
-
   const { selectedDocument } = useSelector((state) => state.document);
 
   useEffect(() => {
@@ -104,13 +104,11 @@ export default function GeneralTable(props) {
       schedule: tableColumns.includes('consultation_day'),
       link: false,
       status: tableColumns.includes('status'),
-
       role_template_name: tableColumns.includes('role_template_name'),
       apply_to_department_type: tableColumns.includes('apply_to_department_type'),
       approval_role: tableColumns.includes('approval_role'),
       visible_for_selection: tableColumns.includes('visible_for_selection'),
       active: tableColumns.includes('active'),
-
       mentor_name: tableColumns.includes('mentor'),
       rating: tableColumns.includes('rating'),
       total: tableColumns.includes('total'),
@@ -143,11 +141,15 @@ export default function GeneralTable(props) {
       name: tableColumns.includes('mentor'),
     };
     setDisplayOptions(initOptions);
+
   }, [tableColumns, selectedFolder]);
 
   const buttonAccountCreate = menuButtons.find((button) => button.name === view.user.list.create);
 
   const buttonDeptCreate = menuButtons.find((button) => button.name === view.department.list.create);
+  const buttonDeptUpdate = menuButtons.find((button) => button.name === view.department.list.update);
+  const buttonDeptAddUser = menuButtons.find((button) => button.name === view.department.list.adduser);
+
   const buttonRemoveAccount = menuButtons.find((button) => button.name === view.role.list.remove);
 
   const buttonCreateRole = menuButtons.find((button) => button.name === view.role.list.create);
@@ -181,6 +183,10 @@ export default function GeneralTable(props) {
   const buttonSendEmailCard = menuButtons.find((button) => button.name === view.prepaidcardbatch.list.send_email);
   const buttonAssignCard = menuButtons.find((button) => button.name === view.prepaidcard.list.assign);
 
+  const buttonCreateProcessRole = menuButtons.find((button) => button.name === view.processrole.list.create);
+  const buttonUpdateProcessRole = menuButtons.find((button) => button.name === view.processrole.list.update);
+  const buttonUpdateDeptRole = menuButtons.find((button) => button.name === view.processrole.list.update_dept_role);
+
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [modalType, setModalType] = React.useState('');
@@ -192,8 +198,11 @@ export default function GeneralTable(props) {
   const [pageCurrent, setPage] = React.useState(1);
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
-
+  const [roletemplateList, setRoleList] = React.useState([]);
+  const [userList, setUserList] = React.useState([]);
+  const [deptList, setDeptList] = React.useState([]);
   const reduxDocuments = useSelector((state) => state.task);
+  const { getProcessDetail , addDeptUser} = useProcessRole();
   const {
     documents = [],
     total_item: count = 0,
@@ -208,9 +217,14 @@ export default function GeneralTable(props) {
     from_date = '',
     to_date = '',
     status = '',
-    group_id = '',
-  } = reduxDocuments[documentType] || {};
+    department_code='',
+    role_template_code= '',
+    process_role_code =''
 
+  } = reduxDocuments[documentType] || {};
+  const [department_code_selected, setSelectedDepartment] = React.useState('');
+  const [role_template_selected, setSelectedRoleTemplate] = React.useState('');
+  const [process_role_code_selected, setSelectedProcessRole] = React.useState('');
   const defaultQueries = {
     page: 1,
     order_by,
@@ -223,9 +237,11 @@ export default function GeneralTable(props) {
     university_id: '',
     status: '',
     career: '',
-    group_id: '',
+    department_code: department_code_selected,
+    role_template_code: role_template_selected,
+    process_role_code: process_role_code_selected,
   };
-
+ 
   const { getDocuments } = useTask();
 
   const {
@@ -238,14 +254,14 @@ export default function GeneralTable(props) {
     cancelBooking,
   } = useBooking();
 
-  const { activeDepartment, getDepartmentDetail } = useDepartment();
+  const { activeDepartment, getDepartmentDetail, getAllDepartment } = useDepartment();
 
-  const { activeRole, getRoleDetail, getDepartmentListGroup, addAccountToGroup, removeAccountToGroup, syncRole } =
+  const { activeRole, getRoleDetail, getDepartmentListGroup, addAccountToGroup, removeAccountToGroup, syncRole, getRoletemplateByDept } =
     useRole();
 
-  const { getAccountDetail, activeAccount } = useAccount();
+  const { getAccountDetail, activeAccount, getAllUserByDept, assignAccount, removeAccount, getAllUser } = useAccount();
 
-  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail,getPartnerCategoryDetail } = usePartner();
+  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail } = usePartner();
 
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
 
@@ -277,17 +293,44 @@ export default function GeneralTable(props) {
         to_date,
       });
     }
+    
   }, [selectedFolder]);
-
+  useEffect(() => {
+    if (documentType === 'department' || documentType ==='processrole'){
+      const fetchRoleList = async() =>{
+       let data= await getRoletemplateByDept(department_code_selected);
+       setRoleList(data);
+      }
+      fetchRoleList();
+   }
+   
+  },[department_code_selected]);
+  useEffect(() => {
+      const fetchUserList = async() =>{
+        let data= await getAllUser();
+        setUserList(data);
+        data = await getAllDepartment();
+        setDeptList(data);
+       }
+       fetchUserList();
+  },[]);
   useEffect(() => {
     reloadCurrentDocuments(page);
-  }, [selectedDocument]);
+  }, [selectedDocument , process_role_code_selected]);
 
   const fetchDocument = (additionalQuery) => {
     const queries = { ...defaultQueries, ...additionalQuery };
     getDocuments(url, documentType, selectedProject?.id, selectedFolder?.id, queries);
   };
-
+  const handleAssignAccount = async(email) =>{
+    let data = await assignAccount({email_address: email,department_code: department_code_selected, role_template_code: role_template_selected}); 
+  }
+  const handleAddDeptUser = async (email_address,department_code) =>{
+     await addDeptUser(process_role_code_selected,department_code,email_address); 
+  }
+  const handleRemoveAccount = async(email) =>{
+    await removeAccount({email_address: email,department_code: department_code_selected, role_template_code: role_template_selected}); 
+  }
   const handleRequestSort = (event, property) => {
     const isAsc = order_by === property && order_type === 'asc';
     fetchDocument(url, documentType, project_id, folder_id, {
@@ -297,7 +340,9 @@ export default function GeneralTable(props) {
       no_item_per_page,
       category_id,
       search_text,
-      group_id,
+      department_code: department_code_selected,
+      role_template_code: role_template_selected,
+      process_role_code: process_role_code_selected
     });
     setPage(1);
   };
@@ -408,9 +453,10 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
     }
   };
-  
+
 
   const openDialogCreate = () => {
+
     if (documentType === 'account') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, accountDocument: true });
@@ -422,7 +468,7 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
-  const handleOpenCreateDepartment = () =>{
+  const handleOpenCreateDepartment = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
   }
@@ -430,12 +476,10 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
   };
-  const handleUpdateDepartment =async (department_code) =>{
-      let detailDocument = await getDepartmentDetail(department_code);
-      console.log(detailDocument,'data')
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
-      dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
-    
+  const handleUpdateDepartment = async () => {
+    let detailDocument = await getDepartmentDetail(department_code_selected);
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
   }
   const showFormAddAccount = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
@@ -576,8 +620,8 @@ export default function GeneralTable(props) {
   };
 
   const [group_name, setGroup] = React.useState();
-
   const handleFilterChange = (data) => {
+
     fetchDocument(data);
     setGroup(data.group_id);
   };
@@ -666,6 +710,16 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: true });
   };
+  const handleClickCreateProcessRole = () => {
+    console.log('check')
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+  };
+  const handleClickProcessRoleDetail = async() => {
+    let detailDocument = await getProcessDetail(process_role_code_selected);
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+  };
 
   const handleDownload = (url) => {
     var link = document.createElement('a');
@@ -712,7 +766,7 @@ export default function GeneralTable(props) {
   };
   return (
     <React.Fragment>
-      
+
       {isOpenModalNote && (
         <NoteModal
           isOpen={isOpenModalNote}
@@ -737,15 +791,8 @@ export default function GeneralTable(props) {
             <div style={style.tableTitle}>{tableTitle}</div>
           </Grid>
         </Grid>
-        {documentType=== 'department' &&(
-        <TreeViewModal
-        handleUpdateDepartment={handleUpdateDepartment}
-        handleCreateDepartment={handleOpenCreateDepartment}
-        documents={documents}
 
-        />
-      )}
-      {documentType !== 'department' &&(
+
         <Grid item xs={12}>
           <Card className={classes.root}>
             <Paper className={classes.paper}>
@@ -761,17 +808,22 @@ export default function GeneralTable(props) {
                 btnCreateNewAccount={buttonAccountCreate}
                 createNewAccount={openDialogCreate}
                 handleSyncRole={handleSyncRole}
+                handleAssignAccount={handleAssignAccount}
                 btnCreateNewDept={buttonDeptCreate}
+                buttonDeptUpdate={buttonDeptUpdate}
+                buttonAddAccount={buttonDeptAddUser}
+                roletemplateList={roletemplateList}
+                userList={userList}
+                deptList={deptList}
                 createNewDept={openDialogCreate}
                 buttonCreateRole={buttonCreateRole}
                 createNewRole={openDialogCreate}
-                buttonShowTreeView={buttonShowTreeView}
-                showTreeView={showTreeView}
+              
                 buttonSelectDepartment={buttonSelectDepartment}
                 getDepartmentList={getDepartmentListGroup}
                 buttonSyncDepartment={buttonSyncDepartment}
-                buttonAddAccount={buttonAddAccount}
-                showFormAddAccount={showFormAddAccount}
+                handleUpdateDepartment={handleUpdateDepartment}
+           
                 syncRole={syncRole}
                 buttonCreatePodcast={buttonCreatePodcast}
                 createPodcast={handleClickCreatePodcast}
@@ -791,545 +843,590 @@ export default function GeneralTable(props) {
                 assignVoucher={handleClickAssignVoucher}
                 buttonCreateMentorList={buttonCreateMentorList}
                 createMentorList={handleClickMentorList}
-                buttonCreatePartner = {buttonCreatePartner}
-                createPartner ={handleClickCreatePartner}
-                buttonCreatePartnerCategory = {buttonCreatePartnerCategory}
-                createPanertCategory = {handleClickCreatePartnerCategory}
+                buttonCreatePartner={buttonCreatePartner}
+                createPartner={handleClickCreatePartner}
+                buttonCreatePartnerCategory={buttonCreatePartnerCategory}
+                createPanertCategory={handleClickCreatePartnerCategory}
                 buttonCreateCardBatch={butttonCreateCardBatch}
                 createCardBatch={handleClickCreateCardBatch}
                 buttonAssignCard={buttonAssignCard}
                 assignCard={handleClickAssignCard}
+                department_code_selected={department_code_selected}
+                setSelectedRoleTemplate={setSelectedRoleTemplate}
+                buttonCreateProcessRole = {buttonCreateProcessRole}
+                createNewProcessRole = {handleClickCreateProcessRole}
+                buttonUpdateProcessRole = {buttonUpdateProcessRole}
+                buttonUpdateDeptRole = {buttonUpdateDeptRole}
+                setSelectedDepartment={setSelectedDepartment}
+                handleClickProcessRoleDetail={handleClickProcessRoleDetail}
+                handleAddDeptUser ={handleAddDeptUser}
               />
-              <TableContainer>
-                <Table
-                  stickyHeader
-                  className={classes.table}
-                  aria-labelledby="tableTitle"
-                  size={'medium'}
-                  // aria-label="enhanced table"
-                >
-                  <EnhancedTableHead
-                    classes={classes}
-                    numSelected={selected.length}
-                    order={order_type}
-                    orderBy={order_by}
-                    onSelectAllClick={handleSelectAllClick}
-                    onRequestSort={handleRequestSort}
-                    rowCount={documents.length}
-                    displayOptions={displayOptions}
-                    documentType={documentType}
-                  />
-                  <TableBody>
-                    {stableSort(documents || [], getComparator(order, orderBy)).map((row, index) => {
-                      const isItemSelected = isSelected(row.id);
-                      const labelId = `enhanced-table-checkbox-${index}`;
-                      return (
-                        <TableRow
-                          className={classes.tableRow}
-                          hover
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.id || row.account_id || row.department_code || row.role_template_id}
-                          selected={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              onClick={(event) => handleClick(event, row.id)}
-                              checked={isItemSelected}
-                              inputProps={{ 'aria-labelledby': labelId }}
-                            />
-                          </TableCell>
-                          {displayOptions.id && (
-                            <TableCell align="left">
-                              <div className={classes.tableItemID} onClick={(event) => openDetailDocument(event, row)}>
-                                <div>{row.case_number}</div>
-                                <div>{formatDateTime(row.created_date)}</div>
-                              </div>
-                            </TableCell>
-                          )}
-                          {displayOptions.image_url && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  <img alt="" src={row.image_url} style={style.tableUserAvatar} />
-                                </span>
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.fullname && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.fullname}
-                                </span>
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.title && (
-                            <TableCell
-                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
-                              align="left"
-                              onClick={(event) => openDetailDocument(event, row)}
+              <Grid container spacing={gridSpacing}>
+               {(documentType === 'department' || documentType ==='processrole') && (
+                  <Grid item xs={4}>
+                    <TreeViewModal
+                      setSelectedDepartment={setSelectedDepartment}
+                      setSelectedProcessRole={setSelectedProcessRole}
+                      documents={documents}
+                      documentType={documentType}
+                    />
+                 </Grid>
+                )}
+                 {( documentType ==='processrole') && (
+                  <Grid item xs={4}>
+                    <ProcessRoleDeptModal
+                      process_role_code_selected={process_role_code_selected}
+                    />
+                 </Grid>
+                )}
+                <Grid item xs={(documentType==='department')? 8: (documentType === 'processrole')? 4: 12} >
+                  <TableContainer>
+                    <Table
+                      stickyHeader
+                      className={(documentType==='department')? classes.table2:(documentType === 'processrole')? classes.table3: classes.table}
+                      aria-labelledby="tableTitle"
+                      size={'medium'}
+                    // aria-label="enhanced table"
+                    >
+                      <EnhancedTableHead
+                        classes={classes}
+                        numSelected={selected.length}
+                        order={order_type}
+                        orderBy={order_by}
+                        onSelectAllClick={handleSelectAllClick}
+                        onRequestSort={handleRequestSort}
+                        rowCount={documents.length}
+                        displayOptions={displayOptions}
+                        documentType={documentType}
+                      />
+                      <TableBody>
+                        {stableSort(documents || [], getComparator(order, orderBy)).map((row, index) => {
+                          const isItemSelected = isSelected(row.id);
+                          const labelId = `enhanced-table-checkbox-${index}`;
+                          return (
+                            <TableRow
+                              className={classes.tableRow}
+                              hover
+                              aria-checked={isItemSelected}
+                              tabIndex={-1}
+                              key={row.id || row.account_id || row.department_code || row.role_template_id}
+                              selected={isItemSelected}
                             >
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.title}
-                                </span>
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.address && (
-                            <TableCell
-                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
-                              align="left"
-                            >
-                              <>
-                                <span className={classes.tableItemName}>{row.address}</span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.price && (
-                            <TableCell
-                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
-                              align="left"
-                            >
-                              <>
-                                <span className={classes.tableItemName}>{row.price}</span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.online && (
-                            <TableCell
-                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
-                              align="left"
-                            >
-                              <>
-                                <FormControlLabel
-                                  control={
-                                    <Switch
-                                      // color="primary"
-                                      checked={row.is_online_event}
-                                    />
-                                  }
-                                />
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.available && (
-                            <TableCell
-                              style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
-                              align="left"
-                            >
-                              <>
-                                <FormControlLabel
-                                  control={<Switch color="primary" checked={row.is_available_for_booking} />}
-                                />
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
-                          {displayOptions.card_code && <TableCell align="left">{row.card_code}</TableCell>}
-                          {displayOptions.card_serial && <TableCell align="left">{row.card_serial}</TableCell>}
-                          {displayOptions.account_id && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.account_id}
-                                </span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.department_name && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.department_name}
-                                </span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.department_parent && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.parent_department_name}
-                                </span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.number_member && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.number_member}
-                                </span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.full_name && (
-                            <TableCell align="left">
-                              <>
-                                <span
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.full_name}
-                                </span>
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.code_id && (
-                            <TableCell align="left">
-                              <div className={classes.tableItemID} onClick={(event) => openDetailDocument(event, row)}>
-                                <div>{row.code}</div>
-                                <div>{formatDateTime(row.created_date)}</div>
-                              </div>
-                            </TableCell>
-                          )}
-                          {displayOptions.description && <TableCell align="left">{row.description || ''} </TableCell>}
-                          {displayOptions.batch_number && <TableCell align="left">{row.batch_number || ''}</TableCell>}
-                          {displayOptions.university_name && (
-                            <TableCell align="left">{row.university_name || row.current_school || ''}</TableCell>
-                          )}
-                          {displayOptions.email_address && (
-                            <TableCell align="left">{row.email_address || ''}</TableCell>
-                          )}
-                          {displayOptions.number_phone && <TableCell align="left">{row.number_phone || ''}</TableCell>}
-                          {displayOptions.schedule && <TableCell align="left">{row.time_slot || ''}</TableCell>}
-                          {displayOptions.career && <TableCell align="left">{row.career || ''}</TableCell>}
-                          {displayOptions.assess && (
-                            <TableCell align="left">
-                              {(!isNaN(row.assess) && row.assess) > 0 && (
-                                <div style={style.assessWrap}>
-                                  <span>{row.assess}</span>
-                                  <StarIcon style={style.starIcon} />
-                                </div>
-                              )}
-                            </TableCell>
-                          )}
-
-                          {displayOptions.mentor_name && (
-                            <TableCell align="left">
-                              <span>{row.mentor_name || ''}</span>
-                            </TableCell>
-                          )}
-                          {displayOptions.link && (
-                            <TableCell align="left">
-                              <a style={style.meetingLink} href={row.link_meeting || '#'} target="_blank">
-                                {row.link_meeting || ''}
-                              </a>
-                            </TableCell>
-                          )}
-
-                          {displayOptions.rating && (
-                            <TableCell align="left">
-                              {(!isNaN(row.rating) && row.rating) > 0 && (
-                                <div style={style.ratingWrap}>
-                                  <span>{row.rating}</span>
-                                  <StarIcon style={style.starIcon} />
-                                </div>
-                              )}
-                            </TableCell>
-                          )}
-                          {displayOptions.total && <TableCell align="left">{row.total}</TableCell>}
-                          {displayOptions.uncomplete && <TableCell align="left">{row.uncomplete}</TableCell>}
-                          {displayOptions.completed && <TableCell align="left">{row.completed}</TableCell>}
-                          {displayOptions.reject && <TableCell align="left">{row.reject}</TableCell>}
-                          {displayOptions.role_template_name && (
-                            <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
-                              {row.role_template_name}
-                            </TableCell>
-                          )}
-                          {displayOptions.apply_to_department_type && row.apply_to_department_type && (
-                            <TableCell align="left">{row.apply_to_department_type.join(', ')}</TableCell>
-                          )}
-
-                          {displayOptions.visible_for_selection && (
-                            <TableCell align="left">
-                              <>
-                                <FormControlLabel control={<Switch color="primary" checked={row.is_approval_role} />} />
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.approval_role && (
-                            <TableCell align="left">
-                              <>
-                                <FormControlLabel
-                                  control={<Switch color="primary" checked={row.is_visible_for_selection} />}
-                                />
-                              </>
-                            </TableCell>
-                          )}
-
-                          {displayOptions.link && (
-                            <TableCell align="left">
-                              <a style={style.meetingLink} href={row.link_meeting || '#'} target="_blank">
-                                {row.link_meeting || ''}
-                              </a>
-                            </TableCell>
-                          )}
-                          {displayOptions.type && <TableCell align="left">{row.type || ''}</TableCell>}
-                          {displayOptions.amount && <TableCell align="left">{row.amount || ''}</TableCell>}
-                          {displayOptions.used_date && (
-                            <TableCell align="left">{formatDateTime(row.used_date) || ''}</TableCell>
-                          )}
-                          {displayOptions.expiration_date && (
-                            <TableCell align="left">
-                              {row.expiration_date ? formatDate(new Date(row.expiration_date), 'dd/MM/yyyy') : ''}
-                            </TableCell>
-                          )}
-                          {displayOptions.status && (
-                            <TableCell align="left">
-                              {row.status && (
-                                <span
-                                  style={style.statusWrap}
-                                  className={classes[getStatusType(row.status_display || 'none')]}
-                                >
-                                  {row.status_display}
-                                </span>
-                              )}
-                            </TableCell>
-                          )}
-                          {displayOptions.episodes && <TableCell align="left">{row.episodes || ''}</TableCell>}
-                          {displayOptions.duration && <TableCell align="left">{row.duration || ''}</TableCell>}
-                          {displayOptions.created_by && <TableCell align="left">{row.created_by || ''}</TableCell>}
-                          {displayOptions.created_date && (
-                            <TableCell align="left">
-                              {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
-                            </TableCell>
-                          )}
-                          {displayOptions.category_code && (
-                            <TableCell
-                              align="left"
-                              className={classes.tableItemName}
-                              onClick={(event) => openDetailDocument(event, row)}
-                            >
-                              {row.category_code || ''}
-                            </TableCell>
-                          )}
-                          {displayOptions.category_name && (
-                            <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
-                              {row.category_name || ''}{' '}
-                            </TableCell>
-                          )}
-                          {displayOptions.is_used && (
-                            <TableCell align="left">
-                              {row.is_used ? (
-                                <Chip label="Đã sử dụng" />
-                              ) : (
-                                <Chip color="primary" label="Chưa sử dụng" />
-                              )}
-                            </TableCell>
-                          )}
-                          {displayOptions.is_active && (
-                            <TableCell align="left">
-                              <FormControlLabel
-                                control={
-                                  <Switch
-                                    // color="primary"
-                                    checked={row.is_active}
-                                    onClick={(event) => toggleSetActive(event, row, event.target.checked)}
+                              {(documentType !== 'department' && documentType !== 'processrole' )&&(
+                                  <TableCell padding="checkbox">
+                                  <Checkbox
+                                    onClick={(event) => handleClick(event, row.id)}
+                                    checked={isItemSelected}
+                                    inputProps={{ 'aria-labelledby': labelId }}
                                   />
-                                }
-                              />
-                            </TableCell>
-                          )}
-                          {displayOptions.is_featured && (
-                            <TableCell align="left">
-                              <FormControlLabel
-                                control={
-                                  <Switch
-                                    // color="primary"
-                                    checked={row.is_featured}
-                                    onClick={(event) => toggleSetFeatured(event, row, event.target.checked)}
-                                  />
-                                }
-                              />
-                            </TableCell>
-                          )}
-                          {displayOptions.active && (
-                            <TableCell align="left">
-                              <>
-                                {(() => {
-                                  // eslint-disable-next-line default-case
-                                  switch (documentType) {
-                                    case 'account':
-                                      return (
-                                        <FormControlLabel
-                                          control={
-                                            <Switch
-                                              color="primary"
-                                              checked={row.is_active}
-                                              onClick={(event) =>
-                                                toggleSetActiveAccount(event, row.email_address, event.target.checked)
-                                              }
-                                            />
-                                          }
+                                </TableCell>
+                              )}
+                              
+                              {displayOptions.id && (
+                                <TableCell align="left">
+                                  <div className={classes.tableItemID} onClick={(event) => openDetailDocument(event, row)}>
+                                    <div>{row.case_number}</div>
+                                    <div>{formatDateTime(row.created_date)}</div>
+                                  </div>
+                                </TableCell>
+                              )}
+                              {displayOptions.image_url && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      <img alt="" src={row.image_url} style={style.tableUserAvatar} />
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.fullname && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      {row.fullname}
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.title && (
+                                <TableCell
+                                  style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                  align="left"
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      {row.title}
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.address && (
+                                <TableCell
+                                  style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                  align="left"
+                                >
+                                  <>
+                                    <span className={classes.tableItemName}>{row.address}</span>
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.price && (
+                                <TableCell
+                                  style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                  align="left"
+                                >
+                                  <>
+                                    <span className={classes.tableItemName}>{row.price}</span>
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.online && (
+                                <TableCell
+                                  style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                  align="left"
+                                >
+                                  <>
+                                    <FormControlLabel
+                                      control={
+                                        <Switch
+                                          // color="primary"
+                                          checked={row.is_online_event}
                                         />
-                                      );
-                                    case 'department':
-                                      return (
-                                        <FormControlLabel
-                                          control={
-                                            <Switch
-                                              color="primary"
-                                              checked={row.is_active}
-                                              onClick={(event) =>
-                                                toggleSetDepartment(event, row.department_code, event.target.checked)
-                                              }
-                                            />
-                                          }
-                                        />
-                                      );
-                                    case 'mentor':
-                                      return (
-                                        <FormControlLabel
-                                          control={
-                                            <Switch
-                                              color="primary"
-                                              checked={!!row.is_active}
-                                              onClick={(event) => handleToggleActiveMentor(event, row.id)}
-                                            />
-                                          }
-                                        />
-                                      );
-                                    case 'role':
-                                      return (
-                                        <FormControlLabel
-                                          control={
-                                            <Switch
-                                              color="primary"
-                                              checked={row.is_active}
-                                              onClick={(event) =>
-                                                toggleSetActiveRole(event, row.role_template_id, event.target.checked)
-                                              }
-                                            />
-                                          }
-                                        />
-                                      );
-                                  }
-                                })()}
-                                &nbsp;&nbsp;
-                              </>
-                            </TableCell>
-                          )}
-                          {displayOptions.menuButtons && (
-                            <TableCell align="left">
-                              <div className={classes.handleButtonWrap}>
-                                {buttonRemoveAccount && (
-                                  <Tooltip title={buttonRemoveAccount.text}>
-                                    <Button
-                                      className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                      onClick={() =>
-                                        handleRemoveAccountToGroup(row.email_address, group_name, row.account_id)
                                       }
+                                    />
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.available && (
+                                <TableCell
+                                  style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                  align="left"
+                                >
+                                  <>
+                                    <FormControlLabel
+                                      control={<Switch color="primary" checked={row.is_available_for_booking} />}
+                                    />
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
+                              {displayOptions.card_code && <TableCell align="left">{row.card_code}</TableCell>}
+                              {displayOptions.card_serial && <TableCell align="left">{row.card_serial}</TableCell>}
+                              {displayOptions.account_id && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
                                     >
-                                      <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingReview && row.is_can_completed && (
-                                  <Tooltip title={buttonBookingReview.text}>
-                                    <Button
-                                      className={classes.handleButton}
-                                      onClick={() => handleOpenModal('review', row)}
+                                      {row.account_id}
+                                    </span>
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.department_name && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
                                     >
-                                      <AssignmentTurnedInIcon className={classes.handleButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingNote && (
-                                  <Tooltip title={buttonBookingNote.text}>
-                                    <Button
-                                      className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                      onClick={() => handleOpenModal('note', row)}
+                                      {row.department_name}
+                                    </span>
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.department_parent && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
                                     >
-                                      <NoteAddSharpIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingCancel && row.time_slot && (
-                                  <Tooltip title={buttonBookingCancel.text}>
-                                    <Button
-                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                      onClick={() => handleOpenModal('cancel', row)}
+                                      {row.parent_department_name}
+                                    </span>
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.number_member && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
                                     >
-                                      <DeleteForeverIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonBookingMeeting && row.link_meeting !== null && (
-                                  <Tooltip title={buttonBookingMeeting.text}>
-                                    <Button className={`${classes.handleButton} ${classes.handleButtonMeeting}`}>
-                                      <a
-                                        href={row.link_meeting}
-                                        className={`${classes.handleButton} ${classes.handleButtonMeeting}`}
-                                        target="_blank"
+                                      {row.number_member}
+                                    </span>
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.full_name && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      {row.full_name}
+                                    </span>
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.code_id && (
+                                <TableCell align="left">
+                                  <div className={classes.tableItemID} onClick={(event) => openDetailDocument(event, row)}>
+                                    <div>{row.code}</div>
+                                    <div>{formatDateTime(row.created_date)}</div>
+                                  </div>
+                                </TableCell>
+                              )}
+                              {displayOptions.description && <TableCell align="left">{row.description || ''} </TableCell>}
+                              {displayOptions.batch_number && <TableCell align="left">{row.batch_number || ''}</TableCell>}
+                              {displayOptions.university_name && (
+                                <TableCell align="left">{row.university_name || row.current_school || ''}</TableCell>
+                              )}
+                              {displayOptions.email_address && (
+                                <TableCell align="left">{row.email_address || ''}</TableCell>
+                              )}
+                              {displayOptions.number_phone && <TableCell align="left">{row.number_phone || ''}</TableCell>}
+                              {displayOptions.schedule && <TableCell align="left">{row.time_slot || ''}</TableCell>}
+                              {displayOptions.career && <TableCell align="left">{row.career || ''}</TableCell>}
+                              {displayOptions.assess && (
+                                <TableCell align="left">
+                                  {(!isNaN(row.assess) && row.assess) > 0 && (
+                                    <div style={style.assessWrap}>
+                                      <span>{row.assess}</span>
+                                      <StarIcon style={style.starIcon} />
+                                    </div>
+                                  )}
+                                </TableCell>
+                              )}
+
+                              {displayOptions.mentor_name && (
+                                <TableCell align="left">
+                                  <span>{row.mentor_name || ''}</span>
+                                </TableCell>
+                              )}
+                              {displayOptions.link && (
+                                <TableCell align="left">
+                                  <a style={style.meetingLink} href={row.link_meeting || '#'} target="_blank">
+                                    {row.link_meeting || ''}
+                                  </a>
+                                </TableCell>
+                              )}
+
+                              {displayOptions.rating && (
+                                <TableCell align="left">
+                                  {(!isNaN(row.rating) && row.rating) > 0 && (
+                                    <div style={style.ratingWrap}>
+                                      <span>{row.rating}</span>
+                                      <StarIcon style={style.starIcon} />
+                                    </div>
+                                  )}
+                                </TableCell>
+                              )}
+                              {displayOptions.total && <TableCell align="left">{row.total}</TableCell>}
+                              {displayOptions.uncomplete && <TableCell align="left">{row.uncomplete}</TableCell>}
+                              {displayOptions.completed && <TableCell align="left">{row.completed}</TableCell>}
+                              {displayOptions.reject && <TableCell align="left">{row.reject}</TableCell>}
+                              {displayOptions.role_template_name && (
+                                <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
+                                  {row.role_template_name}
+                                </TableCell>
+                              )}
+                              {displayOptions.apply_to_department_type && row.apply_to_department_type && (
+                                <TableCell align="left">{row.apply_to_department_type.join(', ')}</TableCell>
+                              )}
+
+                              {displayOptions.visible_for_selection && (
+                                <TableCell align="left">
+                                  <>
+                                    <FormControlLabel control={<Switch color="primary" checked={row.is_approval_role} />} />
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.approval_role && (
+                                <TableCell align="left">
+                                  <>
+                                    <FormControlLabel
+                                      control={<Switch color="primary" checked={row.is_visible_for_selection} />}
+                                    />
+                                  </>
+                                </TableCell>
+                              )}
+
+                              {displayOptions.link && (
+                                <TableCell align="left">
+                                  <a style={style.meetingLink} href={row.link_meeting || '#'} target="_blank">
+                                    {row.link_meeting || ''}
+                                  </a>
+                                </TableCell>
+                              )}
+                              {displayOptions.type && <TableCell align="left">{row.type || ''}</TableCell>}
+                              {displayOptions.amount && <TableCell align="left">{row.amount || ''}</TableCell>}
+                              {displayOptions.used_date && (
+                                <TableCell align="left">{formatDateTime(row.used_date) || ''}</TableCell>
+                              )}
+                              {displayOptions.expiration_date && (
+                                <TableCell align="left">
+                                  {row.expiration_date ? formatDate(new Date(row.expiration_date), 'dd/MM/yyyy') : ''}
+                                </TableCell>
+                              )}
+                              {displayOptions.status && (
+                                <TableCell align="left">
+                                  {row.status && (
+                                    <span
+                                      style={style.statusWrap}
+                                      className={classes[getStatusType(row.status_display || 'none')]}
+                                    >
+                                      {row.status_display}
+                                    </span>
+                                  )}
+                                </TableCell>
+                              )}
+                              {displayOptions.episodes && <TableCell align="left">{row.episodes || ''}</TableCell>}
+                              {displayOptions.duration && <TableCell align="left">{row.duration || ''}</TableCell>}
+                              {displayOptions.created_by && <TableCell align="left">{row.created_by || ''}</TableCell>}
+                              {displayOptions.created_date && (
+                                <TableCell align="left">
+                                  {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
+                                </TableCell>
+                              )}
+                              {displayOptions.category_code && (
+                                <TableCell
+                                  align="left"
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
+                                  {row.category_code || ''}
+                                </TableCell>
+                              )}
+                              {displayOptions.category_name && (
+                                <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
+                                  {row.category_name || ''}{' '}
+                                </TableCell>
+                              )}
+                              {displayOptions.is_used && (
+                                <TableCell align="left">
+                                  {row.is_used ? (
+                                    <Chip label="Đã sử dụng" />
+                                  ) : (
+                                    <Chip color="primary" label="Chưa sử dụng" />
+                                  )}
+                                </TableCell>
+                              )}
+                              {displayOptions.is_active && (
+                                <TableCell align="left">
+                                  <FormControlLabel
+                                    control={
+                                      <Switch
+                                        // color="primary"
+                                        checked={row.is_active}
+                                        onClick={(event) => toggleSetActive(event, row, event.target.checked)}
+                                      />
+                                    }
+                                  />
+                                </TableCell>
+                              )}
+                              {displayOptions.is_featured && (
+                                <TableCell align="left">
+                                  <FormControlLabel
+                                    control={
+                                      <Switch
+                                        // color="primary"
+                                        checked={row.is_featured}
+                                        onClick={(event) => toggleSetFeatured(event, row, event.target.checked)}
+                                      />
+                                    }
+                                  />
+                                </TableCell>
+                              )}
+                              {displayOptions.active && (
+                                <TableCell align="left">
+                                  <>
+                                    {(() => {
+                                      // eslint-disable-next-line default-case
+                                      switch (documentType) {
+                                        case 'account':
+                                          return (
+                                            <FormControlLabel
+                                              control={
+                                                <Switch
+                                                  color="primary"
+                                                  checked={row.is_active}
+                                                  onClick={(event) =>
+                                                    toggleSetActiveAccount(event, row.email_address, event.target.checked)
+                                                  }
+                                                />
+                                              }
+                                            />
+                                          );
+                                        case 'department':
+                                          return (
+                                            <FormControlLabel
+                                              control={
+                                                <Switch
+                                                  color="primary"
+                                                  checked={row.is_active}
+                                                  onClick={(event) =>
+                                                    toggleSetDepartment(event, row.department_code, event.target.checked)
+                                                  }
+                                                />
+                                              }
+                                            />
+                                          );
+                                        case 'mentor':
+                                          return (
+                                            <FormControlLabel
+                                              control={
+                                                <Switch
+                                                  color="primary"
+                                                  checked={!!row.is_active}
+                                                  onClick={(event) => handleToggleActiveMentor(event, row.id)}
+                                                />
+                                              }
+                                            />
+                                          );
+                                        case 'role':
+                                          return (
+                                            <FormControlLabel
+                                              control={
+                                                <Switch
+                                                  color="primary"
+                                                  checked={row.is_active}
+                                                  onClick={(event) =>
+                                                    toggleSetActiveRole(event, row.role_template_id, event.target.checked)
+                                                  }
+                                                />
+                                              }
+                                            />
+                                          );
+                                      }
+                                    })()}
+                                    &nbsp;&nbsp;
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.menuButtons && (
+                                <TableCell align="left">
+                                  <div className={classes.handleButtonWrap}>
+                                    {buttonRemoveAccount && (
+                                      <Tooltip title={buttonRemoveAccount.text}>
+                                        <Button
+                                          className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                          onClick={() =>
+                                            handleRemoveAccountToGroup(row.email_address, group_name, row.account_id)
+                                          }
+                                        >
+                                          <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+                                    {documentType==='department' &&(
+                                      <Tooltip title={'Xoá'}>
+                                      <Button
+                                        className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                        onClick={() =>
+                                          handleRemoveAccount(row.email_address)
+                                        }
                                       >
-                                        <DuoIcon className={classes.handleButtonIconMeeting} />
-                                      </a>
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonSendEmail && row.is_generated && (
-                                  <Tooltip title={buttonSendEmail.text}>
-                                    <Button
-                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                      onClick={() => handleClickSendEmail(row.id)}
-                                    >
-                                      <MailOutlineIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                                {buttonSendEmailCard && row.is_generated && (
-                                  <Tooltip title={buttonSendEmailCard.text}>
-                                    <Button
-                                      className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                      onClick={() => handleClickSendEmail(row.id)}
-                                    >
-                                      <MailOutlineIcon className={classes.noteButtonIcon} />
-                                    </Button>
-                                  </Tooltip>
-                                )}
-                              </div>
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                                        <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
+                                      </Button>
+                                    </Tooltip>
+                                    )}
+                                    {buttonBookingReview && row.is_can_completed && (
+                                      <Tooltip title={buttonBookingReview.text}>
+                                        <Button
+                                          className={classes.handleButton}
+                                          onClick={() => handleOpenModal('review', row)}
+                                        >
+                                          <AssignmentTurnedInIcon className={classes.handleButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+                                    {buttonBookingNote && (
+                                      <Tooltip title={buttonBookingNote.text}>
+                                        <Button
+                                          className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                          onClick={() => handleOpenModal('note', row)}
+                                        >
+                                          <NoteAddSharpIcon className={classes.noteButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+                                    {buttonBookingCancel && row.time_slot && (
+                                      <Tooltip title={buttonBookingCancel.text}>
+                                        <Button
+                                          className={`${classes.handleButton} ${classes.handleButtonCancel}`}
+                                          onClick={() => handleOpenModal('cancel', row)}
+                                        >
+                                          <DeleteForeverIcon className={classes.noteButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+                                    {buttonBookingMeeting && row.link_meeting !== null && (
+                                      <Tooltip title={buttonBookingMeeting.text}>
+                                        <Button className={`${classes.handleButton} ${classes.handleButtonMeeting}`}>
+                                          <a
+                                            href={row.link_meeting}
+                                            className={`${classes.handleButton} ${classes.handleButtonMeeting}`}
+                                            target="_blank"
+                                          >
+                                            <DuoIcon className={classes.handleButtonIconMeeting} />
+                                          </a>
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+                                    {buttonSendEmail && row.is_generated && (
+                                      <Tooltip title={buttonSendEmail.text}>
+                                        <Button
+                                          className={`${classes.handleButton} ${classes.handleButtonCancel}`}
+                                          onClick={() => handleClickSendEmail(row.id)}
+                                        >
+                                          <MailOutlineIcon className={classes.noteButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+                                    {buttonSendEmailCard && row.is_generated && (
+                                      <Tooltip title={buttonSendEmailCard.text}>
+                                        <Button
+                                          className={`${classes.handleButton} ${classes.handleButtonCancel}`}
+                                          onClick={() => handleClickSendEmail(row.id)}
+                                        >
+                                          <MailOutlineIcon className={classes.noteButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+                                  </div>
+                                </TableCell>
+                              )}
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+                </Grid>
               <TablePagination
                 rowsPerPageOptions={[10, 15, 20]}
                 component="div"
@@ -1343,7 +1440,7 @@ export default function GeneralTable(props) {
             </Paper>
           </Card>
         </Grid>
-        )}
+
       </Grid>
     </React.Fragment>
   );

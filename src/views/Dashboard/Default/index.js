@@ -24,6 +24,7 @@ import {
   listMentorActions,
   partnerActions,
   partnerCategoryActions,
+  processroleActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -41,6 +42,7 @@ import PrepaidCardWrapper from './../../Payment/PrepaidCard/index';
 import ListMentorWrapper from './../../Partner/ListMentor/index';
 import PartnerWrapper from '../../Partner/Partner';
 import PartnerCategoryWrapper from '../../Partner/Partner/Partner Category';
+import ProcessRoleWrapper from '../../ProcessRole';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -66,6 +68,7 @@ const Default = () => {
   const availableListMentorEndpoint = Object.values(listMentorActions);
   const avalablePartnerEndpoint = Object.values(partnerActions);
   const availablePartnerCategoryEndpoint = Object.values(partnerCategoryActions);
+  const avaiableProcessRoleEndpoint = Object.values(processroleActions);
 
   if (!selectedApp) {
     return <Redirect to="/dashboard/app" />;
@@ -100,6 +103,7 @@ const Default = () => {
           {availableListMentorEndpoint.includes(selectedFolder?.action) && <ListMentorWrapper />}
           {avalablePartnerEndpoint.includes(selectedFolder?.action) && <PartnerWrapper />}
           {availablePartnerCategoryEndpoint.includes(selectedFolder?.action) && <PartnerCategoryWrapper />}
+          {avaiableProcessRoleEndpoint.includes(selectedFolder?.action) && <ProcessRoleWrapper/>}
         </Grid>
       )}
     </Grid>
