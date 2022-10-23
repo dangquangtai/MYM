@@ -47,7 +47,7 @@ export const apiEndpoints = {
   get_role_tree_data:'/Primary/?FlowAlias=bs_api_process_role_get_tree_data_role&action=api',
   get_all_role_template_by_department_code: '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
 
-
+  get_option_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_optinal_role&action=api',
   get_all_role_template_by_department_code:
     '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
 
