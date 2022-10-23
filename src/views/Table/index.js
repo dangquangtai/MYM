@@ -296,7 +296,7 @@ export default function GeneralTable(props) {
     
   }, [selectedFolder]);
   useEffect(() => {
-    if (documentType === 'department' || documentType ==='processrole'){
+    if ((documentType === 'department' || documentType ==='processrole')&& (department_code === '')){
       const fetchRoleList = async() =>{
        let data= await getRoletemplateByDept(department_code_selected);
        setRoleList(data);
@@ -720,6 +720,14 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
   };
+  const handleClickUpdateUserProcessRole = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, processUserDocument: true });
+  };
+  const handleClickUpdateDeptProcessRole = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, processDeptDocument: true });
+  };
 
   const handleDownload = (url) => {
     var link = document.createElement('a');
@@ -860,6 +868,8 @@ export default function GeneralTable(props) {
                 setSelectedDepartment={setSelectedDepartment}
                 handleClickProcessRoleDetail={handleClickProcessRoleDetail}
                 handleAddDeptUser ={handleAddDeptUser}
+                handleClickUpdateUserProcessRole={handleClickUpdateUserProcessRole}
+                handleClickUpdateDeptProcessRole={handleClickUpdateDeptProcessRole}
               />
               <Grid container spacing={gridSpacing}>
                {(documentType === 'department' || documentType ==='processrole') && (

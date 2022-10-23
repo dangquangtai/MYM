@@ -12,26 +12,18 @@ import {
   Typography,
   Tab,
   Select,
-  FormControl,
   MenuItem,
   TextField,
-  InputLabel,
   Snackbar,
-  Checkbox,
 } from '@material-ui/core';
 
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import style from '../Detail/style'
-import { gridSpacing, view } from '../../../store/constant';
 import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions';
-import useDepartment from '../../../hooks/useDepartment';
-import useRole from '../../../hooks/useRole';
 import Alert from '../../../component/Alert'
-import { CheckBox } from '@material-ui/icons';
 import useProcessRole from '../../../hooks/useProcessRole';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -69,8 +61,8 @@ const ProcessRoleModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tabIndex, setTabIndex] = React.useState(0);
-  const { form_buttons: formButtons, name, tabs, disabled_fields } = useView();
-  const buttonSave = formButtons.find((button) => button.name === view.department.detail.save);
+  const { form_buttons: formButtons } = useView();
+
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
@@ -93,7 +85,7 @@ const ProcessRoleModal = () => {
     type: '',
     text: '',
   })
-  const [categories, setCategory] = React.useState();
+
  
   const [apps, setApp] = React.useState([]);
   const [processList, setProcess] = React.useState([]);
@@ -145,10 +137,10 @@ const ProcessRoleModal = () => {
     try {
       if (role.id === '') {
         let check = await createProcessRole(role.role_code,role.role_name,role.process_code,role.app_code);
-        
-        if (check==true){
+        console.log(check)
+        if (check===true){
           handleOpenSnackbar(true,'success','Tạo mới thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'role' });  
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });  
           handleCloseDialog();
           } else {
           handleOpenSnackbar(true,'success','Tạo mới thất bại!');
@@ -156,9 +148,10 @@ const ProcessRoleModal = () => {
       } else {
         let check = await updateProcessRole(role.role_code,role.role_name,role.process_code,role.app_code);
         
-        if (check==true){
+        if (check===true){
+          console.log(check)
           handleOpenSnackbar(true,'success','Cập nhật thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'role' });  
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });  
           handleCloseDialog();
           } else {
             handleOpenSnackbar(true,'success','Cập nhật thất bại!');
@@ -381,9 +374,6 @@ const ProcessRoleModal = () => {
                                 className={classes.inputField}
                                 value={ role.rank || ''}
                               />
-                              
-                                
-                         
                               </Grid>
                           </Grid>
 
@@ -398,7 +388,7 @@ const ProcessRoleModal = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="contained"

@@ -87,7 +87,7 @@ export default function ConfirmPupup() {
         </div>
         <div id="modal-modal-description" style={style.body}>
           <div style={style.formlabel}>{message}</div>
-          <Grid container justify="center" spacing={gridSpacing} style={style.buttonWrap}>
+          <Grid container justifyContent="center" spacing={gridSpacing} style={style.buttonWrap}>
             <Grid item>
               <Button variant="contained" color="secondary" onClick={closeConfirmPopup}>
                 Đóng

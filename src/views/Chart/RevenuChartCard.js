@@ -58,7 +58,7 @@ const RevenuChartCard = (props) => {
                         item
                         container
                         direction={matchDownMd && !matchDownXs ? 'column' : 'row'}
-                        justify="space-around"
+                        justifyContent="space-around"
                         alignItems="center"
                         xs={12}
                         sm={5}

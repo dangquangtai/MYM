@@ -29,7 +29,7 @@ const ReportCard = (props) => {
     return (
         <Card>
             <CardContent>
-                <Grid container justify="space-between" alignItems="center">
+                <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item>
                         <Typography variant="h2" style={{ color: color }}>
                             {primary}
@@ -46,7 +46,7 @@ const ReportCard = (props) => {
                 </Grid>
             </CardContent>
             <div style={{ background: color }}>
-                <Grid container justify="space-between" className={classes.footer}>
+                <Grid container justifyContent="space-between" className={classes.footer}>
                     <Grid item>
                         <Typography variant="body2">{footerData}</Typography>
                     </Grid>

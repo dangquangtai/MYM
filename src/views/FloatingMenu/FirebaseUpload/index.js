@@ -135,7 +135,7 @@ export default function FirebaseUpload(props) {
             </Box>
           </Box>
         )}
-        <Grid container justify="flex-end" spacing={gridSpacing}>
+        <Grid container justifyContent="flex-end" spacing={gridSpacing}>
           <Grid item>
             <Button variant="contained" color="secondary" onClick={onClose}>
               Đóng

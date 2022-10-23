@@ -162,7 +162,7 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
                   container
                   spacing={1}
                   className={classes.gridItemInfo}
-                  justify="space-between"
+                  justifyContent="space-between"
                   alignItems="center"
                 >
                   <div>
@@ -298,7 +298,7 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
                   container
                   spacing={1}
                   className={classes.gridItemInfo}
-                  justify="space-between"
+                  justifyContent="space-between"
                   alignItems="center"
                 >
                   <div>

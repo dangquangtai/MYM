@@ -28,7 +28,7 @@ const Header = ({
     <Grid
       className={clsx(classes.root, className)}
       container
-      justify="space-between"
+      justifyContent="space-between"
       spacing={3}
       {...rest}
     >

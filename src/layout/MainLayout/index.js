@@ -28,6 +28,8 @@ import PartnerCategoryModal from '../../views/Partner/Partner/Partner Category/D
 import CardBatchModal from './../../views/Payment/Batch/Detail/index';
 import CardModal from './../../views/Payment/PrepaidCard/AssignModal/index';
 import ProcessRoleModal from '../../views/ProcessRole/Detail';
+import ProcessRoleUserModal from '../../views/ProcessRole/User';
+import ProcessRoleDeptModal from '../../views/ProcessRole/Department';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -129,7 +131,7 @@ const MainLayout = ({ children }) => {
       case 'prepaidcard':
         return <CardModal />;
       case 'processrole':
-        return <ProcessRoleModal/>;
+        return <><ProcessRoleModal/><ProcessRoleUserModal/><ProcessRoleDeptModal/></>;
     }
   };
 

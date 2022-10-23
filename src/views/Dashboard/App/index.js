@@ -69,12 +69,12 @@ const App = () => {
   };
 
   return (
-    <Grid container justify="center" alignItems="center">
+    <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12} sm={12} md={12} lg={12}>
         <Typography variant="h2" className={classes.margin}>
           Apps
         </Typography>
-        <Grid container spacing={gridSpacing} justify="center" alignItems="center">
+        <Grid container spacing={gridSpacing} justifyContent="center" alignItems="center">
           {apps.map((app) => (
             <Grid key={app.app_code} item lg={3} sm={6} xs={12}>
               <RouterLink className={classes.link} to="/dashboard/default" onClick={() => handleAppClick(app.id)}>

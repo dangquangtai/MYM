@@ -42,8 +42,7 @@ const EnhancedTableToolbar = (props) => {
     createNewRole,
     buttonSelectDepartment,
     buttonSyncDepartment,
-    showFormAddAccount,
-    syncRole,
+   
     buttonCreatePodcast,
     createPodcast,
     buttonCreateEpisode,
@@ -72,18 +71,20 @@ const EnhancedTableToolbar = (props) => {
     assignCard,
     handleSyncRole,
     department_code_selected,
-    userList,
+   
     handleAssignAccount,
     handleUpdateDepartment,
     setSelectedRoleTemplate,
     buttonCreateProcessRole,
     buttonUpdateProcessRole,
-    buttonUpdateDeptRole,
+  
     createNewProcessRole,
-    deptList,
+  
     handleClickProcessRoleDetail,
-    setSelectedDepartment,
-    handleAddDeptUser
+  
+
+    handleClickUpdateUserProcessRole,
+    handleClickUpdateDeptProcessRole
   } = props;
 
   const filterRef = useRef(null);
@@ -174,8 +175,7 @@ const EnhancedTableToolbar = (props) => {
   };
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
-  const [dataDepartmentList, setDepartment] = React.useState();
-  const [roletemplate, setRoleTemplate] = React.useState();
+  
   useEffect(() => {
    
   }, []);
@@ -185,6 +185,7 @@ const EnhancedTableToolbar = (props) => {
       university_id: '',
       status: '',
       search_text: '',
+      role_template_code:'Member'
     });
   }, [selectedFolder]);
   useEffect(() => {
@@ -213,7 +214,7 @@ const EnhancedTableToolbar = (props) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <Grid container justify="flex-end" spacing={gridSpacing}>
+      <Grid container justifyContent="flex-end" spacing={gridSpacing}>
         {btnCreateNewAccount && (
           <Grid item>
             <Button variant="contained" color={'primary'} onClick={createNewAccount}>
@@ -381,21 +382,15 @@ const EnhancedTableToolbar = (props) => {
         </Grid>
 
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}  style={{minWidth:1000,maxWidth:1000}}>
-          <Grid container justify="flex-end" alignItems="center">
-          { (documentType === 'department' || documentType === 'processrole') &&(<>
-                  {documentType === 'processrole' &&(
-                    <Autocomplete
-                    style={{minWidth:250,maxWidth:250}}
-                     size="small"
-                     fullWidth
-                     options={deptList}
-                     onChange={(e,dept) => setSelectedDepartment(dept?.department_code)}
-                     getOptionLabel={(option) => option.department_name}
-                     renderInput={(params) => <TextField label="Phòng ban" {...params} variant="outlined" />}
-                 />
-                  )
-                  }
-                  <span  style={{minWidth:100,maxWidth:100}}>Chức danh:  </span>
+          <Grid container justifyContent="flex-end" alignItems="center">
+          {documentType === 'processrole' &&(
+                    <Button style={{minWidth:100,maxWidth:100}} variant="contained" color={'primary'} onClick={()=>handleClickUpdateDeptProcessRole()}>
+                    {'Thêm'}
+                  </Button>
+                  )} 
+          { (documentType === 'department') &&(<>
+                   <span  style={{minWidth:20,maxWidth:20}}> </span>
+                  <span  style={{minWidth:80,maxWidth:80}}>Chức danh:  </span>
                   <Select
                   style={{minWidth:150,maxWidth:150}}
                     className={classes.multpleSelectField}
@@ -411,21 +406,10 @@ const EnhancedTableToolbar = (props) => {
                         </MenuItem>
                       ))}
                   </Select>
-                 
-              
-                
                 <div className={classes.toolSearchWrap}>
             
              
-                <Autocomplete
-                 style={{minWidth:300,maxWidth:300}}
-                  size="small"
-                  fullWidth
-                  options={userList}
-                  onChange={(e, u) => setUserSelected(u.email_address)}
-                  getOptionLabel={(option) => option.email_address}
-                  renderInput={(params) => <TextField label="Tài khoản" {...params} variant="outlined" />}
-              />
+                
             </div>
             {buttonAddAccount && (
 
@@ -434,13 +418,19 @@ const EnhancedTableToolbar = (props) => {
             </Button>
         
         )}
-                 {documentType === 'processrole' &&(
+                
+                 {/* {documentType === 'processrole' &&(
                     <Button style={{minWidth:100,maxWidth:100}} variant="contained" color={'primary'} onClick={()=>handleAddDeptUser(user,department_code_selected+'_'+filter.role_template_code)}>
                     {'Thêm'}
                   </Button>
-                  )} 
+                  )}  */}
           </>
           )}
+           {documentType === 'processrole' &&(
+                    <Button style={{minWidth:100,maxWidth:100}} variant="contained" color={'primary'} onClick={()=>handleClickUpdateUserProcessRole()}>
+                    {'Thêm'}
+                  </Button>
+                  )} 
           
             { (documentType != 'department' && documentType != 'processrole') &&(
 <>
@@ -458,25 +448,6 @@ const EnhancedTableToolbar = (props) => {
                </Button>
              </div>
  
-             {buttonSelectDepartment && (
-               <Select
-                 labelId="university-label"
-                 id="group_id"
-                 value={filter.group_id}
-                 className={classes.multpleSelectField}
-                 onChange={handleChangeFilter}
-                 name="group_id"
-               >
-                 <MenuItem value="">
-                   <em>Không chọn</em>
-                 </MenuItem>
-                 {dataDepartmentList?.map((department, index) => (
-                   <MenuItem key={department.Key} value={department.Key}>
-                     {department.Value}
-                   </MenuItem>
-                 ))}
-               </Select>
-             )}
  
              <ClickAwayListener onClickAway={() => setIsOpenShowColumn(false)}>
                <div className={classes.toolButtonWrap}>
