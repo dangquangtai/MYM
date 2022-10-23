@@ -18,26 +18,39 @@ export const apiEndpoints = {
   get_account_detail: '/Primary/?FlowAlias=bs_api_user_get_account_by_id&action=api',
   create_account: '/Primary/?FlowAlias=bs_api_user_create_account_by_host&action=api',
   update_account: '/Primary/?FlowAlias=bs_api_user_update_account_by_id&action=api',
-  get_all_account_by_department_and_role_template: '/Primary/?FlowAlias=bs_api_user_get_all_acount_by_departmentand_role_template&action=api',
+  get_all_account_by_department_and_role_template:
+    '/Primary/?FlowAlias=bs_api_user_get_all_acount_by_departmentand_role_template&action=api',
   assign_account_to_dept: '/Primary/?FlowAlias=bs_api_user_api_assign_account_to_department&action=api',
   remove_account_from_dept: '/Primary/?FlowAlias=bs_api_user_api_remove_account_from_department&action=api',
   active_account: '/Primary/?FlowAlias=bs_api_user_active_account&action=api',
   get_account_list_by_process_role: '/Primary/?FlowAlias=bs_api_user_get_list_by_process_role&action=api',
 
   get_all_task: '/Primary/?FlowAlias=hnn_api_booking_get_all_task&action=api',
+
   get_all_department_by_page: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
   
   get_all_account_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_all_account&action=api',
+
+
+
   //role template
-  get_all_active_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_all_active_role_template_by_page&action=api',
+  get_all_active_role_template:
+    '/Primary/?FlowAlias=bs_api_role_template_get_all_active_role_template_by_page&action=api',
   active_role_template: '/Primary/?FlowAlias=bs_api_role_template_active_role_template&action=api',
   get_detail_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_detail_role_template&action=api',
-  get_all_inactive_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_all_inactive_role_template_by_page&action=api',
+  get_all_inactive_role_template:
+    '/Primary/?FlowAlias=bs_api_role_template_get_all_inactive_role_template_by_page&action=api',
   create_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
   update_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
+
   get_role_tree_data:'/Primary/?FlowAlias=bs_api_process_role_get_tree_data_role&action=api',
   get_all_role_template_by_department_code: '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
+
+
+  get_all_role_template_by_department_code:
+    '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
+
   add_account_to_group: '/Primary/?FlowAlias=bs_api_user_add_acount_to_group&action=api',
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
 
@@ -54,14 +67,19 @@ export const apiEndpoints = {
 
   sync_group_for_department: '/Primary/?FlowAlias=bs_api_role_template_sync_group_for_department&action=api',
   get_tree_view_data: '/Primary/?FlowAlias=bs_api_dept_get_tree_view_data&action=api',
- 
+
   deactive_department: '/Primary/?FlowAlias=bs_api_dept_deactive_department&action=api',
   create_department: '/Primary/?FlowAlias=bs_api_dept_create_department&action=api',
   update_department: '/Primary/?FlowAlias=bs_api_dept_update_department&action=api',
   get_department_list: '/Primary/?FlowAlias=bs_api_dept_get_department_list&action=api',
   get_department_type_list: '/Primary/?FlowAlias=bs_api_dept_get_department_type_list&action=api',
   get_department_detail: '/Primary/?FlowAlias=bs_api_dept_get_detail_department_by_name&action=api',
+
   get_dept_list_by_process_role:'/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
+
+  get_all_department_by_page: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
+  get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
+
 
   // Meida
   // // Playlist
@@ -114,7 +132,7 @@ export const apiEndpoints = {
   // partner category
   get_all_active_partner_category: '/Primary/?FlowAlias=bs_api_partner_get_all_partner_category&action=api',
   create_partner_category: '/Primary/?FlowAlias=bs_api_partner_create_new_partner_category&action=api',
-  get_partner_category_detail:'/Primary/?FlowAlias=bs_api_partner_get_partner_category_detail&action=api',
+  get_partner_category_detail: '/Primary/?FlowAlias=bs_api_partner_get_partner_category_detail&action=api',
   update_partner_category: '/Primary/?FlowAlias=bs_api_partner_update_partner_category&action=api',
 
   // // Counseling Category
@@ -157,6 +175,7 @@ export const apiEndpoints = {
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
   cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
+  get_full_calendar: '/Primary/?FlowAlias=bs_api_counselling_get_full_calendar&action=api',
 
   // Marketing
   // // Batch
@@ -182,6 +201,7 @@ export const apiEndpoints = {
   get_detail_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
   update_event: '/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
   set_active_event: '/Primary/?FlowAlias=bs_api_marketing_active_event&action=api',
+  get_all_event: '/Primary/?FlowAlias=bs_api_marketing_get_all_event_list_by_page&action=api',
   // // Event Category
   get_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list_by_page&action=api',
   create_event_category: '/Primary/?FlowAlias=bs_api_marketing_create_new_event_category&action=api',
@@ -197,11 +217,30 @@ export const apiEndpoints = {
   set_active_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card_batch&action=api',
   generate_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_generate_prepaid_card&action=api',
   send_email_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_send_email_prepaid_card&action=api',
+  update_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_update_prepaid_card_batch&action=api',
 
   // // Prepaid Card
   get_all_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_get_all_prepaid_card&action=api',
   set_active_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card&action=api',
   assign_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_assign_prepaid_card&action=api',
+
+  // Document
+  // // File Category
+  get_file_category_list: '/Primary/?FlowAlias=bs_api_document_get_file_category_list_by_page&action=api',
+  create_file_category: '/Primary/?FlowAlias=bs_api_document_create_new_file_category&action=api',
+  get_detail_file_category: '/Primary/?FlowAlias=bs_api_document_get_file_category_detail&action=api',
+  update_file_category: '/Primary/?FlowAlias=bs_api_document_update_file_category&action=api',
+  set_active_file_category: '/Primary/?FlowAlias=bs_api_document_set_active_file_category&action=api',
+  add_group_file_category: '/Primary/?FlowAlias=bs_api_document_add_group_file_category&action=api',
+  remove_group_file_category: '/Primary/?FlowAlias=bs_api_document_remove_group_file_category&action=api',
+  get_file_type_and_category: '/Primary/?FlowAlias=bs_api_document_get_file_type_and_category&action=api',
+  // // File
+  get_all_active_file: '/Primary/?FlowAlias=bs_api_document_get_active_file_list_by_page&action=api',
+  get_all_inactive_file: '/Primary/?FlowAlias=bs_api_document_get_inactive_file_list_by_page&action=api',
+  create_file: '/Primary/?FlowAlias=bs_api_document_create_new_file&action=api',
+  get_detail_file: '/Primary/?FlowAlias=bs_api_document_get_file_detail&action=api',
+  update_file: '/Primary/?FlowAlias=bs_api_document_update_file&action=api',
+  set_active_file: '/Primary/?FlowAlias=bs_api_document_set_active_file&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -254,6 +293,7 @@ export const counsellingActions = {
   cancel_list: 'MYM_BOOKING_COUNSELING_OPEN_CANCEL_COUNSELLING_LIST',
   handle_list: 'MYM_BOOKING_COUNSELING_OPEN_HANDLE_COUNSELLING_LIST',
   uncompleted_list: 'MYM_BOOKING_COUNSELING_OPEN_UNCOMPLETED_COUNSELING_LIST',
+  calendar: 'MYM_BOOKING_HOME_OPEN_CALENDAR',
 };
 
 export const batchActions = {
@@ -279,11 +319,21 @@ export const listMentorActions = {
 };
 export const partnerActions = {
   active_list: 'MYM_PARTNER_COMPANY_OPEN_ACTIVE_PARTNER_LIST',
-  inactive_list: 'MYM_PARTNER_COMPANY_OPEN_INACTIVE_PARTNER_LIST'
+  inactive_list: 'MYM_PARTNER_COMPANY_OPEN_INACTIVE_PARTNER_LIST',
 };
 export const partnerCategoryActions = {
   active_list: 'MYM_PARTNER_COMPANY_OPEN_CATEGORY_LIST',
 };
+
+export const fileActions = {
+  active_list: 'MYM_DOCUMENT_HOME_OPEN_ACTIVE_FILE',
+  inactive_list: 'MYM_DOCUMENT_HOME_OPEN_INACTIVE_FILE',
+};
+
+export const fileCategoryActions = {
+  active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_CATEGORY',
+};
+
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
   dashboard: '/dashboard/default',
@@ -420,6 +470,7 @@ export const view = {
     detail: {
       generate: 'MYM_PAYMENT_PREPAIDCARD_BATCH_GENERATE_FORM_BUTTON',
       import: 'MYM_PAYMENT_PREPAIDCARD_BATCH_IMPORT_FORM_BUTTON',
+      save: 'MYM_PAYMENT_PREPAIDCARD_BATCH_SAVE_FORM_BUTTON',
     },
   },
   mentorlist: {
@@ -437,8 +488,6 @@ export const view = {
     detail: {
       save: 'MYM_PARTNER_MENTOR_PARTNER_SAVE_FORM_BUTTON',
     },
-   
-  
   },
   partner_category: {
     list: {
@@ -446,6 +495,22 @@ export const view = {
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_PARTNER_CATRGORY_SAVE_FORM_BUTTON',
+    },
+  },
+  file: {
+    list: {
+      create: 'MYM_DOCUMENT_HOME_FILE_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_DOCUMENT_HOME_FILE_SAVE_FORM_BUTTON',
+    },
+  },
+  fileCategory: {
+    list: {
+      create: 'MYM_DOCUMENT_HOME_CATEGORY_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_DOCUMENT_HOME_CATEGORY_SAVE_FORM_BUTTON',
     },
   },
 };

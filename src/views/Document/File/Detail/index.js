@@ -13,29 +13,27 @@ import {
   Tabs,
   Typography,
   TextField,
-  Select,
   MenuItem,
+  Select,
 } from '@material-ui/core';
 import Alert from '../../../../component/Alert';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useView from '../../../../hooks/useView';
-import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, CONFIRM_CHANGE } from '../../../../store/actions.js';
+import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions.js';
 import { view } from '../../../../store/constant';
 import useStyles from '../../../../utils/classes';
-import { convertDate } from './../../../../utils/table';
-import { initCardBatchData, userAvatar } from '../../../../store/constants/initial.js';
+import { initFileData, userAvatar } from '../../../../store/constants/initial.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
-import useMedia from './../../../../hooks/useMedia';
-import usePayment from './../../../../hooks/usePayment';
+import useDocument from './../../../../hooks/useDocument';
 import {
   History as HistoryIcon,
   DescriptionOutlined as DescriptionOutlinedIcon,
   ImageOutlined as ImageIcon,
+  InfoOutlined as InfoOutlinedIcon,
+  Attachment as AttachmentIcon,
 } from '@material-ui/icons';
-import { NoPaddingAutocomplete } from '../../../../component/Autocomplete/index.js';
-import useConfirmPopup from './../../../../hooks/useConfirmPopup';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -69,20 +67,16 @@ function a11yProps(index) {
   };
 }
 
-const CardBatchModal = () => {
+const FileModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const { form_buttons: formButtons } = useView();
-  const { cardBatchDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { fileDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const generateButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.generate);
-  const importButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.import);
-  const saveButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.save);
+  const saveButton = formButtons.find((button) => button.name === view.file.detail.save);
+  const { createFile, updateFile, getCatgeoryAndType } = useDocument();
 
-  const { createCardBatch, generateCard, updateCardBatch } = usePayment();
-  const { getCounselingCategories } = useMedia();
-  const { setConfirmPopup } = useConfirmPopup();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
@@ -95,12 +89,15 @@ const CardBatchModal = () => {
     text: '',
   });
 
-  const [cardBatchData, setCardBatchData] = useState(initCardBatchData);
-  const [counsellings, setCounsellings] = useState([]);
+  const [fileData, setFileData] = useState(initFileData);
+  const [file, setFile] = useState({
+    type: [],
+    category: [],
+  });
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, fileDocument: false });
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -115,16 +112,16 @@ const CardBatchModal = () => {
     });
   };
 
-  const showConfirmPopup = ({ title = 'Thông báo', message = '', action = null, payload = null, onSuccess = null }) => {
-    setConfirmPopup({ type: CONFIRM_CHANGE, open: true, title, message, action, payload, onSuccess });
-  };
-
   const setDocumentToDefault = async () => {
-    setCardBatchData(initCardBatchData);
+    setFileData(initFileData);
     setTabIndex(0);
   };
   const setURL = (image) => {
-    setCardBatchData({ ...cardBatchData, image_url: image });
+    if (dialogUpload.type === 'image') {
+      setFileData({ ...fileData, image_url: image });
+    } else {
+      setFileData({ ...fileData, file_url: image });
+    }
   };
 
   const handleOpenDiaLog = (type) => {
@@ -143,45 +140,44 @@ const CardBatchModal = () => {
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setCardBatchData({ ...cardBatchData, [name]: value });
+    setFileData({ ...fileData, [name]: value });
   };
 
   const handleSubmitForm = async () => {
     try {
-      if (selectedDocument.id) {
-        await updateCardBatch(cardBatchData);
-        handleOpenSnackbar(true, 'success', 'Cập nhật thành công');
+      if (selectedDocument?.id) {
+        await updateFile(fileData);
+        handleOpenSnackbar(true, 'success', 'Cập nhật File thành công!');
       } else {
-        await createCardBatch(cardBatchData);
-        handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
+        await createFile(fileData);
+        handleOpenSnackbar(true, 'success', 'Tạo mới File thành công!');
       }
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'batch' });
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'file' });
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
 
-  const handleClickGenerate = async () => {
-    showConfirmPopup({
-      title: 'Thông báo',
-      message: 'Bạn có chắc chắn muốn tạo card cho batch này?',
-      action: generateCard,
-      payload: cardBatchData.id,
-      onSuccess: () => {
-        handleOpenSnackbar(true, 'success', 'Tạo voucher thành công!');
-      },
-    });
-  };
-
   useEffect(() => {
     if (!selectedDocument) return;
-    setCardBatchData({
-      ...initCardBatchData,
+    setFileData({
+      ...initFileData,
       ...selectedDocument,
       image_url: selectedDocument?.image_url || userAvatar,
     });
   }, [selectedDocument]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { type_list, category_list } = await getCatgeoryAndType();
+      setFile({
+        type: type_list,
+        category: category_list,
+      });
+    };
+    fetch();
+  }, []);
 
   return (
     <React.Fragment>
@@ -205,8 +201,8 @@ const CardBatchModal = () => {
         open={dialogUpload.open || false}
         onSuccess={setURL}
         onClose={handleCloseUploadDiaLog}
-        folder="Bacth"
-        type="image"
+        folder={dialogUpload?.type === 'image' ? 'Document/File Image' : 'Document/File'}
+        type={dialogUpload?.type}
       />
       <Grid container>
         <Dialog
@@ -218,7 +214,7 @@ const CardBatchModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Chi tiết Podcast
+              Chi tiết File
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -248,7 +244,7 @@ const CardBatchModal = () => {
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
                         <HistoryIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
-                        Điều khoản và điều kiện
+                        Lịch sử thay đổi
                       </Typography>
                     }
                     value={1}
@@ -268,9 +264,9 @@ const CardBatchModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={cardBatchData.image_url} alt="" />
+                          <img src={fileData.image_url} alt="" />
                           <div>
-                            <div>Upload/Change Batch Image</div>
+                            <div>Upload/Change File Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
                         </div>
@@ -278,8 +274,43 @@ const CardBatchModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            {/* <LibraryMusicOutlinedIcon /> */}
-                            <span>Thông tin Batch</span>
+                            <AttachmentIcon />
+                            <span>File</span>
+                          </div>
+                        </div>
+                        <div
+                          className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody} ${classes.audioBody}`}
+                        >
+                          <div>Upload/Change File</div>
+                          <Button onClick={() => handleOpenDiaLog('file')}>Chọn File</Button>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Source File:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="file_url"
+                                value={fileData.file_url}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <InfoOutlinedIcon />
+                            <span>Thông tin File</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
@@ -294,7 +325,7 @@ const CardBatchModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="title"
-                                value={cardBatchData.title}
+                                value={fileData.title}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
@@ -308,109 +339,52 @@ const CardBatchModal = () => {
                               <TextField
                                 fullWidth
                                 multiline
-                                rows={4}
-                                rowsMax={5}
+                                rows={3}
+                                rowsMax={4}
                                 variant="outlined"
                                 name="description"
-                                value={cardBatchData.description}
+                                value={fileData.description}
                                 className={classes.multilineInputField}
                                 onChange={handleChanges}
                               />
                             </Grid>
                           </Grid>
-                        </div>
-                      </div>
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            {/* <LibraryMusicOutlinedIcon /> */}
-                            <span>Thông tin thêm</span>
-                          </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Áp dụng từ ngày:</span>
+                              <span className={classes.tabItemLabelField}>Danh mục:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="date"
-                                variant="outlined"
-                                name="available_from_date"
-                                value={convertDate(cardBatchData.available_from_date)}
-                                className={classes.inputField}
+                              <Select
+                                name="category_id"
+                                className={classes.multpleSelectField}
+                                value={fileData.category_id || ''}
                                 onChange={handleChanges}
-                              />
+                              >
+                                {file.category?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.value}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Áp dụng đến ngày:</span>
+                              <span className={classes.tabItemLabelField}>Loại File:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                type="date"
-                                variant="outlined"
-                                name="available_to_date"
-                                value={convertDate(cardBatchData.available_to_date)}
-                                className={classes.inputField}
+                              <Select
+                                name="file_type_id"
+                                className={classes.multpleSelectField}
+                                value={fileData.file_type_id || ''}
                                 onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Prefix:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="prefix"
-                                value={cardBatchData.prefix}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Số lượng:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="amount"
-                                value={cardBatchData.amount}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Giá trị:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="value"
-                                value={cardBatchData.value}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
+                              >
+                                {file.type?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.value}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </Grid>
                           </Grid>
                         </div>
@@ -418,12 +392,17 @@ const CardBatchModal = () => {
                     </Grid>
                   </Grid>
                 </TabPanel>
-                <TabPanel value={tabIndex} index={1}></TabPanel>
+                <TabPanel value={tabIndex} index={1}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={6} md={6} xs={12}></Grid>
+                    <Grid item lg={6} md={6} xs={12}></Grid>
+                  </Grid>
+                </TabPanel>
               </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justifyContent="space-between">
+            <Grid container justify="space-between">
               <Grid item>
                 <Button
                   variant="contained"
@@ -434,28 +413,8 @@ const CardBatchModal = () => {
                 </Button>
               </Grid>
               <Grid item className={classes.gridItemInfoButtonWrap}>
-                {importButton && selectedDocument?.id && (
-                  <Button variant="contained" className={classes.gridItemInfoButton} onClick={handleClickGenerate}>
-                    {importButton.text}
-                  </Button>
-                )}
-                {generateButton && selectedDocument?.id && (
-                  <Button
-                    disabled={cardBatchData.is_generated}
-                    variant="contained"
-                    className={classes.gridItemInfoButton}
-                    onClick={handleClickGenerate}
-                  >
-                    {generateButton.text}
-                  </Button>
-                )}
                 {saveButton && selectedDocument?.id && (
-                  <Button
-                    disabled={cardBatchData.is_generated}
-                    variant="contained"
-                    style={{ background: 'rgb(97, 42, 255)' }}
-                    onClick={handleSubmitForm}
-                  >
+                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleSubmitForm}>
                     {saveButton.text}
                   </Button>
                 )}
@@ -473,4 +432,4 @@ const CardBatchModal = () => {
   );
 };
 
-export default CardBatchModal;
+export default FileModal;

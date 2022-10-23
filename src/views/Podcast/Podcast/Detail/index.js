@@ -25,6 +25,7 @@ import {
   IconButton,
   FormControl,
 } from '@material-ui/core';
+import { Editor } from '@tinymce/tinymce-react';
 import Alert from '../../../../component/Alert';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -50,6 +51,7 @@ import {
 import { Autocomplete } from '@material-ui/lab';
 import { NoPaddingAutocomplete } from '../../../../component/Autocomplete/index.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
+import { tinyMCESecretKey } from './../../../../store/constant';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -98,6 +100,7 @@ const PodcastModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const editorRef = React.useRef(null);
   const { form_buttons: formButtons } = useView();
   const { podcastDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
@@ -148,6 +151,7 @@ const PodcastModal = () => {
     setPodcastData(initPodcastData);
     setSelectedEpisodes([]);
     setTabIndex(0);
+    editorRef.current.setContent('');
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
@@ -182,10 +186,18 @@ const PodcastModal = () => {
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updatePodcast({ ...podcastData, list_episode_id: selectedEpisodes });
+        await updatePodcast({
+          ...podcastData,
+          list_episode_id: selectedEpisodes,
+          description: editorRef.current.getContent({ format: 'text' }),
+        });
         handleOpenSnackbar(true, 'success', 'Cập nhật Podcast thành công!');
       } else {
-        await createPodcast({ ...podcastData, list_episode_id: selectedEpisodes || [] });
+        await createPodcast({
+          ...podcastData,
+          list_episode_id: selectedEpisodes || [],
+          description: editorRef.current.getContent({ format: 'text' }),
+        });
         handleOpenSnackbar(true, 'success', 'Tạo mới Podcast thành công!');
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'podcast' });
@@ -334,7 +346,7 @@ const PodcastModal = () => {
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
                         <HistoryIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
-                        Lịch sử thay đổi
+                        Mô tả
                       </Typography>
                     }
                     value={1}
@@ -552,19 +564,6 @@ const PodcastModal = () => {
                               </Select>
                             </FormControl>
                           </div>
-                          {/* <div className={classes.tabItemNoteSelection}>
-                            <div className={classes.tabItemNoteSelectionLabel}>Episode: </div>
-                            <Autocomplete
-                              fullWidth
-                              id="combo-box-demo"
-                              options={Object.values(episodes)}
-                              getOptionLabel={(option) => option.title}
-                              className={classes.inputField}
-                              renderInput={(params) => (
-                                <TextField {...params} className={classes.inputField} variant="outlined" />
-                              )}
-                            />
-                          </div> */}
                           <div className={classes.selectedNoteListSection}>
                             <TableContainer component={Paper} className={classes.tableNote}>
                               <Table stickyHeader aria-label="sticky table">
@@ -602,44 +601,6 @@ const PodcastModal = () => {
                               </Table>
                             </TableContainer>
                           </div>
-                          {/* <div className={`${classes.tabItemNoteSelection} ${classes.tabItemNoteInputWrap}`}>
-                            <Grid container direction="row" alignItems="center">
-                              <Grid item xs={6}>
-                                <Typography variant="subtitle2" className={classes.tabItemNoteSelectionLabel}>
-                                  Danh sách tập:
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={6} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Tooltip title="Thêm tập mới">
-                                  <IconButton aria-label="delete" onClick={() => setIsOpenModal(true)}>
-                                    <AddCircleIcon />
-                                  </IconButton>
-                                </Tooltip>
-                              </Grid>
-                            </Grid>
-                            <TableContainer component={Paper} className={classes.tableNote}>
-                              <Table stickyHeader aria-label="sticky table">
-                                <TableHead>
-                                  <TableRow>
-                                    <StyledTableCell>Tập</StyledTableCell>
-                                    <StyledTableCell align="left">Ảnh</StyledTableCell>
-                                    <StyledTableCell align="left">Tiêu đề</StyledTableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {podcastData?.list_episode?.map((row) => (
-                                    <TableRow key={row.id}>
-                                      <StyledTableCell align="left">{row.episode_number}</StyledTableCell>
-                                      <StyledTableCell align="left">
-                                        <img src={row.image_url} alt="" width="60" />
-                                      </StyledTableCell>
-                                      <StyledTableCell align="left">{row.title}</StyledTableCell>
-                                    </TableRow>
-                                  ))}
-                                </TableBody>
-                              </Table>
-                            </TableContainer>
-                          </div> */}
                         </div>
                       </div>
                     </Grid>
@@ -647,8 +608,20 @@ const PodcastModal = () => {
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
                   <Grid container spacing={1}>
-                    <Grid item lg={6} md={6} xs={12}></Grid>
-                    <Grid item lg={6} md={6} xs={12}></Grid>
+                    <Grid item xs={12}>
+                      <Editor
+                        apiKey={tinyMCESecretKey}
+                        onInit={(evt, editor) => (editorRef.current = editor)}
+                        initialValue={podcastData.description}
+                        init={{
+                          height: 500,
+                          menubar: false,
+                          plugins: 'emoticons',
+                          toolbar: 'undo redo | ' + 'emoticons',
+                          content_style: 'body { font-family:Roboto,sans-serif; font-size:15px }',
+                        }}
+                      />
+                    </Grid>
                   </Grid>
                 </TabPanel>
               </Grid>

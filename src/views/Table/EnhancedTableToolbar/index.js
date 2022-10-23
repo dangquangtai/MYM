@@ -70,6 +70,7 @@ const EnhancedTableToolbar = (props) => {
     buttonAssignCard,
     assignCard,
     handleSyncRole,
+
     department_code_selected,
    
     handleAssignAccount,
@@ -85,6 +86,12 @@ const EnhancedTableToolbar = (props) => {
 
     handleClickUpdateUserProcessRole,
     handleClickUpdateDeptProcessRole
+
+    buttonCreateFile,
+    createFile,
+    buttonCreateFileCategory,
+    createFileCategory,
+
   } = props;
 
   const filterRef = useRef(null);
@@ -124,11 +131,15 @@ const EnhancedTableToolbar = (props) => {
     setFilter({ ...filter, group_id: group_id });
     handleFilterChange(filter);
   };
+
   const handleSubmitAssign = () =>{
     handleAssignAccount(user)
   }
   const [user,setUserSelected]=useState();
   const [dept,setDeptSelected]=useState();
+
+
+
   const handleResetFilter = () => {
     setFilter((pre) => ({
       ...pre,
@@ -175,10 +186,15 @@ const EnhancedTableToolbar = (props) => {
   };
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
+
   
   useEffect(() => {
    
   }, []);
+
+  const [dataDepartmentList, setDepartment] = React.useState();
+  useEffect(() => {}, []);
+
 
   useEffect(() => {
     setFilter({
@@ -372,6 +388,22 @@ const EnhancedTableToolbar = (props) => {
         )}
 
        
+
+        {buttonCreateFile && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createFile}>
+              {buttonCreateFile.text}
+            </Button>
+          </Grid>
+        )}
+
+        {buttonCreateFileCategory && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={createFileCategory}>
+              {buttonCreateFileCategory.text}
+            </Button>
+          </Grid>
+        )}
 
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
           {numSelected > 0 && (

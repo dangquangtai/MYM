@@ -47,15 +47,13 @@ export const initPartnerData = {
   is_active: false,
   is_featured: false,
   image_url: '',
-  
 };
 
 export const initPartnerCategoryData = {
   id: '',
   title: '',
-  created_date:'',
-  created_by:'',
-  
+  created_date: '',
+  created_by: '',
 };
 
 export const initMentorListData = {
@@ -133,8 +131,6 @@ export const initCardBatchData = {
   is_generated: false,
 };
 
-export const genderList = ['Nam', 'Nữ'];
-
 export const initWorkingDay = {
   week_day: '',
   from_hour: '',
@@ -181,20 +177,28 @@ export const initEvent = {
   description: '',
   price: 0,
 };
-export const initAccount ={
+export const initAccount = {
+  current_school: '',
+  degree_id: '',
+  dob: '1/1/2018',
+  email_address: '@gmail.com',
+  full_name: ' ',
+  gender_id: '',
+  image_url:
+    'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Avatar%20Nam.jpg?alt=media&token=8208326e-faa9-4bdf-b811-a48481839cb5',
+  is_active: true,
+  job_title: '',
+  major: '',
+  phone_number: '',
+  province_id: '',
+  password: '',
+};
 
-current_school: "",
-degree_id:"",
-dob: "1/1/2018",
-email_address:"@gmail.com",
-full_name: " ",
-gender_id: "",
-image_url: "https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Avatar%20Nam.jpg?alt=media&token=8208326e-faa9-4bdf-b811-a48481839cb5",
-is_active: true,
-job_title: '',
-major: "",
-phone_number:'', 
-province_id:'', 
-password:'',
-} 
-export const typeBatchList = ['Miễn phí', 'Tính phí', 'Khuyến mãi'];
+export const initFileData = {
+  title: '',
+  description: '',
+  image_url: '',
+  file_url: '',
+  category_id: '',
+  file_type_id: '',
+};

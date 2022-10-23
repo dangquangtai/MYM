@@ -27,9 +27,15 @@ import PartnerModal from '../../views/Partner/Partner/Detail';
 import PartnerCategoryModal from '../../views/Partner/Partner/Partner Category/Detail';
 import CardBatchModal from './../../views/Payment/Batch/Detail/index';
 import CardModal from './../../views/Payment/PrepaidCard/AssignModal/index';
+
 import ProcessRoleModal from '../../views/ProcessRole/Detail';
 import ProcessRoleUserModal from '../../views/ProcessRole/User';
 import ProcessRoleDeptModal from '../../views/ProcessRole/Department';
+
+import FileModal from './../../views/Document/File/Detail/index';
+import FileCategoryModal from './../../views/Document/FileCategory/Detail/index';
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -95,7 +101,6 @@ const MainLayout = ({ children }) => {
       case 'department':
         return (
           <>
-         
             <DepartmentModal />
           </>
         );
@@ -103,7 +108,6 @@ const MainLayout = ({ children }) => {
         return (
           <>
             <RoleModal />
-         
           </>
         );
       case 'batch':
@@ -124,14 +128,21 @@ const MainLayout = ({ children }) => {
         return <MentorListModal />;
       case 'partner':
         return <PartnerModal />;
-        case 'partner_category':
-          return <PartnerCategoryModal />;
+      case 'partner_category':
+        return <PartnerCategoryModal />;
       case 'cardbatch':
         return <CardBatchModal />;
       case 'prepaidcard':
         return <CardModal />;
+
       case 'processrole':
         return <><ProcessRoleModal/><ProcessRoleUserModal/><ProcessRoleDeptModal/></>;
+
+      case 'file':
+        return <FileModal />;
+      case 'fileCategory':
+        return <FileCategoryModal />;
+
     }
   };
 
