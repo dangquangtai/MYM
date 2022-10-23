@@ -19,8 +19,13 @@ export const initialState = {
   partnerCategoryDocument: false,
   cardBatchDocument: false,
   cardDocument: false,
+
+  processDeptDocument: false,
+  processUserDocument:false,
+
   fileDocument: false,
   fileCategoryDocument: false,
+
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -46,8 +51,13 @@ const floatingMenuReducer = (state = initialState, action) => {
         partnerCategoryDocument: action.partnerCategoryDocument,
         cardBatchDocument: action.cardBatchDocument,
         cardDocument: action.cardDocument,
+
+        processDeptDocument: action.processDeptDocument,
+        processUserDocument: action.processUserDocument,
+
         fileDocument: action.fileDocument,
         fileCategoryDocument: action.fileCategoryDocument,
+
       };
     default:
       return state;

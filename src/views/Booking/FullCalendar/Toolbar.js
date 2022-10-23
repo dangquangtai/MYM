@@ -44,7 +44,7 @@ const Toolbar = ({ className, date, onDateNext, onDatePrev, onDateToday, onAddCl
       className={clsx(classes.root, className)}
       alignItems="center"
       container
-      justify="space-between"
+      justifyContent="space-between"
       spacing={3}
       {...rest}
     >

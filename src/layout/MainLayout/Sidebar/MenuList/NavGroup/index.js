@@ -56,7 +56,7 @@ const NavGroup = (props) => {
   return (
     <List
       subheader={
-        <Grid container justify="space-between">
+        <Grid container justifyContent="space-between">
           {drawerOpen && (
             <Grid item>
               <Typography

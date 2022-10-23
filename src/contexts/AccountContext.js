@@ -54,6 +54,9 @@ export const AccountProvider = ({ children }) => {
         department_code: department_code,
         role_template_code: role_template_code,
         outputtype: 'RawJson',
+        page:1,
+        no_item_per_page:100,
+        search_text:'',
       })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {

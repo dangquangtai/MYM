@@ -17,8 +17,12 @@ import {
   listMentorActions,
   partnerActions,
   partnerCategoryActions,
+
+  processroleActions,
+
   fileActions,
   fileCategoryActions,
+
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -30,10 +34,7 @@ export function getUrlByAction(selectedFolder) {
       return apiEndpoints.get_all_deactive_account;
     }
     case departmentActions.list_active_department: {
-      return apiEndpoints.get_tree_view_data;
-    }
-    case departmentActions.list_inactive_department: {
-      return apiEndpoints.get_all_inactive_department;
+      return apiEndpoints.get_all_account_by_department_and_role_template;
     }
     case roleActions.list_active_role: {
       return apiEndpoints.get_all_active_role_template;
@@ -117,6 +118,10 @@ export function getUrlByAction(selectedFolder) {
     case partnerCategoryActions.active_list: {
       return apiEndpoints.get_all_active_partner_category;
     }
+
+    case processroleActions.list_tree: {
+      return apiEndpoints.get_account_list_by_process_role;
+
     case fileActions.active_list: {
       return apiEndpoints.get_all_active_file;
     }
@@ -125,6 +130,7 @@ export function getUrlByAction(selectedFolder) {
     }
     case fileCategoryActions.active_list: {
       return apiEndpoints.get_file_category_list;
+
     }
     default: {
       return '';

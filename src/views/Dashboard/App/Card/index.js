@@ -32,14 +32,14 @@ const AppCard = (props) => {
   return (
     <Card className={classes.revenuecard}>
       <CardContent>
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           <img
             className={classes.img}
             src={image}
             alt="app"
           />
         </Grid>
-        <Grid container justify="center" className={classes.content}>
+        <Grid container justifyContent="center" className={classes.content}>
           <Grid item>
             <Typography gutterBottom variant="h3" align="center">
               {title}
@@ -49,7 +49,7 @@ const AppCard = (props) => {
             </Typography>
           </Grid>
         </Grid>
-        {/* <Grid container justify="center">
+        {/* <Grid container justifyContent="center">
           <Box mt={3}>
             <Button variant="contained" style={{ backgroundColor: color }}>
               <Link to="/dashboard/default" onClick={handleClick} style={{ textDecoration: 'none', color: 'white' }}>

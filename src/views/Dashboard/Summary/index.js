@@ -127,9 +127,9 @@ const Summnary = () => {
   return (
     <React.Fragment>
       <Grid item xs={12}>
-        {/* <Grid container spacing={gridSpacing} justify="flex-end">
+        {/* <Grid container spacing={gridSpacing} justifyContent="flex-end">
           <Grid item xs={6} sm={6} style={{ paddingTop: 0, paddingBottom: 0 }}>
-            <Grid container spacing={gridSpacing} justify="flex-end" alignItems='flex-end'>
+            <Grid container spacing={gridSpacing} justifyContent="flex-end" alignItems='flex-end'>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid item xs={3}>
                   <KeyboardDatePicker

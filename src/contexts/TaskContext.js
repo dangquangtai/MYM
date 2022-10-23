@@ -29,7 +29,9 @@ export const TaskProvider = ({ children }) => {
       search_text = '',
       from_date = '',
       to_date = '',
-      group_id ='',
+      department_code ='',
+      role_template_code ='',
+      process_role_code = '',
       university_id = '',
       status = '',
       career = ''
@@ -47,9 +49,11 @@ export const TaskProvider = ({ children }) => {
         from_date,
         to_date,
         university_id,
-        group_id,
+        department_code,
+        role_template_code,
         status,
         career,
+        process_role_code,
         outputtype: 'RawJson',
       })
       .then((res) => {
@@ -70,7 +74,9 @@ export const TaskProvider = ({ children }) => {
             search_text,
             folder_id,
             project_id,
-            group_id,
+            department_code,
+            role_template_code,
+            process_role_code,
           });
 
           setView({ ...view, action: 'list' });

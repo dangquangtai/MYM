@@ -48,13 +48,13 @@ const Login = () => {
   const classes = useStyles();
 
   return (
-    <Grid container justify="center" alignItems="center" className={classes.root}>
+    <Grid container justifyContent="center" alignItems="center" className={classes.root}>
       <Grid item xs={11} sm={7} md={6} lg={4}>
         <Card className={classes.card}>
           <CardContent className={classes.content}>
-            <Grid container direction="column" spacing={4} justify="center">
+            <Grid container direction="column" spacing={4} justifyContent="center">
               <Grid item xs={12}>
-                <Grid container justify="space-between">
+                <Grid container justifyContent="space-between">
                   <Grid item>
                     <Typography color="textPrimary" gutterBottom variant="h2">
                       Đăng nhập

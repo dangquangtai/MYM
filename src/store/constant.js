@@ -23,8 +23,16 @@ export const apiEndpoints = {
   assign_account_to_dept: '/Primary/?FlowAlias=bs_api_user_api_assign_account_to_department&action=api',
   remove_account_from_dept: '/Primary/?FlowAlias=bs_api_user_api_remove_account_from_department&action=api',
   active_account: '/Primary/?FlowAlias=bs_api_user_active_account&action=api',
+  get_account_list_by_process_role: '/Primary/?FlowAlias=bs_api_user_get_list_by_process_role&action=api',
 
   get_all_task: '/Primary/?FlowAlias=hnn_api_booking_get_all_task&action=api',
+
+  get_all_department_by_page: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
+  get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
+  
+  get_all_account_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_all_account&action=api',
+
+
 
   //role template
   get_all_active_role_template:
@@ -36,10 +44,25 @@ export const apiEndpoints = {
   create_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
   update_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
 
+  get_role_tree_data:'/Primary/?FlowAlias=bs_api_process_role_get_tree_data_role&action=api',
+  get_all_role_template_by_department_code: '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
+
+
   get_all_role_template_by_department_code:
     '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
+
   add_account_to_group: '/Primary/?FlowAlias=bs_api_user_add_acount_to_group&action=api',
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
+
+  create_process_role:'/Primary/?FlowAlias=bs_api_process_create_role&action=api',
+  update_process_role: '/Primary/?FlowAlias=bs_api_process_update_role&action=api',
+  add_user_depart_to_process_role: '/Primary/?FlowAlias=bs_api_process_add_dept_user&action=api',
+  remove_user_from_process_role: '/Primary/?FlowAlias=bs_api_process_remove_user&action=api',
+  sync_process_role: '/Primary/?FlowAlias=bs_api_process_sync_role_department&action=api',
+  remove_dept_from_process_role: '/Primary/?FlowAlias=bs_api_process_remove_dept&action=api',
+  get_role_detail: '/Primary/?FlowAlias=bs_api_process_role_get_role_detail_by_role_code&action=api',
+  get_process_list: '/Primary/?FlowAlias=bs_get_process_by_app_code&action=api',
+
   //department
 
   sync_group_for_department: '/Primary/?FlowAlias=bs_api_role_template_sync_group_for_department&action=api',
@@ -51,8 +74,12 @@ export const apiEndpoints = {
   get_department_list: '/Primary/?FlowAlias=bs_api_dept_get_department_list&action=api',
   get_department_type_list: '/Primary/?FlowAlias=bs_api_dept_get_department_type_list&action=api',
   get_department_detail: '/Primary/?FlowAlias=bs_api_dept_get_detail_department_by_name&action=api',
+
+  get_dept_list_by_process_role:'/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
+
   get_all_department_by_page: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
+
 
   // Meida
   // // Playlist
@@ -222,6 +249,9 @@ export const roleActions = {
   list_active_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_DEACTIVE_LIST',
   list_inactive_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_ACTIVE_LIST',
 };
+export const processroleActions ={
+  list_tree: 'MYM_ORGANISATION_HOME_PROCESS_ROLE_MANAGE',
+}
 export const accountActions = {
   list_active_user: 'MYM_ORGANISATION_HOME_OPEN_ACTIVE_USER_LIST',
   list_inactive_user: 'MYM_ORGANISATION_HOME_OPEN_USER_DEACTIVE_LIST',
@@ -324,8 +354,9 @@ export const view = {
   },
   department: {
     list: {
-      create: 'DEPARTMENT_LIST_CREATE_MENU_BUTTON',
-      show_tree: 'DEPARTMENT_LIST_SHOW_TREE_VIEW_BUTTON',
+      create: 'MYM_ORGANISATION_HOME_CREATE_DEPARTMENT_MENU_BUTTON',
+      update:'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_MENU_BUTTON',
+      adduser: 'MYM_ORGANISATION_HOME_ADD_USER_DEPARTMENT_MENU_BUTTON',
     },
     detail: {
       save: 'DEPARTMENT_LIST_CREATE_FORM_BUTTON',
@@ -340,6 +371,13 @@ export const view = {
       sync_department: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_ROLE',
     },
     detail: {},
+  },
+  processrole:{
+    list:{
+      create: 'MYM_ORGANISATION_HOME_CREATE_NEW_PROCESS_ROLE_MENU_BUTTON',
+      update: 'MYM_ORGANISATION_HOME_UPDATE_PROCESS_ROLE_MENU_BUTTON',
+      update_dept_role: 'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_ROLE_MENU_BUTTON'
+    },
   },
   playlist: {
     list: {

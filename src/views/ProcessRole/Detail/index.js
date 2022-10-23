@@ -12,26 +12,19 @@ import {
   Typography,
   Tab,
   Select,
-  FormControl,
   MenuItem,
   TextField,
-  InputLabel,
   Snackbar,
-  Checkbox,
 } from '@material-ui/core';
 
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import style from '../Detail/style'
-import { gridSpacing, view } from '../../../store/constant';
 import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions';
-import useDepartment from '../../../hooks/useDepartment';
-import useRole from '../../../hooks/useRole';
 import Alert from '../../../component/Alert'
-import { CheckBox } from '@material-ui/icons';
+import useProcessRole from '../../../hooks/useProcessRole';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -64,40 +57,40 @@ function a11yProps(index) {
   };
 }
 
-const RoleModal = () => {
+const ProcessRoleModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tabIndex, setTabIndex] = React.useState(0);
-  const { form_buttons: formButtons, name, tabs, disabled_fields } = useView();
-  const buttonSave = formButtons.find((button) => button.name === view.department.detail.save);
+  const { form_buttons: formButtons } = useView();
+
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
 
-  const {  getDepartmentList, getDepartmentTypeList,} = useDepartment();
+ 
   const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const { createRole } = useRole();
+  const { createProcessRole,updateProcessRole,getProcess,getApp } = useProcessRole();
+ 
   const [role, setRole] = React.useState({
-    apply_to_department_type: [],
-    is_active: true,
-    is_approval_role: true,
-    is_visible_for_selection: true,
-    role_template_code: "",
-    role_template_id: "",
-    role_template_name: "",
+    role_code:'',
+    role_name:'',
+    app_code:'',
+    process_code:'',
+    id:'',
+    rank:0
   });
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
     type: '',
     text: '',
   })
-  const [categories, setCategory] = React.useState();
-  const [departmentTypes, setDepartmentType] = React.useState();
+
+ 
+  const [apps, setApp] = React.useState([]);
+  const [processList, setProcess] = React.useState([]);
   useEffect(() => {
-    getDepartmentParent({
-    
-      parent_department_code: null,});
+  
     if (!selectedDocument) return;
     setRole({
 
@@ -107,33 +100,34 @@ const RoleModal = () => {
     
   }, [selectedDocument]);
 
-  
-  const getDepartmentParent = async (company_code,parent_department_code) =>{
-    try{
-      let departmentData= await getDepartmentTypeList(
-        company_code,
-       );
-      setDepartmentType(departmentData);
-      let categoriesData= await getDepartmentList(
-        company_code,
-        parent_department_code,);
-      setCategory(categoriesData);
-      
+  useEffect(() => {
+      const fetchApp =async()=>{
+        let data = await getApp();
+        setApp(data)
+      }
+      fetchApp();
+    
+  }, []);
+  useEffect(() => {
+    const fetchProcess =async()=>{
+      let data = await getProcess(role.app_code);
+      setProcess(data)
     }
-    catch{
+    fetchProcess();
+    
+  }, [role.app_code]);
 
-    }
-  }
+  
+  
   const handleCloseDialog = () => {
     setDocumentToDefault();
     setRole({
-      apply_to_department_type: [],
-      is_active: true,
-      is_approval_role: true,
-      is_visible_for_selection: true,
-      role_template_code: "",
-      role_template_id: "",
-      role_template_name: "",
+      rank:0,
+      role_code:'',
+      role_name:'',
+      app_code:'',
+      process_code:'',
+      id:''
     });
     
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
@@ -141,28 +135,23 @@ const RoleModal = () => {
 
   const handleUpdateRole = async () => {
     try {
-      if (role.role_template_id === '') {
-        let check = await createRole({
-          ...role,
-          outputtype: 'RawJson',
-        });
-        
-        if (check==true){
+      if (role.id === '') {
+        let check = await createProcessRole(role.role_code,role.role_name,role.process_code,role.app_code);
+        console.log(check)
+        if (check===true){
           handleOpenSnackbar(true,'success','Tạo mới thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'role' });  
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });  
           handleCloseDialog();
           } else {
           handleOpenSnackbar(true,'success','Tạo mới thất bại!');
           }
       } else {
-        let check = await createRole({
-          ...role,
-          outputtype: 'RawJson',
-        });
+        let check = await updateProcessRole(role.role_code,role.role_name,role.process_code,role.app_code);
         
-        if (check==true){
+        if (check===true){
+          console.log(check)
           handleOpenSnackbar(true,'success','Cập nhật thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'role' });  
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });  
           handleCloseDialog();
           } else {
             handleOpenSnackbar(true,'success','Cập nhật thất bại!');
@@ -225,7 +214,7 @@ const RoleModal = () => {
 
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Tạo mới role template
+              Tạo mới role
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -248,7 +237,7 @@ const RoleModal = () => {
                         variant="subtitle1"
                       >
                         
-                        Thông tin role template
+                        Thông tin role
                       </Typography>
                     }
                     value={0}
@@ -265,15 +254,64 @@ const RoleModal = () => {
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <AccountCircleOutlinedIcon />
-                            <span>Thông tin role template</span>
+                            <span>Thông tin role</span>
                           </div>
 
                         </div>
                         <div className={classes.tabItemBody}>
-                          
+                        <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>App: </span>
+                              </Grid>
+                            <Grid item lg={8} md={8} xs={8} >
+                              
+                         
+                              <Select
+                                labelId="department_type"
+                                id="department_type"
+                                value={role.app_code}
+                                className={classes.multpleSelectField}
+                                onChange={event => setRole({ ...role, app_code: event.target.value})}
+                            
+                                >
+                                <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {apps && apps.map(category => (
+                                  <MenuItem value={category.app_code} key={category.app_code}  >{category.app_name}</MenuItem>
+                                ))}
+                                </Select>
+                         
+                            </Grid>
+                            </Grid>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Process: </span>
+                              </Grid>
+                            <Grid item lg={8} md={8} xs={8} >
+                              
+                         
+                              <Select
+                                labelId="department_type"
+                                id="department_type"
+                                value={role.process_code}
+                                className={classes.multpleSelectField}
+                                onChange={event => setRole({ ...role, process_code: event.target.value})}
+                            
+                                >
+                                <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {processList && processList.map(category => (
+                                  <MenuItem value={category.id} key={category.id}  >{category.value}</MenuItem>
+                                ))}
+                                </Select>
+                         
+                            </Grid>
+                            </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                           <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tên role template: </span>
+                              <span className={classes.tabItemLabelField}>Tên chức vụ: </span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8} >
                               <TextField
@@ -282,20 +320,20 @@ const RoleModal = () => {
                                 rows={1}
                                 rowsMax={1}
                                 margin="normal"
-                                name="role_template_name"
+                                name="role_name"
                                 size="medium"
                                 type="text"
                                 variant="outlined"
                                 onChange={handleChange}
                                 className={classes.inputField}
-                                value={ role.role_template_name || ''}
+                                value={ role.role_name || ''}
                               />
                             </Grid>
                             </Grid>
 
                             <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                                <span className={classes.tabItemLabelField}>Code role template: </span>
+                                <span className={classes.tabItemLabelField}>Mã: </span>
                               </Grid>
                               <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -304,66 +342,43 @@ const RoleModal = () => {
                                 rows={1}
                                 rowsMax={1}
                                 margin="normal"
-                                name="role_template_code"
+                                name="role_code"
                                 size="medium"
                                 type="text"
                                 variant="outlined"
                                 onChange={handleChange}
                                 className={classes.inputField}
-                                value={ role.role_template_code || ''}
+                                value={ role.role_code || ''}
                               />
                               
                                 
                          
+                              </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Rank: </span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                autoFocus
+                                rows={1}
+                                rowsMax={1}
+                                margin="normal"
+                                name="rank"
+                                size="medium"
+                                type="text"
+                                variant="outlined"
+                                onChange={handleChange}
+                                className={classes.inputField}
+                                value={ role.rank || ''}
+                              />
                               </Grid>
                           </Grid>
 
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                              <Grid item lg={4} md={4} xs={4}>
-                                <span className={classes.tabItemLabelField}>Loại phòng ban: </span>
-                              </Grid>
-                            <Grid item lg={8} md={8} xs={8} >
-                              
-                         
-                              <Select
-                                labelId="department_type"
-                                id="department_type"
-                                value={role.apply_to_department_type}
-                                className={classes.multpleSelectField}
-                                onChange={event => setRole({ ...role, apply_to_department_type: event.target.value})}
-                                multiple={true}
-                                >
-                                <MenuItem value="">
-                                  <em>Không chọn</em>
-                                </MenuItem>
-                                {departmentTypes && departmentTypes.map(category => (
-                                  <MenuItem value={category.Key} key={category.Key}  >{category.Value}</MenuItem>
-                                ))}
-                                </Select>
-                         
-                            </Grid>
-                            </Grid>
-                            <Grid container className={classes.gridItemInfo} alignItems="center">
-                              <Grid item lg={6} md={6} xs={6}>
-                              <Checkbox
-                                
-                                checked={role.is_approval_role}
-                                onChange={event=>setRole({...role, is_approval_role: event.target.checked})}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                              />
-                              Vai trò phê duyệt
+                        
                           
-                              </Grid>
-                            <Grid item lg={6} md={6} xs={6}>
-                            <Checkbox
-                              
-                                checked={role.is_visible_for_selection}
-                                onChange={event=>setRole({...role, is_visible_for_selection: event.target.checked})}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                              />
-                              Hiển thị trong danh sách chọn
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                     </Grid>
@@ -383,18 +398,18 @@ const RoleModal = () => {
                   Đóng
                 </Button>
               </Grid>
-              {buttonSave && (
+              {role.id ==='' && (
                 <Grid item>
                   <Button
                     variant="contained"
                     style={{ background: 'rgb(97, 42, 255)' }}
                     onClick={() => handleUpdateRole()}
                   >
-                    {buttonSave.text}
+                    {'Tạo mới'}
                   </Button>
                 </Grid>
               )}
-              {!buttonSave && (
+              {role.id !=='' && (
                 <Grid item>
                   <Button
                     variant="contained"
@@ -413,4 +428,4 @@ const RoleModal = () => {
   );
 };
 
-export default RoleModal;
+export default ProcessRoleModal;

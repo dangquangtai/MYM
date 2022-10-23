@@ -72,7 +72,7 @@ const MainLayout = (props) => {
         <Grid
           container
           direction="row"
-          justify="center"
+          justifyContent="center"
           elevation={5}
           alignItems="center"
           spacing={0}
@@ -88,7 +88,7 @@ const MainLayout = (props) => {
         <MenuList drawerOpen={drawerOpen} drawerToggle={drawerToggle} />
         <Button onClick={drawerToggle}>
           {drawerOpen ? (
-            <Grid container direction="row" alignItems="center" justify="flex-end">
+            <Grid container direction="row" alignItems="center" justifyContent="flex-end">
               <DoubleArrowIcon className={classes.rotate} />
               <span>Thu gọn</span>
             </Grid>

@@ -106,7 +106,7 @@ export default function PermissionModal(props) {
             </section>
           )}
         </Dropzone>
-        <Grid container justify="flex-end" spacing={gridSpacing}>
+        <Grid container justifyContent="flex-end" spacing={gridSpacing}>
           <Grid item>
             <Button variant="contained" color="secondary" onClick={onClose}>
               Đóng
