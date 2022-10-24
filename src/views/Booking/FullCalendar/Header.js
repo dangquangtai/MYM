@@ -17,23 +17,9 @@ const Header = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
-
-    <Grid
-      className={clsx(classes.root, className)}
-      container
-      justifyContent="space-between"
-      spacing={3}
-      {...rest}
-    >
-
-    <Grid className={clsx(classes.root, className)} container justify="space-between" spacing={3} {...rest}>
-
-      <Grid item>
-        <Typography variant="h3" color="textPrimary">
-          Calendar
-        </Typography>
-      </Grid>
-    </Grid>
+<>
+   
+    </>
   );
 };
 

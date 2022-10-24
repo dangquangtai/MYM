@@ -121,7 +121,7 @@ export function getUrlByAction(selectedFolder) {
 
     case processroleActions.list_tree: {
       return apiEndpoints.get_account_list_by_process_role;
-
+    }
     case fileActions.active_list: {
       return apiEndpoints.get_all_active_file;
     }
