@@ -157,7 +157,9 @@ const MentorModal = () => {
       three: [],
     });
     setTabIndex(0);
-    editorRef.current.setContent('');
+    if (editorRef.current) {
+      editorRef.current.setContent('');
+    }
   };
   const setURL = (image) => {
     setMentorData({ ...mentorData, image_url: image });
@@ -186,12 +188,21 @@ const MentorModal = () => {
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updateMentor({ ...mentorData, description: editorRef.current.getContent({ format: 'text' }) });
+        await updateMentor({
+          ...mentorData,
+          description:
+            editorRef.current && editorRef.current.getContent()
+              ? editorRef.current.getContent({ format: 'text' })
+              : mentorData.description,
+        });
         handleOpenSnackbar(true, 'success', 'Cập nhật Mentor thành công!');
       } else {
         const ret = await createMentor({
           ...mentorData,
-          description: editorRef.current.getContent({ format: 'text' }),
+          description:
+            editorRef.current && editorRef.current.getContent()
+              ? editorRef.current.getContent({ format: 'text' })
+              : mentorData.description,
         });
         if (ret.return === 200) {
           handleOpenSnackbar(true, 'success', 'Tạo Mentor thành công!');

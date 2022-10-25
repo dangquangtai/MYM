@@ -153,11 +153,8 @@ export default function GeneralTable(props) {
   const buttonDeptAddUser = menuButtons.find((button) => button.name === view.department.list.adduser);
   const buttonDeptRemoveUser = menuButtons.find((button) => button.name === view.department.list.removeaccount);
   const buttonSyncDepartment = menuButtons.find((button) => button.name === view.department.list.syncDept);
-  
- 
+
   const buttonCreateRole = menuButtons.find((button) => button.name === view.role.list.create);
- 
-  
 
   const buttonCreatePodcast = menuButtons.find((button) => button.name === view.podcast.list.create);
   const buttonCreateEpisode = menuButtons.find((button) => button.name === view.episode.list.create);
@@ -193,7 +190,6 @@ export default function GeneralTable(props) {
   const buttonAddAccountRole = menuButtons.find((button) => button.name === view.processrole.list.adduser);
   const buttonSyncRole = menuButtons.find((button) => button.name === view.processrole.list.syncRole);
 
-
   const buttonCreateFile = menuButtons.find((button) => button.name === view.file.list.create);
   const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
 
@@ -213,7 +209,7 @@ export default function GeneralTable(props) {
   const [deptList, setDeptList] = React.useState([]);
   const reduxDocuments = useSelector((state) => state.task);
 
-  const { getProcessDetail , addDeptUser , removeUser, removeDept, syncProcessRole} = useProcessRole();
+  const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
 
   const {
     documents = [],
@@ -316,14 +312,11 @@ export default function GeneralTable(props) {
     }
   }, [selectedFolder]);
   useEffect(() => {
-
-    if ((documentType === 'department')&& (department_code_selected !== '')){
-      const fetchRoleList = async() =>{
-       let data= await getRoletemplateByDept(department_code_selected);
-       setRoleList(data);
-      }
-
-   
+    if (documentType === 'department' && department_code_selected !== '') {
+      const fetchRoleList = async () => {
+        let data = await getRoletemplateByDept(department_code_selected);
+        setRoleList(data);
+      };
 
       fetchRoleList();
     }
@@ -340,42 +333,42 @@ export default function GeneralTable(props) {
   }, []);
   useEffect(() => {
     reloadCurrentDocuments(page);
+  }, [selectedDocument, process_role_code_selected]);
 
-  }, [selectedDocument , process_role_code_selected]);
-
-
-  }
   const fetchDocument = (additionalQuery) => {
     const queries = { ...defaultQueries, ...additionalQuery };
     getDocuments(url, documentType, selectedProject?.id, selectedFolder?.id, queries);
   };
 
-  const handleAssignAccount = async(user) =>{
-    if (!!user && !!department_code_selected && role_template_selected){
-      let data = await assignAccount({email_address: user.email_address,department_code: department_code_selected, role_template_code: role_template_selected}); 
+  const handleAssignAccount = async (user) => {
+    if (!!user && !!department_code_selected && role_template_selected) {
+      let data = await assignAccount({
+        email_address: user.email_address,
+        department_code: department_code_selected,
+        role_template_code: role_template_selected,
+      });
       reloadCurrentDocuments();
+    } else {
+      showConfirmPopup({
+        title: 'Thông báo',
+        message: 'Yêu cầu lựa chọn phòng ban, chức vụ, tài khoản',
+        action: null,
+        payload: null,
+        onSuccess: clickSuccess,
+      });
     }
-    else{
-      showConfirmPopup({title : 'Thông báo',
-      message : 'Yêu cầu lựa chọn phòng ban, chức vụ, tài khoản',
-      action : null,
-      payload : null,
-      onSuccess : clickSuccess ,});
-    }
-    
-  }
-  const handleAddDeptUser = async (email_address,department_code) =>{
-     await addDeptUser(process_role_code_selected,department_code,email_address); 
-     reloadCurrentDocuments();
-  }
-  const handleRemoveAccount = async(email) =>{
-    await removeAccount({email_address: email,department_code: department_code_selected, role_template_code: role_template_selected}); 
-    reloadCurrentDocuments();
-  }
-
- 
+  };
   const handleAddDeptUser = async (email_address, department_code) => {
     await addDeptUser(process_role_code_selected, department_code, email_address);
+    reloadCurrentDocuments();
+  };
+  const handleRemoveAccount = async (email) => {
+    await removeAccount({
+      email_address: email,
+      department_code: department_code_selected,
+      role_template_code: role_template_selected,
+    });
+    reloadCurrentDocuments();
   };
 
   const handleRequestSort = (event, property) => {
@@ -532,21 +525,19 @@ export default function GeneralTable(props) {
     if (department_code_selected !== '') {
       let detailDocument = await getDepartmentDetail(department_code_selected);
 
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
-    dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
-    }
-    else{
-      showConfirmPopup({title : 'Thông báo',
-      message : 'Yêu cầu lựa chọn phòng ban',
-      action : null,
-      payload : null,
-      onSuccess : clickSuccess,});
-    } 
-
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
+    } else {
+      showConfirmPopup({
+        title: 'Thông báo',
+        message: 'Yêu cầu lựa chọn phòng ban',
+        action: null,
+        payload: null,
+        onSuccess: clickSuccess,
+      });
     }
   };
 
-  
   const reloadCurrentDocuments = (page = 1) => {
     setSelected([]);
     fetchDocument({ page: pageCurrent });
@@ -659,8 +650,6 @@ export default function GeneralTable(props) {
     }
   };
 
- 
-
   const handleRemoveAccountToGroup = async (email_address, group_name_list, account_id) => {
     try {
       await removeAccountToGroup(group_name_list, account_id, email_address);
@@ -671,12 +660,10 @@ export default function GeneralTable(props) {
   };
   const handleRemoveAccountToRole = async (email_address) => {
     try {
-
-      await  removeUser(process_role_code_selected,email_address);
+      await removeUser(process_role_code_selected, email_address);
       reloadCurrentDocuments();
     } catch (e) {
     } finally {
-      
     }
   };
   const handleRemoveDeptToRole = async (department_code) => {
@@ -789,52 +776,45 @@ export default function GeneralTable(props) {
   const handleClickProcessRoleDetail = async () => {
     if (process_role_code_selected !== '') {
       let detailDocument = await getProcessDetail(process_role_code_selected);
-    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
-    dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else{
-      showConfirmPopup({title : 'Thông báo',
-      message :'Yêu cầu lựa chọn ít nhất một bản ghi',
-      action : null,
-      payload : null,
-      onSuccess: clickSuccess,});
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    } else {
+      showConfirmPopup({
+        title: 'Thông báo',
+        message: 'Yêu cầu lựa chọn ít nhất một bản ghi',
+        action: null,
+        payload: null,
+        onSuccess: clickSuccess,
+      });
     }
   };
   const handleClickUpdateUserProcessRole = () => {
-    
-    if(process_role_code_selected !=''){
+    if (process_role_code_selected != '') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
-      dispatch({ type: FLOATING_MENU_CHANGE, processUserDocument: true , processrolecode: process_role_code_selected });
+      dispatch({ type: FLOATING_MENU_CHANGE, processUserDocument: true, processrolecode: process_role_code_selected });
+    } else {
+      showConfirmPopup({
+        title: 'Thông báo',
+        message: 'Yêu cầu lựa chọn process role',
+        action: null,
+        payload: null,
+        onSuccess: null,
+      });
     }
-    else{
-      showConfirmPopup({title : 'Thông báo',
-      message :'Yêu cầu lựa chọn process role',
-      action : null,
-      payload : null,
-      onSuccess: null,});
-    }
-
-     
-    }
-  };
-  const handleClickUpdateUserProcessRole = () => {
-    dispatch({ type: DOCUMENT_CHANGE, documentType });
-    dispatch({ type: FLOATING_MENU_CHANGE, processUserDocument: true, processrolecode: process_role_code_selected });
-
   };
   const handleClickUpdateDeptProcessRole = () => {
-    if(process_role_code_selected !=''){
+    if (process_role_code_selected != '') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, processDeptDocument: true, processrolecode: process_role_code_selected });
+    } else {
+      showConfirmPopup({
+        title: 'Thông báo',
+        message: 'Yêu cầu lựa chọn process role',
+        action: null,
+        payload: null,
+        onSuccess: null,
+      });
     }
-    else{
-      showConfirmPopup({title : 'Thông báo',
-      message :'Yêu cầu lựa chọn process role',
-      action : null,
-      payload : null,
-      onSuccess: null,});
-    }
-   
   };
 
   const handleClickCreateFile = () => {
@@ -893,7 +873,6 @@ export default function GeneralTable(props) {
       payload: null,
       onSuccess: reloadCurrentDocuments,
     });
-  
   };
   const handleSyncProcessRole = async () => {
     showConfirmPopup({
@@ -902,8 +881,10 @@ export default function GeneralTable(props) {
       payload: null,
       onSuccess: reloadCurrentDocuments,
     });
-    
   };
+
+  const clickSuccess = () => {};
+
   return (
     <React.Fragment>
       {isOpenModalNote && (
@@ -956,10 +937,6 @@ export default function GeneralTable(props) {
                 createNewDept={openDialogCreate}
                 buttonCreateRole={buttonCreateRole}
                 createNewRole={openDialogCreate}
-
-              
-
-
                 getDepartmentList={getDepartmentListGroup}
                 buttonSyncDepartment={buttonSyncDepartment}
                 handleUpdateDepartment={handleUpdateDepartment}
@@ -1001,17 +978,14 @@ export default function GeneralTable(props) {
                 handleAddDeptUser={handleAddDeptUser}
                 handleClickUpdateUserProcessRole={handleClickUpdateUserProcessRole}
                 handleClickUpdateDeptProcessRole={handleClickUpdateDeptProcessRole}
-
                 buttonAddDeptRole={buttonAddDeptRole}
                 buttonAddAccountRole={buttonAddAccountRole}
                 buttonSyncRole={buttonSyncRole}
                 handleSyncProcessRole={handleSyncProcessRole}
-
-             buttonCreateFile={buttonCreateFile}
+                buttonCreateFile={buttonCreateFile}
                 createFile={handleClickCreateFile}
                 buttonCreateFileCategory={buttonCreateFileCategory}
                 createFileCategory={handleClickCreateFileCategory}
-
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1036,10 +1010,6 @@ export default function GeneralTable(props) {
                 <Grid item xs={documentType === 'department' ? 8 : documentType === 'processrole' ? 4 : 12}>
                   <TableContainer>
                     <Table
-
-                      stickyHeadersyncRole
-                      className={(documentType==='department')? classes.table2:(documentType === 'processrole')? classes.table3: classes.table}
-
                       stickyHeader
                       className={
                         documentType === 'department'
@@ -1048,7 +1018,6 @@ export default function GeneralTable(props) {
                           ? classes.table3
                           : classes.table
                       }
-
                       aria-labelledby="tableTitle"
                       size={'medium'}
                       // aria-label="enhanced table"
@@ -1520,35 +1489,27 @@ export default function GeneralTable(props) {
                               {displayOptions.menuButtons && (
                                 <TableCell align="left">
                                   <div className={classes.handleButtonWrap}>
-
-                                  
-                                   {buttonDeptRemoveUser &&(
-                                       <Tooltip title={buttonDeptRemoveUser.text}>
-                                       <Button
-                                         className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                         onClick={() =>
-                                           handleRemoveAccount(row.email_address)
-                                         }
-                                       >
-                                         <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
-                                       </Button>
-                                     </Tooltip>
-
-                               
-                                     {buttonRemoveAccountRole &&(
-                                       <Tooltip title={buttonRemoveAccountRole.text}>
-                                       <Button
-                                         className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                         onClick={() =>
-                                          handleRemoveAccountToRole(row.email_address)
-                                        }
-                                       >
-                                         <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
-                                       </Button>
-                                     </Tooltip>
+                                    {buttonDeptRemoveUser && (
+                                      <Tooltip title={buttonDeptRemoveUser.text}>
+                                        <Button
+                                          className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                          onClick={() => handleRemoveAccount(row.email_address)}
+                                        >
+                                          <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
                                     )}
-                                 
-                                   
+                                    {buttonRemoveAccountRole && (
+                                      <Tooltip title={buttonRemoveAccountRole.text}>
+                                        <Button
+                                          className={`${classes.handleButton} ${classes.handleButtonNote}`}
+                                          onClick={() => handleRemoveAccountToRole(row.email_address)}
+                                        >
+                                          <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
+                                        </Button>
+                                      </Tooltip>
+                                    )}
+
                                     {buttonBookingReview && row.is_can_completed && (
                                       <Tooltip title={buttonBookingReview.text}>
                                         <Button

@@ -151,7 +151,9 @@ const PodcastModal = () => {
     setPodcastData(initPodcastData);
     setSelectedEpisodes([]);
     setTabIndex(0);
-    editorRef.current.setContent('');
+    if (editorRef.current) {
+      editorRef.current.setContent('');
+    }
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
@@ -189,14 +191,20 @@ const PodcastModal = () => {
         await updatePodcast({
           ...podcastData,
           list_episode_id: selectedEpisodes,
-          description: editorRef.current.getContent({ format: 'text' }),
+          description:
+            editorRef.current && editorRef.current.getContent()
+              ? editorRef.current.getContent({ format: 'text' })
+              : podcastData.description,
         });
         handleOpenSnackbar(true, 'success', 'Cập nhật Podcast thành công!');
       } else {
         await createPodcast({
           ...podcastData,
           list_episode_id: selectedEpisodes || [],
-          description: editorRef.current.getContent({ format: 'text' }),
+          description:
+            editorRef.current && editorRef.current.getContent()
+              ? editorRef.current.getContent({ format: 'text' })
+              : podcastData.description,
         });
         handleOpenSnackbar(true, 'success', 'Tạo mới Podcast thành công!');
       }
@@ -272,7 +280,7 @@ const PodcastModal = () => {
         Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id) && item.podcast_id === '')
       );
     } else {
-      setEpisodes(Object.values(initEpisodes).filter((item) => item.podcast_id === ''));
+      setEpisodes(Object.values(initEpisodes).filter((item) => item.podcast_id === '' || item.podcast_id === null));
     }
     const episodes = selectedEpisodes?.length || 0;
     const listEpisode = Object.values(initEpisodes)?.filter((item) => selectedEpisodes?.includes(item.id));

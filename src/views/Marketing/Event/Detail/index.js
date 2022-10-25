@@ -136,7 +136,7 @@ const EventModal = () => {
   const setDocumentToDefault = async () => {
     setEvent(initEvent);
     setTabIndex(0);
-    editorRef.current.setContent('');
+    if (editorRef.current) editorRef.current.setContent('');
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
@@ -195,7 +195,13 @@ const EventModal = () => {
     try {
       if (selectedDocument?.id) {
         let check = await updateEvent(
-          { ...eventData, description: editorRef.current.getContent({ format: 'text' }) },
+          {
+            ...eventData,
+            description:
+              editorRef.current && editorRef.current.getContent()
+                ? editorRef.current.getContent({ format: 'text' })
+                : eventData.description,
+          },
           selectedMentorList
         );
         if (check) {
@@ -205,7 +211,13 @@ const EventModal = () => {
         }
       } else {
         createEvent(
-          { ...eventData, description: editorRef.current.getContent({ format: 'text' }) },
+          {
+            ...eventData,
+            description:
+              editorRef.current && editorRef.current.getContent()
+                ? editorRef.current.getContent({ format: 'text' })
+                : eventData.description,
+          },
           selectedMentorList
         );
         let check = await createEvent(eventData, selectedMentorList);
