@@ -27,10 +27,10 @@ export const apiEndpoints = {
 
   get_all_task: '/Primary/?FlowAlias=hnn_api_booking_get_all_task&action=api',
 
-  get_all_department_by_page: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
+  get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
   
-  get_all_account_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_all_account&action=api',
+  get_all_account_list: '/Primary/?FlowAlias=bs_api_booking_user_get_all_account&action=api',
 
 
 
@@ -76,8 +76,7 @@ export const apiEndpoints = {
   get_department_detail: '/Primary/?FlowAlias=bs_api_dept_get_detail_department_by_name&action=api',
 
   get_dept_list_by_process_role:'/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
-
-  get_all_department_by_page: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
+  get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
 
 
@@ -357,6 +356,8 @@ export const view = {
       create: 'MYM_ORGANISATION_HOME_CREATE_DEPARTMENT_MENU_BUTTON',
       update:'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_MENU_BUTTON',
       adduser: 'MYM_ORGANISATION_HOME_ADD_USER_DEPARTMENT_MENU_BUTTON',
+      removeaccount: 'MYM_ORGANISATION_HOME_REMOVE_ACCOUNT_MENU_BUTTON',
+      syncDept: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_MENU_BUTTON',
     },
     detail: {
       save: 'DEPARTMENT_LIST_CREATE_FORM_BUTTON',
@@ -365,10 +366,6 @@ export const view = {
   role: {
     list: {
       create: 'MYM_ORGANISATION_HOME_ROLE_TEMPLATE_CREATE_MENU_BUTTON',
-      select: 'ROLE_LIST_SELECT_DEPARTMENT_BUTTON',
-      remove: 'ROLE_LIST_REMOVE_ACCOUNT_MENU_BUTTON',
-      addnew: 'ROLE_LIST_ADD_ACCOUNT_MENU_BUTTON',
-      sync_department: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_ROLE',
     },
     detail: {},
   },
@@ -376,7 +373,12 @@ export const view = {
     list:{
       create: 'MYM_ORGANISATION_HOME_CREATE_NEW_PROCESS_ROLE_MENU_BUTTON',
       update: 'MYM_ORGANISATION_HOME_UPDATE_PROCESS_ROLE_MENU_BUTTON',
-      update_dept_role: 'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_ROLE_MENU_BUTTON'
+      update_dept_role: 'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_ROLE_MENU_BUTTON',
+      adduser: 'MYM_ORGANISATION_HOME_ADD_ACCOUNT_ROLE_MENU_BUTTON',
+      adddept: 'MYM_ORGANISATION_HOME_ADD_DEPT_ROLE_MENU_BUTTON',
+      removeaccount: 'MYM_ORGANISATION_HOME_REMOVE_ACCOUNT_ROLE_MENU_BUTTON',
+      removedept: 'MYM_ORGANISATION_HOME_REMOVE_DEPT_ROLE_MENU_BUTTON',
+      syncRole: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_ROLE_MENU_BUTTON'
     },
   },
   playlist: {
