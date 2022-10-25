@@ -94,9 +94,12 @@ export default function ConfirmPupup() {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="primary" onClick={doAction}>
+              {!!action &&(
+                <Button variant="contained" color="primary" onClick={doAction}>
                 Xác nhận
               </Button>
+              )}
+              
             </Grid>
           </Grid>
         </div>

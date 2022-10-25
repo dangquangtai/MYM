@@ -76,6 +76,8 @@ const ProcessRoleDeptModal = () => {
   const { processDeptDocument: openDialog, processrolecode: process_role_code } = useSelector((state) => state.floatingMenu);
   const {getAllDepartment } = useDepartment();
   const { addDeptUser } = useProcessRole();
+  const [deptSelected, setDeptSelected] = useState([]);
+  const [department,setDepartment] = useState({department_code: ''});
   const [role, setRole] = React.useState({
     email_address: [],
     department_code: [],
@@ -92,20 +94,22 @@ const ProcessRoleDeptModal = () => {
     const fetchDeptList = async () => {
       let data = await getAllDepartment();
       setDeptList(data);
+      
     }
     fetchDeptList();
-    setRole({ ...role, role_code: process_role_code })
+    
   }, []);
+  
   const [roletemplateList,setRoleList] = useState([]);
   const [roletemplate,setRoleTemplate] = useState([]);
   const [roleSelected,setRoleSelected] = useState();
   useEffect(() => {
     const fetchDeptList = async () => {
-      let data= await getRoletemplateByDept(roleSelected);
+      let data= await getRoletemplateByDept(department.department_code);
        setRoleList(data);
     }
     fetchDeptList();
-  }, [roleSelected]);
+  }, [department]);
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
@@ -117,8 +121,7 @@ const ProcessRoleDeptModal = () => {
     dispatch({ type: FLOATING_MENU_CHANGE, processUserDocument: false });
   };
 
-  const [deptSelected, setDeptSelected] = useState([]);
-  const [department,setDepartment] = useState();
+
   const handleUpdateSelected = (dept) => {
     if (!!dept){
       setRoleSelected(dept.department_code);
@@ -131,21 +134,15 @@ const ProcessRoleDeptModal = () => {
 
   }
   const handleUpdateRoleSelected = (role) => {
+    handleUpdateSelected(department);
     if (!!role){
-      if (deptSelected.length()>roletemplate.length()){
+    
         const newSelectedList = roletemplate.filter((item) => !!item);
         setRoleTemplate([...newSelectedList,role])
         delete roletemplateList[roletemplateList.indexOf(role)];
         const newList = roletemplateList.filter((item) => !!item);
         setRoleList([...newList])
-      }else{
-        handleRemoveRole(role)
-        const newSelectedList = roletemplate.filter((item) => !!item);
-        setRoleTemplate([...newSelectedList,])
-        delete roletemplateList[roletemplateList.indexOf(role)];
-        const newList = roletemplateList.filter((item) => !!item);
-        setRoleList([...newList])
-      }
+    
       
     }
 
@@ -169,10 +166,13 @@ const ProcessRoleDeptModal = () => {
   const handleUpdateRole = async () => {
     try {
         let dept= []
-        deptSelected.map(row =>(
-          dept.push(row.department_code)
+        let data;
+        deptSelected.map((row,index) =>(
+          data=row.department_code+"_"+roletemplate[index].id,
+          dept.push(data)
+          
         ))
-        let check = await addDeptUser(role.role_code,dept,role.email_address)
+        let check = await addDeptUser(process_role_code, dept, role.email_address)
         if (check === true) {
           handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
           dispatch({ type: DOCUMENT_CHANGE, documentType: 'processrole' });
@@ -284,7 +284,7 @@ const ProcessRoleDeptModal = () => {
                                 size="small"
                                 fullWidth
                                 options={deptList}
-                                onChange={(e, u) => handleUpdateSelected(u)}
+                                onChange={(e, u) => setDepartment(u)}
                                 getOptionLabel={(option) => option.department_name}
                                 renderInput={(params) => <TextField label="Phòng ban" {...params} variant="outlined" />}
                               />

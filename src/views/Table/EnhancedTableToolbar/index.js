@@ -36,7 +36,7 @@ const EnhancedTableToolbar = (props) => {
     btnCreateNewDept,
     createNewDept,
     buttonDeptUpdate,
-    buttonAddAccount,
+    buttonDeptAddUser,
     roletemplateList,
     buttonCreateRole,
     createNewRole,
@@ -91,6 +91,12 @@ const EnhancedTableToolbar = (props) => {
     createFile,
     buttonCreateFileCategory,
     createFileCategory,
+    
+    buttonAddDeptRole,
+    buttonAddAccountRole,
+    buttonSyncRole,
+    handleSyncProcessRole,
+
 
   } = props;
 
@@ -112,7 +118,7 @@ const EnhancedTableToolbar = (props) => {
     department_code: '',
     role_template_code: 'Member',
   });
-  const dispatch = useDispatch();
+
   const handleCloseInput = () => {
     setFilter({ ...filter, search_text: '' });
     handleFilterChange({ ...filter, search_text: '' });
@@ -127,16 +133,13 @@ const EnhancedTableToolbar = (props) => {
       handleFilterChange(filter);
     }
   };
-  const handleSelect = (group_id) => {
-    setFilter({ ...filter, group_id: group_id });
-    handleFilterChange(filter);
-  };
+
 
   const handleSubmitAssign = () => {
-    handleAssignAccount(user.email_address)
+    handleAssignAccount(user)
   }
   const [user, setUserSelected] = useState();
-  const [dept, setDeptSelected] = useState();
+
 
 
 
@@ -405,6 +408,13 @@ const EnhancedTableToolbar = (props) => {
             </Button>
           </Grid>
         )}
+         {buttonSyncRole && (
+          <Grid item>
+            <Button variant="contained" color={'primary'} onClick={handleSyncProcessRole}>
+              {buttonSyncRole.text}
+            </Button>
+          </Grid>
+        )}
 
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
           {numSelected > 0 && (
@@ -420,18 +430,28 @@ const EnhancedTableToolbar = (props) => {
 
               <>
                 <Grid container justifyContent="flex-start" alignItems="center">
-                  <Button style={{ minWidth: 100, maxWidth: 100 }} variant="contained" color={'primary'} onClick={() => handleClickUpdateDeptProcessRole()}>
-                    {'Thêm'}
-                  </Button>
-                  <span style={{ minWidth: 410, maxWidth: 410 }}>
+                  {buttonAddDeptRole && (
+                    <>
+                      <Button style={{ minWidth: 200, maxWidth: 200 }} variant="contained" color={'primary'} onClick={() => handleClickUpdateDeptProcessRole()}>
+                        {buttonAddDeptRole.text}
+                      </Button>
+                      <span style={{ minWidth: 310, maxWidth: 310 }}></span>
+                    </>
+                  )}
 
-                  </span>
-                  <Button style={{ minWidth: 100, maxWidth: 100 }} variant="contained" color={'primary'} onClick={() => handleClickUpdateUserProcessRole()}>
-                    {'Thêm'}
-                  </Button>
-                  <span style={{ minWidth: 500, maxWidth: 500 }}>
 
-                  </span>
+
+                  {buttonAddAccountRole && (
+                    <>
+                      <Button style={{ minWidth: 200, maxWidth: 200 }} variant="contained" color={'primary'} onClick={() => handleClickUpdateUserProcessRole()}>
+                        {buttonAddAccountRole.text}
+                      </Button>
+                      <span style={{ minWidth: 400, maxWidth: 400 }}>
+
+                      </span>
+                    </>
+                  )}
+
                 </Grid>
               </>
             )}
@@ -464,29 +484,23 @@ const EnhancedTableToolbar = (props) => {
                   getOptionLabel={(option) => option.email_address}
                   renderInput={(params) => <TextField label="Tài khoản" {...params} variant="outlined" />}
                 />
+                <span style={{ minWidth: 150, maxWidth: 150 }}>
+                </span>
+                {buttonDeptAddUser && (
+                  <>
+                    <Button variant="contained" color={'primary'} onClick={handleSubmitAssign}>
+                      {buttonDeptAddUser.text}
+                    </Button>
 
+                  </>
 
+                )}
               </div>
-              {buttonAddAccount && (
 
-                <Button variant="contained" color={'primary'} onClick={handleSubmitAssign}>
-                  {buttonAddAccount.text}
-                </Button>
-
-              )}
-
-              {/* {documentType === 'processrole' &&(
-                    <Button style={{minWidth:100,maxWidth:100}} variant="contained" color={'primary'} onClick={()=>handleAddDeptUser(user,department_code_selected+'_'+filter.role_template_code)}>
-                    {'Thêm'}
-                  </Button>
-                  )}  */}
             </>
             )}
-
-
             {(documentType != 'department' && documentType != 'processrole') && (
               <>
-
                 <div className={classes.toolSearchWrap}>
                   <SearchIcon />
                   <input
@@ -542,16 +556,6 @@ const EnhancedTableToolbar = (props) => {
                       <FilterListIcon className={classes.toolButtonIcon} />
                     </Button>
                   </Tooltip>
-                  {/* {buttonShowTreeView && (
-                 <Tooltip title="Tree View">
-                   <Button
-                     className={`${classes.toolButton} ${isOpenSearch ? classes.toolButtonActive : ''}`}
-                     onClick={showTreeView}
-                   >
-                     <AccountTreeIcon className={classes.toolButtonIcon} />
-                   </Button>
-                 </Tooltip>
-               )} */}
                   {isOpenFilter && (
                     <div className={`${classes.toolColumn} ${classes.toolFilter}`}>
                       <div className={`${classes.toolColumnTitle} ${classes.toolFilterTitle}`}>

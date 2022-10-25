@@ -20,7 +20,8 @@ import useDepartment from '../../../hooks/useDepartment';
 const ProcessRoleDeptModal = (props) => {
   const {
     process_role_code_selected,
-    change
+    handleRemoveDept,
+    buttonRemoveDeptRole
   } = props;
   const classes = useStyles();
 
@@ -85,14 +86,17 @@ const ProcessRoleDeptModal = (props) => {
                     </>
                   </TableCell>
                   <TableCell>
-                    <Tooltip title={'Xoá'}>
+                    {buttonRemoveDeptRole &&(
+                      <Tooltip title={buttonRemoveDeptRole.text}>
                       <Button
                         className={`${classes.handleButton} ${classes.handleButtonNote}`}
-
+                        onClick={()=>handleRemoveDept(row.id)}
                       >
                         <RemoveCircleOutlineIcon className={classes.noteButtonIcon} />
                       </Button>
                     </Tooltip>
+                    )}
+                    
                   </TableCell>
                 </TableRow>
 

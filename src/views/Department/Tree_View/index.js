@@ -144,12 +144,22 @@ const TreeViewModal = (props) => {
         onClick={(event) => handleClickOpen(data.key)} className={TreeItemClassKey.MuiTreeItemlabel} />;
     }
     else {
-      return <TreeItem nodeId={data.key} label={data.label} key={data.label}
+      if (documentType==='department'){
+        return <TreeItem nodeId={data.key} label={data.label} key={data.label}
         onClick={(event) => handleClickOpen(data.key)} >
         {data.children.map((data2) =>
           renderItem(data2)
         )}
       </TreeItem>;
+      } else{
+        return <TreeItem nodeId={data.key} label={data.label} key={data.label}
+        >
+        {data.children.map((data2) =>
+          renderItem(data2)
+        )}
+      </TreeItem>;
+      }
+     
     }
   };
 
