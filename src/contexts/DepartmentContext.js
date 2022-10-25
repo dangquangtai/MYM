@@ -53,13 +53,12 @@ export const DepartmentProvider = ({ children }) => {
   const getDataTreeView = async () => {
     return axiosInstance
       .post(apiEndpoints.get_tree_view_data, {
-
-         outputtype: 'RawJson' ,
-        })
+        outputtype: 'RawJson',
+      })
 
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { list: news} = response.data;
+          const { list: news } = response.data;
           return news;
         } else return {};
       });
@@ -89,58 +88,35 @@ export const DepartmentProvider = ({ children }) => {
     });
   };
 
-  const getDeptListByProcessRole = async (process_role_code,page,no_item_per_page) => {
+  const getDeptListByProcessRole = async (process_role_code, page, no_item_per_page) => {
     return axiosInstance
       .post(apiEndpoints.get_dept_list_by_process_role, {
-         outputtype: 'RawJson' ,
-         page: page,
-         process_role_code: process_role_code,
-         no_item_per_page: no_item_per_page,
-        })
+        outputtype: 'RawJson',
+        page: page,
+        process_role_code: process_role_code,
+        no_item_per_page: no_item_per_page,
+      })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { list: news} = response.data;
+          const { list: news } = response.data;
           return news;
         } else return {};
       });
-    };
-    const getAllDepartment = async (
-      page = 1,
-      no_item_per_page = 100,
-      search_text = '',
-      order_by = '',
-      order_type = ''
-    ) => {
-      return axiosInstance
-        .post(apiEndpoints.get_all_department_by_page, {
-          outputtype: 'RawJson',
-          page,
-          no_item_per_page,
-          search_text,
-          order_by,
-          order_type,
-        })
-        .then((response) => {
-          if (response.status === 200 && response.data.return === 200) {
-            const { list } = response.data;
-            return list;
-          } else return {};
-        });
-    };
-    const getDepartmentRoleList = async (group_id) => {
-      return axiosInstance
-        .post(apiEndpoints.get_department_role_by_group, {
-          outputtype: 'RawJson',
-          group_id,
-        })
-        .then((response) => {
-          if (response.status === 200 && response.data.return === 200) {
-            const { list } = response.data;
-            return list;
-          } else return {};
-        });
-    };
+  };
 
+  const getDepartmentRoleList = async (group_id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_department_role_by_group, {
+        outputtype: 'RawJson',
+        group_id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return {};
+      });
+  };
 
   const getAllDepartment = async (
     page = 1,
@@ -166,21 +142,6 @@ export const DepartmentProvider = ({ children }) => {
       });
   };
 
-  const getDepartmentRoleList = async (group_id) => {
-    return axiosInstance
-      .post(apiEndpoints.get_department_role_by_group, {
-        outputtype: 'RawJson',
-        group_id,
-      })
-      .then((response) => {
-        if (response.status === 200 && response.data.return === 200) {
-          const { list } = response.data;
-          return list;
-        } else return {};
-      });
-  };
-
-
   return (
     <DepartmentContext.Provider
       value={{
@@ -191,9 +152,7 @@ export const DepartmentProvider = ({ children }) => {
         getDepartmentList,
         getDepartmentTypeList,
         getDataTreeView,
-
         getDeptListByProcessRole,
-
         getAllDepartment,
         getDepartmentRoleList,
       }}
