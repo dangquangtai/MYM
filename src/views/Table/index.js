@@ -1574,69 +1574,9 @@ export default function GeneralTable(props) {
                                       </Tooltip>
                                     )}
 
-                                    {buttonBookingReview && row.is_can_completed && (
-                                      <Tooltip title={buttonBookingReview.text}>
-                                        <Button
-                                          className={classes.handleButton}
-                                          onClick={() => handleOpenModal('review', row)}
-                                        >
-                                          <AssignmentTurnedInIcon className={classes.handleButtonIcon} />
-                                        </Button>
-                                      </Tooltip>
-                                    )}
-                                    {buttonBookingNote && (
-                                      <Tooltip title={buttonBookingNote.text}>
-                                        <Button
-                                          className={`${classes.handleButton} ${classes.handleButtonNote}`}
-                                          onClick={() => handleOpenModal('note', row)}
-                                        >
-                                          <NoteAddSharpIcon className={classes.noteButtonIcon} />
-                                        </Button>
-                                      </Tooltip>
-                                    )}
-                                    {buttonBookingCancel && row.time_slot && (
-                                      <Tooltip title={buttonBookingCancel.text}>
-                                        <Button
-                                          className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                          onClick={() => handleOpenModal('cancel', row)}
-                                        >
-                                          <DeleteForeverIcon className={classes.noteButtonIcon} />
-                                        </Button>
-                                      </Tooltip>
-                                    )}
-                                    {buttonBookingMeeting && row.link_meeting !== null && (
-                                      <Tooltip title={buttonBookingMeeting.text}>
-                                        <Button className={`${classes.handleButton} ${classes.handleButtonMeeting}`}>
-                                          <a
-                                            href={row.link_meeting}
-                                            className={`${classes.handleButton} ${classes.handleButtonMeeting}`}
-                                            target="_blank"
-                                          >
-                                            <DuoIcon className={classes.handleButtonIconMeeting} />
-                                          </a>
-                                        </Button>
-                                      </Tooltip>
-                                    )}
-                                    {buttonSendEmail && row.is_generated && (
-                                      <Tooltip title={buttonSendEmail.text}>
-                                        <Button
-                                          className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                          onClick={() => handleClickSendEmail(row.id)}
-                                        >
-                                          <MailOutlineIcon className={classes.noteButtonIcon} />
-                                        </Button>
-                                      </Tooltip>
-                                    )}
-                                    {buttonSendEmailCard && row.is_generated && (
-                                      <Tooltip title={buttonSendEmailCard.text}>
-                                        <Button
-                                          className={`${classes.handleButton} ${classes.handleButtonCancel}`}
-                                          onClick={() => handleClickSendEmail(row.id)}
-                                        >
-                                          <MailOutlineIcon className={classes.noteButtonIcon} />
-                                        </Button>
-                                      </Tooltip>
-                                    )}
+                                   
+                                  
+                                   
                                   </div>
                                 </TableCell>
                               )}
