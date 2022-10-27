@@ -115,7 +115,7 @@ const EpisodeModal = () => {
     if (dialogUpload.type === 'image') {
       setEpisodeData({ ...episodeData, image_url: image });
     } else {
-      setEpisodeData({ ...episodeData, soure_file_url: image });
+      setEpisodeData({ ...episodeData, source_file_url: image });
     }
   };
 
@@ -276,6 +276,7 @@ const EpisodeModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
+                                disabled
                                 rows={1}
                                 rowsMax={1}
                                 variant="outlined"
