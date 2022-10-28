@@ -173,6 +173,11 @@ export const apiEndpoints = {
   get_all_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_get_all_prepaid_card&action=api',
   set_active_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card&action=api',
   assign_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_assign_prepaid_card&action=api',
+
+    //EChart
+    get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
+    get_booking_data_by_career: '/Primary/?FlowAlias=bs_api_get_booking_data_by_career_for_chart&action=api',
+
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
