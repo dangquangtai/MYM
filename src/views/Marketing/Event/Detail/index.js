@@ -210,7 +210,7 @@ const EventModal = () => {
           handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
         }
       } else {
-        createEvent(
+        let check = createEvent(
           {
             ...eventData,
             description:
@@ -220,7 +220,6 @@ const EventModal = () => {
           },
           selectedMentorList
         );
-        let check = await createEvent(eventData, selectedMentorList);
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
