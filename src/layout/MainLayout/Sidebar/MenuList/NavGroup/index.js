@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: '16px',
       paddingRight: '100%',
       minWidth: 'unset !important',
-    }
-  }
+    },
+  },
 }));
 
 const NavGroup = (props) => {
@@ -35,6 +35,7 @@ const NavGroup = (props) => {
 
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
+  const { selectedApp } = useSelector((state) => state.app);
   const { reloadFolders } = useFolder();
 
   const items = item.children.map((menu, index) => {
@@ -59,20 +60,10 @@ const NavGroup = (props) => {
         <Grid container justifyContent="space-between">
           {drawerOpen && (
             <Grid item>
-              <Typography
-                variant="caption"
-                className={classes.menuCaption}
-                display="block"
-                gutterBottom
-              >
+              <Typography variant="caption" className={classes.menuCaption} display="block" gutterBottom>
                 {item.title}
                 {item.caption && (
-                  <Typography
-                    variant="caption"
-                    className={classes.subMenuCaption}
-                    display="block"
-                    gutterBottom
-                  >
+                  <Typography variant="caption" className={classes.subMenuCaption} display="block" gutterBottom>
                     {item.caption}
                   </Typography>
                 )}
@@ -81,7 +72,7 @@ const NavGroup = (props) => {
           )}
           <Grid item className={`${drawerOpen ? '' : classes.menuIconMini}`}>
             {item.action === 'reload' && (
-              <Button onClick={() => reloadFolders(selectedProject || '')}>
+              <Button onClick={() => reloadFolders(selectedProject || '', selectedApp?.id || '')}>
                 <CachedIcon className={`${classes.menuIIcon}`} />
               </Button>
             )}

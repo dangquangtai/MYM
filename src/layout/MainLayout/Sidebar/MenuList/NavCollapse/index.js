@@ -109,7 +109,7 @@ const NavCollapse = (props) => {
 
   return (
     <React.Fragment>
-      <Tooltip title={menu.name} placement="right" arrow>
+      <Tooltip title={<Typography fontSize={17}>{menu.name}</Typography>} placement="right" arrow>
         <ListItem
           className={level > 1 ? classes.listItemNoBack : classes.listItem}
           selected={selected === menu.id}

@@ -81,7 +81,7 @@ const NavItem = (props) => {
   }
 
   return (
-    <Tooltip title={item.name} placement="right" arrow>
+    <Tooltip title={<Typography fontSize={16}>{item.name}</Typography>} placement="right" arrow>
       <ListItem
         disabled={item.disabled}
         className={level > 1 ? classes.listItemNoBack : classes.listItem}
