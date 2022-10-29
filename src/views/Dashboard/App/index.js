@@ -77,7 +77,7 @@ const App = () => {
         <Grid container spacing={gridSpacing} justifyContent="center" alignItems="center">
           {apps.map((app) => (
             <Grid key={app.app_code} item lg={3} sm={6} xs={12}>
-              <RouterLink className={classes.link} to="/dashboard/default" onClick={() => handleAppClick(app.id)}>
+              <RouterLink className={classes.link} to="/dashboard/default" onClick={() => handleAppClick(app)}>
                 <AppCard
                   title={app.app_name}
                   // description={app.app_description}

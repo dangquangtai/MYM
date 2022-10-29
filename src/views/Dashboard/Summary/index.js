@@ -22,18 +22,12 @@ import EPieChart from '../../Chart/EPieChart';
 import EHoritionalBarChart from '../../Chart/EHoritionalBarChart';
 import EStackableBarChart from '../../Chart/EStackableBarChart';
 import EClolorfullBarChart from '../../Chart/EClolorfullBarChart';
-
+import { useSelector } from 'react-redux';
 
 const Summnary = () => {
   const theme = useTheme();
   const { getStatisticData } = useBooking();
-  const {
-    getBarChartData: getBarChart,
-    getBookingDataByStatus,
-    getBookingDataByMentor,
-    getBookingDataByCareer,
-    getBookingDataByRatting,
-  } = useChart();
+  const { getBookingDataByCareer } = useChart();
   const [statistic, setStatistic] = useState({});
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
@@ -45,15 +39,11 @@ const Summnary = () => {
     from_date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     to_date: new Date(Date.now() + 3600 * 1000 * 24),
   });
+  const { selectedApp } = useSelector((state) => state.app);
 
   useEffect(() => {
     getStatistic();
-    // getChartByStatus();
-    // getChartByMentor();
-    // getBarChartData();
     getChartByCareer();
-
-    // getChartByRatting();
   }, []);
 
   const getStatistic = async () => {
@@ -64,35 +54,6 @@ const Summnary = () => {
       console.log(e);
     }
   };
-
-  // const getBarChartData = async () => {
-  //   try {
-  //     const data = await getBarChart(formData);
-  //     setCategories(data?.data_booking_set_time?.xAxis);
-  //     setSeries(data?.data_booking_set_time?.series);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // const getChartByStatus = async () => {
-  //   try {
-  //     const data = await getBookingDataByCareer(formData);
-  //     setDataStatus(data?.data_booking_status_display);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // const getChartByMentor = async () => {
-  //   try {
-  //     const data = await getBookingDataByMentor(formData);
-  //     setDataMentor(data?.data_count_of_booking_by_mentor_name);
-  //     console.log(dataMentor);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   const getChartByCareer = async () => {
     try {
@@ -108,20 +69,6 @@ const Summnary = () => {
       console.log(e);
     }
   };
-
-
-  // const getChartByRatting = async () => {
-  //   try {
-  //     const data = await getBookingDataByRatting(formData);
-  //     setDataRatting({
-  //       series: data.series[0].data.map(Number),
-  //       categories: data.categories,
-  //       colors: data.colors,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   const handleSubmit = async () => {
     try {
@@ -239,81 +186,49 @@ const Summnary = () => {
           </Grid>
         </Grid>
       </Grid> */}
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item lg={6} xs={12}>
-            {/* <HoritionalBarChart
-              categories={dataStatus.categories}
-              series={dataStatus.series}
-              title="Thống kê tình trạng đăng ký theo trạng thái"
-              horizontal={true}
-            /> */}
-            <EHoritionalBarChart xAxis={dataStatus.xAxis} series={dataStatus.series} title={'Tình trạng đăng ký'}></EHoritionalBarChart>
+      {selectedApp.app_code === 'BOOKING' && (
+        <>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item lg={6} xs={12}>
+                <EHoritionalBarChart
+                  xAxis={dataStatus.xAxis}
+                  series={dataStatus.series}
+                  title={'Tình trạng đăng ký'}
+                ></EHoritionalBarChart>
+              </Grid>
+              <Grid item lg={6} xs={12}>
+                <EHoritionalBarChart
+                  xAxis={dataMentor.xAxis}
+                  series={dataMentor.series}
+                  title={'Mentor'}
+                ></EHoritionalBarChart>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item lg={6} xs={12}>
-            {/* <HoritionalBarChart
-              categories={dataMentor.categories}
-              series={dataMentor.series}
-              title="Thống kê tình trạng đăng ký theo Mentor"
-              horizontal={true}
-            /> */}
-            <EHoritionalBarChart xAxis={dataMentor.xAxis} series={dataMentor.series} title={'Mentor'}></EHoritionalBarChart>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item lg={12} xs={12}>
+                <EStackableBarChart xAxis={categories} series={series} title={'Booking'}></EStackableBarChart>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item lg={12} xs={12}>
-            {/* <BarChart categories={categories} series={series} /> */}
-            <EStackableBarChart xAxis={categories} series={series} title={'Booking'}></EStackableBarChart>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item lg={6} xs={12}>
+                <EPieChart name={dataCareer.chart_name} series={dataCareer.chart_data} title={'Ngành nghề'}></EPieChart>
+              </Grid>
+              <Grid item lg={6} xs={12}>
+                <EClolorfullBarChart
+                  xAxis={dataRatting.xAxis}
+                  series={dataRatting.colorful_series}
+                  title={'Ratting'}
+                ></EClolorfullBarChart>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item lg={6} xs={12}>
-            {/* <PieChart labels={dataCareer.labels} series={dataCareer.series} /> */}
-            <EPieChart name={dataCareer.chart_name} series={dataCareer.chart_data} title={'Ngành nghề'}></EPieChart>
-          </Grid>
-          <Grid item lg={6} xs={12}>
-            {/* <ColofullBarChart
-              series={dataRatting.series}
-              categories={dataRatting.categories}
-              colors={dataRatting.colors}
-            /> */}
-            <EClolorfullBarChart xAxis={dataRatting.xAxis} series={dataRatting.colorful_series} title={'Ratting'}></EClolorfullBarChart>
-          </Grid>
-        </Grid>
-      </Grid>
-
-       {/* <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item lg={6} xs={12}>
-            <HoritionalBarChart
-              categories={dataStatus.categories}
-              series={dataStatus.series}
-              title="Thống kê tình trạng đăng ký theo trạng thái"
-              horizontal={true}
-            />
-          </Grid>
-          <Grid item lg={6} xs={12}>
-            <HoritionalBarChart
-              categories={dataMentor.categories}
-              series={dataMentor.series}
-              title="Thống kê tình trạng đăng ký theo Mentor"
-              horizontal={true}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item lg={12} xs={12}>
-            <BarChart categories={categories} series={series} />
-          </Grid>
-        </Grid>
-      </Grid> */}
-      
+        </>
+      )}
     </React.Fragment>
   );
 };

@@ -78,7 +78,7 @@ const CompanySelectionSection = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      getProjects(selectedApp);
+      getProjects(selectedApp?.id || '');
     }, 0);
   }, [selectedApp]);
 
