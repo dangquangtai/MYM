@@ -31,6 +31,18 @@ export const RoleProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getRoletemplateByDept = async (department_code) => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_role_template_by_department_code, {
+         outputtype: 'RawJson',
+        department_code: department_code})
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return {};
+      });
+  };
 
 
   const createRole = async (role) => {
@@ -42,7 +54,6 @@ export const RoleProvider = ({ children }) => {
   const syncRole = async () => {
     return axiosInstance.post(apiEndpoints.sync_group_for_department, {
       outputtype: 'RawJson',
-      company_code: 'HNN',
     }).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
       return false;
@@ -52,7 +63,7 @@ export const RoleProvider = ({ children }) => {
     return axiosInstance.post(apiEndpoints.add_account_to_group,{
       outputtype: 'RawJson',
       group_name: group_name,
-      company_code: 'HNN',
+   
       account_id: account_id,
     }).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
@@ -64,7 +75,7 @@ export const RoleProvider = ({ children }) => {
       outputtype: 'RawJson',
       group_name: group_name,
       email_address: email_address,
-      company_code: 'HNN',
+  
       account_id: account_id,
     }).then((response) => {
       if (response.status === 200 && response.data.return === 200) return true;
@@ -100,6 +111,7 @@ export const RoleProvider = ({ children }) => {
         addAccountToGroup,
         removeAccountToGroup,
         syncRole,
+        getRoletemplateByDept,
       }}
     >
       {children}

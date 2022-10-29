@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme) => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    minWidth: 500,
+    minWidth: 1000,
+    maxWidth: 1000,
+    minHeight: 700,
+    maxHeight: 700,
     boxShadow: 24,
     background: '#FFFFFF',
     padding: '16px 32px',
@@ -27,6 +30,16 @@ const useStyles = makeStyles((theme) => ({
   dialogContent: {
     padding: '0 24px',
     overflowY: 'hidden'
+  },
+  toolButton: {
+    margin: '0 4px',
+    padding: '12px',
+    color: 'rgba(0, 0, 0, 0.54)',
+    minWidth: '40px',
+    borderRadius: '50%',
+    '&:hover': {
+      color: '#36f',
+    },
   },
   gridItemInfo: {
     padding: '0 12px 10px',
@@ -392,6 +405,21 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid rgba(0, 0, 0, 0.23)',
     '&:before': {
       border: 'none !important',
+    },
+  },
+  handleButton: {
+    height: '34px',
+    width: '34px',
+    margin: '0 4px',
+    padding: '12px',
+    color: '#FFFFFF',
+    minWidth: '34px',
+    borderRadius: '50%',
+    background: '#36f',
+    boxShadow:
+      '0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%)',
+    '&:hover': {
+      background: '#0043a9',
     },
   },
   gridItemCenter: {

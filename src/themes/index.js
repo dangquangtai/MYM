@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core';
 import value from '../assets/scss/_themes-vars.scss';
 import grey from '@material-ui/core/colors/grey';
 
@@ -34,7 +34,7 @@ export function theme(customization) {
       break;
   }
 
-  return createMuiTheme({
+  return createTheme({
     direction: customization.rtlLayout ? 'rtl' : 'ltr',
     palette: {
       type: customization.navType === 'dark' ? 'dark' : 'light',

@@ -79,8 +79,9 @@ const BatchModal = () => {
   const { selectedDocument } = useSelector((state) => state.document);
   const generateButton = formButtons.find((button) => button.name === view.batch.detail.generate);
   const importButton = formButtons.find((button) => button.name === view.batch.detail.import);
+  const saveButton = formButtons.find((button) => button.name === view.batch.detail.save);
 
-  const { createBatch, generateVoucher } = useMarketing();
+  const { createBatch, generateVoucher, updateBatch, getEventList } = useMarketing();
   const { getCounselingCategories } = useMedia();
   const { getPartnerList } = usePartner();
   const { setConfirmPopup } = useConfirmPopup();
@@ -99,6 +100,7 @@ const BatchModal = () => {
   const [batchData, setBatchData] = useState(initBatchData);
   const [counsellings, setCounsellings] = useState([]);
   const [partners, setPartners] = useState([]);
+  const [events, setEvents] = useState([]);
   const [selectedPartner, setSelectedPartner] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
 
@@ -125,7 +127,7 @@ const BatchModal = () => {
 
   const setDocumentToDefault = async () => {
     setBatchData(initBatchData);
-    console.log("batch")
+    console.log('batch');
     setTabIndex(0);
   };
   const setURL = (image) => {
@@ -167,8 +169,13 @@ const BatchModal = () => {
 
   const handleSubmitForm = async () => {
     try {
-      await createBatch(batchData);
-      handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
+      if (selectedDocument?.id) {
+        await updateBatch(batchData);
+        handleOpenSnackbar(true, 'success', 'Cập nhật thành công');
+      } else {
+        await createBatch(batchData);
+        handleOpenSnackbar(true, 'success', 'Tạo mới Batch thành công!');
+      }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'batch' });
       handleCloseDialog();
     } catch (error) {
@@ -194,6 +201,8 @@ const BatchModal = () => {
       setCounsellings(counsellings);
       const partners = await getPartnerList();
       setPartners(partners);
+      const events = await getEventList();
+      setEvents(events);
     };
     fetchData();
   }, []);
@@ -206,7 +215,7 @@ const BatchModal = () => {
       image_url: selectedDocument?.image_url || userAvatar,
     });
     setSelectedPartner(partners.find((partner) => partner.id === selectedDocument?.partner_id));
-    setSelectedEvent(counsellings.find((counselling) => counselling.id === selectedDocument?.event_id));
+    setSelectedEvent(events.find((event) => event.id === selectedDocument?.event_id));
   }, [selectedDocument]);
 
   return (
@@ -244,7 +253,7 @@ const BatchModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Chi tiết Podcast
+              Chi tiết Batch
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -299,25 +308,6 @@ const BatchModal = () => {
                             <div>Upload/Change Batch Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={batchData.image_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                       <div className={classes.tabItem}>
@@ -492,22 +482,15 @@ const BatchModal = () => {
                               <span className={classes.tabItemLabelField}>Áp dụng cho sự kiện:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              <Select
+                              <NoPaddingAutocomplete
                                 disabled={!batchData.is_for_event}
-                                name="event_id"
-                                labelId="career-label"
-                                id="career-name"
-                                className={classes.multpleSelectField}
-                                value={batchData.event_id}
-                                onChange={handleChanges}
-                              >
-                                <MenuItem value="">Không chọn</MenuItem>
-                                {/* {events?.map((event) => (
-                                    <MenuItem key={event.id} value={event.id}>
-                                        {event.name}
-                                    </MenuItem>
-                                ))} */}
-                              </Select>
+                                fullWidth
+                                value={selectedEvent}
+                                options={events}
+                                onChange={handleSelectEvent}
+                                getOptionLabel={(option) => option.title}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                              />
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -669,7 +652,7 @@ const BatchModal = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="contained"
@@ -693,6 +676,16 @@ const BatchModal = () => {
                     onClick={handleClickGenerate}
                   >
                     {generateButton.text}
+                  </Button>
+                )}
+                {saveButton && selectedDocument?.id && (
+                  <Button
+                    disabled={batchData.is_generated}
+                    variant="contained"
+                    style={{ background: 'rgb(97, 42, 255)' }}
+                    onClick={handleSubmitForm}
+                  >
+                    {saveButton.text}
                   </Button>
                 )}
                 {!selectedDocument?.id && (

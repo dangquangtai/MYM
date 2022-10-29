@@ -22,6 +22,14 @@ import {
   prepaidcardBatchActions,
   prepaidcardActions,
   listMentorActions,
+  partnerActions,
+  partnerCategoryActions,
+
+  processroleActions,
+
+  fileActions,
+  fileCategoryActions,
+
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -37,6 +45,15 @@ import EventCategoryWrapper from '../../Marketing/EventCategory';
 import CardBatchWrapper from './../../Payment/Batch/index';
 import PrepaidCardWrapper from './../../Payment/PrepaidCard/index';
 import ListMentorWrapper from './../../Partner/ListMentor/index';
+import PartnerWrapper from '../../Partner/Partner';
+import PartnerCategoryWrapper from '../../Partner/Partner/Partner Category';
+
+import ProcessRoleWrapper from '../../ProcessRole';
+
+import FileWrapper from './../../Document/File/index';
+import FileCategoryWrapper from './../../Document/FileCategory/index';
+import Calendar from './../../Booking/FullCalendar/index';
+
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -60,6 +77,14 @@ const Default = () => {
   const availablePrepaidcardBatchEndpoint = Object.values(prepaidcardBatchActions);
   const availablePrepaidcardEndpoint = Object.values(prepaidcardActions);
   const availableListMentorEndpoint = Object.values(listMentorActions);
+  const avalablePartnerEndpoint = Object.values(partnerActions);
+  const availablePartnerCategoryEndpoint = Object.values(partnerCategoryActions);
+
+  const avaiableProcessRoleEndpoint = Object.values(processroleActions);
+
+  const availableFileEndpoint = Object.values(fileActions);
+  const availableFileCategoryEndpoint = Object.values(fileCategoryActions);
+
 
   if (!selectedApp) {
     return <Redirect to="/dashboard/app" />;
@@ -67,14 +92,8 @@ const Default = () => {
 
   return (
     <Grid container spacing={gridSpacing}>
-      {!getUrlByAction(selectedFolder) && projects[0]?.selected && (
-        <>
-          <Summnary />
-        </>
-      )}
-      {/* {(selectedFolder?.action === bookingActions.full_calendar) && (
-        <FullCalendar />
-      )} */}
+      {!getUrlByAction(selectedFolder) && <Summnary />}
+      {selectedFolder?.action === counsellingActions.calendar && <Calendar />}
       {getUrlByAction(selectedFolder) && (
         <Grid item xs={12}>
           {availableAccountEndpoint.includes(selectedFolder?.action) && <AccountWrapper />}
@@ -92,6 +111,14 @@ const Default = () => {
           {availablePrepaidcardBatchEndpoint.includes(selectedFolder?.action) && <CardBatchWrapper />}
           {availablePrepaidcardEndpoint.includes(selectedFolder?.action) && <PrepaidCardWrapper />}
           {availableListMentorEndpoint.includes(selectedFolder?.action) && <ListMentorWrapper />}
+          {avalablePartnerEndpoint.includes(selectedFolder?.action) && <PartnerWrapper />}
+          {availablePartnerCategoryEndpoint.includes(selectedFolder?.action) && <PartnerCategoryWrapper />}
+
+          {avaiableProcessRoleEndpoint.includes(selectedFolder?.action) && <ProcessRoleWrapper/>}
+
+          {availableFileEndpoint.includes(selectedFolder?.action) && <FileWrapper />}
+          {availableFileCategoryEndpoint.includes(selectedFolder?.action) && <FileCategoryWrapper />}
+
         </Grid>
       )}
     </Grid>

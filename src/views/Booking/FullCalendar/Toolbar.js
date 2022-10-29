@@ -2,59 +2,41 @@ import React from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  ButtonGroup,
-  Grid,
-  Hidden,
-  IconButton,
-  Tooltip,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
+import { Button, ButtonGroup, Grid, Hidden, IconButton, Tooltip, Typography, makeStyles } from '@material-ui/core';
 import ViewConfigIcon from '@material-ui/icons/ViewComfyOutlined';
 import ViewWeekIcon from '@material-ui/icons/ViewWeekOutlined';
 import ViewDayIcon from '@material-ui/icons/ViewDayOutlined';
 import ViewAgendaIcon from '@material-ui/icons/ViewAgendaOutlined';
+import 'moment/locale/vi';
 
 const viewOptions = [
   {
     label: 'Month',
     value: 'dayGridMonth',
-    icon: ViewConfigIcon
+    icon: ViewConfigIcon,
   },
   {
     label: 'Week',
     value: 'timeGridWeek',
-    icon: ViewWeekIcon
+    icon: ViewWeekIcon,
   },
   {
     label: 'Day',
     value: 'timeGridDay',
-    icon: ViewDayIcon
+    icon: ViewDayIcon,
   },
   {
     label: 'Agenda',
     value: 'listWeek',
-    icon: ViewAgendaIcon
-  }
+    icon: ViewAgendaIcon,
+  },
 ];
 
 const useStyles = makeStyles(() => ({
-  root: {}
+  root: {},
 }));
 
-const Toolbar = ({
-  className,
-  date,
-  onDateNext,
-  onDatePrev,
-  onDateToday,
-  onAddClick,
-  onViewChange,
-  view,
-  ...rest
-}) => {
+const Toolbar = ({ className, date, onDateNext, onDatePrev, onDateToday, onAddClick, onViewChange, view, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -62,7 +44,7 @@ const Toolbar = ({
       className={clsx(classes.root, className)}
       alignItems="center"
       container
-      justify="space-between"
+      justifyContent="space-between"
       spacing={3}
       {...rest}
     >
@@ -75,11 +57,8 @@ const Toolbar = ({
       </Grid>
       <Hidden smDown>
         <Grid item>
-          <Typography
-            variant="h3"
-            color="textPrimary"
-          >
-            {moment(date).format('MMMM YYYY')}
+          <Typography variant="h3" color="textPrimary" style={{ textTransform: 'capitalize' }}>
+            {moment(date).locale('vi').format('MMMM YYYY')}
           </Typography>
         </Grid>
         <Grid item>
@@ -87,10 +66,7 @@ const Toolbar = ({
             const Icon = viewOption.icon;
 
             return (
-              <Tooltip
-                key={viewOption.value}
-                title={viewOption.label}
-              >
+              <Tooltip key={viewOption.value} title={viewOption.label}>
                 <IconButton
                   color={viewOption.value === view ? 'secondary' : 'default'}
                   onClick={() => onViewChange(viewOption.value)}
@@ -115,7 +91,7 @@ Toolbar.propTypes = {
   onDateToday: PropTypes.func,
   onAddClick: PropTypes.func,
   onViewChange: PropTypes.func,
-  view: PropTypes.oneOf(['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek'])
+  view: PropTypes.oneOf(['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek']),
 };
 
 Toolbar.defaultProps = {
@@ -123,7 +99,7 @@ Toolbar.defaultProps = {
   onDatePrev: () => {},
   onDateToday: () => {},
   onAddClick: () => {},
-  onViewChange: () => {}
+  onViewChange: () => {},
 };
 
 export default Toolbar;

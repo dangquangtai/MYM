@@ -40,40 +40,6 @@ const useStyles = makeStyles((theme) => ({
       padding: '8px 0'
     },
   },
-  tabItemMentorAvatarBody: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    '& > img': {
-      height: '120px',
-      width: '120px',
-      borderRadius: '50%',
-      marginBottom: '16px',
-      border: '1px solid #ddd',
-      objectFit: 'cover',
-      padding: '4px',
-      boxShadow: 'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px'
-    },
-    '& > button': {
-      marginTop: '8px',
-      padding: '6px 16px',
-      color: '#FFF',
-      background: '#3266FE',
-      '&:hover': {
-        color: '#FFF',
-        background: '#3266FE',
-      }
-    }
-  },
-  multpleSelectField: {
-    padding: '1px 12px',
-    width: '100%',
-    border: '1px solid rgba(0, 0, 0, 0.23)',
-    '&:before': {
-      border: 'none !important'
-    }
-  },
   useradddialog: {
     '&>div:nth-child(3)': {
       justifyContent: 'flex-end',
@@ -81,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
         background: '#f1f1f9',
         margin: '0px',
         borderRadius: '0px',
-        maxWidth: '70vw',
-        minWidth: '70vw',
+        maxWidth: '50vw',
+        minWidth: '50vw',
         maxHeight: '100%',
         overflowY: 'hidden',
         [theme.breakpoints.down('md')]: {
@@ -419,6 +385,14 @@ const useStyles = makeStyles((theme) => ({
     '& input': {
       padding: '8px 12px'
     }
+  },
+  multpleSelectField: {
+    padding: '1px 12px',
+    width: '100%',
+    border: '1px solid rgba(0, 0, 0, 0.23)',
+    '&:before': {
+      border: 'none !important',
+    },
   },
   gridItemCenter: {
     alignItems: 'center',

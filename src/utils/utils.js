@@ -15,6 +15,14 @@ import {
   prepaidcardActions,
   prepaidcardBatchActions,
   listMentorActions,
+  partnerActions,
+  partnerCategoryActions,
+
+  processroleActions,
+
+  fileActions,
+  fileCategoryActions,
+
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -23,13 +31,10 @@ export function getUrlByAction(selectedFolder) {
       return apiEndpoints.get_all_active_account;
     }
     case accountActions.list_inactive_user: {
-      return apiEndpoints.get_all_inactive_account;
+      return apiEndpoints.get_all_deactive_account;
     }
     case departmentActions.list_active_department: {
-      return apiEndpoints.get_all_active_department;
-    }
-    case departmentActions.list_inactive_department: {
-      return apiEndpoints.get_all_inactive_department;
+      return apiEndpoints.get_all_account_by_department_and_role_template;
     }
     case roleActions.list_active_role: {
       return apiEndpoints.get_all_active_role_template;
@@ -37,9 +42,7 @@ export function getUrlByAction(selectedFolder) {
     case roleActions.list_inactive_role: {
       return apiEndpoints.get_all_inactive_role_template;
     }
-    case roleActions.list_role: {
-      return apiEndpoints.get_all_account_by_department;
-    }
+
     case playlistActions.active_list: {
       return apiEndpoints.get_all_active_playlist;
     }
@@ -105,6 +108,29 @@ export function getUrlByAction(selectedFolder) {
     }
     case listMentorActions.active_list: {
       return apiEndpoints.get_all_list_mentor;
+    }
+    case partnerActions.active_list: {
+      return apiEndpoints.get_all_active_partner;
+    }
+    case partnerActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_partner;
+    }
+    case partnerCategoryActions.active_list: {
+      return apiEndpoints.get_all_active_partner_category;
+    }
+
+    case processroleActions.list_tree: {
+      return apiEndpoints.get_account_list_by_process_role;
+    }
+    case fileActions.active_list: {
+      return apiEndpoints.get_all_active_file;
+    }
+    case fileActions.inactive_list: {
+      return apiEndpoints.get_all_inactive_file;
+    }
+    case fileCategoryActions.active_list: {
+      return apiEndpoints.get_file_category_list;
+
     }
     default: {
       return '';

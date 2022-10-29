@@ -91,6 +91,94 @@ export const PartnerProvider = ({ children }) => {
         } else return [];
       });
   };
+
+  const getPartnerListInactive = async (page = 1, no_item_per_page = 100, search_text = '') => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_inactive_partner, { outputtype: 'RawJson', page, no_item_per_page, search_text })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
+
+  const getPartnerDetail = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_partner_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return news;
+        } else return {};
+      });
+  };
+  const getPartnerCategoryList = async (page = 1, no_item_per_page = 100, search_text = '') => {
+    return axiosInstance
+      .post(apiEndpoints.get_all_active_partner_category, { outputtype: 'RawJson', page, no_item_per_page, search_text })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
+
+  const getPartnerCategoryDetail = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_partner_category_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return news;
+        } else return {};
+      });
+  };
+
+  const createPartnerCategory = async (data) => {
+    return axiosInstance
+      .post(apiEndpoints.create_partner_category, { outputtype: 'RawJson', ...data })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  }; 
+  
+  const updatePartnerCategory = async (data) => {
+    return axiosInstance
+      .post(apiEndpoints.update_partner_category, { outputtype: 'RawJson', ...data })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
+
+  const createPartner = async (data) => {
+    return axiosInstance
+      .post(apiEndpoints.create_partner, { outputtype: 'RawJson', ...data })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  }; 
+  
+  const updatePartner = async (data) => {
+    return axiosInstance
+      .post(apiEndpoints.update_partner, { outputtype: 'RawJson', ...data })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
+
   const getMentorList = async () => {
     return axiosInstance.post(apiEndpoints.get_mentor_list, { outputtype: 'RawJson' }).then((response) => {
       if (response.status === 200 && response.data.return === 200) {
@@ -145,10 +233,18 @@ export const PartnerProvider = ({ children }) => {
         generateTimeslot,
         getTimeslot,
         getPartnerList,
+        getPartnerDetail,
+        getPartnerCategoryList,
         getMentorList,
         getMentorListDetail,
         createMentorList,
         updateMentorList,
+        createPartner,
+        updatePartner,
+        getPartnerCategoryDetail,
+        createPartnerCategory,
+        updatePartnerCategory,
+        getPartnerListInactive,
       }}
     >
       {children}

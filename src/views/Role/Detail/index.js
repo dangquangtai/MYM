@@ -96,7 +96,7 @@ const RoleModal = () => {
   const [departmentTypes, setDepartmentType] = React.useState();
   useEffect(() => {
     getDepartmentParent({
-      company_code: 'HNN', 
+    
       parent_department_code: null,});
     if (!selectedDocument) return;
     setRole({
@@ -373,7 +373,7 @@ const RoleModal = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="contained"

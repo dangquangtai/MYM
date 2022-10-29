@@ -13,38 +13,70 @@ export const apiEndpoints = {
   get_folders: '/Primary/?FlowAlias=bs_menu_api_get_menu_tree&action=api',
   get_metadata: '/Primary/?FlowAlias=bs_api_mym_get_meta_data&action=api',
   // account
-  get_all_account: '/Primary/?FlowAlias=hnn_acco_api_get_all_account_by_page&action=api',
-  get_all_inaccount: '/Primary/?FlowAlias=hnn_acco_api_get_all_inaccount_by_page&action=api',
-  get_all_account_by_department: '/Primary/?FlowAlias=hnn_api_get_all_acount_by_department&action=api',
-  get_account_detail: '/Primary/?FlowAlias=hnn_api_booking_get_account_by_id&action=api',
-  create_account: '/Primary/?FlowAlias=hnn_api_booking_user_create_account&action=api',
-  update_account: '/Primary/?FlowAlias=hnn_api_booking_user_update_account&action=api',
-  active_account: '/Primary/?FlowAlias=hnn_api_user_active_account&action=api',
+  get_all_active_account: '/Primary/?FlowAlias=bs_user_api_get_all_active_account_by_page&action=api',
+  get_all_deactive_account: '/Primary/?FlowAlias=bs_user_api_get_all_deactive_account_by_page&action=api',
+  get_account_detail: '/Primary/?FlowAlias=bs_api_user_get_account_by_id&action=api',
+  create_account: '/Primary/?FlowAlias=bs_api_user_create_account_by_host&action=api',
+  update_account: '/Primary/?FlowAlias=bs_api_user_update_account_by_id&action=api',
+  get_all_account_by_department_and_role_template:
+    '/Primary/?FlowAlias=bs_api_user_get_all_acount_by_departmentand_role_template&action=api',
+  assign_account_to_dept: '/Primary/?FlowAlias=bs_api_user_api_assign_account_to_department&action=api',
+  remove_account_from_dept: '/Primary/?FlowAlias=bs_api_user_api_remove_account_from_department&action=api',
+  active_account: '/Primary/?FlowAlias=bs_api_user_active_account&action=api',
+  get_account_list_by_process_role: '/Primary/?FlowAlias=bs_api_user_get_list_by_process_role&action=api',
+
   get_all_task: '/Primary/?FlowAlias=hnn_api_booking_get_all_task&action=api',
-  get_all_account_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_all_account&action=api',
+
+  get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
+  get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
+
+  get_all_account_list: '/Primary/?FlowAlias=bs_api_booking_user_get_all_account&action=api',
 
   //role template
-  get_all_active_role_template: '/Primary/?FlowAlias=hnn_api_role_get_all_active_role_template_by_page&action=api',
-  active_role_template: '/Primary/?FlowAlias=hnn_api_role_active_role&action=api',
-  get_detail_role_template: '/Primary/?FlowAlias=hnn_api_role_get_detail_role_template&action=api',
-  get_all_inactive_role_template: '/Primary/?FlowAlias=hnn_api_role_get_all_inactive_role_template_by_page&action=api',
-  create_role_template: '/Primary/?FlowAlias=hnn_api_role_create_role&action=api',
-  get_all_group: '/Primary/?FlowAlias=hnn_api_role_get_all_group&action=api',
+  get_all_active_role_template:
+    '/Primary/?FlowAlias=bs_api_role_template_get_all_active_role_template_by_page&action=api',
+  active_role_template: '/Primary/?FlowAlias=bs_api_role_template_active_role_template&action=api',
+  get_detail_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_detail_role_template&action=api',
+  get_all_inactive_role_template:
+    '/Primary/?FlowAlias=bs_api_role_template_get_all_inactive_role_template_by_page&action=api',
+  create_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
+  update_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
+
+  get_role_tree_data: '/Primary/?FlowAlias=bs_api_process_role_get_tree_data_role&action=api',
+  get_all_role_template_by_department_code:
+    '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
+
+  get_option_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_optinal_role&action=api',
+  get_all_role_template_by_department_code:
+    '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
 
   add_account_to_group: '/Primary/?FlowAlias=bs_api_user_add_acount_to_group&action=api',
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
+
+  create_process_role: '/Primary/?FlowAlias=bs_api_process_create_role&action=api',
+  update_process_role: '/Primary/?FlowAlias=bs_api_process_update_role&action=api',
+  add_user_depart_to_process_role: '/Primary/?FlowAlias=bs_api_process_add_dept_user&action=api',
+  remove_user_from_process_role: '/Primary/?FlowAlias=bs_api_process_remove_user&action=api',
+  sync_process_role: '/Primary/?FlowAlias=bs_api_process_sync_role_department&action=api',
+  remove_dept_from_process_role: '/Primary/?FlowAlias=bs_api_process_remove_dept&action=api',
+  get_role_detail: '/Primary/?FlowAlias=bs_api_process_role_get_role_detail_by_role_code&action=api',
+  get_process_list: '/Primary/?FlowAlias=bs_get_process_by_app_code&action=api',
+
   //department
 
-  sync_group_for_department: '/Primary/?FlowAlias=hnn_api_role_sync_group_for_department&action=api',
+  sync_group_for_department: '/Primary/?FlowAlias=bs_api_role_template_sync_group_for_department&action=api',
   get_tree_view_data: '/Primary/?FlowAlias=bs_api_dept_get_tree_view_data&action=api',
-  get_all_active_department: '/Primary/?FlowAlias=hnn_api_dept_get_all_active_department_by_page&action=api',
-  get_all_inactive_department: '/Primary/?FlowAlias=hnn_api_dept_get_all_inactive_department_by_page&action=api',
-  deactive_department: '/Primary/?FlowAlias=hnn_api_booking_user_deactive_department&action=api',
-  create_department: '/Primary/?FlowAlias=hnn_api_booking_user_create_department&action=api',
-  update_department: '/Primary/?FlowAlias=hnn_api_booking_user_update_department&action=api',
-  get_department_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_department_list&action=api',
-  get_department_type_list: '/Primary/?FlowAlias=hnn_api_booking_user_get_department_type_list&action=api',
-  get_department_detail: '/Primary/?FlowAlias=hnn_api_booking_department_get_detail_department_by_name&action=api',
+
+  deactive_department: '/Primary/?FlowAlias=bs_api_dept_deactive_department&action=api',
+  create_department: '/Primary/?FlowAlias=bs_api_dept_create_department&action=api',
+  update_department: '/Primary/?FlowAlias=bs_api_dept_update_department&action=api',
+  get_department_list: '/Primary/?FlowAlias=bs_api_dept_get_department_list&action=api',
+  get_department_type_list: '/Primary/?FlowAlias=bs_api_dept_get_department_type_list&action=api',
+  get_department_detail: '/Primary/?FlowAlias=bs_api_dept_get_detail_department_by_name&action=api',
+
+  get_dept_list_by_process_role: '/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
+  get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
+  get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
 
   // Meida
   // // Playlist
@@ -86,7 +118,19 @@ export const apiEndpoints = {
   get_timeslot_by_mentor_id: '/Primary/?FlowAlias=bs_api_inventory_get_timeslot_by_mentor_id&action=api',
   get_mentor_list: '/Primary/?FlowAlias=bs_api_partner_get_mentor_list&action=api',
   // // Partner
-  get_all_active_partner: '/Primary/?FlowAlias=bs_api_partner_get_all_active_partner&action=api',
+  get_all_active_partner: '/Primary/?FlowAlias=bs_api_partner_get_partner_list_active_by_page&action=api',
+  get_all_inactive_partner: '/Primary/?FlowAlias=bs_api_partner_get_partner_list_inactive_by_page&action=api',
+  get_partner_detail: '/Primary/?FlowAlias=bs_api_partner_get_partner_detail_by_partner_id&action=api',
+  create_partner: '/Primary/?FlowAlias=bs_api_partner_get_new_partner&action=api',
+  update_partner: '/Primary/?FlowAlias=bs_api_partner_update_partner&action=api',
+  set_active_partner: '/Primary/?FlowAlias=bs_api_partner_set_active_partner&action=api',
+  set_featured_partner: '/Primary/?FlowAlias=bs_api_partner_set_featured_partner&action=api',
+
+  // partner category
+  get_all_active_partner_category: '/Primary/?FlowAlias=bs_api_partner_get_all_partner_category&action=api',
+  create_partner_category: '/Primary/?FlowAlias=bs_api_partner_create_new_partner_category&action=api',
+  get_partner_category_detail: '/Primary/?FlowAlias=bs_api_partner_get_partner_category_detail&action=api',
+  update_partner_category: '/Primary/?FlowAlias=bs_api_partner_update_partner_category&action=api',
 
   // // Counseling Category
   get_all_active_counseling_category:
@@ -128,6 +172,7 @@ export const apiEndpoints = {
   review_booking: '/Primary/?FlowAlias=bs_api_counselling_review_booking&action=api',
   cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
+  get_full_calendar: '/Primary/?FlowAlias=bs_api_counselling_get_full_calendar&action=api',
 
   // Marketing
   // // Batch
@@ -153,6 +198,7 @@ export const apiEndpoints = {
   get_detail_event: '/Primary/?FlowAlias=bs_api_marketing_private_get_event_detail&action=api',
   update_event: '/Primary/?FlowAlias=bs_api_marketing_update_event&action=api',
   set_active_event: '/Primary/?FlowAlias=bs_api_marketing_active_event&action=api',
+  get_all_event: '/Primary/?FlowAlias=bs_api_marketing_get_all_event_list_by_page&action=api',
   // // Event Category
   get_event_category: '/Primary/?FlowAlias=bs_api_marketing_get_event_category_list_by_page&action=api',
   create_event_category: '/Primary/?FlowAlias=bs_api_marketing_create_new_event_category&action=api',
@@ -168,32 +214,52 @@ export const apiEndpoints = {
   set_active_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card_batch&action=api',
   generate_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_generate_prepaid_card&action=api',
   send_email_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_send_email_prepaid_card&action=api',
+  update_prepaid_card_batch: '/Primary/?FlowAlias=bs_api_payment_update_prepaid_card_batch&action=api',
 
   // // Prepaid Card
   get_all_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_get_all_prepaid_card&action=api',
   set_active_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_set_active_prepaid_card&action=api',
   assign_prepaid_card: '/Primary/?FlowAlias=bs_api_payment_assign_prepaid_card&action=api',
 
-    //EChart
-    get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
-    get_booking_data_by_career: '/Primary/?FlowAlias=bs_api_get_booking_data_by_career_for_chart&action=api',
+  // Document
+  // // File Category
+  get_file_category_list: '/Primary/?FlowAlias=bs_api_document_get_file_category_list_by_page&action=api',
+  create_file_category: '/Primary/?FlowAlias=bs_api_document_create_new_file_category&action=api',
+  get_detail_file_category: '/Primary/?FlowAlias=bs_api_document_get_file_category_detail&action=api',
+  update_file_category: '/Primary/?FlowAlias=bs_api_document_update_file_category&action=api',
+  set_active_file_category: '/Primary/?FlowAlias=bs_api_document_set_active_file_category&action=api',
+  add_group_file_category: '/Primary/?FlowAlias=bs_api_document_add_group_file_category&action=api',
+  remove_group_file_category: '/Primary/?FlowAlias=bs_api_document_remove_group_file_category&action=api',
+  get_file_type_and_category: '/Primary/?FlowAlias=bs_api_document_get_file_type_and_category&action=api',
+  // // File
+  get_all_active_file: '/Primary/?FlowAlias=bs_api_document_get_active_file_list_by_page&action=api',
+  get_all_inactive_file: '/Primary/?FlowAlias=bs_api_document_get_inactive_file_list_by_page&action=api',
+  create_file: '/Primary/?FlowAlias=bs_api_document_create_new_file&action=api',
+  get_detail_file: '/Primary/?FlowAlias=bs_api_document_get_file_detail&action=api',
+  update_file: '/Primary/?FlowAlias=bs_api_document_update_file&action=api',
+  set_active_file: '/Primary/?FlowAlias=bs_api_document_set_active_file&action=api',
 
+  //EChart
+  get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
+  get_booking_data_by_career: '/Primary/?FlowAlias=bs_api_get_booking_data_by_career_for_chart&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
 
 export const roleActions = {
-  list_active_role: 'HNN_ACTIONE_OPEN_ACTIVE_ROLE_TEMPLATE_LIST',
-  list_inactive_role: 'HNN_ACTIONE_OPEN_INACTIVE_ROLE_TEMPLATE_LIST',
-  list_role: 'HNN_ACTION_OPEN_ROLE_LIST',
+  list_active_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_DEACTIVE_LIST',
+  list_inactive_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_ACTIVE_LIST',
+};
+export const processroleActions = {
+  list_tree: 'MYM_ORGANISATION_HOME_PROCESS_ROLE_MANAGE',
 };
 export const accountActions = {
-  list_active_user: 'HNN_ACTION_OPEN_ACTIVE_USER_LIST',
-  list_inactive_user: 'HNN_ACTION_OPEN_INACTIVE_USER_LIST',
+  list_active_user: 'MYM_ORGANISATION_HOME_OPEN_ACTIVE_USER_LIST',
+  list_inactive_user: 'MYM_ORGANISATION_HOME_OPEN_USER_DEACTIVE_LIST',
 };
 export const departmentActions = {
-  list_active_department: 'HNN_ACTION_OPEN_ACTIVE_DEPT_LIST',
-  list_inactive_department: 'HNN_ACTION_OPEN_INACTIVE_DEPT_LIST',
+  list_active_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_ACTIVE_LIST',
+  list_inactive_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_DEACTIVE_LIST',
 };
 
 export const playlistActions = {
@@ -228,6 +294,7 @@ export const counsellingActions = {
   cancel_list: 'MYM_BOOKING_COUNSELING_OPEN_CANCEL_COUNSELLING_LIST',
   handle_list: 'MYM_BOOKING_COUNSELING_OPEN_HANDLE_COUNSELLING_LIST',
   uncompleted_list: 'MYM_BOOKING_COUNSELING_OPEN_UNCOMPLETED_COUNSELING_LIST',
+  calendar: 'MYM_BOOKING_HOME_OPEN_CALENDAR',
 };
 
 export const batchActions = {
@@ -251,6 +318,22 @@ export const prepaidcardActions = {
 export const listMentorActions = {
   active_list: 'MYM_PARTNER_MENTOR_OPEN_LIST_MENTOR_LIST',
 };
+export const partnerActions = {
+  active_list: 'MYM_PARTNER_COMPANY_OPEN_ACTIVE_PARTNER_LIST',
+  inactive_list: 'MYM_PARTNER_COMPANY_OPEN_INACTIVE_PARTNER_LIST',
+};
+export const partnerCategoryActions = {
+  active_list: 'MYM_PARTNER_COMPANY_OPEN_CATEGORY_LIST',
+};
+
+export const fileActions = {
+  active_list: 'MYM_DOCUMENT_HOME_OPEN_ACTIVE_FILE',
+  inactive_list: 'MYM_DOCUMENT_HOME_OPEN_INACTIVE_FILE',
+};
+
+export const fileCategoryActions = {
+  active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_CATEGORY',
+};
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
@@ -264,7 +347,7 @@ export const view = {
   },
   user: {
     list: {
-      create: 'USER_LIST_CREATE_MENU_BUTTON',
+      create: 'MYM_ORGANISATION_HOME_CREATE_USER_MENU_BUTTON',
     },
     detail: {
       save: 'USER_DETAIL_SAVE_FORM_BUTTON',
@@ -272,8 +355,11 @@ export const view = {
   },
   department: {
     list: {
-      create: 'DEPARTMENT_LIST_CREATE_MENU_BUTTON',
-      show_tree: 'DEPARTMENT_LIST_SHOW_TREE_VIEW_BUTTON',
+      create: 'MYM_ORGANISATION_HOME_CREATE_DEPARTMENT_MENU_BUTTON',
+      update: 'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_MENU_BUTTON',
+      adduser: 'MYM_ORGANISATION_HOME_ADD_USER_DEPARTMENT_MENU_BUTTON',
+      removeaccount: 'MYM_ORGANISATION_HOME_REMOVE_ACCOUNT_MENU_BUTTON',
+      syncDept: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_MENU_BUTTON',
     },
     detail: {
       save: 'DEPARTMENT_LIST_CREATE_FORM_BUTTON',
@@ -281,13 +367,21 @@ export const view = {
   },
   role: {
     list: {
-      create: 'ROLE_TEMPLATE_LIST_CREATE_MENU_BUTTON',
-      select: 'ROLE_LIST_SELECT_DEPARTMENT_BUTTON',
-      remove: 'ROLE_LIST_REMOVE_ACCOUNT_MENU_BUTTON',
-      addnew: 'ROLE_LIST_ADD_ACCOUNT_MENU_BUTTON',
-      sync_department: 'ROLE_TEMPLATE_LIST_SYNC_DEPARTMENT_MENU_BUTTON',
+      create: 'MYM_ORGANISATION_HOME_ROLE_TEMPLATE_CREATE_MENU_BUTTON',
     },
     detail: {},
+  },
+  processrole: {
+    list: {
+      create: 'MYM_ORGANISATION_HOME_CREATE_NEW_PROCESS_ROLE_MENU_BUTTON',
+      update: 'MYM_ORGANISATION_HOME_UPDATE_PROCESS_ROLE_MENU_BUTTON',
+      update_dept_role: 'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_ROLE_MENU_BUTTON',
+      adduser: 'MYM_ORGANISATION_HOME_ADD_ACCOUNT_ROLE_MENU_BUTTON',
+      adddept: 'MYM_ORGANISATION_HOME_ADD_DEPT_ROLE_MENU_BUTTON',
+      removeaccount: 'MYM_ORGANISATION_HOME_REMOVE_ACCOUNT_ROLE_MENU_BUTTON',
+      removedept: 'MYM_ORGANISATION_HOME_REMOVE_DEPT_ROLE_MENU_BUTTON',
+      syncRole: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_ROLE_MENU_BUTTON',
+    },
   },
   playlist: {
     list: {
@@ -368,7 +462,9 @@ export const view = {
     },
   },
   prepaidcard: {
-    assign: 'MYM_PAYMENT_PREPAIDCARD_ASSIGN_MENU_BUTTON',
+    list: {
+      assign: 'MYM_PAYMENT_PREPAIDCARD_ASSIGN_MENU_BUTTON',
+    },
   },
   prepaidcardbatch: {
     list: {
@@ -378,6 +474,7 @@ export const view = {
     detail: {
       generate: 'MYM_PAYMENT_PREPAIDCARD_BATCH_GENERATE_FORM_BUTTON',
       import: 'MYM_PAYMENT_PREPAIDCARD_BATCH_IMPORT_FORM_BUTTON',
+      save: 'MYM_PAYMENT_PREPAIDCARD_BATCH_SAVE_FORM_BUTTON',
     },
   },
   mentorlist: {
@@ -386,6 +483,38 @@ export const view = {
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',
+    },
+  },
+  partner: {
+    list: {
+      create: 'MYM_PARTNER_MENTOR_PARTNER_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_MENTOR_PARTNER_SAVE_FORM_BUTTON',
+    },
+  },
+  partner_category: {
+    list: {
+      create: 'MYM_PARTNER_MENTOR_PARTNER_CATEGORY_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_MENTOR_PARTNER_CATRGORY_SAVE_FORM_BUTTON',
+    },
+  },
+  file: {
+    list: {
+      create: 'MYM_DOCUMENT_HOME_FILE_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_DOCUMENT_HOME_FILE_SAVE_FORM_BUTTON',
+    },
+  },
+  fileCategory: {
+    list: {
+      create: 'MYM_DOCUMENT_HOME_CATEGORY_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_DOCUMENT_HOME_CATEGORY_SAVE_FORM_BUTTON',
     },
   },
 };

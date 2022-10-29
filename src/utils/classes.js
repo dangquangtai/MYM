@@ -515,6 +515,31 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  partnerdialog: {
+    '&>div:nth-child(3)': {
+      justifyContent: 'flex-end',
+      '&>div': {
+        background: '#f1f1f9',
+        margin: '0px',
+        borderRadius: '0px',
+        maxWidth: '50vw',
+        minWidth: '50vw',
+        maxHeight: '100%',
+        overflowY: 'hidden',
+        [theme.breakpoints.down('md')]: {
+          minWidth: '100%',
+          maxWidth: '100%',
+        },
+        [theme.breakpoints.down('xs')]: {
+          minWidth: '100%',
+          maxWidth: '100%',
+        },
+        '&>div:first-child': {
+          background: 'unset !important',
+        },
+      },
+    },
+  },
 }));
 
 export default useStyles;

@@ -58,11 +58,31 @@ export default function FirebaseUpload(props) {
 
   const { open: openDialog, onSuccess, onClose, folder, type } = props;
 
+  const [fileType, setFileType] = React.useState(type);
+
   function onDrop(files) {
     setSelectedFile(files);
   }
+
+  React.useEffect(() => {
+    switch (type) {
+      case 'image':
+        setFileType('image/*');
+        break;
+      case 'audio':
+        setFileType('audio/*');
+        break;
+      case 'file':
+        setFileType('.csv,.doc,.docx,.xls,.xlsx,.pdf,.txt,.zip,.rar');
+        break;
+      default:
+        setFileType('image/*');
+        break;
+    }
+  }, [type]);
+
   const { getRootProps, getInputProps } = useDropzone({
-    accept: type === 'image' ? 'image/*' : 'audio/*',
+    accept: fileType,
     onDrop,
   });
 
@@ -78,7 +98,7 @@ export default function FirebaseUpload(props) {
         setProgresspercent(progress);
       },
       (error) => {
-        alert("Tải lên thất bại");
+        alert('Tải lên thất bại');
         setIsUploading(false);
       },
       () => {
@@ -111,7 +131,7 @@ export default function FirebaseUpload(props) {
                 <div {...getRootProps({ className: classes.dropzone })}>
                   <input {...getInputProps()} />
                   {selectedFiles.length && selectedFiles[0].name ? (
-                    <div  className="selected-file">{selectedFiles.length && selectedFiles[0].name}</div>
+                    <div className="selected-file">{selectedFiles.length && selectedFiles[0].name}</div>
                   ) : (
                     'Kéo thả file hoặc bấm vào đây để bắt đầu chọn'
                   )}
@@ -135,7 +155,7 @@ export default function FirebaseUpload(props) {
             </Box>
           </Box>
         )}
-        <Grid container justify="flex-end" spacing={gridSpacing}>
+        <Grid container justifyContent="flex-end" spacing={gridSpacing}>
           <Grid item>
             <Button variant="contained" color="secondary" onClick={onClose}>
               Đóng

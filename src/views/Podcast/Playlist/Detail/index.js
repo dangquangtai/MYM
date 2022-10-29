@@ -260,25 +260,6 @@ const PlaylistModal = () => {
                             <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
                           </div>
                         </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={playlistData.image_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
                       </div>
                     </Grid>
                     <Grid item lg={6} md={6} xs={12}>
@@ -382,7 +363,7 @@ const PlaylistModal = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="contained"

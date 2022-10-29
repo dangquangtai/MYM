@@ -92,6 +92,60 @@ export const useStyles = makeStyles((theme) => ({
       fill: '#FFF',
     },
   },
+  table2: {
+    minWidth: 950,
+    maxWidth: 950,
+    borderSpacing: '0 10px',
+    '& > thead': {
+      background: '#FFFFFF',
+    },
+    '& > thead > tr > th': {
+      background: 'unset',
+      position: 'relative !important',
+    },
+    '& > tbody > tr:hover': {
+      backgroundColor: '#36f !important',
+    },
+    '& > tbody > tr:hover td': {
+      color: '#FFF',
+    },
+    '& > tbody > tr:hover td span': {
+      color: '#FFF',
+    },
+    '& > tbody > tr:hover td span': {
+      color: '#FFF',
+    },
+    '& > tbody > tr:hover td svg': {
+      fill: '#FFF',
+    },
+  },
+  table3: {
+    minWidth: 450,
+    maxWidth: 450,
+    borderSpacing: '0 10px',
+    '& > thead': {
+      background: '#FFFFFF',
+    },
+    '& > thead > tr > th': {
+      background: 'unset',
+      position: 'relative !important',
+    },
+    '& > tbody > tr:hover': {
+      backgroundColor: '#36f !important',
+    },
+    '& > tbody > tr:hover td': {
+      color: '#FFF',
+    },
+    '& > tbody > tr:hover td span': {
+      color: '#FFF',
+    },
+    '& > tbody > tr:hover td span': {
+      color: '#FFF',
+    },
+    '& > tbody > tr:hover td svg': {
+      fill: '#FFF',
+    },
+  },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',

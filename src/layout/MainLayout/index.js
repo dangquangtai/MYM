@@ -11,12 +11,10 @@ import Loading from './Loading';
 import useLoading from './../../hooks/useLoading';
 import ConfirmPopup from '../../views/ConfirmPopup';
 import DetailDocumentDialog from '../../views/Detail/index.js';
-import AccountModal from '../../views/FormAccount';
+import AccountModal from '../../views/Account/Detail';
 import MentorModal from '../../views/Mentor/Detail';
-import DepartmentModal from '../../views/Department/Detail';
 import RoleModal from '../../views/Role/Detail';
-import TreeViewModal from '../../views/Department/Tree_View';
-import FormModal from '../../views/Role/Form';
+import DepartmentModal from '../../views/Department/Detail';
 import PodcastModal from '../../views/Podcast/Podcast/Detail/index.js';
 import EpisodeModal from '../../views/Podcast/Episode/Detail';
 import PlaylistModal from '../../views/Podcast/Playlist/Detail/index.js';
@@ -25,6 +23,18 @@ import EventCategoryModal from '../../views/Marketing/EventCategory/Detail/index
 import EventModal from '../../views/Marketing/Event/Detail';
 import VoucherModal from './../../views/Marketing/Voucher/AssignModal/index';
 import MentorListModal from './../../views/Partner/ListMentor/Detail/index';
+import PartnerModal from '../../views/Partner/Partner/Detail';
+import PartnerCategoryModal from '../../views/Partner/Partner/Partner Category/Detail';
+import CardBatchModal from './../../views/Payment/Batch/Detail/index';
+import CardModal from './../../views/Payment/PrepaidCard/AssignModal/index';
+
+import ProcessRoleModal from '../../views/ProcessRole/Detail';
+import ProcessRoleUserModal from '../../views/ProcessRole/User';
+import ProcessRoleDeptModal from '../../views/ProcessRole/Department';
+
+import FileModal from './../../views/Document/File/Detail/index';
+import FileCategoryModal from './../../views/Document/FileCategory/Detail/index';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,7 +101,6 @@ const MainLayout = ({ children }) => {
       case 'department':
         return (
           <>
-            <TreeViewModal />
             <DepartmentModal />
           </>
         );
@@ -99,7 +108,6 @@ const MainLayout = ({ children }) => {
         return (
           <>
             <RoleModal />
-            <FormModal />
           </>
         );
       case 'batch':
@@ -118,6 +126,23 @@ const MainLayout = ({ children }) => {
         return <VoucherModal />;
       case 'mentorlist':
         return <MentorListModal />;
+      case 'partner':
+        return <PartnerModal />;
+      case 'partner_category':
+        return <PartnerCategoryModal />;
+      case 'cardbatch':
+        return <CardBatchModal />;
+      case 'prepaidcard':
+        return <CardModal />;
+
+      case 'processrole':
+        return <><ProcessRoleModal/><ProcessRoleUserModal/><ProcessRoleDeptModal/></>;
+
+      case 'file':
+        return <FileModal />;
+      case 'fileCategory':
+        return <FileCategoryModal />;
+
     }
   };
 

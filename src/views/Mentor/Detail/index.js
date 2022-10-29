@@ -31,7 +31,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useView from '../../../hooks/useView';
 import usePartner from '../../../hooks/usePartner';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, CONFIRM_CHANGE } from '../../../store/actions.js';
-import { view } from '../../../store/constant';
+import { tinyMCESecretKey, view } from '../../../store/constant';
 import { userAvatar, initMentorData } from '../../../store/constants/initial';
 import { timeWorking } from '../../../store/constants/time';
 import ScheduleModal from '../ScheduleModal';
@@ -45,6 +45,7 @@ import {
   ImageOutlined as ImageIcon,
   Today as TodayIcon,
 } from '@material-ui/icons';
+import { Editor } from '@tinymce/tinymce-react';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -81,7 +82,7 @@ function a11yProps(index) {
 const MentorModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const editorRef = React.useRef(null);
   const { form_buttons: formButtons } = useView();
 
   const workingDayButton = formButtons.find((button) => button.name === view.mentor.detail.workday);
@@ -156,6 +157,9 @@ const MentorModal = () => {
       three: [],
     });
     setTabIndex(0);
+    if (editorRef.current) {
+      editorRef.current.setContent('');
+    }
   };
   const setURL = (image) => {
     setMentorData({ ...mentorData, image_url: image });
@@ -184,10 +188,22 @@ const MentorModal = () => {
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updateMentor(mentorData);
+        await updateMentor({
+          ...mentorData,
+          description:
+            editorRef.current && editorRef.current.getContent()
+              ? editorRef.current.getContent({ format: 'text' })
+              : mentorData.description,
+        });
         handleOpenSnackbar(true, 'success', 'Cập nhật Mentor thành công!');
       } else {
-        const ret = await createMentor(mentorData);
+        const ret = await createMentor({
+          ...mentorData,
+          description:
+            editorRef.current && editorRef.current.getContent()
+              ? editorRef.current.getContent({ format: 'text' })
+              : mentorData.description,
+        });
         if (ret.return === 200) {
           handleOpenSnackbar(true, 'success', 'Tạo Mentor thành công!');
         } else {
@@ -367,24 +383,35 @@ const MentorModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <TodayIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
-                        Dịch vụ tư vấn
+                        <AccountCircleOutlinedIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
+                        Mô tả
                       </Typography>
                     }
                     value={1}
                     {...a11yProps(1)}
+                  />
+                  <Tab
+                    className={classes.unUpperCase}
+                    label={
+                      <Typography className={classes.tabLabels} component="span" variant="subtitle1">
+                        <TodayIcon className={`${tabIndex === 2 ? classes.tabActiveIcon : ''}`} />
+                        Dịch vụ tư vấn
+                      </Typography>
+                    }
+                    value={2}
+                    {...a11yProps(2)}
                   />
                   {mentorData?.id && (
                     <Tab
                       className={classes.unUpperCase}
                       label={
                         <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                          <TodayIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
+                          <TodayIcon className={`${tabIndex === 3 ? classes.tabActiveIcon : ''}`} />
                           Lịch làm việc
                         </Typography>
                       }
-                      value={2}
-                      {...a11yProps(2)}
+                      value={3}
+                      {...a11yProps(3)}
                     />
                   )}
                   {mentorData?.id && (
@@ -392,12 +419,12 @@ const MentorModal = () => {
                       className={classes.unUpperCase}
                       label={
                         <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                          <TodayIcon className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
+                          <TodayIcon className={`${tabIndex === 4 ? classes.tabActiveIcon : ''}`} />
                           Timeslot
                         </Typography>
                       }
-                      value={3}
-                      {...a11yProps(3)}
+                      value={4}
+                      {...a11yProps(4)}
                     />
                   )}
                 </Tabs>
@@ -459,24 +486,6 @@ const MentorModal = () => {
                                 variant="outlined"
                                 name="title"
                                 value={mentorData?.title}
-                                className={classes.multilineInputField}
-                                onChange={handleChangeMentor}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Mô tả:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                multiline
-                                rows={2}
-                                rowsMax={3}
-                                variant="outlined"
-                                name="description"
-                                value={mentorData?.description}
                                 className={classes.multilineInputField}
                                 onChange={handleChangeMentor}
                               />
@@ -655,6 +664,24 @@ const MentorModal = () => {
                   </Grid>
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <Editor
+                        apiKey={tinyMCESecretKey}
+                        onInit={(evt, editor) => (editorRef.current = editor)}
+                        initialValue={mentorData.description}
+                        init={{
+                          height: 500,
+                          menubar: false,
+                          plugins: 'emoticons',
+                          toolbar: 'undo redo | ' + 'emoticons',
+                          content_style: 'body { font-family:Roboto,sans-serif; font-size:15px }',
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </TabPanel>
+                <TabPanel value={tabIndex} index={2}>
                   <Grid container spacing={1}>
                     <Grid item lg={4} md={6} xs={12}>
                       <div className={classes.tabItem}>
@@ -902,7 +929,7 @@ const MentorModal = () => {
                   </Grid>
                 </TabPanel>
                 {mentorData?.id && (
-                  <TabPanel value={tabIndex} index={2}>
+                  <TabPanel value={tabIndex} index={3}>
                     <Grid container spacing={1}>
                       <Grid item lg={12} md={12} xs={12}>
                         <div className={classes.tabItem}>
@@ -1116,7 +1143,7 @@ const MentorModal = () => {
                   </TabPanel>
                 )}
                 {mentorData?.id && (
-                  <TabPanel value={tabIndex} index={3}>
+                  <TabPanel value={tabIndex} index={4}>
                     <Grid container spacing={1}>
                       <Grid item lg={10} md={12} xs={12}>
                         <div className={classes.tabItem}>
@@ -1169,7 +1196,7 @@ const MentorModal = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="contained"

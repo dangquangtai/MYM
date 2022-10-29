@@ -72,18 +72,18 @@ const DepartmentModal = () => {
     setTabIndex(newValue);
   };
 
-  const { updateDepartment, getDepartmentList, createDepartment, getDepartmentTypeList,} = useDepartment();
+  const { updateDepartment, getDepartmentList, createDepartment, getDepartmentTypeList, getOptionalRoleList} = useDepartment();
   const { departmentDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
 
   const [department, setDepartment] = React.useState({
-    company_code: "HNN",
     department_code: null,
     department_description: "",
     department_name: "",
-    department_type: "COMPANY",
+    department_type: "",
     is_active: true,
     parent_department_code: "",
+    optional_role_tempalte:[]
   });
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -92,9 +92,9 @@ const DepartmentModal = () => {
   })
   const [categories, setCategory] = React.useState();
   const [departmentTypes, setDepartmentType] = React.useState();
+  const [optionalRole,setOptionalRole] =React.useState([]);
   useEffect(() => {
     getDepartmentParent({
-      company_code: 'HNN', 
       parent_department_code: null,});
     if (!selectedDocument) return;
     setDepartment({
@@ -104,8 +104,14 @@ const DepartmentModal = () => {
     });
     
   }, [selectedDocument]);
-
   
+  useEffect(() => {
+    const fetch = async() =>{
+      let data = await getOptionalRoleList(department.department_type);
+      setOptionalRole(data);
+    }
+    fetch();
+  }, [department.department_type]);
   const getDepartmentParent = async (company_code,parent_department_code) =>{
     try{
       let departmentData= await getDepartmentTypeList(
@@ -126,13 +132,13 @@ const DepartmentModal = () => {
     setDocumentToDefault();
     setDepartment({
       
-      company_code: "HNN",
       department_code: null,
       department_description: "",
       department_name: "",
       department_type: "COMPANY",
       is_active: true,
       parent_department_code: "",
+      optional_role_tempalte:[]
     });
     
     dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: false });
@@ -224,7 +230,7 @@ const DepartmentModal = () => {
 
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Tạo mới phòng ban
+              Tạo mới phòng ban 
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -344,6 +350,32 @@ const DepartmentModal = () => {
                             </Grid>
                             </Grid>
                             <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Chức vụ: </span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                              
+                              
+                                <Select
+                                  labelId="parent_department_code"
+                                  id="parent_department_code"
+                                  value={department.optional_role_tempalte}
+                                  className={classes.multpleSelectField}
+                                  multiple={true}
+                                  onChange={event => setDepartment({ ...department, optional_role_tempalte: event.target.value})}
+                                
+                                  >
+                                  <MenuItem value="">
+                                    <em>Không chọn</em>
+                                  </MenuItem>
+                                  {optionalRole && optionalRole.map(category => (
+                                    <MenuItem value={category.id} key={category.id}>{category.value}</MenuItem>
+                                  ))}
+                                  </Select>
+                         
+                              </Grid>
+                          </Grid>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
                               <Grid item lg={4} md={4} xs={4}>
                                 <span className={classes.tabItemLabelField}>Mô tả: </span>
                               </Grid>
@@ -360,7 +392,7 @@ const DepartmentModal = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="contained"

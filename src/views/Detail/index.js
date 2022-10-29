@@ -896,7 +896,7 @@ const DetailDocumentDialog = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button variant="contained" style={{ background: 'rgb(70, 81, 105)' }} onClick={handleCloseDialog}>
                   Đóng

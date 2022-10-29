@@ -43,8 +43,8 @@ const Summnary = () => {
   const [dataRatting, setDataRatting] = useState([]);
   const [formData, setFormData] = useState({
     from_date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    to_date: new Date(Date.now() + (3600 * 1000 * 24)),
-  })
+    to_date: new Date(Date.now() + 3600 * 1000 * 24),
+  });
 
   useEffect(() => {
     getStatistic();
@@ -133,14 +133,14 @@ const Summnary = () => {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   return (
     <React.Fragment>
       <Grid item xs={12}>
-        {/* <Grid container spacing={gridSpacing} justify="flex-end">
+        {/* <Grid container spacing={gridSpacing} justifyContent="flex-end">
           <Grid item xs={6} sm={6} style={{ paddingTop: 0, paddingBottom: 0 }}>
-            <Grid container spacing={gridSpacing} justify="flex-end" alignItems='flex-end'>
+            <Grid container spacing={gridSpacing} justifyContent="flex-end" alignItems='flex-end'>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid item xs={3}>
                   <KeyboardDatePicker
