@@ -2,7 +2,16 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, ListItem, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import {
+  Avatar,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Tooltip,
+} from '@material-ui/core';
 import { pageUrls } from '../../../../../store/constant';
 
 import CustomIcon from '../CustomIcon/index';
@@ -72,49 +81,51 @@ const NavItem = (props) => {
   }
 
   return (
-    <ListItem
-      disabled={item.disabled}
-      className={level > 1 ? classes.listItemNoBack : classes.listItem}
-      selected={customization.isOpen === item.id}
-      component={Link}
-      onClick={() => handleClickItem(item)}
-      to={item.url}
-      target={itemTarget}
-      button
-      style={{ paddingLeft: level * 16 + 'px' }}
-      {...listItemProps}
-    >
-      <ListItemIcon className={itemIconClass}>{itemIcon}</ListItemIcon>
-      {drawerOpen && (
-        <ListItemText
-          primary={
-            <Typography
-              variant={customization.isOpen === item.id ? 'subtitle1' : 'body1'}
-              color="inherit"
-              className={classes.listItemTypography}
-            >
-              {item.name}
-            </Typography>
-          }
-          secondary={
-            item.caption && (
-              <Typography variant="caption" className={classes.subMenuCaption} display="block" gutterBottom>
-                {item.caption}
+    <Tooltip title={item.name} placement="right" arrow>
+      <ListItem
+        disabled={item.disabled}
+        className={level > 1 ? classes.listItemNoBack : classes.listItem}
+        selected={customization.isOpen === item.id}
+        component={Link}
+        onClick={() => handleClickItem(item)}
+        to={item.url}
+        target={itemTarget}
+        button
+        style={{ paddingLeft: level * 16 + 'px' }}
+        {...listItemProps}
+      >
+        <ListItemIcon className={itemIconClass}>{itemIcon}</ListItemIcon>
+        {drawerOpen && (
+          <ListItemText
+            primary={
+              <Typography
+                variant={customization.isOpen === item.id ? 'subtitle1' : 'body1'}
+                color="inherit"
+                className={classes.listItemTypography}
+              >
+                {item.name}
               </Typography>
-            )
-          }
-        />
-      )}
-      {item.chip && (
-        <Chip
-          color={item.chip.color}
-          variant={item.chip.variant}
-          size={item.chip.size}
-          label={item.chip.label}
-          avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
-        />
-      )}
-    </ListItem>
+            }
+            secondary={
+              item.caption && (
+                <Typography variant="caption" className={classes.subMenuCaption} display="block" gutterBottom>
+                  {item.caption}
+                </Typography>
+              )
+            }
+          />
+        )}
+        {item.chip && (
+          <Chip
+            color={item.chip.color}
+            variant={item.chip.variant}
+            size={item.chip.size}
+            label={item.chip.label}
+            avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
+          />
+        )}
+      </ListItem>
+    </Tooltip>
   );
 };
 

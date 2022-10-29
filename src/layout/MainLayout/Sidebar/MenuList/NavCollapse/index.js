@@ -7,6 +7,7 @@ import {
   ListItemText,
   Collapse,
   List,
+  Tooltip,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1rem',
   },
   listIcon: {
-    minWidth: '25px',
+    minWidth: '30px',
     alignSelf: 'stretch',
   },
   listItem: {
@@ -73,10 +74,18 @@ const NavCollapse = (props) => {
     switch (item.type) {
       case 'collapse':
         return (
-          <NavCollapse key={item.id} menu={item} level={level + 1} drawerToggle={drawerToggle} drawerOpen={drawerOpen} />
+          <NavCollapse
+            key={item.id}
+            menu={item}
+            level={level + 1}
+            drawerToggle={drawerToggle}
+            drawerOpen={drawerOpen}
+          />
         );
       case 'item':
-        return <NavItem key={item.id} item={item} level={level + 1} drawerToggle={drawerToggle} drawerOpen={drawerOpen} />;
+        return (
+          <NavItem key={item.id} item={item} level={level + 1} drawerToggle={drawerToggle} drawerOpen={drawerOpen} />
+        );
       default:
         return (
           <Typography key={item.id} variant="h6" color="error" align="center">
@@ -100,45 +109,42 @@ const NavCollapse = (props) => {
 
   return (
     <React.Fragment>
-      <ListItem
-        className={level > 1 ? classes.listItemNoBack : classes.listItem}
-        selected={selected === menu.id}
-        button
-        onClick={() => handleClick(menu)}
-        style={{ paddingLeft: level * 16 + 'px' }}
-      >
-        <ListItemIcon className={menuIconClass}>{menuIcon}</ListItemIcon>
-        {drawerOpen && (
-          <ListItemText
-            primary={
-              <Typography
-                variant={selected === menu.id ? 'subtitle1' : 'body1'}
-                color="inherit"
-                className={classes.listItemTypography}
-              >
-                {menu.name}
-              </Typography>
-            }
-            secondary={
-              menu.caption && (
+      <Tooltip title={menu.name} placement="right" arrow>
+        <ListItem
+          className={level > 1 ? classes.listItemNoBack : classes.listItem}
+          selected={selected === menu.id}
+          button
+          onClick={() => handleClick(menu)}
+          style={{ paddingLeft: level * 16 + 'px' }}
+        >
+          <ListItemIcon className={menuIconClass}>{menuIcon}</ListItemIcon>
+          {drawerOpen && (
+            <ListItemText
+              primary={
                 <Typography
-                  variant="caption"
-                  className={classes.subMenuCaption}
-                  display="block"
-                  gutterBottom
+                  variant={selected === menu.id ? 'subtitle1' : 'body1'}
+                  color="inherit"
+                  className={classes.listItemTypography}
                 >
-                  {menu.caption}
+                  {menu.name}
                 </Typography>
-              )
-            }
-          />
-        )}
-        {open ? (
-          <ExpandLess className={classes.collapseIcon} onClick={toggleExpand} />
-        ) : (
-          <ExpandMore className={classes.collapseIcon} onClick={toggleExpand} />
-        )}
-      </ListItem>
+              }
+              secondary={
+                menu.caption && (
+                  <Typography variant="caption" className={classes.subMenuCaption} display="block" gutterBottom>
+                    {menu.caption}
+                  </Typography>
+                )
+              }
+            />
+          )}
+          {open ? (
+            <ExpandLess className={classes.collapseIcon} onClick={toggleExpand} />
+          ) : (
+            <ExpandMore className={classes.collapseIcon} onClick={toggleExpand} />
+          )}
+        </ListItem>
+      </Tooltip>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {menus}
