@@ -108,7 +108,10 @@ const ProcessRoleDeptModal = () => {
       let data= await getRoletemplateByDept(department.department_code);
        setRoleList(data);
     }
-    fetchDeptList();
+    if (!!department){
+      fetchDeptList();
+    }
+    
   }, [department]);
 
   const handleCloseDialog = () => {
@@ -118,10 +121,10 @@ const ProcessRoleDeptModal = () => {
       department_code: [],
       role_code: '',
     });
-    setRoleTemplate();
     setDeptSelected([]);
+    setRoleTemplate();
+    
     setDepartment({department_code:''});
-
     dispatch({ type: FLOATING_MENU_CHANGE, processDeptDocument: false });
   };
 
@@ -138,16 +141,14 @@ const ProcessRoleDeptModal = () => {
 
   }
   const handleUpdateRoleSelected = (role) => {
-    handleUpdateSelected(department);
-    if (!!role){
     
+    if (!!role){
+        handleUpdateSelected(department);
         const newSelectedList = roletemplate.filter((item) => !!item);
         setRoleTemplate([...newSelectedList,role])
         delete roletemplateList[roletemplateList.indexOf(role)];
         const newList = roletemplateList.filter((item) => !!item);
         setRoleList([...newList])
-    
-      
     }
 
   }
@@ -301,7 +302,7 @@ const ProcessRoleDeptModal = () => {
                                 size="small"
                                 fullWidth
                                 options={roletemplateList}
-                                onChange={(e, u) => handleUpdateRoleSelected(u)}
+                                onChange={(e, role) => handleUpdateRoleSelected(role)}
                                 getOptionLabel={(option) => option.value}
                                 renderInput={(params) => <TextField label="Chức vụ" {...params} variant="outlined" />}
                               />
