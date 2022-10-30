@@ -118,8 +118,6 @@ const ProcessRoleDeptModal = () => {
       department_code: [],
       role_code: '',
     });
-    setRoleList([]);
-    setRoleSelected([]);
     setRoleTemplate();
     setDeptSelected([]);
     setDepartment({department_code:''});
