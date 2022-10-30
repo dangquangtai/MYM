@@ -65,15 +65,21 @@ export default function FirebaseUpload(props) {
   }
 
   React.useEffect(() => {
-    switch (type) {
+    switch (type.toLowerCase()) {
       case 'image':
         setFileType('image/*');
         break;
       case 'audio':
         setFileType('audio/*');
         break;
-      case 'file':
-        setFileType('.csv,.doc,.docx,.xls,.xlsx,.pdf,.txt,.zip,.rar');
+      case 'pdf':
+        setFileType('.pdf');
+        break;
+      case 'zip':
+        setFileType('.zip,.rar');
+        break;
+      case 'other':
+        setFileType('.csv,.doc,.docx,.xls,.xlsx,.txt');
         break;
       default:
         setFileType('image/*');

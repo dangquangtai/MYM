@@ -94,6 +94,7 @@ const FileModal = () => {
     type: [],
     category: [],
   });
+  const [fileType, setFileType] = useState('');
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
@@ -141,6 +142,13 @@ const FileModal = () => {
   const handleChanges = (e) => {
     const { name, value } = e.target;
     setFileData({ ...fileData, [name]: value });
+  };
+
+  const handleTypeChange = (e) => {
+    const { value } = e.target;
+    const image = file.type.find((item) => item.id === value);
+    setFileData({ ...fileData, file_type_id: value, image_url: image?.image_url || '' });
+    setFileType(image?.type);
   };
 
   const handleSubmitForm = async () => {
@@ -201,8 +209,8 @@ const FileModal = () => {
         open={dialogUpload.open || false}
         onSuccess={setURL}
         onClose={handleCloseUploadDiaLog}
-        folder={dialogUpload?.type === 'image' ? 'Document/File Image' : 'Document/File'}
-        type={dialogUpload?.type}
+        folder={'Document/File'}
+        type={fileType}
       />
       <Grid container>
         <Dialog
@@ -265,10 +273,10 @@ const FileModal = () => {
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
                           <img src={fileData.image_url} alt="" />
-                          <div>
+                          {/* <div>
                             <div>Upload/Change File Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                       <div className={classes.tabItem}>
@@ -282,7 +290,9 @@ const FileModal = () => {
                           className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody} ${classes.audioBody}`}
                         >
                           <div>Upload/Change File</div>
-                          <Button onClick={() => handleOpenDiaLog('file')}>Chọn File</Button>
+                          <Button disabled={!fileType} onClick={() => handleOpenDiaLog('file')}>
+                            Chọn File
+                          </Button>
                         </div>
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -291,6 +301,7 @@ const FileModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
+                                disabled
                                 fullWidth
                                 rows={1}
                                 rowsMax={1}
@@ -377,11 +388,11 @@ const FileModal = () => {
                                 name="file_type_id"
                                 className={classes.multpleSelectField}
                                 value={fileData.file_type_id || ''}
-                                onChange={handleChanges}
+                                onChange={handleTypeChange}
                               >
                                 {file.type?.map((item) => (
                                   <MenuItem key={item.id} value={item.id}>
-                                    {item.value}
+                                    {item.title}
                                   </MenuItem>
                                 ))}
                               </Select>
