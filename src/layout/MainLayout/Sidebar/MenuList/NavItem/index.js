@@ -21,7 +21,7 @@ import * as actionTypes from '../../../../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   listIcon: {
-    minWidth: '25px',
+    minWidth: '36px',
     alignSelf: 'stretch',
   },
   listItem: {
@@ -53,7 +53,7 @@ const NavItem = (props) => {
 
   const itemIcon = (
     <CustomIcon
-      type={item?.type}
+      type={item?.icon_type}
       svg={item?.svg}
       name={item?.icon || ''}
       className={classes.listCustomIcon}
@@ -61,6 +61,8 @@ const NavItem = (props) => {
       fontSize={level > 0 ? 'inherit' : 'default'}
     />
   );
+
+  console.log(item);
 
   let itemIconClass = !item.icon ? classes.listIcon : classes.menuIcon;
 

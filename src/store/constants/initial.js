@@ -162,6 +162,7 @@ export const initEvent = {
   map_lat: '',
   map_long: '',
   map_url: '',
+  map_image_url: '',
   mentor_list: [],
   address_title: '',
   title: '',
