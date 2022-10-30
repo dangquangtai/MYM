@@ -55,7 +55,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
-      <Box width={drawerWidth}>
+      <Box width={200}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Grid container alignItems="center" spacing={gridSpacing}>
