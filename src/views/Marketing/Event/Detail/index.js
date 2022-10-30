@@ -210,7 +210,8 @@ const EventModal = () => {
           handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
         }
       } else {
-        createEvent(
+       
+        let check = await  createEvent(
           {
             ...eventData,
             description:
@@ -220,7 +221,6 @@ const EventModal = () => {
           },
           selectedMentorList
         );
-        let check = await createEvent(eventData, selectedMentorList);
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
@@ -952,7 +952,7 @@ const EventModal = () => {
                     style={{ background: 'rgb(97, 42, 255)' }}
                     onClick={() => handleSubmitForm()}
                   >
-                    Tạo mới
+                    Tạo mới1
                   </Button>
                 )}
               </Grid>
