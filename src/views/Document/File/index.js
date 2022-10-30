@@ -27,7 +27,7 @@ const FileWrapper = () => {
   return (
     <React.Fragment>
       <FileTable
-        tableTitle="Tai lieu"
+        tableTitle="Tài liệu"
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="file"

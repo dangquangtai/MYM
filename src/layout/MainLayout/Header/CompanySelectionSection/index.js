@@ -10,6 +10,8 @@ import {
   MenuItem,
   InputAdornment,
   Hidden,
+  Button,
+  Typography,
 } from '@material-ui/core';
 import useProject from '../../../../hooks/useProject';
 import { PROJECT_CHANGE } from '../../../../store/actions';
@@ -64,6 +66,26 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  project: {
+    display: 'flex',
+    alignItems: 'center',
+
+    '& button': {
+      color: '#fff',
+      padding: '0',
+      marginRight: '20px',
+      borderRadius: 0,
+      maxWidth: '150px',
+
+      '& .MuiButton-label': {
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textAlign: 'left',
+        display: 'block',
+      },
+    },
+  },
 }));
 
 const CompanySelectionSection = () => {
@@ -98,12 +120,25 @@ const CompanySelectionSection = () => {
     });
   };
 
+  const handleClickProject = (id) => {
+    const newSelectedProjects = projects.map((project) => {
+      return {
+        ...project,
+        selected: project.id === id ? true : false,
+      };
+    });
+    dispatch({
+      type: PROJECT_CHANGE,
+      projects: newSelectedProjects,
+    });
+  };
+
   return (
     <React.Fragment>
       {projects.length > 0 && (
         <Tooltip title="">
-          <Box width="150px" ml={matchDownSm ? '8px' : '24px'} mr={matchDownSm ? '8px' : '24px'}>
-            <TextField
+          <Box className={classes.project} ml={matchDownSm ? '8px' : '24px'} mr={matchDownSm ? '8px' : '24px'}>
+            {/* <TextField
               id="outlined-select-currency"
               select
               value={selectedProject ? selectedProject.id : ''}
@@ -130,7 +165,17 @@ const CompanySelectionSection = () => {
                   {project.project_name}
                 </MenuItem>
               ))}
-            </TextField>
+            </TextField> */}
+            {projects.map((project) => (
+              <Tooltip title={<Typography fontSize={18}>{project.project_name}</Typography>} key={project.id} arrow>
+                <Button
+                  onClick={(e) => handleClickProject(project.id)}
+                  style={{ borderBottom: project.id === selectedProject.id ? 'solid 1px' : 'none' }}
+                >
+                  {project.project_name}
+                </Button>
+              </Tooltip>
+            ))}
           </Box>
         </Tooltip>
       )}

@@ -142,7 +142,7 @@ const EventModal = () => {
     if (dialogUpload.type === 'image') {
       setEvent({ ...eventData, image_url: image });
     } else {
-      setEvent({ ...eventData, map_url: image });
+      setEvent({ ...eventData, map_image_url: image });
     }
   };
 
@@ -295,7 +295,7 @@ const EventModal = () => {
         open={dialogUpload.open || false}
         onSuccess={setURL}
         onClose={handleCloseUploadDiaLog}
-        folder="Bacth"
+        folder="Event"
         type="image"
       />
       <Grid container>
@@ -615,26 +615,6 @@ const EventModal = () => {
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình </Button>
                           </div>
                         </div>
-
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={eventData.image_url}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
                       </div>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
@@ -644,7 +624,7 @@ const EventModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={eventData.map_url} alt="" />
+                          <img src={eventData.map_image_url} alt="" />
                           <div>
                             <div>Upload/Change Image</div>
                             <Button onClick={() => handleOpenDiaLog('map')}>Chọn hình </Button>
@@ -653,7 +633,7 @@ const EventModal = () => {
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Map:</span>
+                              <span className={classes.tabItemLabelField}>Link Google Map:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField

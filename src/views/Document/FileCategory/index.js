@@ -27,7 +27,7 @@ const FileCategoryWrapper = () => {
   return (
     <React.Fragment>
       <FileCategoryTable
-        tableTitle="Danh muc Tai lieu"
+        tableTitle="Danh mục tài liệu"
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="fileCategory"
