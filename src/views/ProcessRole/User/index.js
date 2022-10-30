@@ -103,6 +103,7 @@ const ProcessRoleUserModal = () => {
       department_code: [],
       role_code: '',
     });
+    setUserSelected([]);
     dispatch({ type: FLOATING_MENU_CHANGE, processUserDocument: false });
   };
 
@@ -132,19 +133,19 @@ const ProcessRoleUserModal = () => {
         userSelected.map(row =>(
           email.push(row.email_address)
         ))
-        let check = await addDeptUser(role.role_code,role.department_code,email)
+        let check = await addDeptUser(process_role_code,role.department_code,email)
         if (check === true) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, documentType: 'processrole' });
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });
           handleCloseDialog();
         } else {
-          handleOpenSnackbar(true, 'success', 'Cập nhật thất bại!');
+          handleOpenSnackbar(true, 'fail', 'Cập nhật thất bại!');
         }
       
 
 
     } catch (error) {
-      handleOpenSnackbar(true, 'success', 'Cập nhật thất bại!');
+      handleOpenSnackbar(true, 'fail', 'Cập nhật thất bại!');
     } finally {
 
     }

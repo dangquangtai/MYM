@@ -25,6 +25,8 @@
     "axios": "^0.20.0",
     "bootstrap": "^5.2.0",
     "date-fns": "^2.28.0",
+    "echarts": "^5.4.0",
+    "echarts-for-react": "^3.0.2",
     "firebase": "^9.10.0",
     "formik": "^2.2.9",
     "framer-motion": "^2.6.1",
@@ -55,7 +57,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:prd": "env-cmd -f .env.prd react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

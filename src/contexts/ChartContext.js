@@ -6,7 +6,7 @@ const ChartContext = createContext({});
 
 export const ChartProvider = ({ children }) => {
   const getBarChartData = async (date) => {
-    return axiosInstance.post(apiEndpoints.get_bar_chart_data, { outputtype: 'RawJson', ...date }).then((response) => {
+    return axiosInstance.post(apiEndpoints.get_booking_data_by_career, { outputtype: 'RawJson', ...date }).then((response) => {
       if (response.status === 200 && response.data.return === 200) {
         const { data } = response.data;
         return data;
@@ -16,7 +16,7 @@ export const ChartProvider = ({ children }) => {
 
   const getBookingDataByStatus = async (date) => {
     return axiosInstance
-      .post(apiEndpoints.get_booking_status_data_horitional_barchart, { outputtype: 'RawJson', ...date })
+      .post(apiEndpoints.get_booking_data_by_career, { outputtype: 'RawJson', ...date })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data } = response.data;
@@ -26,7 +26,7 @@ export const ChartProvider = ({ children }) => {
   };
   const getBookingDataByMentor = async (date) => {
     return axiosInstance
-      .post(apiEndpoints.get_count_of_booking_by_mentor_data_horitional_barchart, { outputtype: 'RawJson', ...date  })
+      .post(apiEndpoints.get_booking_data_by_career, { outputtype: 'RawJson', ...date  })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { data } = response.data;
@@ -36,10 +36,10 @@ export const ChartProvider = ({ children }) => {
   };
   const getBookingDataByCareer = async (date) => {
     return axiosInstance
-      .post(apiEndpoints.get_booking_by_career_pie_chart, { outputtype: 'RawJson', ...date  })
+      .post(apiEndpoints.get_booking_data_by_career, { outputtype: 'RawJson', ...date  })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { data } = response.data;
+          const  data = response.data;
           return data;
         } else return {};
       });
@@ -54,6 +54,18 @@ export const ChartProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getLineChartData = async (date) => {
+    return axiosInstance
+      .post(apiEndpoints.get_line_chart_data, { outputtype: 'RawJson', ...date  })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data } = response.data;
+          return data;
+        } else return {};
+      });
+  };
+
+  
 
   return (
     <ChartContext.Provider
@@ -63,6 +75,7 @@ export const ChartProvider = ({ children }) => {
         getBookingDataByMentor,
         getBookingDataByCareer,
         getBookingDataByRatting,
+        getLineChartData,
       }}
     >
       {children}

@@ -14,7 +14,7 @@ const MenuList = (props) => {
   const { selectedApp } = useSelector((state) => state.app);
   useEffect(() => {
     if (selectedProject) {
-      getFolders(selectedProject, selectedApp);
+      getFolders(selectedProject, selectedApp?.id);
     }
   }, [selectedApp, selectedProject]);
 

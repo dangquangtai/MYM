@@ -24,12 +24,9 @@ import {
   listMentorActions,
   partnerActions,
   partnerCategoryActions,
-
   processroleActions,
-
   fileActions,
   fileCategoryActions,
-
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -53,7 +50,6 @@ import ProcessRoleWrapper from '../../ProcessRole';
 import FileWrapper from './../../Document/File/index';
 import FileCategoryWrapper from './../../Document/FileCategory/index';
 import Calendar from './../../Booking/FullCalendar/index';
-
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -85,8 +81,7 @@ const Default = () => {
   const availableFileEndpoint = Object.values(fileActions);
   const availableFileCategoryEndpoint = Object.values(fileCategoryActions);
 
-
-  if (!selectedApp) {
+  if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
   }
 
@@ -114,11 +109,10 @@ const Default = () => {
           {avalablePartnerEndpoint.includes(selectedFolder?.action) && <PartnerWrapper />}
           {availablePartnerCategoryEndpoint.includes(selectedFolder?.action) && <PartnerCategoryWrapper />}
 
-          {avaiableProcessRoleEndpoint.includes(selectedFolder?.action) && <ProcessRoleWrapper/>}
+          {avaiableProcessRoleEndpoint.includes(selectedFolder?.action) && <ProcessRoleWrapper />}
 
           {availableFileEndpoint.includes(selectedFolder?.action) && <FileWrapper />}
           {availableFileCategoryEndpoint.includes(selectedFolder?.action) && <FileCategoryWrapper />}
-
         </Grid>
       )}
     </Grid>

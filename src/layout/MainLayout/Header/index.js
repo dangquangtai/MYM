@@ -45,13 +45,13 @@ const Header = (props) => {
   const handleLogoClick = () => {
     dispatch({
       type: SELECTED_APP_CHANGE,
-      app: "",
+      app: {},
     });
     dispatch({
       type: FOLDER_CHANGE,
       folder: [],
     });
-  }
+  };
 
   return (
     <React.Fragment>

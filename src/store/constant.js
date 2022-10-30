@@ -29,10 +29,8 @@ export const apiEndpoints = {
 
   get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
-  
+
   get_all_account_list: '/Primary/?FlowAlias=bs_api_booking_user_get_all_account&action=api',
-
-
 
   //role template
   get_all_active_role_template:
@@ -44,8 +42,9 @@ export const apiEndpoints = {
   create_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
   update_role_template: '/Primary/?FlowAlias=bs_api_role_template_create_role_template&action=api',
 
-  get_role_tree_data:'/Primary/?FlowAlias=bs_api_process_role_get_tree_data_role&action=api',
-  get_all_role_template_by_department_code: '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
+  get_role_tree_data: '/Primary/?FlowAlias=bs_api_process_role_get_tree_data_role&action=api',
+  get_all_role_template_by_department_code:
+    '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
 
   get_option_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_optinal_role&action=api',
   get_all_role_template_by_department_code:
@@ -54,7 +53,7 @@ export const apiEndpoints = {
   add_account_to_group: '/Primary/?FlowAlias=bs_api_user_add_acount_to_group&action=api',
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
 
-  create_process_role:'/Primary/?FlowAlias=bs_api_process_create_role&action=api',
+  create_process_role: '/Primary/?FlowAlias=bs_api_process_create_role&action=api',
   update_process_role: '/Primary/?FlowAlias=bs_api_process_update_role&action=api',
   add_user_depart_to_process_role: '/Primary/?FlowAlias=bs_api_process_add_dept_user&action=api',
   remove_user_from_process_role: '/Primary/?FlowAlias=bs_api_process_remove_user&action=api',
@@ -75,10 +74,9 @@ export const apiEndpoints = {
   get_department_type_list: '/Primary/?FlowAlias=bs_api_dept_get_department_type_list&action=api',
   get_department_detail: '/Primary/?FlowAlias=bs_api_dept_get_detail_department_by_name&action=api',
 
-  get_dept_list_by_process_role:'/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
+  get_dept_list_by_process_role: '/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
   get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
-
 
   // Meida
   // // Playlist
@@ -240,6 +238,10 @@ export const apiEndpoints = {
   get_detail_file: '/Primary/?FlowAlias=bs_api_document_get_file_detail&action=api',
   update_file: '/Primary/?FlowAlias=bs_api_document_update_file&action=api',
   set_active_file: '/Primary/?FlowAlias=bs_api_document_set_active_file&action=api',
+
+  //EChart
+  get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
+  get_booking_data_by_career: '/Primary/?FlowAlias=bs_api_get_booking_data_by_career_for_chart&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -248,9 +250,9 @@ export const roleActions = {
   list_active_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_DEACTIVE_LIST',
   list_inactive_role: 'MYM_ORGANISATION_HOME_OPEN_ROLE_TEMPLATE_ACTIVE_LIST',
 };
-export const processroleActions ={
+export const processroleActions = {
   list_tree: 'MYM_ORGANISATION_HOME_PROCESS_ROLE_MANAGE',
-}
+};
 export const accountActions = {
   list_active_user: 'MYM_ORGANISATION_HOME_OPEN_ACTIVE_USER_LIST',
   list_inactive_user: 'MYM_ORGANISATION_HOME_OPEN_USER_DEACTIVE_LIST',
@@ -354,7 +356,7 @@ export const view = {
   department: {
     list: {
       create: 'MYM_ORGANISATION_HOME_CREATE_DEPARTMENT_MENU_BUTTON',
-      update:'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_MENU_BUTTON',
+      update: 'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_MENU_BUTTON',
       adduser: 'MYM_ORGANISATION_HOME_ADD_USER_DEPARTMENT_MENU_BUTTON',
       removeaccount: 'MYM_ORGANISATION_HOME_REMOVE_ACCOUNT_MENU_BUTTON',
       syncDept: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_MENU_BUTTON',
@@ -369,8 +371,8 @@ export const view = {
     },
     detail: {},
   },
-  processrole:{
-    list:{
+  processrole: {
+    list: {
       create: 'MYM_ORGANISATION_HOME_CREATE_NEW_PROCESS_ROLE_MENU_BUTTON',
       update: 'MYM_ORGANISATION_HOME_UPDATE_PROCESS_ROLE_MENU_BUTTON',
       update_dept_role: 'MYM_ORGANISATION_HOME_UPDATE_DEPARTMENT_ROLE_MENU_BUTTON',
@@ -378,7 +380,7 @@ export const view = {
       adddept: 'MYM_ORGANISATION_HOME_ADD_DEPT_ROLE_MENU_BUTTON',
       removeaccount: 'MYM_ORGANISATION_HOME_REMOVE_ACCOUNT_ROLE_MENU_BUTTON',
       removedept: 'MYM_ORGANISATION_HOME_REMOVE_DEPT_ROLE_MENU_BUTTON',
-      syncRole: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_ROLE_MENU_BUTTON'
+      syncRole: 'MYM_ORGANISATION_HOME_SYNC_DEPARTMENT_ROLE_MENU_BUTTON',
     },
   },
   playlist: {

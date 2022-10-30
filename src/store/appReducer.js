@@ -2,7 +2,7 @@ import * as actionTypes from './actions';
 
 export const initialState = {
   apps: [],
-  selectedApp: "",
+  selectedApp: {},
 };
 
 const appReducer = (state = initialState, action) => {
@@ -12,11 +12,11 @@ const appReducer = (state = initialState, action) => {
         ...state,
         apps: action.apps,
       };
-      case actionTypes.SELECTED_APP_CHANGE:
-        return {
-          ...state,
-          selectedApp: action.app,
-        };
+    case actionTypes.SELECTED_APP_CHANGE:
+      return {
+        ...state,
+        selectedApp: action.app,
+      };
     default:
       return state;
   }

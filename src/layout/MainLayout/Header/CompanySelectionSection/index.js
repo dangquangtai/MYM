@@ -78,7 +78,7 @@ const CompanySelectionSection = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      getProjects(selectedApp);
+      getProjects(selectedApp?.id || '');
     }, 0);
   }, [selectedApp]);
 
@@ -100,38 +100,40 @@ const CompanySelectionSection = () => {
 
   return (
     <React.Fragment>
-      <Tooltip title="">
-        <Box width="150px" ml={matchDownSm ? '8px' : '24px'} mr={matchDownSm ? '8px' : '24px'}>
-          <TextField
-            id="outlined-select-currency"
-            select
-            value={selectedProject ? selectedProject.id : ''}
-            onChange={handleChange}
-            InputProps={{
-              startAdornment: (
-                <Hidden smDown>
-                  <InputAdornment position="start" className={classes.selectIcon}>
-                    <span></span>
-                  </InputAdornment>
-                </Hidden>
-              ),
-              disableUnderline: true,
-            }}
-            SelectProps={{
-              classes: {
-                select: classes.selectColor,
-                icon: classes.iconSelect,
-              },
-            }}
-          >
-            {projects.map((project) => (
-              <MenuItem key={project.id} value={project.id}>
-                {project.project_name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box>
-      </Tooltip>
+      {projects.length > 0 && (
+        <Tooltip title="">
+          <Box width="150px" ml={matchDownSm ? '8px' : '24px'} mr={matchDownSm ? '8px' : '24px'}>
+            <TextField
+              id="outlined-select-currency"
+              select
+              value={selectedProject ? selectedProject.id : ''}
+              onChange={handleChange}
+              InputProps={{
+                startAdornment: (
+                  <Hidden smDown>
+                    <InputAdornment position="start" className={classes.selectIcon}>
+                      <span></span>
+                    </InputAdornment>
+                  </Hidden>
+                ),
+                disableUnderline: true,
+              }}
+              SelectProps={{
+                classes: {
+                  select: classes.selectColor,
+                  icon: classes.iconSelect,
+                },
+              }}
+            >
+              {projects.map((project) => (
+                <MenuItem key={project.id} value={project.id}>
+                  {project.project_name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
+        </Tooltip>
+      )}
       {/* <Tooltip title={open ? 'Dark Layout' : 'Light Layout'}>
                 <Button className={classes.menuButton} onClick={handleToggle} color="inherit">
                     {!open && <Brightness6Icon className={classes.menuIcon} />}

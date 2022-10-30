@@ -208,7 +208,7 @@ export default function GeneralTable(props) {
   const [userList, setUserList] = React.useState([]);
   const [deptList, setDeptList] = React.useState([]);
   const reduxDocuments = useSelector((state) => state.task);
-
+  const [changeDeptReload,ReloadDept] = React.useState(0);
   const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
 
   const {
@@ -333,6 +333,12 @@ export default function GeneralTable(props) {
   }, []);
   useEffect(() => {
     reloadCurrentDocuments(page);
+    if (changeDeptReload ===0){
+      ReloadDept(1)
+    }
+    else{
+      ReloadDept(0)
+    }
   }, [selectedDocument, process_role_code_selected]);
 
   const fetchDocument = (additionalQuery) => {
@@ -669,9 +675,16 @@ export default function GeneralTable(props) {
   const handleRemoveDeptToRole = async (department_code) => {
     try {
       await removeDept(process_role_code_selected, department_code);
+      if (changeDeptReload ===0){
+        ReloadDept(1)
+      }
+      else{
+        ReloadDept(0)
+      }
+      
     } catch (e) {
     } finally {
-      reloadCurrentDocuments();
+      
     }
   };
 
@@ -1004,6 +1017,7 @@ export default function GeneralTable(props) {
                       process_role_code_selected={process_role_code_selected}
                       handleRemoveDept={handleRemoveDeptToRole}
                       buttonRemoveDeptRole={buttonRemoveDeptRole}
+                      changeDeptReload={changeDeptReload}
                     />
                   </Grid>
                 )}

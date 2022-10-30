@@ -21,7 +21,8 @@ const ProcessRoleDeptModal = (props) => {
   const {
     process_role_code_selected,
     handleRemoveDept,
-    buttonRemoveDeptRole
+    buttonRemoveDeptRole,
+    changeDeptReload
   } = props;
   const classes = useStyles();
 
@@ -33,7 +34,7 @@ const ProcessRoleDeptModal = (props) => {
       setDeptList(data);
     }
     fetchData()
-  }, [process_role_code_selected]);
+  }, [process_role_code_selected, changeDeptReload]);
 
   return (
 
