@@ -83,7 +83,7 @@ const DepartmentModal = () => {
     department_type: "",
     is_active: true,
     parent_department_code: "",
-    optional_role_tempalte:[]
+    optional_role_template:[]
   });
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -138,7 +138,7 @@ const DepartmentModal = () => {
       department_type: "COMPANY",
       is_active: true,
       parent_department_code: "",
-      optional_role_tempalte:[]
+      optional_role_template:[]
     });
     
     dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: false });
@@ -157,7 +157,7 @@ const DepartmentModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'department' });  
           handleCloseDialog();
           } else {
-          handleOpenSnackbar(true,'success','Tạo mới thất bại!');
+          handleOpenSnackbar(true,'fail','Tạo mới thất bại!');
           }
       } else {
         let check = await updateDepartment({
@@ -170,7 +170,7 @@ const DepartmentModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'department' });  
           handleCloseDialog();
           } else {
-            handleOpenSnackbar(true,'success','Cập nhật thất bại!');
+            handleOpenSnackbar(true,'fail','Cập nhật thất bại!');
           }
       }
       
@@ -178,7 +178,6 @@ const DepartmentModal = () => {
     } catch (error) {
       console.log('error update department', error)
     } finally {
-
     }
   };
  
@@ -359,10 +358,10 @@ const DepartmentModal = () => {
                                 <Select
                                   labelId="parent_department_code"
                                   id="parent_department_code"
-                                  value={department.optional_role_tempalte}
+                                  value={department.optional_role_template}
                                   className={classes.multpleSelectField}
                                   multiple={true}
-                                  onChange={event => setDepartment({ ...department, optional_role_tempalte: event.target.value})}
+                                  onChange={event => setDepartment({ ...department, optional_role_template: event.target.value})}
                                 
                                   >
                                   <MenuItem value="">

@@ -530,7 +530,6 @@ export default function GeneralTable(props) {
   const handleUpdateDepartment = async () => {
     if (department_code_selected !== '') {
       let detailDocument = await getDepartmentDetail(department_code_selected);
-
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
     } else {
