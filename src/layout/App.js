@@ -32,7 +32,7 @@ import { MarketingProvider } from './../contexts/MarketingContext';
 import { EventProvider } from './../contexts/EventContext';
 import { EventCategoryProvider } from './../contexts/EventCategoryContext';
 import { PaymentProvider } from '../contexts/PaymentContext.js';
-
+import { CollaboratorProvider } from '../contexts/CollaboratorContext';
 import { ProcessRoleProvider } from '../contexts/ProcessRoleContext.js';
 
 import { DocumentProvider } from '../contexts/DocumentContext.js';
@@ -91,16 +91,14 @@ const App = () => {
                                                     <EventProvider>
                                                       <EventCategoryProvider>
                                                         <PaymentProvider>
-
                                                           <ProcessRoleProvider>
-                                                        
-                                                        
-
                                                           <DocumentProvider>
+                                                            <CollaboratorProvider>
                                                             <Routes />
                                                             <Snackbar />
+                                                            </CollaboratorProvider>
                                                           </DocumentProvider>
-  </ProcessRoleProvider>
+                                                          </ProcessRoleProvider>
                                                         </PaymentProvider>
                                                       </EventCategoryProvider>
                                                     </EventProvider>

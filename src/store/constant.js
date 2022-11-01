@@ -243,9 +243,10 @@ export const apiEndpoints = {
   get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
   get_booking_data_by_career: '/Primary/?FlowAlias=bs_api_get_booking_data_by_career_for_chart&action=api',
   //Collaboration
-  get_list_collaboration_process:'',
-  get_list_collaboration_deprocess: '',
-  get_collaboration_detail: '',
+  get_list_collaboration_process:'/Primary/?FlowAlias=bs_api_share_collaborator_get_registration_unverified_list&action=api',
+  get_list_collaboration_deprocess: '/Primary/?FlowAlias=bs_api_share_collaborator_get_registration_verified_list&action=api',
+  get_collaboration_detail: '/Primary/?FlowAlias=bs_api_share_collaborator_get_detail_registration&action=api',
+  set_verified: '/Primary/?FlowAlias=bs_api_share_set_verified_collaborator&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -339,8 +340,8 @@ export const fileCategoryActions = {
   active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_CATEGORY',
 };
 export const collaborationActions = {
-  process_list: '',
-  deprocess_list: '',
+  process_list: 'MYM_SHARE_HOME_OPEN_COLLABORATOR_REGISTRATION_LIST',
+  deprocess_list: 'MYM_SHARE_HOME_OPEN_REJECT_COLLABORATOR_REGISTRATION_LIST',
 };
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
@@ -529,8 +530,8 @@ export const view = {
 
     },
     detail: {
-      approve: '',
-      reject: '',
+      approve: 'MYM_SHARE_HOME_APPROVE_FORM_BUTTON',
+      reject: 'MYM_SHARE_HOME_REJECT_MENU_BUTTON',
     }
   }
 };

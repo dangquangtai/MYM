@@ -34,7 +34,7 @@ import ProcessRoleDeptModal from '../../views/ProcessRole/Department';
 
 import FileModal from './../../views/Document/File/Detail/index';
 import FileCategoryModal from './../../views/Document/FileCategory/Detail/index';
-
+import CollaboratorModal from '../../views/Collobaration/Detail';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,7 +142,8 @@ const MainLayout = ({ children }) => {
         return <FileModal />;
       case 'fileCategory':
         return <FileCategoryModal />;
-
+      case 'collaborator':
+        return <CollaboratorModal/>;
     }
   };
 

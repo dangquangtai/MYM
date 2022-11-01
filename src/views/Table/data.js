@@ -40,6 +40,7 @@ export const headCells = [
   { id: 'online', numeric: false, disablePadding: false, label: 'Trực tuyến', maxWidth: 100 },
   { id: 'available', numeric: false, disablePadding: false, label: 'Khả dụng', maxWidth: 100 },
   { id: 'name', numeric: false, disablePadding: false, label: 'Mentor', maxWidth: 100 },
+  { id: 'type_collaborator', numeric: false, disablePadding: false, label: 'Chức vụ', maxWidth: 100 },
   {
     id: 'visible_for_selection',
     numeric: false,
