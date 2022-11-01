@@ -242,6 +242,10 @@ export const apiEndpoints = {
   //EChart
   get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
   get_booking_data_by_career: '/Primary/?FlowAlias=bs_api_get_booking_data_by_career_for_chart&action=api',
+  //Collaboration
+  get_list_collaboration_process:'',
+  get_list_collaboration_deprocess: '',
+  get_collaboration_detail: '',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -334,7 +338,10 @@ export const fileActions = {
 export const fileCategoryActions = {
   active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_CATEGORY',
 };
-
+export const collaborationActions = {
+  process_list: '',
+  deprocess_list: '',
+};
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
   dashboard: '/dashboard/default',
@@ -517,4 +524,13 @@ export const view = {
       save: 'MYM_DOCUMENT_HOME_CATEGORY_SAVE_FORM_BUTTON',
     },
   },
+  collaboration: {
+    list: {
+
+    },
+    detail: {
+      approve: '',
+      reject: '',
+    }
+  }
 };
