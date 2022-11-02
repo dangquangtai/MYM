@@ -243,10 +243,35 @@ export const apiEndpoints = {
   get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
   get_booking_data_by_career: '/Primary/?FlowAlias=bs_api_get_booking_data_by_career_for_chart&action=api',
   //Collaboration
-  get_list_collaboration_process:'/Primary/?FlowAlias=bs_api_share_collaborator_get_registration_unverified_list&action=api',
-  get_list_collaboration_deprocess: '/Primary/?FlowAlias=bs_api_share_collaborator_get_registration_verified_list&action=api',
+  get_list_collaboration_process:
+    '/Primary/?FlowAlias=bs_api_share_collaborator_get_registration_unverified_list&action=api',
+  get_list_collaboration_deprocess:
+    '/Primary/?FlowAlias=bs_api_share_collaborator_get_registration_verified_list&action=api',
   get_collaboration_detail: '/Primary/?FlowAlias=bs_api_share_collaborator_get_detail_registration&action=api',
   set_verified: '/Primary/?FlowAlias=bs_api_share_set_verified_collaborator&action=api',
+
+  // Notification
+  // // Category
+  get_all_notification_category: '/Primary/?FlowAlias=bs_notification_api_get_list_notification_category&action=api',
+  get_detail_notification_category:
+    '/Primary/?FlowAlias=bs_notification_api_get_detail_notification_category&action=api',
+  create_notification_category: '/Primary/?FlowAlias=bs_notification_api_create_new_notification_category&action=api',
+  update_notification_category: '/Primary/?FlowAlias=bs_notification_api_update_notification_category&action=api',
+  // Message
+  get_all_notification_message: '/Primary/?FlowAlias=bs_notification_api_get_list_notification_message&action=api',
+  get_detail_notification_message: '/Primary/?FlowAlias=bs_notification_api_get_detail_notification_message&action=api',
+  create_notification_message: '/Primary/?FlowAlias=bs_notification_api_create_new_notification_category&action=api',
+  update_notification_message: '/Primary/?FlowAlias=bs_notification_api_update_notification_category&action=api',
+  add_group_notificaton_message:
+    '/Primary/?FlowAlias=bs_notification_api_add_group_for_notification_message&action=api',
+  remove_group_notificaton_message:
+    '/Primary/?FlowAlias=bs_notification_api_remove_group_for_notification_message&action=api',
+  get_all_category: '/Primary/?FlowAlias=bs_notification_api_get_all_category&action=api',
+  get_all_account: '/Primary/?FlowAlias=bs_notification_api_get_all_account&action=api',
+  create_notification_message: '/Primary/?FlowAlias=bs_notification_api_create_notification_message&action=api',
+  update_notification_message: '/Primary/?FlowAlias=bs_notification_api_update_notification_message&action=api',
+  set_active_notification_message: '/Primary/?FlowAlias=bs_notification_api_set_active_notification_message&action=api',
+  get_list_object_id: '/Primary/?FlowAlias=bs_notification_api_get_list_object&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -339,10 +364,20 @@ export const fileActions = {
 export const fileCategoryActions = {
   active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_CATEGORY',
 };
+
 export const collaborationActions = {
   process_list: 'MYM_SHARE_HOME_OPEN_COLLABORATOR_REGISTRATION_LIST',
   deprocess_list: 'MYM_SHARE_HOME_OPEN_REJECT_COLLABORATOR_REGISTRATION_LIST',
 };
+
+export const notificationActions = {
+  active_list: 'MYM_NOTIFICATION_HOME_OPEN_CATEGORY_LIST',
+};
+
+export const notificationMessageActions = {
+  active_list: 'MYM_NOTIFICATION_HOME_OPEN_MESSAGE_LIST',
+};
+
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
   dashboard: '/dashboard/default',
@@ -526,12 +561,26 @@ export const view = {
     },
   },
   collaboration: {
-    list: {
-
-    },
+    list: {},
     detail: {
       approve: 'MYM_SHARE_HOME_APPROVE_FORM_BUTTON',
       reject: 'MYM_SHARE_HOME_REJECT_MENU_BUTTON',
-    }
-  }
+    },
+  },
+  notificationCategory: {
+    list: {
+      create: 'MYM_SHARE_HOME_NOTIFICATION_CATEGORY_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SHARE_HOME_NOTIFICATION_CATEGORY_SAVE_FORM_BUTTON',
+    },
+  },
+  notificationMessage: {
+    list: {
+      create: 'MYM_SHARE_HOME_NOTIFICATION_MESSAGE_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SHARE_HOME_NOTIFICATION_MESSAGE_SAVE_FORM_BUTTON',
+    },
+  },
 };

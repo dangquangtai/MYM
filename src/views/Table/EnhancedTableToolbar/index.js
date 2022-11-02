@@ -95,6 +95,11 @@ const EnhancedTableToolbar = (props) => {
     buttonAddAccountRole,
     buttonSyncRole,
     handleSyncProcessRole,
+
+    buttonCreateNotificationCategory,
+    createNotificationCategory,
+    buttonCreateNotificationMessage,
+    createNotificationMessage,
   } = props;
 
   const filterRef = useRef(null);
@@ -224,7 +229,13 @@ const EnhancedTableToolbar = (props) => {
       })}
     >
       <Grid container justifyContent="flex-end" spacing={gridSpacing}>
-        <Grid item lg={(documentType === 'department' || documentType === 'processrole')?6:3} md={6} xs={12} className={classes.toolSearchWrap}>
+        <Grid
+          item
+          lg={documentType === 'department' || documentType === 'processrole' ? 6 : 3}
+          md={6}
+          xs={12}
+          className={classes.toolSearchWrap}
+        >
           {btnCreateNewAccount && (
             <Grid item>
               <Button variant="contained" color={'primary'} onClick={createNewAccount}>
@@ -234,14 +245,19 @@ const EnhancedTableToolbar = (props) => {
           )}
           {btnCreateNewDept && (
             <Grid item>
-              <Button variant="contained" style={{marginRight:10}} color={'primary'} onClick={createNewDept}>
+              <Button variant="contained" style={{ marginRight: 10 }} color={'primary'} onClick={createNewDept}>
                 {btnCreateNewDept.text}
               </Button>
             </Grid>
           )}
           {buttonDeptUpdate && (
             <Grid item>
-              <Button variant="contained" style={{marginRight:10}} color={'primary'} onClick={handleUpdateDepartment}>
+              <Button
+                variant="contained"
+                style={{ marginRight: 10 }}
+                color={'primary'}
+                onClick={handleUpdateDepartment}
+              >
                 {buttonDeptUpdate.text}
               </Button>
             </Grid>
@@ -366,7 +382,7 @@ const EnhancedTableToolbar = (props) => {
           )}
           {buttonCreateProcessRole && (
             <Grid item>
-              <Button variant="contained" color={'primary'} style={{marginRight:10}} onClick={createNewProcessRole}>
+              <Button variant="contained" color={'primary'} style={{ marginRight: 10 }} onClick={createNewProcessRole}>
                 {buttonCreateProcessRole.text}
               </Button>
             </Grid>
@@ -374,7 +390,12 @@ const EnhancedTableToolbar = (props) => {
 
           {buttonUpdateProcessRole && (
             <Grid item>
-              <Button variant="contained" color={'primary'} style={{marginRight:10}} onClick={handleClickProcessRoleDetail}>
+              <Button
+                variant="contained"
+                color={'primary'}
+                style={{ marginRight: 10 }}
+                onClick={handleClickProcessRoleDetail}
+              >
                 {buttonUpdateProcessRole.text}
               </Button>
             </Grid>
@@ -395,6 +416,7 @@ const EnhancedTableToolbar = (props) => {
               </Button>
             </Grid>
           )}
+
           {buttonSyncRole && (
             <Grid item>
               <Button variant="contained" color={'primary'} onClick={handleSyncProcessRole}>
@@ -402,52 +424,53 @@ const EnhancedTableToolbar = (props) => {
               </Button>
             </Grid>
           )}
+
+          {buttonCreateNotificationCategory && (
+            <Grid item>
+              <Button variant="contained" color={'primary'} onClick={createNotificationCategory}>
+                {buttonCreateNotificationCategory.text}
+              </Button>
+            </Grid>
+          )}
+
+          {buttonCreateNotificationMessage && (
+            <Grid item>
+              <Button variant="contained" color={'primary'} onClick={createNotificationMessage}>
+                {buttonCreateNotificationMessage.text}
+              </Button>
+            </Grid>
+          )}
         </Grid>
-      {(documentType !='department' && documentType != 'processrole')&&(
-         <Grid item lg={3} md={6} xs={12} className={classes.toolSearchWrap}>
-         {numSelected > 0 && (
-           <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-             {numSelected} bản ghi được chọn
-           </Typography>
-         )}
-       </Grid>
-      )}
-            
-  
-       
+        {documentType != 'department' && documentType != 'processrole' && (
+          <Grid item lg={3} md={6} xs={12} className={classes.toolSearchWrap}>
+            {numSelected > 0 && (
+              <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+                {numSelected} bản ghi được chọn
+              </Typography>
+            )}
+          </Grid>
+        )}
 
         <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
-          <Grid container justifyContent={"flex-end"} alignItems="center">
+          <Grid container justifyContent={'flex-end'} alignItems="center">
             {documentType === 'processrole' && (
               <>
-                  {buttonAddDeptRole && (
-                    <>
-                    <Button  
-                       variant="contained"
-                       color={'primary'}
-                       onClick={() => handleClickUpdateDeptProcessRole()}
-                     >
-                       {buttonAddDeptRole.text}
-                     </Button>
-                     <span style={{minWidth:260, maxWidth:260}}></span>
-                     
-                    </>
-                  )}
+                {buttonAddDeptRole && (
+                  <>
+                    <Button variant="contained" color={'primary'} onClick={() => handleClickUpdateDeptProcessRole()}>
+                      {buttonAddDeptRole.text}
+                    </Button>
+                    <span style={{ minWidth: 260, maxWidth: 260 }}></span>
+                  </>
+                )}
 
-                  {buttonAddAccountRole && (
-                    <>
-                    
-                      <Button
-                        variant="contained"
-                        color={'primary'}
-                        onClick={() => handleClickUpdateUserProcessRole()}
-                      >
-                        {buttonAddAccountRole.text}
-                      </Button>
-             
-                    </>
-                  )}
-              
+                {buttonAddAccountRole && (
+                  <>
+                    <Button variant="contained" color={'primary'} onClick={() => handleClickUpdateUserProcessRole()}>
+                      {buttonAddAccountRole.text}
+                    </Button>
+                  </>
+                )}
               </>
             )}
 
@@ -471,7 +494,7 @@ const EnhancedTableToolbar = (props) => {
                 </Select>
                 <div className={classes.toolSearchWrap}>
                   <Autocomplete
-                    style={{ minWidth: 240, maxWidth: 240 , marginRight:10 }}
+                    style={{ minWidth: 240, maxWidth: 240, marginRight: 10 }}
                     size="small"
                     fullWidth
                     options={userList}
@@ -479,10 +502,9 @@ const EnhancedTableToolbar = (props) => {
                     getOptionLabel={(option) => option.email_address}
                     renderInput={(params) => <TextField label="Tài khoản" {...params} variant="outlined" />}
                   />
-                
+
                   {buttonDeptAddUser && (
                     <>
-                   
                       <Button variant="contained" color={'primary'} onClick={handleSubmitAssign}>
                         {buttonDeptAddUser.text}
                       </Button>

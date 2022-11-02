@@ -17,13 +17,12 @@ import {
   listMentorActions,
   partnerActions,
   partnerCategoryActions,
-
   processroleActions,
-
   fileActions,
   fileCategoryActions,
   collaborationActions,
-
+  notificationActions,
+  notificationMessageActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -131,13 +130,18 @@ export function getUrlByAction(selectedFolder) {
     }
     case fileCategoryActions.active_list: {
       return apiEndpoints.get_file_category_list;
-
     }
     case collaborationActions.process_list: {
       return apiEndpoints.get_list_collaboration_process;
     }
     case collaborationActions.deprocess_list: {
       return apiEndpoints.get_list_collaboration_deprocess;
+    }
+    case notificationActions.active_list: {
+      return apiEndpoints.get_all_notification_category;
+    }
+    case notificationMessageActions.active_list: {
+      return apiEndpoints.get_all_notification_message;
     }
     default: {
       return '';

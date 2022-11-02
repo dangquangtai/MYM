@@ -20,11 +20,12 @@ export const initialState = {
   cardBatchDocument: false,
   cardDocument: false,
   processDeptDocument: false,
-  processUserDocument:false,
-  processrolecode:'',
+  processUserDocument: false,
+  processrolecode: '',
   fileDocument: false,
   fileCategoryDocument: false,
-
+  notificationCategoryDocument: false,
+  notificationMessageDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -50,13 +51,13 @@ const floatingMenuReducer = (state = initialState, action) => {
         partnerCategoryDocument: action.partnerCategoryDocument,
         cardBatchDocument: action.cardBatchDocument,
         cardDocument: action.cardDocument,
-
         processDeptDocument: action.processDeptDocument,
         processUserDocument: action.processUserDocument,
         processrolecode: action.processrolecode,
         fileDocument: action.fileDocument,
         fileCategoryDocument: action.fileCategoryDocument,
-
+        notificationCategoryDocument: action.notificationCategoryDocument,
+        notificationMessageDocument: action.notificationMessageDocument,
       };
     default:
       return state;

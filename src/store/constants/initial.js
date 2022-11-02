@@ -203,3 +203,32 @@ export const initFileData = {
   category_id: '',
   file_type_id: '',
 };
+
+export const initNotification = {
+  title: '',
+  is_active: true,
+  created_by: '',
+  created_date: '',
+};
+
+export const initNotificationMessage = {
+  title: '',
+  is_active: true,
+  created_date: '',
+  banner_url: '',
+  is_red_dot_on: true,
+  is_actionable: true,
+  body: '',
+  id: '',
+  action: {
+    deeplink: '',
+    title: '',
+    image_url: '',
+    label: '',
+    link: '',
+    object_id: '',
+    object_type: '',
+  },
+  category_id: '',
+  account_id: '',
+};

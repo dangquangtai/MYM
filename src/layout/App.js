@@ -34,8 +34,8 @@ import { EventCategoryProvider } from './../contexts/EventCategoryContext';
 import { PaymentProvider } from '../contexts/PaymentContext.js';
 import { CollaboratorProvider } from '../contexts/CollaboratorContext';
 import { ProcessRoleProvider } from '../contexts/ProcessRoleContext.js';
-
 import { DocumentProvider } from '../contexts/DocumentContext.js';
+import { NotificationProvider } from '../contexts/NotificationContex.js';
 
 function loadLocaleData(locale) {
   switch (locale) {
@@ -92,12 +92,14 @@ const App = () => {
                                                       <EventCategoryProvider>
                                                         <PaymentProvider>
                                                           <ProcessRoleProvider>
-                                                          <DocumentProvider>
-                                                            <CollaboratorProvider>
-                                                            <Routes />
-                                                            <Snackbar />
-                                                            </CollaboratorProvider>
-                                                          </DocumentProvider>
+                                                            <DocumentProvider>
+                                                              <CollaboratorProvider>
+                                                                <NotificationProvider>
+                                                                  <Routes />
+                                                                  <Snackbar />
+                                                                </NotificationProvider>
+                                                              </CollaboratorProvider>
+                                                            </DocumentProvider>
                                                           </ProcessRoleProvider>
                                                         </PaymentProvider>
                                                       </EventCategoryProvider>

@@ -54,12 +54,12 @@ import useEventCategory from '../../hooks/useEventCategory';
 import useEvent from '../../hooks/useEvent';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import usePayment from './../../hooks/usePayment';
-
 import ProcessRoleDeptModal from './../ProcessRole/DepartmentRole/index';
 import useProcessRole from './../../hooks/useProcessRole';
-
 import useDocument from './../../hooks/useDocument';
 import useCollaborator from './../../hooks/useCollaborator';
+import useNotification from './../../hooks/useNotification';
+
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
@@ -194,6 +194,13 @@ export default function GeneralTable(props) {
   const buttonCreateFile = menuButtons.find((button) => button.name === view.file.list.create);
   const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
 
+  const buttonCreateNotificationCategory = menuButtons.find(
+    (button) => button.name === view.notificationCategory.list.create
+  );
+  const buttonCreateNotificationMessage = menuButtons.find(
+    (button) => button.name === view.notificationMessage.list.create
+  );
+
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [modalType, setModalType] = React.useState('');
@@ -209,7 +216,7 @@ export default function GeneralTable(props) {
   const [userList, setUserList] = React.useState([]);
   const [deptList, setDeptList] = React.useState([]);
   const reduxDocuments = useSelector((state) => state.task);
-  const [changeDeptReload,ReloadDept] = React.useState(0);
+  const [changeDeptReload, ReloadDept] = React.useState(0);
   const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
 
   const {
@@ -275,21 +282,17 @@ export default function GeneralTable(props) {
   } = useRole();
 
   const { getAccountDetail, activeAccount, getAllUserByDept, assignAccount, removeAccount, getAllUser } = useAccount();
-
   const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail } =
     usePartner();
-
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
-
   const { getBatchDetail, sendEmailVoucher } = useMarketing();
-
   const { getEventCategoryDetail } = useEventCategory();
   const { getEventDetail } = useEvent();
-
   const { getCardBatchDetail, sendEmailCard } = usePayment();
-
   const { getFileDetail, getFileCategoryDetail } = useDocument();
-  const { getDetail} = useCollaborator();
+  const { getDetail } = useCollaborator();
+  const { getDetailNotificatonCategory, getDetailNotificatonMessage } = useNotification();
+
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
       fetchDocument(url, documentType, selectedProject.id, selectedFolder.id);
@@ -334,11 +337,10 @@ export default function GeneralTable(props) {
   }, []);
   useEffect(() => {
     reloadCurrentDocuments(page);
-    if (changeDeptReload ===0){
-      ReloadDept(1)
-    }
-    else{
-      ReloadDept(0)
+    if (changeDeptReload === 0) {
+      ReloadDept(1);
+    } else {
+      ReloadDept(0);
     }
   }, [selectedDocument, process_role_code_selected]);
 
@@ -508,6 +510,14 @@ export default function GeneralTable(props) {
       detailDocument = await getDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    } else if (documentType === 'notificationCategory') {
+      detailDocument = await getDetailNotificatonCategory(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, notificationCategoryDocument: true });
+    } else if (documentType === 'notificationMessage') {
+      detailDocument = await getDetailNotificatonMessage(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, notificationMessageDocument: true });
     }
   };
 
@@ -679,16 +689,13 @@ export default function GeneralTable(props) {
   const handleRemoveDeptToRole = async (department_code) => {
     try {
       await removeDept(process_role_code_selected, department_code);
-      if (changeDeptReload ===0){
-        ReloadDept(1)
+      if (changeDeptReload === 0) {
+        ReloadDept(1);
+      } else {
+        ReloadDept(0);
       }
-      else{
-        ReloadDept(0)
-      }
-      
     } catch (e) {
     } finally {
-      
     }
   };
 
@@ -768,10 +775,12 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
   };
+
   const handleClickCreatePartner = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, partnerDocument: true });
   };
+
   const handleClickCreatePartnerCategory = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, partnerCategoryDocument: true });
@@ -786,10 +795,22 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardBatchDocument: true });
   };
+
   const handleClickCreateProcessRole = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
   };
+
+  const handleClickCreateNotificationCategory = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, notificationCategoryDocument: true });
+  };
+
+  const handleClickCreateNotificationMessage = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, notificationMessageDocument: true });
+  };
+
   const handleClickProcessRoleDetail = async () => {
     if (process_role_code_selected !== '') {
       let detailDocument = await getProcessDetail(process_role_code_selected);
@@ -805,6 +826,7 @@ export default function GeneralTable(props) {
       });
     }
   };
+
   const handleClickUpdateUserProcessRole = () => {
     if (process_role_code_selected != '') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
@@ -819,6 +841,7 @@ export default function GeneralTable(props) {
       });
     }
   };
+
   const handleClickUpdateDeptProcessRole = () => {
     if (process_role_code_selected != '') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
@@ -883,6 +906,7 @@ export default function GeneralTable(props) {
       });
     }
   };
+
   const handleSyncRole = async () => {
     showConfirmPopup({
       message: `Xác nhận đồng bộ ?`,
@@ -891,6 +915,7 @@ export default function GeneralTable(props) {
       onSuccess: reloadCurrentDocuments,
     });
   };
+
   const handleSyncProcessRole = async () => {
     showConfirmPopup({
       message: `Xác nhận đồng bộ ?`,
@@ -1003,6 +1028,10 @@ export default function GeneralTable(props) {
                 createFile={handleClickCreateFile}
                 buttonCreateFileCategory={buttonCreateFileCategory}
                 createFileCategory={handleClickCreateFileCategory}
+                buttonCreateNotificationCategory={buttonCreateNotificationCategory}
+                createNotificationCategory={handleClickCreateNotificationCategory}
+                buttonCreateNotificationMessage={buttonCreateNotificationMessage}
+                createNotificationMessage={handleClickCreateNotificationMessage}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1347,7 +1376,9 @@ export default function GeneralTable(props) {
                                   </a>
                                 </TableCell>
                               )}
-                              {displayOptions.type_collaborator && <TableCell align="left">{row.collaboration_type_name || ''}</TableCell>}
+                              {displayOptions.type_collaborator && (
+                                <TableCell align="left">{row.collaboration_type_name || ''}</TableCell>
+                              )}
                               {displayOptions.amount && <TableCell align="left">{row.amount || ''}</TableCell>}
                               {displayOptions.used_date && (
                                 <TableCell align="left">{formatDateTime(row.used_date) || ''}</TableCell>
@@ -1369,7 +1400,9 @@ export default function GeneralTable(props) {
                                   )}
                                 </TableCell>
                               )}
-                               {displayOptions.type && <TableCell align="left">{row.collaboration_type_name || ''}</TableCell>}
+                              {displayOptions.type && (
+                                <TableCell align="left">{row.collaboration_type_name || ''}</TableCell>
+                              )}
                               {displayOptions.episodes && <TableCell align="left">{row.episodes || ''}</TableCell>}
                               {displayOptions.duration && <TableCell align="left">{row.duration || ''}</TableCell>}
                               {displayOptions.created_by && <TableCell align="left">{row.created_by || ''}</TableCell>}
@@ -1592,10 +1625,6 @@ export default function GeneralTable(props) {
                                         </Button>
                                       </Tooltip>
                                     )}
-
-                                   
-                                  
-                                   
                                   </div>
                                 </TableCell>
                               )}

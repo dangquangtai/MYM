@@ -35,6 +35,8 @@ import ProcessRoleDeptModal from '../../views/ProcessRole/Department';
 import FileModal from './../../views/Document/File/Detail/index';
 import FileCategoryModal from './../../views/Document/FileCategory/Detail/index';
 import CollaboratorModal from '../../views/Collobaration/Detail';
+import NotificationCategoryModal from './../../views/Notification/Category/Detail/index';
+import NotificationMessageModall from './../../views/Notification/Message/Detail/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -136,14 +138,24 @@ const MainLayout = ({ children }) => {
         return <CardModal />;
 
       case 'processrole':
-        return <><ProcessRoleModal/><ProcessRoleUserModal/><ProcessRoleDeptModal/></>;
+        return (
+          <>
+            <ProcessRoleModal />
+            <ProcessRoleUserModal />
+            <ProcessRoleDeptModal />
+          </>
+        );
 
       case 'file':
         return <FileModal />;
       case 'fileCategory':
         return <FileCategoryModal />;
       case 'collaborator':
-        return <CollaboratorModal/>;
+        return <CollaboratorModal />;
+      case 'notificationCategory':
+        return <NotificationCategoryModal />;
+      case 'notificationMessage':
+        return <NotificationMessageModall />;
     }
   };
 

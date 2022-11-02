@@ -28,6 +28,8 @@ import {
   fileActions,
   fileCategoryActions,
   collaborationActions,
+  notificationActions,
+  notificationMessageActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -47,10 +49,11 @@ import PartnerWrapper from '../../Partner/Partner';
 import PartnerCategoryWrapper from '../../Partner/Partner/Partner Category';
 import CollaborationWrapper from '../../Collobaration/index';
 import ProcessRoleWrapper from '../../ProcessRole';
-
 import FileWrapper from './../../Document/File/index';
 import FileCategoryWrapper from './../../Document/FileCategory/index';
 import Calendar from './../../Booking/FullCalendar/index';
+import NotificationWrapper from './../../Notification/Category/index';
+import NotificationMessageWrapper from './../../Notification/Message/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -76,12 +79,13 @@ const Default = () => {
   const availableListMentorEndpoint = Object.values(listMentorActions);
   const avalablePartnerEndpoint = Object.values(partnerActions);
   const availablePartnerCategoryEndpoint = Object.values(partnerCategoryActions);
-
   const avaiableProcessRoleEndpoint = Object.values(processroleActions);
-
   const availableFileEndpoint = Object.values(fileActions);
   const availableFileCategoryEndpoint = Object.values(fileCategoryActions);
   const avaiableCollaboratorEndpoint = Object.values(collaborationActions);
+  const availableNotificationEndpoint = Object.values(notificationActions);
+  const availableNotificationMessageEndpoint = Object.values(notificationMessageActions);
+
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
   }
@@ -109,12 +113,12 @@ const Default = () => {
           {availableListMentorEndpoint.includes(selectedFolder?.action) && <ListMentorWrapper />}
           {avalablePartnerEndpoint.includes(selectedFolder?.action) && <PartnerWrapper />}
           {availablePartnerCategoryEndpoint.includes(selectedFolder?.action) && <PartnerCategoryWrapper />}
-
           {avaiableProcessRoleEndpoint.includes(selectedFolder?.action) && <ProcessRoleWrapper />}
-
           {availableFileEndpoint.includes(selectedFolder?.action) && <FileWrapper />}
           {availableFileCategoryEndpoint.includes(selectedFolder?.action) && <FileCategoryWrapper />}
           {avaiableCollaboratorEndpoint.includes(selectedFolder?.action) && <CollaborationWrapper />}
+          {availableNotificationEndpoint.includes(selectedFolder?.action) && <NotificationWrapper />}
+          {availableNotificationMessageEndpoint.includes(selectedFolder?.action) && <NotificationMessageWrapper />}
         </Grid>
       )}
     </Grid>

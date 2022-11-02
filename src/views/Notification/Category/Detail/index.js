@@ -24,13 +24,14 @@ import { view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
-import { initMentorListData, userAvatar,initNotification } from '../../../../store/constants/initial';
+import { initMentorListData, userAvatar, initNotification } from '../../../../store/constants/initial';
 import {
   QueueMusic,
   History,
   DescriptionOutlined as DescriptionOutlinedIcon,
   RadioOutlined as RadioOutlinedIcon,
   ImageOutlined as ImageIcon,
+  PanoramaOutlined as BannerIcon,
 } from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
 import usePartner from './../../../../hooks/usePartner';
@@ -83,6 +84,10 @@ const NotificationCategoryModal = () => {
   const { getCounselingCategories } = useMedia();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
+  const [dialogUpload, setDialogUpload] = useState({
+    open: false,
+    type: '',
+  });
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -90,14 +95,11 @@ const NotificationCategoryModal = () => {
     text: '',
   });
 
-  // console.log(formButtons)
-
   // const [mentorListData, setMentorListData] = useState(initMentorListData);
   const [categories, setCategories] = useState([]);
   const [listMentor, setListMentor] = useState([]);
   const [notificationCategory, setnotificationCategory] = useState(initNotification);
   const [selectednotificationCategory, setselectednotificationCategory] = useState([]);
-//  console.log(notificationCategory);
   const handleCloseDialog = () => {
     setDocumentToDefault();
     dispatch({ type: FLOATING_MENU_CHANGE, notificationCategoryDocument: false });
@@ -116,7 +118,12 @@ const NotificationCategoryModal = () => {
   };
 
   const setURL = (image) => {
-    setnotificationCategory({ ...notificationCategory, image_url: image });
+    if (dialogUpload.type === 'image') {
+      setnotificationCategory({ ...notificationCategory, image_url: image });
+    }
+    if (dialogUpload.type === 'banner') {
+      setnotificationCategory({ ...notificationCategory, banner_url: image });
+    }
   };
 
   const setDocumentToDefault = async () => {
@@ -125,12 +132,20 @@ const NotificationCategoryModal = () => {
     setTabIndex(0);
   };
 
-  const handleOpenDiaLog = () => {
+  const handleOpenDiaLog = (type) => {
     setOpenDiaLogUploadImage(true);
+    setDialogUpload({
+      open: true,
+      type: type,
+    });
   };
 
-  const handleCloseDiaLog = () => {
+  const handleCloseDiaLog = (type) => {
     setOpenDiaLogUploadImage(false);
+    setDialogUpload({
+      open: false,
+      type: type,
+    });
   };
 
   const handleChanges = (e) => {
@@ -138,10 +153,10 @@ const NotificationCategoryModal = () => {
     setnotificationCategory({ ...notificationCategory, [name]: value });
   };
 
-//   const handleChangeMentor = (e, value) => {
-//     setSelectedMentor(value);
-//     setMentorListData({ ...mentorListData, mentor_id_list: value.map((item) => item.id) });
-//   };
+  //   const handleChangeMentor = (e, value) => {
+  //     setSelectedMentor(value);
+  //     setMentorListData({ ...mentorListData, mentor_id_list: value.map((item) => item.id) });
+  //   };
 
   const handleSubmitForm = async () => {
     try {
@@ -159,26 +174,26 @@ const NotificationCategoryModal = () => {
     }
   };
 
-
   useEffect(() => {
     if (!selectedDocument) return;
     setnotificationCategory({
       ...notificationCategory,
       ...selectedDocument,
       image_url: selectedDocument.image_url || userAvatar,
+      banner_url: selectedDocument?.banner_url || userAvatar,
     });
     // setSelectedMentor(listMentor.filter((item) => selectedDocument?.mentor_id_list?.includes(item.id)));
   }, [selectedDocument]);
 
-//   useEffect(() => {
-//     const fetch = async () => {
-//       const data = await getCounselingCategories();
-//       setCategories(data);
-//       const res = await getMentorList();
-//       setListMentor(res);
-//     };
-//     fetch();
-//   }, []);
+  //   useEffect(() => {
+  //     const fetch = async () => {
+  //       const data = await getCounselingCategories();
+  //       setCategories(data);
+  //       const res = await getMentorList();
+  //       setListMentor(res);
+  //     };
+  //     fetch();
+  //   }, []);
 
   return (
     <React.Fragment>
@@ -265,10 +280,10 @@ const NotificationCategoryModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={notificationCategory.image_url} alt="image_url" />
+                          <img src={notificationCategory.image_url} alt="" />
                           <div>
                             <div>Upload/Change Image</div>
-                            <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
+                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
                         </div>
                       </div>
@@ -297,46 +312,50 @@ const NotificationCategoryModal = () => {
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Ngày tạo:</span>
+                          {selectedDocument?.id && (
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid container className={classes.gridItem} alignItems="center">
+                                <Grid item lg={4} md={4} xs={4}>
+                                  <span className={classes.tabItemLabelField}>Ngày tạo:</span>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={8}>
+                                  <TextField
+                                    fullWidth
+                                    multiline
+                                    rows={1}
+                                    rowsMax={1}
+                                    readOnly={true}
+                                    disabled
+                                    variant="outlined"
+                                    name="description"
+                                    value={notificationCategory.created_date}
+                                    className={classes.multilineInputField}
+                                    onChange={handleChanges}
+                                  />
+                                </Grid>
+                              </Grid>
+                              <Grid container className={classes.gridItem} alignItems="center">
+                                <Grid item lg={4} md={4} xs={4}>
+                                  <span className={classes.tabItemLabelField}>Người tạo:</span>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={8}>
+                                  <TextField
+                                    fullWidth
+                                    multiline
+                                    rows={1}
+                                    rowsMax={1}
+                                    readOnly={true}
+                                    disabled
+                                    variant="outlined"
+                                    name="description"
+                                    value={notificationCategory.created_by}
+                                    className={classes.multilineInputField}
+                                    onChange={handleChanges}
+                                  />
+                                </Grid>
+                              </Grid>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                multiline
-                                rows={1}
-                                rowsMax={1}
-                                readOnly={true}
-                                disabled
-                                variant="outlined"
-                                name="description"
-                                value={notificationCategory.created_date}
-                                className={classes.multilineInputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Người tạo:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                multiline
-                                rows={1}
-                                rowsMax={1}
-                                readOnly={true}
-                                disabled
-                                variant="outlined"
-                                name="description"
-                                value={notificationCategory.created_by}
-                                className={classes.multilineInputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
+                          )}
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Hoạt động:</span>
@@ -345,7 +364,10 @@ const NotificationCategoryModal = () => {
                               <Switch
                                 checked={notificationCategory.is_active}
                                 onChange={() =>
-                                  setnotificationCategory({ ...notificationCategory, is_hidden: !notificationCategory.is_hidden })
+                                  setnotificationCategory({
+                                    ...notificationCategory,
+                                    is_hidden: !notificationCategory.is_hidden,
+                                  })
                                 }
                                 color="primary"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -360,41 +382,28 @@ const NotificationCategoryModal = () => {
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <RadioOutlinedIcon />
-                            <span>Danh sách Mentor</span>
+                            <span>Banner</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={2} md={2} xs={12}>
-                              <span className={classes.tabItemLabelField}>Tin nhắn thông báo:</span>
-                            </Grid>
                             <Grid item lg={10} md={10} xs={12}>
-                              {/* <Select
-                                labelId="demo-multiple-name-label"
-                                id="demo-multiple-name"
-                                multiple
-                                className={classes.multpleSelectField}
-                                value={mentorListData?.podcast_id_list}
-                                onChange={handleChangePodcast}
-                                renderValue={(selected) => (
-                                  <div className={classes.chips}>
-                                    {selected.map((value) => (
-                                      <Chip
-                                        key={value}
-                                        label={podcastList?.find((i) => i.id === value)?.title}
-                                        className={classes.chip}
-                                      />
-                                    ))}
+                              <div className={classes.tabItem}>
+                                <div className={classes.tabItemTitle}>
+                                  <div className={classes.tabItemLabel}>
+                                    <BannerIcon />
+                                    <span>Banner</span>
                                   </div>
-                                )}
-                              >
-                                {podcastList?.map((item) => (
-                                  <MenuItem key={item.id} value={item.id}>
-                                    {item.title}
-                                  </MenuItem>
-                                ))}
-                              </Select> */}
-                              <Autocomplete
+                                </div>
+                                <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                                  <img className={classes.bannerImage} src={notificationCategory.banner_url} alt="" />
+                                  <div>
+                                    <div>Upload/Change Banner Image</div>
+                                    <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
+                                  </div>
+                                </div>
+                              </div>
+                              {/* <Autocomplete
                                 id="mentor-list"
                                 multiple
                                 size="small"
@@ -405,7 +414,7 @@ const NotificationCategoryModal = () => {
                                 renderInput={(params) => (
                                   <TextField {...params} variant="outlined" placeholder="Mentor" />
                                 )}
-                              />
+                              /> */}
                             </Grid>
                           </Grid>
                         </div>
