@@ -16,7 +16,6 @@ import {
   MenuItem,
   Select,
   Chip,
-
 } from '@material-ui/core';
 import Alert from '../../../component/Alert';
 import PropTypes from 'prop-types';
@@ -27,8 +26,6 @@ import usePartner from '../../../hooks/usePartner';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, CONFIRM_CHANGE } from '../../../store/actions.js';
 import { tinyMCESecretKey, view } from '../../../store/constant';
 import { userAvatar, initMentorData } from '../../../store/constants/initial';
-import { Document, Page,pdfjs } from 'react-pdf';
-
 import useStyles from './../../../utils/classes';
 import FirebaseUpload from './../../FloatingMenu/FirebaseUpload/index';
 import useConfirmPopup from './../../../hooks/useConfirmPopup';
@@ -39,7 +36,6 @@ import {
   Today as TodayIcon,
 } from '@material-ui/icons';
 import { Editor } from '@tinymce/tinymce-react';
-import { async } from '@firebase/util';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -73,27 +69,24 @@ function a11yProps(index) {
   };
 }
 
-
 const CollaboratorModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const editorRef = React.useRef(null);
   const { form_buttons: formButtons } = useView();
-  const {setVerified} = useCollaborator();
+  const { setVerified } = useCollaborator();
   const rejectButton = formButtons.find((button) => button.name === view.collaboration.detail.reject);
   const approveButton = formButtons.find((button) => button.name === view.collaboration.detail.approve);
-
 
   const [tabIndex, setTabIndex] = React.useState(0);
   const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
   const handleChangeTab = (event, newValue) => {
-    console.log('new', newValue)
+    console.log('new', newValue);
     setTabIndex(newValue);
   };
 
   const { createMentor, getCareerAndTopic } = usePartner();
   const { setConfirmPopup } = useConfirmPopup();
- 
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -121,15 +114,18 @@ const CollaboratorModal = () => {
   const [numPages, setNumPages] = useState(null);
   const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const { provinces, genders, weekday } = useSelector((state) => state.metadata);
+  const { provinces, genders } = useSelector((state) => state.metadata);
   const [openMentorForm, setOpenMentorForm] = useState(false);
+
   const handleCloseDialog = () => {
     setMentorData(initMentorData);
     setDocumentToDefault();
     setOpenMentorForm(false);
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
   };
+
   const [collaborator, setCollaborator] = useState();
+
   const handleOpenSnackbar = (isOpen, type, text) => {
     setSnackbarStatus({
       isOpen: isOpen,
@@ -181,7 +177,6 @@ const CollaboratorModal = () => {
 
   const handleSubmitForm = async () => {
     try {
-
       const ret = await createMentor({
         ...mentorData,
         description:
@@ -202,18 +197,14 @@ const CollaboratorModal = () => {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
- const handleReject = async() =>{
-  await setVerified(selectedDocument.id, false);
- }
- const [pageNumber,setNumperPage] = useState(0);
- const onDocumentLoadSuccess =({ numPages })=>{
-  setNumPages(numPages);
-  setNumperPage(1);
- }
-
-
-
-
+  const handleReject = async () => {
+    await setVerified(selectedDocument.id, false);
+  };
+  const [pageNumber, setNumperPage] = useState(0);
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    setNumperPage(1);
+  };
 
   useEffect(() => {
     if (!selectedDocument) return;
@@ -265,7 +256,6 @@ const CollaboratorModal = () => {
 
   return (
     <React.Fragment>
-
       {snackbarStatus.isOpen && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -305,7 +295,6 @@ const CollaboratorModal = () => {
           <DialogContent className={classes.dialogContent}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-
                 {openMentorForm === true && (
                   <>
                     <Tabs
@@ -349,7 +338,7 @@ const CollaboratorModal = () => {
                         value={2}
                         {...a11yProps(2)}
                       />
-                       <Tab
+                      <Tab
                         className={classes.unUpperCase}
                         label={
                           <Typography className={classes.tabLabels} component="span" variant="subtitle1">
@@ -361,8 +350,6 @@ const CollaboratorModal = () => {
                         {...a11yProps(3)}
                       />
                     </Tabs>
-                   
-                  
                   </>
                 )}
                 {openMentorForm === false && (
@@ -386,18 +373,13 @@ const CollaboratorModal = () => {
                         value={0}
                         {...a11yProps(0)}
                       />
-                        </Tabs>
+                    </Tabs>
                   </>
-
                 )}
-
-
-
               </Grid>
               {openMentorForm === true && (
                 <>
                   <Grid item xs={12}>
-
                     <TabPanel value={tabIndex} index={0}>
                       <Grid container spacing={1}>
                         <Grid item lg={6} md={6} xs={12}>
@@ -609,7 +591,6 @@ const CollaboratorModal = () => {
                                   />
                                 </Grid>
                               </Grid>
-
                             </div>
                           </div>
                         </Grid>
@@ -882,34 +863,33 @@ const CollaboratorModal = () => {
                     </TabPanel>
 
                     <TabPanel value={tabIndex} index={3}>
-                    <Grid container spacing={1}>
-                      <Grid item lg={12} md={12} xs={12}>
-                        <div className={classes.tabItem}>
-                          <div className={classes.tabItemTitle}>
-                            <div className={classes.tabItemLabel}>
-                              <AccountCircleOutlinedIcon />
-                              <span>Thông tin CV</span>
+                      <Grid container spacing={1}>
+                        <Grid item lg={12} md={12} xs={12}>
+                          <div className={classes.tabItem}>
+                            <div className={classes.tabItemTitle}>
+                              <div className={classes.tabItemLabel}>
+                                <AccountCircleOutlinedIcon />
+                                <span>Thông tin CV</span>
+                              </div>
+                            </div>
+                            <div className={classes.tabItemBody}>
+                              <Grid container className={classes.gridItemInfo} alignItems="center">
+                                <Grid item lg={12} md={12} xs={12}>
+                                  <object width="100%" height="400" data={mentorData.file_path} type="application/pdf">
+                                    {' '}
+                                  </object>
+                                </Grid>
+                              </Grid>
                             </div>
                           </div>
-                          <div className={classes.tabItemBody}>
-                           
-                            <Grid container className={classes.gridItemInfo} alignItems="center">
-                              <Grid item lg={12} md={12} xs={12}>
-                        
-                                <object width="100%" height="400" data={mentorData.file_path} type="application/pdf">   </object>
-                              </Grid>
-                            </Grid>
-                          </div>
-                        </div>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </TabPanel>
+                    </TabPanel>
                   </Grid>
                 </>
               )}
               {openMentorForm === false && (
                 <Grid item xs={12}>
-
                   <TabPanel value={tabIndex} index={0}>
                     <Grid container spacing={1}>
                       <Grid item lg={6} md={6} xs={12}>
@@ -994,7 +974,6 @@ const CollaboratorModal = () => {
                               </Grid>
                             </Grid>
 
-
                             <Grid container className={classes.gridItemInfo} alignItems="center">
                               <Grid item lg={4} md={4} xs={4}>
                                 <span className={classes.tabItemLabelField}>Tỉnh:</span>
@@ -1049,7 +1028,6 @@ const CollaboratorModal = () => {
                                 />
                               </Grid>
                             </Grid>
-
                           </div>
                         </div>
                       </Grid>
@@ -1062,11 +1040,11 @@ const CollaboratorModal = () => {
                             </div>
                           </div>
                           <div className={classes.tabItemBody}>
-                           
                             <Grid container className={classes.gridItemInfo} alignItems="center">
                               <Grid item lg={12} md={12} xs={12}>
-                        
-                                <object width="100%" height="400" data={mentorData.file_path} type="application/pdf">   </object>
+                                <object width="100%" height="400" data={mentorData.file_path} type="application/pdf">
+                                  {' '}
+                                </object>
                               </Grid>
                             </Grid>
                           </div>
@@ -1074,10 +1052,8 @@ const CollaboratorModal = () => {
                       </Grid>
                     </Grid>
                   </TabPanel>
-                  
                 </Grid>
               )}
-
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -1092,28 +1068,29 @@ const CollaboratorModal = () => {
                 </Button>
               </Grid>
               <Grid item className={classes.gridItemInfoButtonWrap}>
-
-                {openMentorForm === false && (
+                {!openMentorForm && (
                   <>
-                    {approveButton && (
-                      <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={() => setOpenMentorForm(true)}>
-                        {approveButton.text}
-                      </Button>
-                    )}
                     {rejectButton && (
                       <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleReject}>
                         {rejectButton.text}
                       </Button>
                     )}
+                    {approveButton && (
+                      <Button
+                        variant="contained"
+                        className={classes.gridItemInfoButton}
+                        onClick={() => setOpenMentorForm(true)}
+                      >
+                        {approveButton.text}
+                      </Button>
+                    )}
                   </>
-
                 )}
-                {openMentorForm === true && (
-                   <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleSubmitForm}>
-                   {'Tạo mới'}
-                 </Button>
+                {openMentorForm && (
+                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleSubmitForm}>
+                    {'Tạo mới'}
+                  </Button>
                 )}
-
               </Grid>
             </Grid>
           </DialogActions>
