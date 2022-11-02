@@ -27,6 +27,7 @@ import {
   processroleActions,
   fileActions,
   fileCategoryActions,
+  collaborationActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -44,7 +45,7 @@ import PrepaidCardWrapper from './../../Payment/PrepaidCard/index';
 import ListMentorWrapper from './../../Partner/ListMentor/index';
 import PartnerWrapper from '../../Partner/Partner';
 import PartnerCategoryWrapper from '../../Partner/Partner/Partner Category';
-
+import CollaborationWrapper from '../../Collobaration/index';
 import ProcessRoleWrapper from '../../ProcessRole';
 
 import FileWrapper from './../../Document/File/index';
@@ -80,7 +81,7 @@ const Default = () => {
 
   const availableFileEndpoint = Object.values(fileActions);
   const availableFileCategoryEndpoint = Object.values(fileCategoryActions);
-
+  const avaiableCollaboratorEndpoint = Object.values(collaborationActions);
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
   }
@@ -113,6 +114,7 @@ const Default = () => {
 
           {availableFileEndpoint.includes(selectedFolder?.action) && <FileWrapper />}
           {availableFileCategoryEndpoint.includes(selectedFolder?.action) && <FileCategoryWrapper />}
+          {avaiableCollaboratorEndpoint.includes(selectedFolder?.action) && <CollaborationWrapper />}
         </Grid>
       )}
     </Grid>

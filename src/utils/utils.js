@@ -22,6 +22,7 @@ import {
 
   fileActions,
   fileCategoryActions,
+  collaborationActions,
 
 } from '../store/constant.js';
 
@@ -131,6 +132,12 @@ export function getUrlByAction(selectedFolder) {
     case fileCategoryActions.active_list: {
       return apiEndpoints.get_file_category_list;
 
+    }
+    case collaborationActions.process_list: {
+      return apiEndpoints.get_list_collaboration_process;
+    }
+    case collaborationActions.deprocess_list: {
+      return apiEndpoints.get_list_collaboration_deprocess;
     }
     default: {
       return '';

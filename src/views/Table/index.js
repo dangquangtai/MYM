@@ -59,7 +59,7 @@ import ProcessRoleDeptModal from './../ProcessRole/DepartmentRole/index';
 import useProcessRole from './../../hooks/useProcessRole';
 
 import useDocument from './../../hooks/useDocument';
-
+import useCollaborator from './../../hooks/useCollaborator';
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
@@ -124,7 +124,7 @@ export default function GeneralTable(props) {
       full_name: tableColumns.includes('full_name'),
       code_id: tableColumns.includes('code_id'),
       batch_number: tableColumns.includes('batch_number'),
-      type: tableColumns.includes('type'),
+      type_collaborator: tableColumns.includes('type_collaborator'),
       used_date: tableColumns.includes('used_date'),
       expiration_date: tableColumns.includes('expiration_date'),
       amount: tableColumns.includes('amount'),
@@ -140,6 +140,7 @@ export default function GeneralTable(props) {
       available: tableColumns.includes('available'),
       menuButtons: !!menuButtons.length || false,
       is_used: tableColumns.includes('is_used'),
+      type: tableColumns.includes('type'),
       is_featured: tableColumns.includes('is_featured'),
       is_active: tableColumns.includes('is_active'),
     };
@@ -288,7 +289,7 @@ export default function GeneralTable(props) {
   const { getCardBatchDetail, sendEmailCard } = usePayment();
 
   const { getFileDetail, getFileCategoryDetail } = useDocument();
-
+  const { getDetail} = useCollaborator();
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
       fetchDocument(url, documentType, selectedProject.id, selectedFolder.id);
@@ -503,6 +504,10 @@ export default function GeneralTable(props) {
       detailDocument = await getFileCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, fileCategoryDocument: true });
+    } else if (documentType === 'collaborator') {
+      detailDocument = await getDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
 
@@ -1342,7 +1347,7 @@ export default function GeneralTable(props) {
                                   </a>
                                 </TableCell>
                               )}
-                              {displayOptions.type && <TableCell align="left">{row.type || ''}</TableCell>}
+                              {displayOptions.type_collaborator && <TableCell align="left">{row.collaboration_type_name || ''}</TableCell>}
                               {displayOptions.amount && <TableCell align="left">{row.amount || ''}</TableCell>}
                               {displayOptions.used_date && (
                                 <TableCell align="left">{formatDateTime(row.used_date) || ''}</TableCell>
@@ -1364,6 +1369,7 @@ export default function GeneralTable(props) {
                                   )}
                                 </TableCell>
                               )}
+                               {displayOptions.type && <TableCell align="left">{row.collaboration_type_name || ''}</TableCell>}
                               {displayOptions.episodes && <TableCell align="left">{row.episodes || ''}</TableCell>}
                               {displayOptions.duration && <TableCell align="left">{row.duration || ''}</TableCell>}
                               {displayOptions.created_by && <TableCell align="left">{row.created_by || ''}</TableCell>}

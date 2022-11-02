@@ -16,7 +16,7 @@ const CollaborationWrapper = () => {
 
   useEffect(() => {
     async function fetchData() {
-      dispatch({ type: DOCUMENT_CHANGE, documentType: 'collaboration' });
+      dispatch({ type: DOCUMENT_CHANGE, documentType: 'collaborator' });
     }
     if (selectedProject) {
       fetchData();
@@ -26,10 +26,10 @@ const CollaborationWrapper = () => {
   return (
     <React.Fragment>
       <CollaborationTable
-        tableTitle="Quản lý đơn "
+        tableTitle="Quản lý đăng ký cộng tác viên"
         url={getUrlByAction(selectedFolder)}
         categories={categories}
-        documentType="collaboration"
+        documentType="collaborator"
         // setFeaturedUrl={}
       />
     </React.Fragment>
