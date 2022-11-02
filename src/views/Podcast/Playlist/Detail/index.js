@@ -249,23 +249,6 @@ const PlaylistModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <ImageIcon />
-                            <span>Hình ảnh</span>
-                          </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={playlistData.image_url} alt="" />
-                          <div>
-                            <div>Upload/Change Playlist Image</div>
-                            <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
-                          </div>
-                        </div>
-                      </div>
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
                             <QueueMusic />
                             <span>Chi tiết Playlist</span>
                           </div>
@@ -308,6 +291,8 @@ const PlaylistModal = () => {
                           </Grid>
                         </div>
                       </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={12}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>

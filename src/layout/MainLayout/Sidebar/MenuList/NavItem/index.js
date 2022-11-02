@@ -62,8 +62,6 @@ const NavItem = (props) => {
     />
   );
 
-  console.log(item);
-
   let itemIconClass = !item.icon ? classes.listIcon : classes.menuIcon;
 
   let itemTarget = '';
@@ -93,7 +91,7 @@ const NavItem = (props) => {
         to={item.url}
         target={itemTarget}
         button
-        style={{ paddingLeft: level * 16 + 'px' }}
+        style={{ paddingLeft: item.children.length === 0 ? '32px' : level * 16 + 'px' }}
         {...listItemProps}
       >
         <ListItemIcon className={itemIconClass}>{itemIcon}</ListItemIcon>
