@@ -30,14 +30,10 @@ const AppCard = (props) => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.revenuecard}>
+    <Card className={classes.revenuecard} style={{ backgroundColor: color }}>
       <CardContent>
         <Grid container justifyContent="center">
-          <img
-            className={classes.img}
-            src={image}
-            alt="app"
-          />
+          <img className={classes.img} src={image} alt="app" />
         </Grid>
         <Grid container justifyContent="center" className={classes.content}>
           <Grid item>
@@ -59,7 +55,7 @@ const AppCard = (props) => {
           </Box>
         </Grid> */}
       </CardContent>
-      <div className={classes.abs} style={{ backgroundColor: color }}></div>
+      {/* <div className={classes.abs} style={{ backgroundColor: color }}></div> */}
     </Card>
   );
 };
