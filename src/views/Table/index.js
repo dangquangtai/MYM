@@ -542,7 +542,7 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
 
-    else if (documentType === 'counsellingPrice') {
+        }    else if (documentType === 'counsellingPrice') {
       detailDocument = await getDetailPrice(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, counsellingPriceDocument: true });
@@ -1492,17 +1492,17 @@ export default function GeneralTable(props) {
                               )}
                               {displayOptions.total_order && (
                                 <TableCell align="left">
-                                  {row.total}
+                                  {row.total.toLocaleString()}
                                 </TableCell>
                               )}
                               {displayOptions.discount_amount && (
                                 <TableCell align="left">
-                                  {row.discount_amount }
+                                  {row.discount_amount.toLocaleString() }
                                 </TableCell>
                               )}
                               {displayOptions.final_total && (
                                 <TableCell align="left">
-                                  {row.final_total }
+                                  {row.final_total.toLocaleString() }
                                 </TableCell>
                               )}
                               {displayOptions.status_display && (

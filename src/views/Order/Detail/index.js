@@ -18,7 +18,11 @@ import {
   Snackbar,
   InputLabel,
 } from '@material-ui/core';
-
+import {
+  History as HistoryIcon,
+  DescriptionOutlined as DescriptionOutlinedIcon,
+  ImageOutlined as ImageIcon,
+} from '@material-ui/icons';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Alert from '../../../component/Alert/index.js';
 import { useSelector, useDispatch } from 'react-redux';
@@ -298,7 +302,7 @@ const OrderModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="major"
-                                value={order.total}
+                                value={order.total.toLocaleString()}
                                 className={classes.inputField}
                        
                               />
@@ -315,7 +319,7 @@ const OrderModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="major"
-                                value={order.discount_amount}
+                                value={order.discount_amount.toLocaleString()}
                                 className={classes.inputField}
                               />
                             </Grid>
@@ -331,7 +335,7 @@ const OrderModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="current_school"
-                                value={order.final_total}
+                                value={order.final_total.toLocaleString()}
                                 className={classes.inputField}
                           
                               />
@@ -375,6 +379,20 @@ const OrderModal = () => {
                       </div>
                     </Grid>
                     <Grid item lg={6} md={6} xs={12}>
+                    <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <ImageIcon />
+                            <span>Hình ảnh</span>
+                          </div>
+                        </div>
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                          <img src={account.image_url} alt="" />
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          
+                        </div>
+                      </div>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
@@ -411,7 +429,7 @@ const OrderModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="phone_number"
-                                value={account?.fullname}
+                                value={account?.full_name}
                                 className={classes.inputField}
                            
                               />

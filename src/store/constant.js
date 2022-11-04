@@ -616,8 +616,8 @@ export const view = {
   order: {
     detail: {
       process: 'MYM_SALES_HOME_PROCESS_PAYMENT_FORM_BUTTON'
-    }
-  }
+    },
+  },
 
   counsellingPrice: {
     list: {
