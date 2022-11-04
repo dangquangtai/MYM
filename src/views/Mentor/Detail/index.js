@@ -481,12 +481,29 @@ const MentorModal = () => {
                               <TextField
                                 fullWidth
                                 multiline
-                                rows={1}
-                                rowsMax={2}
+                                rows={4}
+                                rowsMax={4}
                                 variant="outlined"
                                 name="title"
                                 value={mentorData?.title}
                                 className={classes.multilineInputField}
+                                onChange={handleChangeMentor}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thứ tự:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="order_number"
+                                value={mentorData.order_number}
+                                className={classes.inputField}
                                 onChange={handleChangeMentor}
                               />
                             </Grid>
@@ -1158,11 +1175,12 @@ const MentorModal = () => {
                               <Table aria-label="simple table">
                                 <TableHead>
                                   <TableRow>
-                                    <TableCell align="center">Weekday</TableCell>
-                                    <TableCell align="center">From Date</TableCell>
-                                    <TableCell align="center">To Date</TableCell>
-                                    <TableCell align="center">Is Active</TableCell>
-                                    <TableCell align="center">Is Book</TableCell>
+                                    <TableCell align="center">Thứ</TableCell>
+                                    <TableCell align="center">Ngày</TableCell>
+                                    <TableCell align="center">Từ giờ</TableCell>
+                                    <TableCell align="center">Đến giờ</TableCell>
+                                    <TableCell align="center">Hoạt động</TableCell>
+                                    <TableCell align="center">Trạng thái</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -1172,11 +1190,12 @@ const MentorModal = () => {
                                         {row.weekday}
                                       </TableCell>
                                       <TableCell align="center">
-                                        {formatDate(new Date(row.from_date), 'HH:mm dd/MM/yyyy')}
+                                        {formatDate(new Date(row.from_date), 'dd/MM/yyyy')}
                                       </TableCell>
                                       <TableCell align="center">
-                                        {formatDate(new Date(row.to_date), 'HH:mm dd/MM/yyyy')}
+                                        {formatDate(new Date(row.from_date), 'HH:mm')}
                                       </TableCell>
+                                      <TableCell align="center">{formatDate(new Date(row.to_date), 'HH:mm')}</TableCell>
                                       <TableCell align="center">
                                         <Switch checked={row.is_active} color="primary" disabled />
                                       </TableCell>

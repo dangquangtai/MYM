@@ -39,6 +39,7 @@ export const initMentorData = {
   counselling_topic1_id: [],
   counselling_topic2_id: [],
   counselling_topic3_id: [],
+  order_number: 0,
 };
 export const initPartnerData = {
   id: '',
