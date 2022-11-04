@@ -37,6 +37,8 @@ import { ProcessRoleProvider } from '../contexts/ProcessRoleContext.js';
 import { DocumentProvider } from '../contexts/DocumentContext.js';
 import { NotificationProvider } from '../contexts/NotificationContex.js';
 import { OrderProvider } from '../contexts/OrderContext';
+import { SaleProvider } from '../contexts/SaleContext';
+
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -95,10 +97,15 @@ const App = () => {
                                                             <DocumentProvider>
                                                               <CollaboratorProvider>
                                                                 <NotificationProvider>
+                                                                  <SaleProvider>
                                                                   <OrderProvider>
                                                                   <Routes />
                                                                   <Snackbar />
                                                                   </OrderProvider>
+
+                                                               
+                                                                  </SaleProvider>
+
                                                                 </NotificationProvider>
                                                               </CollaboratorProvider>
                                                             </DocumentProvider>

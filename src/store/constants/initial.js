@@ -252,3 +252,17 @@ export const initNotificationMessage = {
   category_id: '',
   account_id: '',
 };
+export const initCounsellingPrice = {
+  title: '',
+  description: '',
+  price: 0,
+  is_active: true,
+  is_default: false,
+  id: '',
+  created_date: '',
+  created_by: '',
+  counselling_category_id: '',
+  career_category_id: '',
+  available_to_date: '',
+  available_from_date: '',
+};

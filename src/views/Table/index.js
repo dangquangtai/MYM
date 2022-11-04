@@ -59,7 +59,11 @@ import useProcessRole from './../../hooks/useProcessRole';
 import useDocument from './../../hooks/useDocument';
 import useCollaborator from './../../hooks/useCollaborator';
 import useNotification from './../../hooks/useNotification';
+
 import useOrder from './../../hooks/useOrder';
+
+import useSale from '../../hooks/useSale';
+
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -208,6 +212,7 @@ export default function GeneralTable(props) {
   const buttonCreateNotificationMessage = menuButtons.find(
     (button) => button.name === view.notificationMessage.list.create
   );
+  const buttonCreateCounsellingPrice = menuButtons.find((button) => button.name === view.counsellingPrice.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -300,7 +305,10 @@ export default function GeneralTable(props) {
   const { getFileDetail, getFileCategoryDetail } = useDocument();
   const { getDetail } = useCollaborator();
   const { getDetailNotificatonCategory, getDetailNotificatonMessage } = useNotification();
+
   const { getOrderDetail } = useOrder();
+
+  const { getDetailPrice } = useSale();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -528,10 +536,17 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, notificationMessageDocument: true });
     }
+
     else if (documentType === 'order') {
       detailDocument = await getOrderDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+
+    else if (documentType === 'counsellingPrice') {
+      detailDocument = await getDetailPrice(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, counsellingPriceDocument: true });
+
     }
   };
 
@@ -824,6 +839,10 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, notificationMessageDocument: true });
   };
+  const handleClickCreateCounsellingPrice = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, counsellingPriceDocument: true });
+  };
 
   const handleClickProcessRoleDetail = async () => {
     if (process_role_code_selected !== '') {
@@ -939,7 +958,7 @@ export default function GeneralTable(props) {
     });
   };
 
-  const clickSuccess = () => {};
+  const clickSuccess = () => { };
 
   return (
     <React.Fragment>
@@ -1046,6 +1065,8 @@ export default function GeneralTable(props) {
                 createNotificationCategory={handleClickCreateNotificationCategory}
                 buttonCreateNotificationMessage={buttonCreateNotificationMessage}
                 createNotificationMessage={handleClickCreateNotificationMessage}
+                buttonCreateCounsellingPrice={buttonCreateCounsellingPrice}
+                CreateCounsellingPrice={handleClickCreateCounsellingPrice}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1076,12 +1097,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                          ? classes.table3
-                          : classes.table
+                            ? classes.table3
+                            : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                      // aria-label="enhanced table"
+                    // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}
