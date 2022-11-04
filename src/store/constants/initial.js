@@ -195,6 +195,25 @@ export const initAccount = {
   province_id: '',
   password: '',
 };
+export const initOrder = {
+  after_discount_total: 0,
+  discount_amount: 0,
+  final_total: 0,
+  id: "",
+  order_code: '',
+  order_date: "",
+  order_description: '',
+  order_title: '',
+  payment_type: null,
+  payment_type_display: "",
+  prepaid_card_serial: '',
+  status: '',
+  status_display: '',
+  total:0, 
+  voucher_code: ''
+
+};
+
 
 export const initFileData = {
   title: '',

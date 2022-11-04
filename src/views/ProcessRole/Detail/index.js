@@ -143,7 +143,7 @@ const ProcessRoleModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });  
           handleCloseDialog();
           } else {
-          handleOpenSnackbar(true,'success','Tạo mới thất bại!');
+          handleOpenSnackbar(true,'serror','Tạo mới thất bại!');
           }
       } else {
         let check = await updateProcessRole(role.role_code,role.role_name,role.process_code,role.app_code);
@@ -154,7 +154,7 @@ const ProcessRoleModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });  
           handleCloseDialog();
           } else {
-            handleOpenSnackbar(true,'success','Cập nhật thất bại!');
+            handleOpenSnackbar(true,'error','Cập nhật thất bại!');
           }
       }
       

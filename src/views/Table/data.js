@@ -58,6 +58,13 @@ export const headCells = [
   { id: 'is_featured', numeric: false, disablePadding: false, label: 'Nổi bật', maxWidth: 150 },
   { id: 'category_code', numeric: false, disablePadding: false, label: 'Mã', maxWidth: 150 },
   { id: 'category_name', numeric: false, disablePadding: false, label: 'Tên danh mục', maxWidth: 150 },
+  { id: 'order_code', numeric: false, disablePadding: false, label: 'Mã order', maxWidth: 150 },
+  { id: 'order_title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
+  { id: 'payment_type_display', numeric: false, disablePadding: false, label: 'Hình thức thanh toán', maxWidth: 150 },
+  { id: 'total_order', numeric: false, disablePadding: false, label: 'Tổng', maxWidth: 150 },
+  { id: 'discount_amount', numeric: false, disablePadding: false, label: 'Giảm giá', maxWidth: 150 },
+  { id: 'final_total', numeric: false, disablePadding: false, label: 'Tổng cuối', maxWidth: 150 },
+  { id: 'status_display', numeric: false, disablePadding: false, label: 'Trạng thái', maxWidth: 150 },
   { id: 'menuButtons', numeric: false, disablePadding: false, label: '', maxWidth: 150 },
 ];
 

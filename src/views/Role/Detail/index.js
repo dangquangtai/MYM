@@ -152,7 +152,7 @@ const RoleModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'role' });  
           handleCloseDialog();
           } else {
-          handleOpenSnackbar(true,'success','Tạo mới thất bại!');
+          handleOpenSnackbar(true,'error','Tạo mới thất bại!');
           }
       } else {
         let check = await createRole({
@@ -165,7 +165,7 @@ const RoleModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'role' });  
           handleCloseDialog();
           } else {
-            handleOpenSnackbar(true,'success','Cập nhật thất bại!');
+            handleOpenSnackbar(true,'error','Cập nhật thất bại!');
           }
       }
       

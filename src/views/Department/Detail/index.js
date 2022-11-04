@@ -157,7 +157,7 @@ const DepartmentModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'department' });  
           handleCloseDialog();
           } else {
-          handleOpenSnackbar(true,'fail','Tạo mới thất bại!');
+          handleOpenSnackbar(true,'error','Tạo mới thất bại!');
           }
       } else {
         let check = await updateDepartment({
@@ -170,7 +170,7 @@ const DepartmentModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'department' });  
           handleCloseDialog();
           } else {
-            handleOpenSnackbar(true,'fail','Cập nhật thất bại!');
+            handleOpenSnackbar(true,'error','Cập nhật thất bại!');
           }
       }
       

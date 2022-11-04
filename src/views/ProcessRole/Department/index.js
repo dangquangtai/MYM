@@ -179,11 +179,11 @@ const ProcessRoleDeptModal = () => {
         ))
         let check = await addDeptUser(process_role_code, dept, role.email_address)
         if (check === true) {
-          handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
+          handleOpenSnackbar(true, 'success', 'Thêm thành công!');
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });
           handleCloseDialog();
         } else {
-          handleOpenSnackbar(true, 'success', 'Tạo mới thất bại!');
+          handleOpenSnackbar(true, 'error', 'Thêm thất bại!');
         }
       
 

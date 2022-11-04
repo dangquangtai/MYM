@@ -30,6 +30,7 @@ import {
   collaborationActions,
   notificationActions,
   notificationMessageActions,
+  orderActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -54,7 +55,7 @@ import FileCategoryWrapper from './../../Document/FileCategory/index';
 import Calendar from './../../Booking/FullCalendar/index';
 import NotificationWrapper from './../../Notification/Category/index';
 import NotificationMessageWrapper from './../../Notification/Message/index';
-
+import OrderWrapper from './../../Order/index';
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
   const { projects } = useSelector((state) => state.project);
@@ -85,7 +86,7 @@ const Default = () => {
   const avaiableCollaboratorEndpoint = Object.values(collaborationActions);
   const availableNotificationEndpoint = Object.values(notificationActions);
   const availableNotificationMessageEndpoint = Object.values(notificationMessageActions);
-
+  const availableOrderEndpoint = Object.values(orderActions);
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
   }
@@ -119,6 +120,7 @@ const Default = () => {
           {avaiableCollaboratorEndpoint.includes(selectedFolder?.action) && <CollaborationWrapper />}
           {availableNotificationEndpoint.includes(selectedFolder?.action) && <NotificationWrapper />}
           {availableNotificationMessageEndpoint.includes(selectedFolder?.action) && <NotificationMessageWrapper />}
+          {availableOrderEndpoint.includes(selectedFolder?.action) && <OrderWrapper/> }
         </Grid>
       )}
     </Grid>

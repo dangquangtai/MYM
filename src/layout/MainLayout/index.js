@@ -37,7 +37,7 @@ import FileCategoryModal from './../../views/Document/FileCategory/Detail/index'
 import CollaboratorModal from '../../views/Collobaration/Detail';
 import NotificationCategoryModal from './../../views/Notification/Category/Detail/index';
 import NotificationMessageModall from './../../views/Notification/Message/Detail/index';
-
+import OrderModal from '../../views/Order/Detail';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -156,6 +156,8 @@ const MainLayout = ({ children }) => {
         return <NotificationCategoryModal />;
       case 'notificationMessage':
         return <NotificationMessageModall />;
+      case 'order':
+        return <OrderModal/>;
     }
   };
 

@@ -18,22 +18,19 @@ import {
   Snackbar,
   InputLabel,
 } from '@material-ui/core';
-import {
-  History as HistoryIcon,
-  DescriptionOutlined as DescriptionOutlinedIcon,
-  ImageOutlined as ImageIcon,
-} from '@material-ui/icons';
+
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Alert from '../../../component/Alert/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { gridSpacing, view } from '../../../store/constant.js';
+import { view } from '../../../store/constant.js';
 import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
+import useOrder from '../../../hooks/useOrder.js';
+
+import { initOrder, initAccount } from '../../../store/constants/initial.js';
 import useAccount from '../../../hooks/useAccount.js';
-import FirebaseUpload from '../../FloatingMenu/FirebaseUpload/index.js';
-import { initAccount } from '../../../store/constants/initial.js';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -66,49 +63,38 @@ function a11yProps(index) {
   };
 }
 
-const AccountModal = () => {
+const OrderModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tabIndex, setTabIndex] = React.useState(0);
   const { form_buttons: formButtons, name, tabs, disabled_fields } = useView();
-  const buttonSave = formButtons.find((button) => button.name === view.user.detail.save);
+  const buttonprocess = formButtons.find((button) => button.name === view.order.detail.process);
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
-
-  const { createAccount, updateAccount } = useAccount();
-  const { accountDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { processPaymentOrder } = useOrder();
+  const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
+  const [order, setOrder] = useState(initOrder);
+  const [account, setAccount] = useState(initAccount);
+  const { getAccount } = useAccount();
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
     type: ''
   });
-  const {
-    provinces: provinceList,
-    genders: genderList,
-    degree: degreeList,
-    careers: careerCategoryList,
-    topics: careerTopicList,
-  } = useSelector((state) => state.metadata);
-  const [account, setAccount] = React.useState({
-   ...initAccount
-  });
-
   useEffect(() => {
-
     if (!selectedDocument) return;
-    setAccount({
-      ...account,
-      ...selectedDocument,
-    });
+    setOrder(selectedDocument);
+    const fetchAccount = async()=>{
+      let data= await getAccount(selectedDocument.account_id);
+      setAccount(data);
+    }
+    fetchAccount();
   }, [selectedDocument]);
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    setAccount({
-      ...initAccount,
-    });
-    dispatch({ type: FLOATING_MENU_CHANGE, accountDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
   };
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -122,62 +108,26 @@ const AccountModal = () => {
       text: text,
     });
   };
-  const handleUpdateAccount = async () => {
+  const handleUpdate = async () => {
     try {
-      if (!account.account_id) {
-        let check = await createAccount({
-          ...account,
-          outputtype: 'RawJson',
-        });
-        if (check == true) {
-          handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
+        let check =await processPaymentOrder(order.id);
+        if (check === true) {
+          handleOpenSnackbar(true, 'success', 'Xử lý thanh toán thành công!');
         } else {
-          handleOpenSnackbar(true, 'error', 'Tài khoản đã tồn tại!');
-        }
-      } else {
-        let check = await updateAccount({
-          ...account,
-          outputtype: 'RawJson',
-        });
-        if (check == true) {
-          handleOpenSnackbar(true, 'success', 'Cập nhập thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'account' });
-          handleCloseDialog();
-        }
-        else {
-          handleOpenSnackbar(true, 'error', 'Tài khoản đã tồn tại!');
+          handleOpenSnackbar(true, 'error', 'Hết thời gian xử lý!');
         }
       }
-    } catch (error) {
-      console.log('error update booking', error);
+     catch (error) {
     } finally {
     }
   };
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setAccount({
-      ...account,
-      [e.target.name]: value,
-    });
-  };
   
   const setDocumentToDefault = async () => {
     setTabIndex(0);
   };
-  const setURL = (image) => {
-    setAccount({
-      ...account,
-      image_url: image,
-    });
-  };
 
-  const handleOpenDiaLog = () => {
-    setDialogUpload({open: true , type: 'image'})
-  };
-  const handleCloseDiaLog = () => {
-    setDialogUpload({open: false , type: 'image'})
-  };
+ 
   return (
     <React.Fragment>
       {snackbarStatus.isOpen && (
@@ -196,13 +146,6 @@ const AccountModal = () => {
           </Alert>
         </Snackbar>
       )}
-       <FirebaseUpload
-        open={dialogUpload.open || false}
-        onSuccess={setURL}
-        onClose={handleCloseDiaLog}
-        folder="AvatarAccount"
-        type="image"
-      />
       <Grid container>
         <Dialog
           open={openDialog || false}
@@ -213,7 +156,7 @@ const AccountModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Tạo mới người dùng
+              Thông tin chi tiết
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -232,7 +175,7 @@ const AccountModal = () => {
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
                         <AccountCircleOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
-                        Chi tiết đăng ký
+                        Chi tiết
                       </Typography>
                     }
                     value={0}
@@ -243,75 +186,36 @@ const AccountModal = () => {
               <Grid item xs={12}>
                 <TabPanel value={tabIndex} index={0}>
                   <Grid container spacing={1}>
-                  <Grid item lg={6} md={6} xs={6}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <ImageIcon />
-                            <span>Hình ảnh</span>
-                          </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={account.image_url} alt="" />
-                          <div>
-                            <div>Upload/Change Image</div>
-                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình </Button>
-                          </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={account.image_url}
-                                className={classes.inputField}
-                                onChange={handleChange}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
-                      </div>
-                     
-                     
-                    </Grid>
+                  
                     <Grid item lg={6} md={6} xs={12}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <AccountCircleOutlinedIcon />
-                            <span>Thông tin cá nhân</span>
+                            <span>Mã order {order.order_code}</span>
                           </div>
 
                         </div>
                         <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Họ và tên: </span>
+                        <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Tiêu đề:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
+                            <Grid item lg={8} md={8} xs={12}>
+                            <TextField
                                 fullWidth
                                 rows={1}
                                 rowsMax={1}
                                 variant="outlined"
-                                name="full_name"
-                                value={account.full_name || ''}
+                                name="major"
+                                value={order.order_title}
                                 className={classes.inputField}
-                                onChange={handleChange}
+                       
                               />
                             </Grid>
                           </Grid>
-
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Ngày sinh:</span>
+                              <span className={classes.tabItemLabelField}>Ngày đăng ký:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -319,15 +223,15 @@ const AccountModal = () => {
                                 type="datetime-local"
                                 variant="outlined"
                                 name="dob"
-                                value={account.dob}
+                                value={order.order_date}
                                 className={classes.inputField}
-                                onChange={handleChange}
+                            
                               />
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Email: </span>
+                              <span className={classes.tabItemLabelField}>Mã voucher: </span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -337,15 +241,15 @@ const AccountModal = () => {
                                 variant="outlined"
                                 name="email_address"
                                 type='email'
-                                value={account.email_address || ''}
+                                value={order.voucher_code || ''}
                                 className={classes.inputField}
-                                onChange={handleChange}
+                           
                               />
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Mật khẩu: </span>
+                              <span className={classes.tabItemLabelField}>Prepaid_Card_Serial: </span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -355,13 +259,164 @@ const AccountModal = () => {
                                 variant="outlined"
                                 name="password"
                                 type='password'
-                                value={account.password || ''}
+                                value={account.prepaid_card_serial|| ''}
                                 className={classes.inputField}
-                                onChange={handleChange}
                               />
                             </Grid>
                           </Grid>
 
+                         
+                         
+
+
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Mô tả:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                            <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="major"
+                                value={order.order_description}
+                                className={classes.inputField}
+                       
+                              />
+                            </Grid>
+                          </Grid>
+
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Giá:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                            <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="major"
+                                value={order.total}
+                                className={classes.inputField}
+                       
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Giảm giá:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                            <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="major"
+                                value={order.discount_amount}
+                                className={classes.inputField}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Tổng giá:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="current_school"
+                                value={order.final_total}
+                                className={classes.inputField}
+                          
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Hình thức thanh toán:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="current_school"
+                                value={order.payment_type}
+                                className={classes.inputField}
+                          
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Trạng thái xử lý:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="current_school"
+                                value={order.status_display}
+                                className={classes.inputField}
+                          
+                              />
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                  
+                          </div>
+
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Email đăng ký: </span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="full_name"
+                                value={account.email_address || ''}
+                                className={classes.inputField}
+                            
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={12}>
+                              <span className={classes.tabItemLabelField}>Họ và tên:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={12}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                name="phone_number"
+                                value={account?.fullname}
+                                className={classes.inputField}
+                           
+                              />
+                            </Grid>
+                          </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={12}>
                               <span className={classes.tabItemLabelField}>SĐT:</span>
@@ -375,111 +430,13 @@ const AccountModal = () => {
                                 name="phone_number"
                                 value={account?.phone_number}
                                 className={classes.inputField}
-                                onChange={handleChange}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={12}>
-                              <span className={classes.tabItemLabelField}>Trình độ học vấn:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
-                              <Select
-                                className={classes.multpleSelectField}
-                                value={account.degree_id || ''}
-                                onChange={(event) => setAccount({ ...account, degree_id: event.target.value })}
-                              >
-                                <MenuItem value="">
-                                  <em>Không chọn</em>
-                                </MenuItem>
-                                {degreeList &&
-                                  degreeList.map((item) => (
-                                    <MenuItem key={item.id} value={item.id}>
-                                      {item.value}
-                                    </MenuItem>
-                                  ))}
-                              </Select>
-                            </Grid>
-                          </Grid>
-
-
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={12}>
-                              <span className={classes.tabItemLabelField}>Ngành nghề:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
-                            <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="major"
-                                value={account?.major}
-                                className={classes.inputField}
-                                onChange={handleChange}
-                              />
-                            </Grid>
-                          </Grid>
-
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={12}>
-                              <span className={classes.tabItemLabelField}>Giới tính:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
-                              <Select
-                                className={classes.multpleSelectField}
-                                value={account.gender_id || ''}
-                                onChange={(event) => setAccount({ ...account, gender_id: event.target.value })}
-                              >
-                                {genderList &&
-                                  genderList.map((item) => (
-                                    <MenuItem key={item.id} value={item.id}>
-                                      {item.value}
-                                    </MenuItem>
-                                  ))}
-                              </Select>
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={12}>
-                              <span className={classes.tabItemLabelField}>Tỉnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
-                              <Select
-                                className={classes.multpleSelectField}
-                                value={account.province_id || ''}
-                                onChange={(event) => setAccount({ ...account, province_id: event.target.value })}
-                              >
-                                {provinceList &&
-                                  provinceList.map((item) => (
-                                    <MenuItem key={item.id} value={item.id}>
-                                      {item.value}
-                                    </MenuItem>
-                                  ))}
-                              </Select>
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={12}>
-                              <span className={classes.tabItemLabelField}>Trường:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="current_school"
-                                value={account?.current_school}
-                                className={classes.inputField}
-                                onChange={handleChange}
+                         
                               />
                             </Grid>
                           </Grid>
                         </div>
                       </div>
                     </Grid>
-
 
                   </Grid>
                 </TabPanel>
@@ -497,25 +454,15 @@ const AccountModal = () => {
                   Đóng
                 </Button>
               </Grid>
-              {!account.account_id && (
+          
+              {buttonprocess  && (
                 <Grid item>
                   <Button
                     variant="contained"
                     style={{ background: 'rgb(97, 42, 255)' }}
-                    onClick={() => handleUpdateAccount()}
+                    onClick={() => handleUpdate()}
                   >
-                    {'Tạo mới'}
-                  </Button>
-                </Grid>
-              )}
-              {buttonSave && !! account.account_id && (
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    style={{ background: 'rgb(97, 42, 255)' }}
-                    onClick={() => handleUpdateAccount()}
-                  >
-                    Lưu
+                    {buttonprocess.text}
                   </Button>
                 </Grid>
               )}
@@ -527,4 +474,4 @@ const AccountModal = () => {
   );
 };
 
-export default AccountModal;
+export default OrderModal;

@@ -59,6 +59,7 @@ import useProcessRole from './../../hooks/useProcessRole';
 import useDocument from './../../hooks/useDocument';
 import useCollaborator from './../../hooks/useCollaborator';
 import useNotification from './../../hooks/useNotification';
+import useOrder from './../../hooks/useOrder';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -141,6 +142,13 @@ export default function GeneralTable(props) {
       menuButtons: !!menuButtons.length || false,
       is_used: tableColumns.includes('is_used'),
       type: tableColumns.includes('type'),
+      order_code: tableColumns.includes('order_code'),
+      order_title: tableColumns.includes('order_title'),
+      payment_type_display: tableColumns.includes('payment_type_display'),
+      total_order: tableColumns.includes('total_order'),
+      discount_amount: tableColumns.includes('discount_amount'),
+      final_total: tableColumns.includes('final_total'),
+      status_display: tableColumns.includes('status_display'),
       is_featured: tableColumns.includes('is_featured'),
       is_active: tableColumns.includes('is_active'),
     };
@@ -292,6 +300,7 @@ export default function GeneralTable(props) {
   const { getFileDetail, getFileCategoryDetail } = useDocument();
   const { getDetail } = useCollaborator();
   const { getDetailNotificatonCategory, getDetailNotificatonMessage } = useNotification();
+  const { getOrderDetail } = useOrder();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -518,6 +527,11 @@ export default function GeneralTable(props) {
       detailDocument = await getDetailNotificatonMessage(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, notificationMessageDocument: true });
+    }
+    else if (documentType === 'order') {
+      detailDocument = await getOrderDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
 
@@ -1114,6 +1128,17 @@ export default function GeneralTable(props) {
                                   </div>
                                 </TableCell>
                               )}
+                              {displayOptions.order_code && (
+                                <TableCell align="left">
+                                  <div
+                                    className={classes.tableItemID}
+                                    onClick={(event) => openDetailDocument(event, row)}
+                                  >
+                                    <div>{row.order_code}</div>
+                                    <div>{formatDateTime(row.order_date)}</div>
+                                  </div>
+                                </TableCell>
+                              )}
                               {displayOptions.image_url && (
                                 <TableCell align="left">
                                   <>
@@ -1434,6 +1459,37 @@ export default function GeneralTable(props) {
                                   )}
                                 </TableCell>
                               )}
+                              {displayOptions.order_title && (
+                                <TableCell align="left">
+                                  {row.order_title || ''}{' '}
+                                </TableCell>
+                              )}
+                              {displayOptions.payment_type_display && (
+                                <TableCell align="left">
+                                  {row.payment_type || ''}{' '}
+                                </TableCell>
+                              )}
+                              {displayOptions.total_order && (
+                                <TableCell align="left">
+                                  {row.total}
+                                </TableCell>
+                              )}
+                              {displayOptions.discount_amount && (
+                                <TableCell align="left">
+                                  {row.discount_amount }
+                                </TableCell>
+                              )}
+                              {displayOptions.final_total && (
+                                <TableCell align="left">
+                                  {row.final_total }
+                                </TableCell>
+                              )}
+                              {displayOptions.status_display && (
+                                <TableCell align="left">
+                                  {row.status_display || ''}{' '}
+                                </TableCell>
+                              )}
+
                               {displayOptions.is_active && (
                                 <TableCell align="left">
                                   <FormControlLabel
