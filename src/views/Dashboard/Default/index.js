@@ -30,6 +30,7 @@ import {
   collaborationActions,
   notificationActions,
   notificationMessageActions,
+  counsellingPriceActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -54,6 +55,7 @@ import FileCategoryWrapper from './../../Document/FileCategory/index';
 import Calendar from './../../Booking/FullCalendar/index';
 import NotificationWrapper from './../../Notification/Category/index';
 import NotificationMessageWrapper from './../../Notification/Message/index';
+import CounsellingPriceWrapper from '../../Sale/Price';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -85,6 +87,7 @@ const Default = () => {
   const avaiableCollaboratorEndpoint = Object.values(collaborationActions);
   const availableNotificationEndpoint = Object.values(notificationActions);
   const availableNotificationMessageEndpoint = Object.values(notificationMessageActions);
+  const availableCounsellingPriceEndpoint = Object.values(counsellingPriceActions);
 
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
@@ -119,6 +122,7 @@ const Default = () => {
           {avaiableCollaboratorEndpoint.includes(selectedFolder?.action) && <CollaborationWrapper />}
           {availableNotificationEndpoint.includes(selectedFolder?.action) && <NotificationWrapper />}
           {availableNotificationMessageEndpoint.includes(selectedFolder?.action) && <NotificationMessageWrapper />}
+          {availableCounsellingPriceEndpoint.includes(selectedFolder?.action) && <CounsellingPriceWrapper />}
         </Grid>
       )}
     </Grid>

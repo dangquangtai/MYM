@@ -100,6 +100,8 @@ const EnhancedTableToolbar = (props) => {
     createNotificationCategory,
     buttonCreateNotificationMessage,
     createNotificationMessage,
+    buttonCreateCounsellingPrice,
+    CreateCounsellingPrice,
   } = props;
 
   const filterRef = useRef(null);
@@ -189,10 +191,10 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const [dataDepartmentList, setDepartment] = React.useState();
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   useEffect(() => {
     setFilter({
@@ -437,6 +439,13 @@ const EnhancedTableToolbar = (props) => {
             <Grid item>
               <Button variant="contained" color={'primary'} onClick={createNotificationMessage}>
                 {buttonCreateNotificationMessage.text}
+              </Button>
+            </Grid>
+          )}
+          {buttonCreateCounsellingPrice && (
+            <Grid item>
+              <Button variant="contained" color={'primary'} onClick={CreateCounsellingPrice}>
+                {buttonCreateCounsellingPrice.text}
               </Button>
             </Grid>
           )}
