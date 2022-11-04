@@ -117,6 +117,8 @@ const OrderModal = () => {
         let check =await processPaymentOrder(order.id);
         if (check === true) {
           handleOpenSnackbar(true, 'success', 'Xử lý thanh toán thành công!');
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'order' });
+          handleCloseDialog();
         } else {
           handleOpenSnackbar(true, 'error', 'Hết thời gian xử lý!');
         }

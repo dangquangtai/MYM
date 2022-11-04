@@ -131,6 +131,8 @@ const AccountModal = () => {
         });
         if (check == true) {
           handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'account' });
+          handleCloseDialog();
         } else {
           handleOpenSnackbar(true, 'error', 'Tài khoản đã tồn tại!');
         }
