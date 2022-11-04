@@ -139,13 +139,13 @@ const ProcessRoleUserModal = () => {
           dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'processrole' });
           handleCloseDialog();
         } else {
-          handleOpenSnackbar(true, 'fail', 'Cập nhật thất bại!');
+          handleOpenSnackbar(true, 'error', 'Cập nhật thất bại!');
         }
       
 
 
     } catch (error) {
-      handleOpenSnackbar(true, 'fail', 'Cập nhật thất bại!');
+      handleOpenSnackbar(true, 'error', 'Cập nhật thất bại!');
     } finally {
 
     }

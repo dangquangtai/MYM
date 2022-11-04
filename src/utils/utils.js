@@ -23,7 +23,11 @@ import {
   collaborationActions,
   notificationActions,
   notificationMessageActions,
+
+  orderActions,
+
   counsellingPriceActions,
+
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -144,8 +148,16 @@ export function getUrlByAction(selectedFolder) {
     case notificationMessageActions.active_list: {
       return apiEndpoints.get_all_notification_message;
     }
+
+    case orderActions.booking_list: {
+      return apiEndpoints.get_booking_order_list;
+    }
+    case orderActions.event_list: {
+      return apiEndpoints.get_event_order_list;
+
     case counsellingPriceActions.active_list: {
       return apiEndpoints.get_all_counselling_price;
+
     }
     default: {
       return '';

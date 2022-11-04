@@ -207,7 +207,7 @@ const EventModal = () => {
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
-          handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
+          handleOpenSnackbar(true, 'error', 'Cập nhật không thành công!');
         }
       } else {
 
@@ -227,7 +227,7 @@ const EventModal = () => {
         if (check) {
           handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
         } else {
-          handleOpenSnackbar(true, 'success', 'Cập nhật không thành công!');
+          handleOpenSnackbar(true, 'error', 'Cập nhật không thành công!');
         }
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'event' });

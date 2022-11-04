@@ -22,6 +22,19 @@ export const AccountProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getAccount = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_account_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news, view } = response.data;
+          return news;
+        } else return {};
+      });
+  };
   const getAllTask = async () => {
     return axiosInstance
       .post(apiEndpoints.get_all_task, {
@@ -116,6 +129,7 @@ export const AccountProvider = ({ children }) => {
         getAllUserByDept,
         assignAccount,
         removeAccount,
+        getAccount,
       }}
     >
       {children}

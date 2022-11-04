@@ -71,7 +71,7 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
     } else {
       setSnackbarStatus({
         isOpen: true,
-        type: 'fail',
+        type: 'error',
         text: 'Thêm không thành công!',
       });
     }
@@ -90,7 +90,7 @@ export default function UserDepartModal({ isOpen, department_code, handleClose, 
     } else {
       setSnackbarStatus({
         isOpen: true,
-        type: 'fail',
+        type: 'error',
         text: 'Xoá không thành công!',
       });
     }

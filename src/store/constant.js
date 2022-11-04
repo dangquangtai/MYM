@@ -273,6 +273,15 @@ export const apiEndpoints = {
   set_active_notification_message: '/Primary/?FlowAlias=bs_notification_api_set_active_notification_message&action=api',
   get_list_object_id: '/Primary/?FlowAlias=bs_notification_api_get_list_object&action=api',
 
+  //Order
+  get_event_order_list: '/Primary/?FlowAlias=bs_api_sales_get_event_order_list_by_page&action=api',
+  get_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_list_by_page&action=api',
+  get_order_detai: '/Primary/?FlowAlias=bs_api_sales_get_order_detail_by_id&action=api',
+  approve_pending_order: '/Primary/?FlowAlias=bs_api_sales_approve_pending_order_by_id&action=api',
+  
+
+
+
   //  Price
   get_all_counselling_price: '/Primary/?FlowAlias=bs_sale_api_get_counselling_service_price_list&action=api',
   get_detail_counselling_price: '/Primary/?FlowAlias=bs_sale_api_get_detail_counselling_service_price&action=api',
@@ -281,6 +290,7 @@ export const apiEndpoints = {
   create_counselling_price: '/Primary/?FlowAlias=bs_sale_api_create_counselling_price&action=api',
   update_counselling_price: '/Primary/?FlowAlias=bs_sale_api_update_counselling_price&action=api',
   set_active_price: '/Primary/?FlowAlias=bs_sale_api_set_active_counselling_price&action=api',
+
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -386,9 +396,16 @@ export const notificationActions = {
 export const notificationMessageActions = {
   active_list: 'MYM_NOTIFICATION_HOME_OPEN_MESSAGE_LIST',
 };
+
+export const orderActions ={
+  booking_list: 'MYM_SALES_HOME_OPEN_COUNSELLING_ORDER_LIST',
+  event_list: 'MYM_SALES_HOME_OPEN_EVENT_ORDER_LIST',
+}
+
 export const counsellingPriceActions = {
   active_list: 'MYM_SALES_HOME_OPEN_PRICE_LIST',
 };
+
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
@@ -595,6 +612,13 @@ export const view = {
       save: 'MYM_SHARE_HOME_NOTIFICATION_MESSAGE_SAVE_FORM_BUTTON',
     },
   },
+
+  order: {
+    detail: {
+      process: 'MYM_SALES_HOME_PROCESS_PAYMENT_FORM_BUTTON'
+    }
+  }
+
   counsellingPrice: {
     list: {
       create: 'MYM_SALES_HOME_PRICE_CREATE_NEW_BUTTON',
@@ -603,4 +627,5 @@ export const view = {
       save: 'MYM_SALES_HOME_PRICE_SAVE_FORM_BUTTON',
     },
   },
+
 };
