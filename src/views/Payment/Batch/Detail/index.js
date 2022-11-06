@@ -81,7 +81,6 @@ const CardBatchModal = () => {
   const saveButton = formButtons.find((button) => button.name === view.prepaidcardbatch.detail.save);
 
   const { createCardBatch, generateCard, updateCardBatch } = usePayment();
-  const { getCounselingCategories } = useMedia();
   const { setConfirmPopup } = useConfirmPopup();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [dialogUpload, setDialogUpload] = useState({
@@ -96,7 +95,6 @@ const CardBatchModal = () => {
   });
 
   const [cardBatchData, setCardBatchData] = useState(initCardBatchData);
-  const [counsellings, setCounsellings] = useState([]);
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
@@ -148,7 +146,7 @@ const CardBatchModal = () => {
 
   const handleSubmitForm = async () => {
     try {
-      if (selectedDocument.id) {
+      if (selectedDocument?.id) {
         await updateCardBatch(cardBatchData);
         handleOpenSnackbar(true, 'success', 'Cập nhật thành công');
       } else {
@@ -158,6 +156,7 @@ const CardBatchModal = () => {
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'batch' });
       handleCloseDialog();
     } catch (error) {
+      console.log(error);
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
@@ -218,7 +217,7 @@ const CardBatchModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Chi tiết Podcast
+              Chi tiết Prepaid Card Batch
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -260,7 +259,7 @@ const CardBatchModal = () => {
                 <TabPanel value={tabIndex} index={0}>
                   <Grid container spacing={1}>
                     <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
+                      {/* <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <ImageIcon />
@@ -274,7 +273,7 @@ const CardBatchModal = () => {
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>

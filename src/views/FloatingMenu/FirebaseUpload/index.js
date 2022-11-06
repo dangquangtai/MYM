@@ -168,7 +168,12 @@ export default function FirebaseUpload(props) {
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="primary" disabled={isUploading} onClick={uploadToStorage}>
+            <Button
+              disabled={!selectedFiles[0]?.name || isUploading}
+              variant="contained"
+              color="primary"
+              onClick={uploadToStorage}
+            >
               Tải lên
             </Button>
           </Grid>

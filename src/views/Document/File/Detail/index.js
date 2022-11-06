@@ -116,6 +116,7 @@ const FileModal = () => {
   const setDocumentToDefault = async () => {
     setFileData(initFileData);
     setTabIndex(0);
+    setFileType('');
   };
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
@@ -174,6 +175,7 @@ const FileModal = () => {
       ...selectedDocument,
       image_url: selectedDocument?.image_url || userAvatar,
     });
+    setFileType(file.type.find((item) => item.id === selectedDocument?.file_type_id)?.type);
   }, [selectedDocument]);
 
   useEffect(() => {
@@ -301,7 +303,6 @@ const FileModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
-                                disabled
                                 fullWidth
                                 rows={1}
                                 rowsMax={1}

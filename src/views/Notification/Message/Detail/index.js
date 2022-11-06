@@ -192,7 +192,7 @@ const NotificationMessageModall = () => {
   const [selectednotificationMessage, setselectednotificationMessage] = useState([]);
   const [listObject, setlistObject] = useState([]);
   const [selectedObject, setselectedObject] = useState('');
-  const [listObjectType, setlistObjectType] = useState(['Mentor', 'Podcast', 'Event']);
+  const [listObjectType, setlistObjectType] = useState(['Mentor', 'Podcast', 'Event', 'Mentee']);
   const [selectedObjectType, setselectedObjectType] = useState('');
   const [action, setAction] = useState(initNotificationMessage.action);
   const handleCloseDialog = () => {
@@ -388,7 +388,7 @@ const NotificationMessageModall = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              MentorList
+              Notification Message
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
