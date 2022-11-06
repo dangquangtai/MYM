@@ -422,7 +422,7 @@ export const view = {
       create: 'MYM_ORGANISATION_HOME_CREATE_USER_MENU_BUTTON',
     },
     detail: {
-      save: 'USER_DETAIL_SAVE_FORM_BUTTON',
+      save: 'MYM_ORGANISATION_HOME_UPDATE_USER_FORM_BUTTON',
     },
   },
   department: {

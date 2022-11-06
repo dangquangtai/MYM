@@ -215,7 +215,7 @@ const AccountModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Tạo mới người dùng
+              Thông tin người dùng
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -234,7 +234,7 @@ const AccountModal = () => {
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
                         <AccountCircleOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
-                        Chi tiết đăng ký
+                        Thông tin
                       </Typography>
                     }
                     value={0}
@@ -259,25 +259,6 @@ const AccountModal = () => {
                             <div>Upload/Change Image</div>
                             <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình </Button>
                           </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hình ảnh:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="image_url"
-                                value={account.image_url}
-                                className={classes.inputField}
-                                onChange={handleChange}
-                              />
-                            </Grid>
-                          </Grid>
                         </div>
                       </div>
                      
@@ -318,7 +299,7 @@ const AccountModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                type="datetime-local"
+                                type="date"
                                 variant="outlined"
                                 name="dob"
                                 value={account.dob}
@@ -345,24 +326,7 @@ const AccountModal = () => {
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Mật khẩu: </span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                rows={1}
-                                rowsMax={1}
-                                variant="outlined"
-                                name="password"
-                                type='password'
-                                value={account.password || ''}
-                                className={classes.inputField}
-                                onChange={handleChange}
-                              />
-                            </Grid>
-                          </Grid>
+                          
 
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={12}>

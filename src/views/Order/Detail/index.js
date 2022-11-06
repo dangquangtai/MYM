@@ -32,7 +32,7 @@ import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
 import useOrder from '../../../hooks/useOrder.js';
-
+import Modal from './../../Table/Modal/index';
 import { initOrder, initAccount } from '../../../store/constants/initial.js';
 import useAccount from '../../../hooks/useAccount.js';
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -82,10 +82,7 @@ const OrderModal = () => {
   const [order, setOrder] = useState(initOrder);
   const [account, setAccount] = useState(initAccount);
   const { getAccount } = useAccount();
-  const [dialogUpload, setDialogUpload] = useState({
-    open: false,
-    type: ''
-  });
+  const [isOpenModal, setIsOpenModal] = useState(false);
   useEffect(() => {
     if (!selectedDocument) return;
     setOrder(selectedDocument);
@@ -122,6 +119,7 @@ const OrderModal = () => {
         } else {
           handleOpenSnackbar(true, 'error', 'Hết thời gian xử lý!');
         }
+        setIsOpenModal(false);
       }
      catch (error) {
     } finally {
@@ -136,6 +134,13 @@ const OrderModal = () => {
  
   return (
     <React.Fragment>
+       <Modal
+        isOpen={isOpenModal}
+        handleClose={() => setIsOpenModal(false)}
+        type={'order'}
+        handleProcessOrder={handleUpdate}
+        selectedOrder={selectedDocument}
+      />
       {snackbarStatus.isOpen && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -282,8 +287,8 @@ const OrderModal = () => {
                             <Grid item lg={8} md={8} xs={12}>
                             <TextField
                                 fullWidth
-                                rows={1}
-                                rowsMax={1}
+                                rows={2}
+                                rowsMax={2}
                                 variant="outlined"
                                 name="major"
                                 value={order.order_description}
@@ -480,7 +485,7 @@ const OrderModal = () => {
                   <Button
                     variant="contained"
                     style={{ background: 'rgb(97, 42, 255)' }}
-                    onClick={() => handleUpdate()}
+                    onClick={() => setIsOpenModal(true)}
                   >
                     {buttonprocess.text}
                   </Button>

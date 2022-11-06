@@ -65,6 +65,8 @@ export default function BasicModal({
   handleCancel,
   handleReview,
   selectedBooking,
+  selectedOrder,
+  handleProcessOrder,
   children,
   ...props
 }) {
@@ -80,6 +82,9 @@ export default function BasicModal({
         return 'Xác nhận huỷ đăng ký:';
       case 'review':
         return 'Kết quả buổi đăng ký:';
+      case 'order':
+        return 'Xác nhận đã thanh toán mã order: '+selectedOrder?.order_code+' tổng tiền '+selectedOrder?.final_total.toLocaleString()
+        ;
     }
   };
 
@@ -190,6 +195,11 @@ export default function BasicModal({
               {buttonReviewBooking && (
                 <Button type="submit" variant="contained" style={style.submitButton} onClick={handleSubmit}>
                   Chọn
+                </Button>
+              )}
+               {selectedOrder && (
+                <Button type="submit" variant="contained" style={style.submitButton} onClick={handleProcessOrder}>
+                  Xác nhận
                 </Button>
               )}
             </div>
