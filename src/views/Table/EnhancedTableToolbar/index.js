@@ -239,7 +239,7 @@ const EnhancedTableToolbar = (props) => {
           className={classes.toolSearchWrap}
         >
           <Grid container spacing={gridSpacing}>
-          <Grid item xs={4}>
+          <Grid item xs={documentType === 'processrole' ? 4 : 12}>
           <Grid container justifyContent="flex-start" spacing={gridSpacing}>
             {btnCreateNewAccount && (
               <Grid item>
