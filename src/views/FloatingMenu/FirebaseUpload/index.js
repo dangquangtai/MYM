@@ -65,7 +65,7 @@ export default function FirebaseUpload(props) {
   }
 
   React.useEffect(() => {
-    switch (type.toLowerCase()) {
+    switch (type?.toLowerCase()) {
       case 'image':
         setFileType('image/*');
         break;

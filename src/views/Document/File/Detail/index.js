@@ -148,7 +148,12 @@ const FileModal = () => {
   const handleTypeChange = (e) => {
     const { value } = e.target;
     const image = file.type.find((item) => item.id === value);
-    setFileData({ ...fileData, file_type_id: value, image_url: image?.image_url || '' });
+    setFileData({
+      ...fileData,
+      file_type_id: value,
+      image_url: image?.image_url || '',
+      banner_url: image?.banner_url || '',
+    });
     setFileType(image?.type);
   };
 
@@ -266,21 +271,34 @@ const FileModal = () => {
                 <TabPanel value={tabIndex} index={0}>
                   <Grid container spacing={1}>
                     <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <ImageIcon />
-                            <span>Hình ảnh</span>
+                      <Grid container spacing={1}>
+                        <Grid item lg={6} md={6} xs={12}>
+                          <div className={classes.tabItem}>
+                            <div className={classes.tabItemTitle}>
+                              <div className={classes.tabItemLabel}>
+                                <ImageIcon />
+                                <span>Hình ảnh</span>
+                              </div>
+                            </div>
+                            <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                              <img src={fileData.image_url} alt="" />
+                            </div>
                           </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={fileData.image_url} alt="" />
-                          {/* <div>
-                            <div>Upload/Change File Image</div>
-                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
-                          </div> */}
-                        </div>
-                      </div>
+                        </Grid>
+                        <Grid item lg={6} md={6} xs={12}>
+                          <div className={classes.tabItem}>
+                            <div className={classes.tabItemTitle}>
+                              <div className={classes.tabItemLabel}>
+                                <ImageIcon />
+                                <span>Banner</span>
+                              </div>
+                            </div>
+                            <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                              <img className={classes.bannerImage} src={fileData.banner_url} alt="" />
+                            </div>
+                          </div>
+                        </Grid>
+                      </Grid>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
@@ -303,6 +321,7 @@ const FileModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
+                                disabled
                                 fullWidth
                                 rows={1}
                                 rowsMax={1}
@@ -397,6 +416,19 @@ const FileModal = () => {
                                   </MenuItem>
                                 ))}
                               </Select>
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Hoạt động:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Switch
+                                checked={fileData.is_active}
+                                onChange={() => setFileData({ ...fileData, is_active: !fileData.is_active })}
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
                             </Grid>
                           </Grid>
                         </div>

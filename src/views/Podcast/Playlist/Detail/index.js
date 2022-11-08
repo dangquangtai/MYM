@@ -289,6 +289,21 @@ const PlaylistModal = () => {
                               />
                             </Grid>
                           </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Hoạt động:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Switch
+                                checked={playlistData.is_active}
+                                onChange={() =>
+                                  setplaylistData({ ...playlistData, is_active: !playlistData.is_active })
+                                }
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                            </Grid>
+                          </Grid>
                         </div>
                       </div>
                     </Grid>

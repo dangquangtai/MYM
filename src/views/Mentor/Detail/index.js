@@ -660,6 +660,19 @@ const MentorModal = () => {
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Hoạt động:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Switch
+                                checked={mentorData.is_active}
+                                onChange={() => setMentorData({ ...mentorData, is_active: !mentorData.is_active })}
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Lịch trống gần nhất:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>

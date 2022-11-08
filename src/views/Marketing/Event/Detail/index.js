@@ -210,10 +210,6 @@ const EventModal = () => {
           handleOpenSnackbar(true, 'error', 'Cập nhật không thành công!');
         }
       } else {
-
-       
-      
-
         let check = createEvent(
           {
             ...eventData,
@@ -225,9 +221,9 @@ const EventModal = () => {
           selectedMentorList
         );
         if (check) {
-          handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
+          handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
         } else {
-          handleOpenSnackbar(true, 'error', 'Cập nhật không thành công!');
+          handleOpenSnackbar(true, 'error', 'Tạo mới không thành công!');
         }
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'event' });

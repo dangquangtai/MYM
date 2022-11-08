@@ -233,7 +233,7 @@ const FileCategoryModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Chi tiết FileCategory Category
+              Chi tiết Danh mục tài liệu
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
