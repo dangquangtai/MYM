@@ -214,7 +214,7 @@ const ProcessRoleModal = () => {
 
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Tạo mới role
+              Chi tiết
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -237,7 +237,7 @@ const ProcessRoleModal = () => {
                         variant="subtitle1"
                       >
                         
-                        Thông tin role
+                        Nội dung
                       </Typography>
                     }
                     value={0}

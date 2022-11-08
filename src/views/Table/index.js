@@ -158,6 +158,7 @@ export default function GeneralTable(props) {
   const buttonDeptAddUser = menuButtons.find((button) => button.name === view.department.list.adduser);
   const buttonDeptRemoveUser = menuButtons.find((button) => button.name === view.department.list.removeaccount);
   const buttonSyncDepartment = menuButtons.find((button) => button.name === view.department.list.syncDept);
+  const buttondeactiveDepartment = menuButtons.find((button)=> button.name=== view.department.list.deactive);
 
   const buttonCreateRole = menuButtons.find((button) => button.name === view.role.list.create);
 
@@ -252,7 +253,7 @@ export default function GeneralTable(props) {
     order_type,
     no_item_per_page,
     category_id,
-    search_text,
+    search_text:'',
     from_date: getTodayAndTomorrow(Date.now()).today,
     to_date: getTodayAndTomorrow(Date.now()).tomorrow,
     university_id: '',
@@ -370,7 +371,7 @@ export default function GeneralTable(props) {
     } else {
       showConfirmPopup({
         title: 'Thông báo',
-        message: 'Yêu cầu lựa chọn phòng ban, chức vụ, tài khoản',
+        message: 'Yêu cầu lựa chọn phòng ban, chức vụ, tài khoản trước khi thao tác',
         action: null,
         payload: null,
         onSuccess: clickSuccess,
@@ -555,14 +556,7 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
-  const handleOpenCreateDepartment = () => {
-    dispatch({ type: DOCUMENT_CHANGE, documentType });
-    dispatch({ type: FLOATING_MENU_CHANGE, departmentDocument: true });
-  };
-  const showTreeView = () => {
-    dispatch({ type: DOCUMENT_CHANGE, documentType });
-    dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-  };
+
 
   const handleUpdateDepartment = async () => {
     if (department_code_selected !== '') {
@@ -572,7 +566,23 @@ export default function GeneralTable(props) {
     } else {
       showConfirmPopup({
         title: 'Thông báo',
-        message: 'Yêu cầu lựa chọn phòng ban',
+        message: 'Yêu cầu lựa chọn phòng ban trước khi thao tác',
+        action: null,
+        payload: null,
+        onSuccess: clickSuccess,
+      });
+    }
+  };
+  const handleDeactiveDepartment = async () => {
+    if (department_code_selected !== '') {
+      let detailDocument = await activeDepartment({department_code: department_code_selected, is_active: false});
+      setSelectedDepartment('');
+      reloadCurrentDocuments();
+
+    } else {
+      showConfirmPopup({
+        title: 'Thông báo',
+        message: 'Yêu cầu lựa chọn phòng ban trước khi thao tác',
         action: null,
         payload: null,
         onSuccess: clickSuccess,
@@ -841,12 +851,23 @@ export default function GeneralTable(props) {
   const handleClickProcessRoleDetail = async () => {
     if (process_role_code_selected !== '') {
       let detailDocument = await getProcessDetail(process_role_code_selected);
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
-      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+      if (!detailDocument){
+        showConfirmPopup({
+          title: 'Thông báo',
+          message: 'Yêu cầu lựa chọn process role trước khi thực hiện thao tác',
+          action: null,
+          payload: null,
+          onSuccess: clickSuccess,
+        });
+      } else{
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+      }
+     
     } else {
       showConfirmPopup({
         title: 'Thông báo',
-        message: 'Yêu cầu lựa chọn ít nhất một bản ghi',
+        message: 'Yêu cầu lựa chọn process role trước khi thực hiện thao tác',
         action: null,
         payload: null,
         onSuccess: clickSuccess,
@@ -1004,6 +1025,8 @@ export default function GeneralTable(props) {
                 handleAssignAccount={handleAssignAccount}
                 btnCreateNewDept={buttonDeptCreate}
                 buttonDeptUpdate={buttonDeptUpdate}
+                buttondeactiveDepartment={buttondeactiveDepartment}
+
                 buttonDeptAddUser={buttonDeptAddUser}
                 roletemplateList={roletemplateList}
                 userList={userList}
@@ -1014,6 +1037,7 @@ export default function GeneralTable(props) {
                 getDepartmentList={getDepartmentListGroup}
                 buttonSyncDepartment={buttonSyncDepartment}
                 handleUpdateDepartment={handleUpdateDepartment}
+                handleDeactiveDepartment={handleDeactiveDepartment}
                 syncRole={syncRole}
                 buttonCreatePodcast={buttonCreatePodcast}
                 createPodcast={handleClickCreatePodcast}
@@ -1488,13 +1512,13 @@ export default function GeneralTable(props) {
                                 <TableCell align="left">{row.payment_type || ''} </TableCell>
                               )}
                               {displayOptions.total_order && (
-                                <TableCell align="left">{row.total.toLocaleString()}</TableCell>
+                                <TableCell align="left">{row.total?.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.discount_amount && (
-                                <TableCell align="left">{row.discount_amount.toLocaleString()}</TableCell>
+                                <TableCell align="left">{row.discount_amount?.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.final_total && (
-                                <TableCell align="left">{row.final_total.toLocaleString()}</TableCell>
+                                <TableCell align="left">{row.final_total?.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.status_display && (
                                 <TableCell align="left">{row.status_display || ''} </TableCell>
