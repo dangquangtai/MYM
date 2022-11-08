@@ -97,6 +97,35 @@ export const DocumentProvider = ({ children }) => {
       });
   };
 
+  const getFileTypeDetail = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_detail_file_type, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return news;
+        } else return {};
+      });
+  };
+
+  const createFileType = async (data) => {
+    return axiosInstance.post(apiEndpoints.create_file_type, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
+  const updateFileType = async (data) => {
+    return axiosInstance.post(apiEndpoints.update_file_type, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
   return (
     <DocumentContext.Provider
       value={{
@@ -109,6 +138,9 @@ export const DocumentProvider = ({ children }) => {
         updateFileCategory,
         addGroup,
         removeGroup,
+        getFileTypeDetail,
+        createFileType,
+        updateFileType,
       }}
     >
       {children}

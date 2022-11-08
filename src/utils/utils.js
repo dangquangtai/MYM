@@ -20,14 +20,12 @@ import {
   processroleActions,
   fileActions,
   fileCategoryActions,
+  fileTypeActions,
   collaborationActions,
   notificationActions,
   notificationMessageActions,
-
   orderActions,
-
   counsellingPriceActions,
-
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -136,6 +134,9 @@ export function getUrlByAction(selectedFolder) {
     case fileCategoryActions.active_list: {
       return apiEndpoints.get_file_category_list;
     }
+    case fileTypeActions.active_list: {
+      return apiEndpoints.get_file_type_list;
+    }
     case collaborationActions.process_list: {
       return apiEndpoints.get_list_collaboration_process;
     }
@@ -157,7 +158,6 @@ export function getUrlByAction(selectedFolder) {
     }
     case counsellingPriceActions.active_list: {
       return apiEndpoints.get_all_counselling_price;
-
     }
     default: {
       return '';

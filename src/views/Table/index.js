@@ -17,14 +17,9 @@ import {
 } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import DuoIcon from '@material-ui/icons/Duo';
 import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
 import StarIcon from '@material-ui/icons/Star';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import HowToRegIcon from '@material-ui/icons/HowToReg';
-import CancelIcon from '@material-ui/icons/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
 import { CONFIRM_CHANGE, DOCUMENT_CHANGE, FLOATING_MENU_CHANGE, TASK_CHANGE } from '../../store/actions';
 import { gridSpacing, view } from '../../store/constant';
@@ -59,11 +54,8 @@ import useProcessRole from './../../hooks/useProcessRole';
 import useDocument from './../../hooks/useDocument';
 import useCollaborator from './../../hooks/useCollaborator';
 import useNotification from './../../hooks/useNotification';
-
 import useOrder from './../../hooks/useOrder';
-
 import useSale from '../../hooks/useSale';
-
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -205,6 +197,7 @@ export default function GeneralTable(props) {
 
   const buttonCreateFile = menuButtons.find((button) => button.name === view.file.list.create);
   const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
+  const buttonCreateFileType = menuButtons.find((button) => button.name === view.fileType.list.create);
 
   const buttonCreateNotificationCategory = menuButtons.find(
     (button) => button.name === view.notificationCategory.list.create
@@ -302,7 +295,7 @@ export default function GeneralTable(props) {
   const { getEventCategoryDetail } = useEventCategory();
   const { getEventDetail } = useEvent();
   const { getCardBatchDetail, sendEmailCard } = usePayment();
-  const { getFileDetail, getFileCategoryDetail } = useDocument();
+  const { getFileDetail, getFileCategoryDetail, getFileTypeDetail } = useDocument();
   const { getDetail } = useCollaborator();
   const { getDetailNotificatonCategory, getDetailNotificatonMessage } = useNotification();
 
@@ -523,6 +516,10 @@ export default function GeneralTable(props) {
       detailDocument = await getFileCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, fileCategoryDocument: true });
+    } else if (documentType === 'fileType') {
+      detailDocument = await getFileTypeDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, fileTypeDocument: true });
     } else if (documentType === 'collaborator') {
       detailDocument = await getDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
@@ -535,18 +532,14 @@ export default function GeneralTable(props) {
       detailDocument = await getDetailNotificatonMessage(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, notificationMessageDocument: true });
-    }
-
-    else if (documentType === 'order') {
+    } else if (documentType === 'order') {
       detailDocument = await getOrderDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-
-        }    else if (documentType === 'counsellingPrice') {
+    } else if (documentType === 'counsellingPrice') {
       detailDocument = await getDetailPrice(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, counsellingPriceDocument: true });
-
     }
   };
 
@@ -839,6 +832,7 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, notificationMessageDocument: true });
   };
+
   const handleClickCreateCounsellingPrice = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, counsellingPriceDocument: true });
@@ -900,6 +894,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, fileCategoryDocument: true });
   };
 
+  const handleClickCreateFileType = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, fileTypeDocument: true });
+  };
+
   const handleDownload = (url) => {
     var link = document.createElement('a');
     link.download = 'Code.xlsx';
@@ -958,7 +957,7 @@ export default function GeneralTable(props) {
     });
   };
 
-  const clickSuccess = () => { };
+  const clickSuccess = () => {};
 
   return (
     <React.Fragment>
@@ -1061,6 +1060,8 @@ export default function GeneralTable(props) {
                 createFile={handleClickCreateFile}
                 buttonCreateFileCategory={buttonCreateFileCategory}
                 createFileCategory={handleClickCreateFileCategory}
+                buttonCreateFileType={buttonCreateFileType}
+                createFileType={handleClickCreateFileType}
                 buttonCreateNotificationCategory={buttonCreateNotificationCategory}
                 createNotificationCategory={handleClickCreateNotificationCategory}
                 buttonCreateNotificationMessage={buttonCreateNotificationMessage}
@@ -1097,12 +1098,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                            ? classes.table3
-                            : classes.table
+                          ? classes.table3
+                          : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                    // aria-label="enhanced table"
+                      // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}
@@ -1481,34 +1482,22 @@ export default function GeneralTable(props) {
                                 </TableCell>
                               )}
                               {displayOptions.order_title && (
-                                <TableCell align="left">
-                                  {row.order_title || ''}{' '}
-                                </TableCell>
+                                <TableCell align="left">{row.order_title || ''} </TableCell>
                               )}
                               {displayOptions.payment_type_display && (
-                                <TableCell align="left">
-                                  {row.payment_type || ''}{' '}
-                                </TableCell>
+                                <TableCell align="left">{row.payment_type || ''} </TableCell>
                               )}
                               {displayOptions.total_order && (
-                                <TableCell align="left">
-                                  {row.total.toLocaleString()}
-                                </TableCell>
+                                <TableCell align="left">{row.total.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.discount_amount && (
-                                <TableCell align="left">
-                                  {row.discount_amount.toLocaleString() }
-                                </TableCell>
+                                <TableCell align="left">{row.discount_amount.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.final_total && (
-                                <TableCell align="left">
-                                  {row.final_total.toLocaleString() }
-                                </TableCell>
+                                <TableCell align="left">{row.final_total.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.status_display && (
-                                <TableCell align="left">
-                                  {row.status_display || ''}{' '}
-                                </TableCell>
+                                <TableCell align="left">{row.status_display || ''} </TableCell>
                               )}
 
                               {displayOptions.is_active && (

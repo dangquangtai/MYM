@@ -90,7 +90,8 @@ const EnhancedTableToolbar = (props) => {
     createFile,
     buttonCreateFileCategory,
     createFileCategory,
-
+    buttonCreateFileType,
+    createFileType,
     buttonAddDeptRole,
     buttonAddAccountRole,
     buttonSyncRole,
@@ -191,10 +192,10 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   const [dataDepartmentList, setDepartment] = React.useState();
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setFilter({
@@ -239,247 +240,238 @@ const EnhancedTableToolbar = (props) => {
           className={classes.toolSearchWrap}
         >
           <Grid container spacing={gridSpacing}>
-          <Grid item xs={documentType === 'processrole' ? 4 : 12}>
-          <Grid container justifyContent="flex-start" spacing={gridSpacing}>
-            {btnCreateNewAccount && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createNewAccount}>
-                  {btnCreateNewAccount.text}
-                </Button>
-              </Grid>
-            )}
-            {btnCreateNewDept && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createNewDept}>
-                  {btnCreateNewDept.text}
-                </Button>
-              </Grid>
-            )}
-            {buttonDeptUpdate && (
-              <Grid item>
-                <Button
-                  variant="contained"
+            <Grid item xs={documentType === 'processrole' ? 4 : 12}>
+              <Grid container justifyContent="flex-start" spacing={gridSpacing}>
+                {btnCreateNewAccount && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNewAccount}>
+                      {btnCreateNewAccount.text}
+                    </Button>
+                  </Grid>
+                )}
+                {btnCreateNewDept && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNewDept}>
+                      {btnCreateNewDept.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonDeptUpdate && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={handleUpdateDepartment}>
+                      {buttonDeptUpdate.text}
+                    </Button>
+                  </Grid>
+                )}
 
-                  color={'primary'}
-                  onClick={handleUpdateDepartment}
-                >
-                  {buttonDeptUpdate.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateRole && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNewRole}>
+                      {buttonCreateRole.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateRole && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createNewRole}>
-                  {buttonCreateRole.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonSyncDepartment && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={handleSyncRole}>
+                      {buttonSyncDepartment.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonSyncDepartment && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={handleSyncRole}>
-                  {buttonSyncDepartment.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreatePodcast && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createPodcast}>
+                      {buttonCreatePodcast.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreatePodcast && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createPodcast}>
-                  {buttonCreatePodcast.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateEpisode && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createEpisode}>
+                      {buttonCreateEpisode.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateEpisode && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createEpisode}>
-                  {buttonCreateEpisode.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreatePlaylist && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createPlaylist}>
+                      {buttonCreatePlaylist.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreatePlaylist && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createPlaylist}>
-                  {buttonCreatePlaylist.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateMentor && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createMentor}>
+                      {buttonCreateMentor.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateMentor && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createMentor}>
-                  {buttonCreateMentor.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateEvent && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createEvent}>
+                      {buttonCreateEvent.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateEvent && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createEvent}>
-                  {buttonCreateEvent.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateEventCategory && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createEventCategory}>
+                      {buttonCreateEventCategory.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateEventCategory && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createEventCategory}>
-                  {buttonCreateEventCategory.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateBatch && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createBatch}>
+                      {buttonCreateBatch.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateBatch && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createBatch}>
-                  {buttonCreateBatch.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonAssignVoucher && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={assignVoucher}>
+                      {buttonAssignVoucher.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonAssignVoucher && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={assignVoucher}>
-                  {buttonAssignVoucher.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateMentorList && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createMentorList}>
+                      {buttonCreateMentorList.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreatePartner && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createPartner}>
+                      {buttonCreatePartner.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreatePartnerCategory && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createPanertCategory}>
+                      {buttonCreatePartnerCategory.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateMentorList && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createMentorList}>
-                  {buttonCreateMentorList.text}
-                </Button>
-              </Grid>
-            )}
-            {buttonCreatePartner && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createPartner}>
-                  {buttonCreatePartner.text}
-                </Button>
-              </Grid>
-            )}
-            {buttonCreatePartnerCategory && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createPanertCategory}>
-                  {buttonCreatePartnerCategory.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateCardBatch && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createCardBatch}>
+                      {buttonCreateCardBatch.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateCardBatch && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createCardBatch}>
-                  {buttonCreateCardBatch.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonAssignCard && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={assignCard}>
+                      {buttonAssignCard.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateProcessRole && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNewProcessRole}>
+                      {buttonCreateProcessRole.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonAssignCard && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={assignCard}>
-                  {buttonAssignCard.text}
-                </Button>
-              </Grid>
-            )}
-            {buttonCreateProcessRole && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createNewProcessRole}>
-                  {buttonCreateProcessRole.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonUpdateProcessRole && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={handleClickProcessRoleDetail}>
+                      {buttonUpdateProcessRole.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonUpdateProcessRole && (
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color={'primary'}
+                {buttonCreateFile && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createFile}>
+                      {buttonCreateFile.text}
+                    </Button>
+                  </Grid>
+                )}
 
-                  onClick={handleClickProcessRoleDetail}
-                >
-                  {buttonUpdateProcessRole.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateFileCategory && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createFileCategory}>
+                      {buttonCreateFileCategory.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateFile && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createFile}>
-                  {buttonCreateFile.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateFileType && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createFileType}>
+                      {buttonCreateFileType.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateFileCategory && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createFileCategory}>
-                  {buttonCreateFileCategory.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonSyncRole && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={handleSyncProcessRole}>
+                      {buttonSyncRole.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonSyncRole && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={handleSyncProcessRole}>
-                  {buttonSyncRole.text}
-                </Button>
-              </Grid>
-            )}
+                {buttonCreateNotificationCategory && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNotificationCategory}>
+                      {buttonCreateNotificationCategory.text}
+                    </Button>
+                  </Grid>
+                )}
 
-            {buttonCreateNotificationCategory && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createNotificationCategory}>
-                  {buttonCreateNotificationCategory.text}
-                </Button>
+                {buttonCreateNotificationMessage && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNotificationMessage}>
+                      {buttonCreateNotificationMessage.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateCounsellingPrice && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={CreateCounsellingPrice}>
+                      {buttonCreateCounsellingPrice.text}
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
-            )}
-
-            {buttonCreateNotificationMessage && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={createNotificationMessage}>
-                  {buttonCreateNotificationMessage.text}
-                </Button>
-              </Grid>
-            )}
-            {buttonCreateCounsellingPrice && (
-              <Grid item>
-                <Button variant="contained" color={'primary'} onClick={CreateCounsellingPrice}>
-                  {buttonCreateCounsellingPrice.text}
-                </Button>
-              </Grid>
-            )}
             </Grid>
-     </Grid>
-          <Grid item xs={8}>
-          <Grid container justifyContent="flex-start" spacing={gridSpacing}>
-            {buttonAddDeptRole && (
-
-
-
-              <Grid item xs={6}>
-                <Button variant="contained" color={'primary'} onClick={() => handleClickUpdateDeptProcessRole()}>
-                  {buttonAddDeptRole.text}
-                </Button>
+            <Grid item xs={8}>
+              <Grid container justifyContent="flex-start" spacing={gridSpacing}>
+                {buttonAddDeptRole && (
+                  <Grid item xs={6}>
+                    <Button variant="contained" color={'primary'} onClick={() => handleClickUpdateDeptProcessRole()}>
+                      {buttonAddDeptRole.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonAddAccountRole && (
+                  <Grid item xs={6}>
+                    <Button variant="contained" color={'primary'} onClick={() => handleClickUpdateUserProcessRole()}>
+                      {buttonAddAccountRole.text}
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
-
-
-            )}
-            {buttonAddAccountRole && (
-              <Grid item xs={6}
-              >
-                <Button variant="contained" color={'primary'} onClick={() => handleClickUpdateUserProcessRole()}>
-                  {buttonAddAccountRole.text}
-                </Button>
-              </Grid>
-
-            )}
             </Grid>
           </Grid>
-        </Grid>
         </Grid>
         {documentType != 'department' && documentType != 'processrole' && (
           <Grid item lg={3} md={6} xs={12} className={classes.toolSearchWrap}>
@@ -493,7 +485,6 @@ const EnhancedTableToolbar = (props) => {
         {documentType !== 'processrole' && (
           <Grid item lg={6} md={6} xs={12} className={classes.toolSearchWrap}>
             <Grid container justifyContent={'flex-start'} alignItems="center">
-
               {documentType === 'department' && (
                 <>
                   <span style={{ minWidth: 80, maxWidth: 80 }}>Chức danh: </span>

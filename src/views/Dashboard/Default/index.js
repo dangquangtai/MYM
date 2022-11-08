@@ -27,14 +27,12 @@ import {
   processroleActions,
   fileActions,
   fileCategoryActions,
+  fileTypeActions,
   collaborationActions,
   notificationActions,
   notificationMessageActions,
-
   orderActions,
-
   counsellingPriceActions,
-
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -59,11 +57,9 @@ import FileCategoryWrapper from './../../Document/FileCategory/index';
 import Calendar from './../../Booking/FullCalendar/index';
 import NotificationWrapper from './../../Notification/Category/index';
 import NotificationMessageWrapper from './../../Notification/Message/index';
-
 import OrderWrapper from './../../Order/index';
-
 import CounsellingPriceWrapper from '../../Sale/Price';
-
+import FileTypeWrapper from './../../Document/FileType/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -92,14 +88,12 @@ const Default = () => {
   const avaiableProcessRoleEndpoint = Object.values(processroleActions);
   const availableFileEndpoint = Object.values(fileActions);
   const availableFileCategoryEndpoint = Object.values(fileCategoryActions);
+  const availableFileTypeEndpoint = Object.values(fileTypeActions);
   const avaiableCollaboratorEndpoint = Object.values(collaborationActions);
   const availableNotificationEndpoint = Object.values(notificationActions);
   const availableNotificationMessageEndpoint = Object.values(notificationMessageActions);
-
   const availableOrderEndpoint = Object.values(orderActions);
-
   const availableCounsellingPriceEndpoint = Object.values(counsellingPriceActions);
-
 
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
@@ -131,14 +125,12 @@ const Default = () => {
           {avaiableProcessRoleEndpoint.includes(selectedFolder?.action) && <ProcessRoleWrapper />}
           {availableFileEndpoint.includes(selectedFolder?.action) && <FileWrapper />}
           {availableFileCategoryEndpoint.includes(selectedFolder?.action) && <FileCategoryWrapper />}
+          {availableFileTypeEndpoint.includes(selectedFolder?.action) && <FileTypeWrapper />}
           {avaiableCollaboratorEndpoint.includes(selectedFolder?.action) && <CollaborationWrapper />}
           {availableNotificationEndpoint.includes(selectedFolder?.action) && <NotificationWrapper />}
           {availableNotificationMessageEndpoint.includes(selectedFolder?.action) && <NotificationMessageWrapper />}
-
-          {availableOrderEndpoint.includes(selectedFolder?.action) && <OrderWrapper/> }
-
+          {availableOrderEndpoint.includes(selectedFolder?.action) && <OrderWrapper />}
           {availableCounsellingPriceEndpoint.includes(selectedFolder?.action) && <CounsellingPriceWrapper />}
-
         </Grid>
       )}
     </Grid>

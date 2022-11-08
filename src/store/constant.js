@@ -238,6 +238,12 @@ export const apiEndpoints = {
   get_detail_file: '/Primary/?FlowAlias=bs_api_document_get_file_detail&action=api',
   update_file: '/Primary/?FlowAlias=bs_api_document_update_file&action=api',
   set_active_file: '/Primary/?FlowAlias=bs_api_document_set_active_file&action=api',
+  // // File Type
+  get_file_type_list: '/Primary/?FlowAlias=bs_api_document_get_file_type_list_by_page&action=api',
+  create_file_type: '/Primary/?FlowAlias=bs_api_document_create_new_file_type&action=api',
+  get_detail_file_type: '/Primary/?FlowAlias=bs_api_document_get_file_type_detail&action=api',
+  update_file_type: '/Primary/?FlowAlias=bs_api_document_update_file_type&action=api',
+  set_active_file_type: '/Primary/?FlowAlias=bs_api_document_set_active_file_type&action=api',
 
   //EChart
   get_line_chart_data: '/Primary/?FlowAlias=bs_api_get_line_chart_data&action=api',
@@ -278,9 +284,6 @@ export const apiEndpoints = {
   get_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_list_by_page&action=api',
   get_order_detai: '/Primary/?FlowAlias=bs_api_sales_get_order_detail_by_id&action=api',
   approve_pending_order: '/Primary/?FlowAlias=bs_api_sales_approve_pending_order_by_id&action=api',
-  
-
-
 
   //  Price
   get_all_counselling_price: '/Primary/?FlowAlias=bs_sale_api_get_counselling_service_price_list&action=api',
@@ -290,7 +293,6 @@ export const apiEndpoints = {
   create_counselling_price: '/Primary/?FlowAlias=bs_sale_api_create_counselling_price&action=api',
   update_counselling_price: '/Primary/?FlowAlias=bs_sale_api_update_counselling_price&action=api',
   set_active_price: '/Primary/?FlowAlias=bs_sale_api_set_active_counselling_price&action=api',
-
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -384,6 +386,10 @@ export const fileCategoryActions = {
   active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_CATEGORY',
 };
 
+export const fileTypeActions = {
+  active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_TYPE_LIST',
+};
+
 export const collaborationActions = {
   process_list: 'MYM_SHARE_HOME_OPEN_COLLABORATOR_REGISTRATION_LIST',
   deprocess_list: 'MYM_SHARE_HOME_OPEN_REJECT_COLLABORATOR_REGISTRATION_LIST',
@@ -397,15 +403,14 @@ export const notificationMessageActions = {
   active_list: 'MYM_NOTIFICATION_HOME_OPEN_MESSAGE_LIST',
 };
 
-export const orderActions ={
+export const orderActions = {
   booking_list: 'MYM_SALES_HOME_OPEN_COUNSELLING_ORDER_LIST',
   event_list: 'MYM_SALES_HOME_OPEN_EVENT_ORDER_LIST',
-}
+};
 
 export const counsellingPriceActions = {
   active_list: 'MYM_SALES_HOME_OPEN_PRICE_LIST',
 };
-
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
@@ -589,6 +594,14 @@ export const view = {
       save: 'MYM_DOCUMENT_HOME_CATEGORY_SAVE_FORM_BUTTON',
     },
   },
+  fileType: {
+    list: {
+      create: 'MYM_DOCUMENT_HOME_FILE_TYPE_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_DOCUMENT_HOME_FILE_TYPE_SAVE_FORM_BUTTON',
+    },
+  },
   collaboration: {
     list: {},
     detail: {
@@ -615,7 +628,7 @@ export const view = {
 
   order: {
     detail: {
-      process: 'MYM_SALES_HOME_PROCESS_PAYMENT_FORM_BUTTON'
+      process: 'MYM_SALES_HOME_PROCESS_PAYMENT_FORM_BUTTON',
     },
   },
 
@@ -627,5 +640,4 @@ export const view = {
       save: 'MYM_SALES_HOME_PRICE_SAVE_FORM_BUTTON',
     },
   },
-
 };

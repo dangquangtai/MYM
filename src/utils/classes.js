@@ -482,8 +482,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   bannerImage: {
-    width: '150px!important',
-    height: '100px!important',
+    width: '180px!important',
+    height: '120px!important',
   },
   errorLabel: {
     color: 'red',

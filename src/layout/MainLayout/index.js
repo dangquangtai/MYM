@@ -41,7 +41,7 @@ import NotificationMessageModall from './../../views/Notification/Message/Detail
 import OrderModal from '../../views/Order/Detail';
 
 import PriceModal from '../../views/Sale/Price/Detail';
-
+import FileTypeModal from './../../views/Document/FileType/Detail/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -155,6 +155,8 @@ const MainLayout = ({ children }) => {
         return <FileModal />;
       case 'fileCategory':
         return <FileCategoryModal />;
+      case 'fileType':
+        return <FileTypeModal />;
       case 'collaborator':
         return <CollaboratorModal />;
       case 'notificationCategory':
@@ -163,11 +165,10 @@ const MainLayout = ({ children }) => {
         return <NotificationMessageModall />;
 
       case 'order':
-        return <OrderModal/>;
+        return <OrderModal />;
 
       case 'counsellingPrice':
         return <PriceModal />;
-
     }
   };
 

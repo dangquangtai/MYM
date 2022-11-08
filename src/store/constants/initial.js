@@ -40,6 +40,7 @@ export const initMentorData = {
   counselling_topic2_id: [],
   counselling_topic3_id: [],
   order_number: 0,
+  is_active: true,
 };
 export const initPartnerData = {
   id: '',
@@ -55,6 +56,7 @@ export const initPartnerCategoryData = {
   title: '',
   created_date: '',
   created_by: '',
+  is_active: false,
 };
 
 export const initMentorListData = {
@@ -65,6 +67,7 @@ export const initMentorListData = {
   is_hidden: false,
   counselling_category_id: '',
   image_url: '',
+  is_active: true,
 };
 
 export const initPodcastData = {
@@ -78,6 +81,7 @@ export const initPodcastData = {
   banner_url: '',
   list_episode_id: [],
   is_for_member: false,
+  is_active: true,
 };
 
 export const initEpisodeData = {
@@ -88,6 +92,7 @@ export const initEpisodeData = {
   duration: 0,
   episode_number: 0,
   source_file_url: '',
+  is_active: true,
 };
 
 export const initPlaylistData = {
@@ -95,6 +100,7 @@ export const initPlaylistData = {
   description: '',
   image_url: '',
   podcast_id_list: [],
+  is_active: true,
 };
 
 export const initBatchData = {
@@ -199,21 +205,19 @@ export const initOrder = {
   after_discount_total: 0,
   discount_amount: 0,
   final_total: 0,
-  id: "",
+  id: '',
   order_code: '',
-  order_date: "",
+  order_date: '',
   order_description: '',
   order_title: '',
   payment_type: null,
-  payment_type_display: "",
+  payment_type_display: '',
   prepaid_card_serial: '',
   status: '',
   status_display: '',
-  total:0, 
-  voucher_code: ''
-
+  total: 0,
+  voucher_code: '',
 };
-
 
 export const initFileData = {
   title: '',
@@ -222,6 +226,15 @@ export const initFileData = {
   file_url: '',
   category_id: '',
   file_type_id: '',
+  is_active: true,
+};
+
+export const initFileTypeData = {
+  title: '',
+  image_url: '',
+  banner_url: '',
+  type: '',
+  is_active: true,
 };
 
 export const initNotification = {
