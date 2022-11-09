@@ -103,6 +103,8 @@ const EnhancedTableToolbar = (props) => {
     createNotificationMessage,
     buttonCreateCounsellingPrice,
     CreateCounsellingPrice,
+    handleDeactiveDepartment,
+    buttondeactiveDepartment,
   } = props;
 
   const filterRef = useRef(null);
@@ -260,6 +262,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={handleUpdateDepartment}>
                       {buttonDeptUpdate.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttondeactiveDepartment && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={handleDeactiveDepartment}>
+                      {buttondeactiveDepartment.text}
                     </Button>
                   </Grid>
                 )}

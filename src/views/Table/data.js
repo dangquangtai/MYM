@@ -32,7 +32,7 @@ export const headCells = [
   { id: 'uncomplete', numeric: false, disablePadding: false, label: 'Đã lên lịch', maxWidth: 100 },
   { id: 'completed', numeric: false, disablePadding: false, label: 'Hoàn thành', maxWidth: 100 },
   { id: 'reject', numeric: false, disablePadding: false, label: 'Bị huỷ', maxWidth: 100 },
-  { id: 'role_template_name', numeric: false, disablePadding: false, label: 'Role template', maxWidth: 100 },
+  { id: 'role_template_name', numeric: false, disablePadding: false, label: 'Chức vụ', maxWidth: 100 },
   { id: 'apply_to_department_type', numeric: false, disablePadding: false, label: 'Các phòng ban', maxWidth: 100 },
   { id: 'approval_role', numeric: false, disablePadding: false, label: 'Vai trò phê duyệt', maxWidth: 100 },
   { id: 'address', numeric: false, disablePadding: false, label: 'Địa chỉ', maxWidth: 100 },

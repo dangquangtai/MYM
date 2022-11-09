@@ -229,7 +229,7 @@ const DepartmentModal = () => {
 
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Tạo mới phòng ban 
+              Chi tiết
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -252,7 +252,7 @@ const DepartmentModal = () => {
                         variant="subtitle1"
                       >
                         
-                        Thông tin phòng ban
+                        Nội dung
                       </Typography>
                     }
                     value={0}

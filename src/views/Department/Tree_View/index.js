@@ -4,7 +4,7 @@ import {
   Button,
   Slide,
   Box,
-  Toolbar
+  Toolbar,Switch
 } from '@material-ui/core';
 import { TreeView } from '@material-ui/lab';
 import TreeItem from '@material-ui/lab/TreeItem';
@@ -25,8 +25,8 @@ const TreeViewModal = (props) => {
     setSelectedDepartment,
     setSelectedProcessRole
   } = props;
-  const {getDataTreeView} = useDepartment();
-  const {getRoleTree } = useProcessRole();
+  const { getDataTreeView } = useDepartment();
+  const { getRoleTree } = useProcessRole();
   const classes = useStyles();
   const [openUserForm, setOpenUser] = useState(false);
   const [department_code, setDepartmentCode] = useState();
@@ -109,28 +109,28 @@ const TreeViewModal = (props) => {
   }
   const [dataShow, setData] = React.useState();
   useEffect(() => {
-    const fetch = async() =>{
-      if (documentType=== 'department'){
+    const fetch = async () => {
+      if (documentType === 'department') {
         let data = await getDataTreeView();
         formatDataTreeView(splitData(data), data);
       }
-      else{
+      else {
         let data = await getRoleTree();
         formatDataTreeView(splitData(data), data);
       }
-      
-      
+
+
     }
     fetch()
   }, [documents]);
   const handleClickOpen = (data) => {
-        if (documentType==='department'){
-          setSelectedDepartment(data);
-        }
-        else {
-          setSelectedProcessRole(data);
-        }
-        
+    if (documentType === 'department') {
+      setSelectedDepartment(data);
+    }
+    else {
+      setSelectedProcessRole(data);
+    }
+
   }
   const handleClose = () => {
     setOpenUser(false);
@@ -140,26 +140,30 @@ const TreeViewModal = (props) => {
   }
   const renderItem = (data) => {
     if (data.children.length === 0) {
-      return <TreeItem nodeId={data.key} label={data.label} key={data.label}
-        onClick={(event) => handleClickOpen(data.key)} className={TreeItemClassKey.MuiTreeItemlabel} />;
+      return <><TreeItem nodeId={data.key} label={data.label} key={data.label}
+      onClick={(event) => handleClickOpen(data.key)} className={TreeItemClassKey.MuiTreeItemlabel} /> 
+    </>
     }
     else {
-      if (documentType==='department'){
+      if (documentType === 'department') {
         return <TreeItem nodeId={data.key} label={data.label} key={data.label}
-        onClick={(event) => handleClickOpen(data.key)} >
-        {data.children.map((data2) =>
-          renderItem(data2)
-        )}
-      </TreeItem>;
-      } else{
+          onClick={(event) => handleClickOpen(data.key)} >
+          {data.children.map((data2) =>
+            renderItem(data2)
+          )}
+          
+        </TreeItem>;
+      } else {
         return <TreeItem nodeId={data.key} label={data.label} key={data.label}
+        onClick={(event) => setSelectedProcessRole('')}
         >
-        {data.children.map((data2) =>
-          renderItem(data2)
-        )}
-      </TreeItem>;
+          {data.children.map((data2) =>
+            renderItem(data2)
+          )}
+           
+        </TreeItem>;
       }
-     
+
     }
   };
 
@@ -202,27 +206,29 @@ const TreeViewModal = (props) => {
         department_code={department_code}
         handleClose={handleClose}
       /> */}
-   
-          <div style={{ maxHeight: 500, minHeight: 500,  marginTop: 10 ,background: '#fff',
-                        boxShadow: '0 2px 6px -1px rgb(0 0 0 / 10%)',}} >
-            {dataShow && (
-              <TreeView
-                style={{padding: 5, minHeight: 500, background: '#fff', }}
-                aria-label="file system navigator"
-                defaultCollapseIcon={<MinusSquare />}
-                defaultExpandIcon={<PlusSquare />}
-             
-                sx={{ height: 264, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}
-              >
-                <>
-                  {dataShow.map((data) =>
-                    renderItem(data)
-                  )}
-                </>
-              </TreeView>
-            )}
-          </div>
-  
+
+      <div style={{
+        maxHeight: 500, minHeight: 500, marginTop: 10,  background: '#fff',
+        boxShadow: '0 2px 6px -1px rgb(0 0 0 / 10%)',
+      }} >
+        {dataShow && (
+          <TreeView
+            style={{ padding: 5, minHeight: 500, background: '#fff' }}
+            aria-label="file system navigator"
+            defaultCollapseIcon={<MinusSquare />}
+            defaultExpandIcon={<PlusSquare />}
+
+            sx={{ height: 264, flexGrow: 1, maxWidth: 200, overflowY: 'auto' }}
+          >
+            <>
+              {dataShow.map((data) =>
+                renderItem(data)
+              )}
+            </>
+          </TreeView>
+        )}
+      </div>
+
 
     </React.Fragment>
   );
