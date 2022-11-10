@@ -139,7 +139,7 @@ export const initCardBatchData = {
 };
 
 export const initWorkingDay = {
-  week_day: '',
+  weekday_list: [],
   from_hour: '',
   to_hour: '',
   is_active: true,
@@ -149,7 +149,7 @@ export const initWorkingDay = {
 };
 
 export const initVacationDay = {
-  week_day: '',
+  weekday_list: [],
   from_hour: '',
   to_hour: '',
   is_active: true,

@@ -973,21 +973,19 @@ const MentorModal = () => {
                             {mentorData?.workday?.map((workingDay, i) => (
                               <Grid key={i} spacing={1} container className={classes.gridItemInfo} alignItems="center">
                                 <Grid item lg={2} md={4} xs={12}>
-                                  <TextField
+                                  <Select
                                     disabled
+                                    multiple
                                     fullWidth
-                                    label="Chọn thứ"
-                                    variant="outlined"
-                                    select
-                                    size="small"
-                                    value={workingDay.week_day}
+                                    value={workingDay.weekday_list}
+                                    className={classes.multpleSelectField}
                                   >
                                     {weekday?.map((item) => (
                                       <MenuItem key={item.id} value={item.id}>
                                         {item.value}
                                       </MenuItem>
                                     ))}
-                                  </TextField>
+                                  </Select>
                                 </Grid>
                                 <Grid item lg={3} md={4} xs={12}>
                                   <Grid container spacing={1} alignItems="center">
@@ -1077,21 +1075,19 @@ const MentorModal = () => {
                             {mentorData?.vacation?.map((vacationDay, i) => (
                               <Grid key={i} spacing={1} container className={classes.gridItemInfo} alignItems="center">
                                 <Grid item lg={2} md={4} xs={12}>
-                                  <TextField
+                                  <Select
                                     disabled
+                                    multiple
                                     fullWidth
-                                    label="Chọn thứ"
-                                    variant="outlined"
-                                    select
-                                    size="small"
-                                    value={vacationDay.week_day}
+                                    value={vacationDay.weekday_list}
+                                    className={classes.multpleSelectField}
                                   >
                                     {weekday?.map((item) => (
                                       <MenuItem key={item.id} value={item.id}>
                                         {item.value}
                                       </MenuItem>
                                     ))}
-                                  </TextField>
+                                  </Select>
                                 </Grid>
                                 <Grid item lg={3} md={4} xs={12}>
                                   <Grid container spacing={1} alignItems="center">
