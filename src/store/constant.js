@@ -293,6 +293,9 @@ export const apiEndpoints = {
   create_counselling_price: '/Primary/?FlowAlias=bs_sale_api_create_counselling_price&action=api',
   update_counselling_price: '/Primary/?FlowAlias=bs_sale_api_update_counselling_price&action=api',
   set_active_price: '/Primary/?FlowAlias=bs_sale_api_set_active_counselling_price&action=api',
+  get_prepaid_card_order_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_list_by_page&action=api',
+  get_prepaid_card_order: '/Primary/?FlowAlias=bs_api_sale_get_product_and_number_list_by_order_id&action=api',
+  
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -406,6 +409,8 @@ export const notificationMessageActions = {
 export const orderActions = {
   booking_list: 'MYM_SALES_HOME_OPEN_COUNSELLING_ORDER_LIST',
   event_list: 'MYM_SALES_HOME_OPEN_EVENT_ORDER_LIST',
+  prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_LIST'
+  
 };
 
 export const counsellingPriceActions = {

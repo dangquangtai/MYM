@@ -253,7 +253,7 @@ export default function GeneralTable(props) {
     order_type,
     no_item_per_page,
     category_id,
-    search_text:'',
+    search_text: '',
     from_date: getTodayAndTomorrow(Date.now()).today,
     to_date: getTodayAndTomorrow(Date.now()).tomorrow,
     university_id: '',
@@ -819,6 +819,7 @@ export default function GeneralTable(props) {
   };
 
   const handleClickAssignCard = () => {
+  
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardDocument: true });
   };

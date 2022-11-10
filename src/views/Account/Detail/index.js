@@ -151,7 +151,7 @@ const AccountModal = () => {
         }
       }
     } catch (error) {
-      console.log('error update booking', error);
+      handleOpenSnackbar(true, 'error', 'Vui lòng chọn ngày tháng năm sinh!');
     } finally {
     }
   };

@@ -26,7 +26,7 @@ const OrderWrapper = () => {
   return (
     <React.Fragment>
       <OrderTable
-        tableTitle="Quản lý người dùng"
+        tableTitle="Quản lý đơn hàng"
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="order"

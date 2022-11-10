@@ -33,6 +33,7 @@ import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
 import useOrder from '../../../hooks/useOrder.js';
 import Modal from './../../Table/Modal/index';
+import CardOrderModal from '../AssignModal/index.js';
 import { initOrder, initAccount } from '../../../store/constants/initial.js';
 import useAccount from '../../../hooks/useAccount.js';
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -76,13 +77,15 @@ const OrderModal = () => {
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
-  const { processPaymentOrder } = useOrder();
+  const { processPaymentOrder, getPrepaidCardByOrder } = useOrder();
   const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const [order, setOrder] = useState(initOrder);
   const [account, setAccount] = useState(initAccount);
   const { getAccount } = useAccount();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModalCard,setOpenModalCard] = useState(false);
+  const [products, setProducts] =useState([]);
   useEffect(() => {
     if (!selectedDocument) return;
     setOrder(selectedDocument);
@@ -109,6 +112,7 @@ const OrderModal = () => {
       text: text,
     });
   };
+
   const handleUpdate = async () => {
     try {
         let check =await processPaymentOrder(order.id);
@@ -125,15 +129,37 @@ const OrderModal = () => {
     } finally {
     }
   };
-
   
+  const handleOpenModal = async () =>{
+    if(selectedDocument.ref_object_type === 'SHOPPING_CART'){
+      let data= await getPrepaidCardByOrder(selectedDocument.id);
+      setProducts(data);
+      setOpenModalCard(true)
+    }
+    else{
+      setIsOpenModal(true)
+    }
+  }
   const setDocumentToDefault = async () => {
     setTabIndex(0);
   };
+  const processPaymentOrderFunction = async () =>{
+    await processPaymentOrder(order.id);
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'order' });
+    handleCloseDialog();
 
+  }
  
   return (
     <React.Fragment>
+      <CardOrderModal
+       openDialog = {isOpenModalCard}
+       accountID = {selectedDocument?.account_id}
+       email_address= {account?.email_address}
+       products = {products}
+       setOpenModalCard = {setOpenModalCard}
+       processPaymentOrderFunction={processPaymentOrderFunction}
+      />
        <Modal
         isOpen={isOpenModal}
         handleClose={() => setIsOpenModal(false)}
@@ -202,7 +228,7 @@ const OrderModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <span>Mã order {order.order_code}</span>
+                            <span>Mã đơn hàng: {order.order_code}</span>
                           </div>
 
                         </div>
@@ -485,7 +511,7 @@ const OrderModal = () => {
                   <Button
                     variant="contained"
                     style={{ background: 'rgb(97, 42, 255)' }}
-                    onClick={() => setIsOpenModal(true)}
+                    onClick={() => handleOpenModal()}
                   >
                     {buttonprocess.text}
                   </Button>
