@@ -13,15 +13,6 @@ import {
   Tabs,
   Typography,
   TextField,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Tooltip,
-  IconButton,
 } from '@material-ui/core';
 import Alert from '../../../../component/Alert';
 import PropTypes from 'prop-types';
@@ -31,7 +22,7 @@ import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions.js';
 import { view } from '../../../../store/constant';
 import useStyles from '../../../../utils/classes';
-import { initFileTypeData, userAvatar } from '../../../../store/constants/initial.js';
+import { initFileTypeData } from '../../../../store/constants/initial.js';
 import useDocument from './../../../../hooks/useDocument';
 import useDepartment from './../../../../hooks/useDepartment';
 import { withStyles } from '@material-ui/core/styles';
@@ -42,7 +33,6 @@ import {
   ImageOutlined as ImageIcon,
   PanoramaOutlined as BannerIcon,
 } from '@material-ui/icons';
-import RoleModal from '../../../Department/RoleModal/index.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -76,17 +66,6 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-
-const StyledTableCell = withStyles((theme) => ({
-  root: {
-    '&:not(:first-child)': {
-      padding: '16px 2px',
-    },
-    '&:first-child': {
-      padding: '16px 2px 16px 20px',
-    },
-  },
-}))(TableCell);
 
 const FileTypeModal = () => {
   const classes = useStyles();
@@ -285,23 +264,6 @@ const FileTypeModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <BannerIcon />
-                            <span>Banner</span>
-                          </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img className={classes.bannerImage} src={fileTypeData.banner_url} alt="" />
-                          <div>
-                            <div>Upload/Change Banner Image</div>
-                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
-                          </div>
-                        </div>
-                      </div>
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={6}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
                             <InfoOutlinedIcon />
                             <span>Thông tin FileType</span>
                           </div>
@@ -356,6 +318,23 @@ const FileTypeModal = () => {
                               />
                             </Grid>
                           </Grid>
+                        </div>
+                      </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={6}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <BannerIcon />
+                            <span>Banner</span>
+                          </div>
+                        </div>
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                          <img className={classes.bannerImage} src={fileTypeData.banner_url} alt="" />
+                          <div>
+                            <div>Upload/Change Banner Image</div>
+                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
+                          </div>
                         </div>
                       </div>
                     </Grid>

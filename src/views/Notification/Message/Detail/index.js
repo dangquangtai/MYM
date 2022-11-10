@@ -16,7 +16,6 @@ import {
   TextField,
   MenuItem,
   Select,
-  Chip,
   Tooltip,
   IconButton,
   TableCell,
@@ -34,33 +33,23 @@ import { view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
-import {
-  initMentorListData,
-  userAvatar,
-  initNotification,
-  initNotificationMessage,
-  initAccount,
-} from '../../../../store/constants/initial';
+import { userAvatar, initNotificationMessage } from '../../../../store/constants/initial';
 import {
   QueueMusic,
   History as HistoryIcon,
   DescriptionOutlined as DescriptionOutlinedIcon,
   RadioOutlined as RadioOutlinedIcon,
   ImageOutlined as ImageIcon,
-  InfoOutlined as InfoOutlinedIcon,
   RemoveCircleOutlineOutlined as RemoveCircleOutlineOutlinedIcon,
   AddCircleOutlineOutlined as AddCircleOutlineOutlinedIcon,
 } from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
-import usePartner from './../../../../hooks/usePartner';
-import useMedia from './../../../../hooks/useMedia';
 import { Autocomplete } from '@material-ui/lab';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 import useNotification from '../../../../hooks/useNotification';
 import { withStyles } from '@material-ui/core/styles';
 import useDepartment from '../../../../hooks/useDepartment';
 import RoleModal from '../../../Department/RoleModal/index.js';
-import useDocument from '../../../../hooks/useDocument';
 import useAccount from './../../../../hooks/useAccount';
 
 const style = {
@@ -600,7 +589,7 @@ const NotificationMessageModall = () => {
                                 rows={1}
                                 rowsMax={1}
                                 variant="outlined"
-                                name="action_title"
+                                name="title"
                                 value={action.title}
                                 className={classes.inputField}
                                 onChange={handleChangeAction}

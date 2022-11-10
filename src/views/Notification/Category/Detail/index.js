@@ -14,9 +14,6 @@ import {
   Tabs,
   Typography,
   TextField,
-  MenuItem,
-  Select,
-  Chip,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -24,17 +21,15 @@ import { view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
-import { initMentorListData, userAvatar, initNotification } from '../../../../store/constants/initial';
+import { userAvatar, initNotification } from '../../../../store/constants/initial';
 import {
-  QueueMusic,
   History,
   DescriptionOutlined as DescriptionOutlinedIcon,
-  RadioOutlined as RadioOutlinedIcon,
+  InfoOutlined as InfoOutlinedIcon,
   ImageOutlined as ImageIcon,
   PanoramaOutlined as BannerIcon,
 } from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
-import usePartner from './../../../../hooks/usePartner';
 import useMedia from './../../../../hooks/useMedia';
 import { Autocomplete } from '@material-ui/lab';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
@@ -230,7 +225,7 @@ const NotificationCategoryModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              MentorList
+              Danh mục thông báo
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -290,7 +285,7 @@ const NotificationCategoryModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <QueueMusic />
+                            <InfoOutlinedIcon />
                             <span>Chi tiết danh mục thông báo</span>
                           </div>
                         </div>
@@ -313,7 +308,7 @@ const NotificationCategoryModal = () => {
                             </Grid>
                           </Grid>
                           {selectedDocument?.id && (
-                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <>
                               <Grid container className={classes.gridItem} alignItems="center">
                                 <Grid item lg={4} md={4} xs={4}>
                                   <span className={classes.tabItemLabelField}>Ngày tạo:</span>
@@ -354,7 +349,7 @@ const NotificationCategoryModal = () => {
                                   />
                                 </Grid>
                               </Grid>
-                            </Grid>
+                            </>
                           )}
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
@@ -381,42 +376,16 @@ const NotificationCategoryModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <RadioOutlinedIcon />
+                            <BannerIcon />
                             <span>Banner</span>
                           </div>
                         </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={10} md={10} xs={12}>
-                              <div className={classes.tabItem}>
-                                <div className={classes.tabItemTitle}>
-                                  <div className={classes.tabItemLabel}>
-                                    <BannerIcon />
-                                    <span>Banner</span>
-                                  </div>
-                                </div>
-                                <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                                  <img className={classes.bannerImage} src={notificationCategory.banner_url} alt="" />
-                                  <div>
-                                    <div>Upload/Change Banner Image</div>
-                                    <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
-                                  </div>
-                                </div>
-                              </div>
-                              {/* <Autocomplete
-                                id="mentor-list"
-                                multiple
-                                size="small"
-                                options={listMentor}
-                                getOptionLabel={(option) => option?.fullname}
-                                value={selectednotificationCategory}
-                                // onChange={handleChangeMentor}
-                                renderInput={(params) => (
-                                  <TextField {...params} variant="outlined" placeholder="Mentor" />
-                                )}
-                              /> */}
-                            </Grid>
-                          </Grid>
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                          <img className={classes.bannerImage} src={notificationCategory.banner_url} alt="" />
+                          <div>
+                            <div>Upload/Change Banner Image</div>
+                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
+                          </div>
                         </div>
                       </div>
                     </Grid>

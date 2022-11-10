@@ -540,6 +540,11 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  iconBase64: {
+    width: '20px',
+    height: '30px',
+    objectFit: 'contain',
+  },
 }));
 
 export default useStyles;

@@ -55,6 +55,7 @@ const NavItem = (props) => {
     <CustomIcon
       type={item?.icon_type}
       svg={item?.svg}
+      base64={item?.icon_base64}
       name={item?.icon || ''}
       className={classes.listCustomIcon}
       color="inherit"
