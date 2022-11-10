@@ -22,6 +22,19 @@ export const OrderProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getPrepaidCardByOrder = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_prepaid_card_order, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list} = response.data;
+          return list;
+        } else return {};
+      });
+  };
   const processPaymentOrder = async (id) => {
     return axiosInstance
       .post(apiEndpoints.approve_pending_order, {
@@ -40,7 +53,8 @@ export const OrderProvider = ({ children }) => {
     <OrderContext.Provider
       value={{
         getOrderDetail,
-        processPaymentOrder
+        processPaymentOrder,
+        getPrepaidCardByOrder,
       }}
     >
       {children}

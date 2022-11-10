@@ -252,7 +252,7 @@ export default function GeneralTable(props) {
     order_type,
     no_item_per_page,
     category_id,
-    search_text,
+    search_text: '',
     from_date: getTodayAndTomorrow(Date.now()).today,
     to_date: getTodayAndTomorrow(Date.now()).tomorrow,
     university_id: '',
@@ -809,6 +809,7 @@ export default function GeneralTable(props) {
   };
 
   const handleClickAssignCard = () => {
+  
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardDocument: true });
   };
@@ -1488,13 +1489,13 @@ export default function GeneralTable(props) {
                                 <TableCell align="left">{row.payment_type || ''} </TableCell>
                               )}
                               {displayOptions.total_order && (
-                                <TableCell align="left">{row.total.toLocaleString()}</TableCell>
+                                <TableCell align="left">{row.total?.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.discount_amount && (
-                                <TableCell align="left">{row.discount_amount.toLocaleString()}</TableCell>
+                                <TableCell align="left">{row.discount_amount?.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.final_total && (
-                                <TableCell align="left">{row.final_total.toLocaleString()}</TableCell>
+                                <TableCell align="left">{row.final_total?.toLocaleString()}</TableCell>
                               )}
                               {displayOptions.status_display && (
                                 <TableCell align="left">{row.status_display || ''} </TableCell>

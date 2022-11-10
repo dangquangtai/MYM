@@ -27,6 +27,7 @@ import PartnerModal from '../../views/Partner/Partner/Detail';
 import PartnerCategoryModal from '../../views/Partner/Partner/Partner Category/Detail';
 import CardBatchModal from './../../views/Payment/Batch/Detail/index';
 import CardModal from './../../views/Payment/PrepaidCard/AssignModal/index';
+import CardOrderModal from './../../views/Order/AssignModal/index';
 
 import ProcessRoleModal from '../../views/ProcessRole/Detail';
 import ProcessRoleUserModal from '../../views/ProcessRole/User';
@@ -165,7 +166,7 @@ const MainLayout = ({ children }) => {
         return <NotificationMessageModall />;
 
       case 'order':
-        return <OrderModal />;
+        return <><OrderModal /></>;
 
       case 'counsellingPrice':
         return <PriceModal />;

@@ -156,6 +156,9 @@ export function getUrlByAction(selectedFolder) {
     case orderActions.event_list: {
       return apiEndpoints.get_event_order_list;
     }
+    case orderActions.prepaid_list: {
+      return apiEndpoints.get_prepaid_card_order_list;
+    }
     case counsellingPriceActions.active_list: {
       return apiEndpoints.get_all_counselling_price;
     }
