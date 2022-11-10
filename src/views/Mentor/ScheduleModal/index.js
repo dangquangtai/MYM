@@ -175,22 +175,20 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
                 {Object.keys(workingDay).map((day) => (
                   <Grid key={day} spacing={1} container className={classes.gridItemInfo} alignItems="center">
                     <Grid item lg={2} md={4} xs={12}>
-                      <TextField
+                      <Select
+                        multiple
                         fullWidth
-                        label="Chọn thứ"
-                        variant="outlined"
-                        select
-                        size="small"
-                        name="week_day"
-                        value={workingDay[day].week_day}
+                        name="weekday_list"
+                        value={workingDay[day].weekday_list}
                         onChange={(e) => handleChangeWorkingDay(e, day)}
+                        className={classes.multpleSelectField}
                       >
                         {weekday?.map((item) => (
                           <MenuItem key={item.id} value={item.id}>
                             {item.value}
                           </MenuItem>
                         ))}
-                      </TextField>
+                      </Select>
                     </Grid>
                     <Grid item lg={3} md={4} xs={12}>
                       <Grid container spacing={1} alignItems="center">
@@ -311,22 +309,20 @@ export default function ScheduleModal({ isOpen, handleClose, submit, type, mento
                 {Object.keys(vacationDay).map((day) => (
                   <Grid key={day} spacing={1} container className={classes.gridItemInfo} alignItems="center">
                     <Grid item lg={2} md={4} xs={12}>
-                      <TextField
+                      <Select
+                        multiple
                         fullWidth
-                        label="Chọn thứ"
-                        variant="outlined"
-                        select
-                        size="small"
-                        name="week_day"
-                        value={vacationDay[day].week_day}
+                        name="weekday_list"
+                        value={vacationDay[day].weekday_list}
                         onChange={(e) => handleChangeVacationDay(e, day)}
+                        className={classes.multpleSelectField}
                       >
                         {weekday?.map((item) => (
                           <MenuItem key={item.id} value={item.id}>
                             {item.value}
                           </MenuItem>
                         ))}
-                      </TextField>
+                      </Select>
                     </Grid>
                     <Grid item lg={3} md={4} xs={12}>
                       <Grid container spacing={1} alignItems="center">
