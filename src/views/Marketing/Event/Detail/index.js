@@ -931,7 +931,7 @@ const EventModal = () => {
                     style={{ background: 'rgb(97, 42, 255)' }}
                     onClick={() => handleSubmitForm()}
                   >
-                    Tạo mới1
+                    Tạo mới
                   </Button>
                 )}
               </Grid>
