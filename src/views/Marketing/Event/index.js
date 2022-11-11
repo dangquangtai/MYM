@@ -27,7 +27,7 @@ const EventWrapper = () => {
   return (
     <React.Fragment>
       <EventTable
-        tableTitle="Event"
+        tableTitle="Quản lý sự kiện"
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="event"

@@ -249,7 +249,7 @@ const EventModal = () => {
   };
 
   useEffect(() => {
-    setSelectedMentorList('');
+    setSelectedMentorList([]);
     fetchData();
   }, []);
 
