@@ -173,7 +173,7 @@ export const apiEndpoints = {
   cancel_counselling: '/Primary/?FlowAlias=bs_api_counselling_cancel_counselling_by_id&action=api',
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
   get_full_calendar: '/Primary/?FlowAlias=bs_api_counselling_get_full_calendar&action=api',
-
+  get_feedback_detail: '/Primary/?FlowAlias=bs_api_counselling_get_feedback_detail&action=api',
   // Marketing
   // // Batch
   get_all_active_batch: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_batch&action=api',

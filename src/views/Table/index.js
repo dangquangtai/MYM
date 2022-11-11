@@ -1239,7 +1239,7 @@ export default function GeneralTable(props) {
                                   align="left"
                                 >
                                   <>
-                                    <span className={classes.tableItemName}>{row.price}</span>
+                                    <span className={classes.tableItemName}>{row.price.toLocaleString()}</span>
                                     &nbsp;&nbsp;
                                   </>
                                 </TableCell>

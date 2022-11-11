@@ -211,17 +211,12 @@ const DetailDocumentDialog = () => {
       ...selectedDocument,
       category_id: selectedDocument.category_id ? selectedDocument.category_id : '',
     });
+    
+   
+    getFeedbackDetail(selectedDocument.id);
+    
+    
     getConsultantDetail(selectedDocument.mentor_id);
-    if (tabDisplayOptions.feedback) {
-      getFeedbackDetail(selectedDocument.id);
-    } else {
-      setFeedback({
-        times: '',
-        comment: '',
-        assess_mentor: 0,
-        assess_service: 0,
-      });
-    }
   }, [selectedDocument]);
 
   const getFeedbackDetail = async (id) => {
@@ -677,7 +672,7 @@ const DetailDocumentDialog = () => {
                                   {new Array(5)
                                     .fill(1)
                                     .map((star, index) =>
-                                      index < feedback.assess_service ? (
+                                      index < feedback.rating_service ? (
                                         <StarIcon style={style.tabAssessItemStar} key={index} />
                                       ) : (
                                         <StarBorderOutlinedIcon style={style.tabAssessItemStar} key={index} />
@@ -694,7 +689,7 @@ const DetailDocumentDialog = () => {
                                   {new Array(5)
                                     .fill(1)
                                     .map((star, index) =>
-                                      index < feedback.assess_mentor ? (
+                                      index < feedback.rating_mentor ? (
                                         <StarIcon key={index} style={style.tabAssessItemStar} />
                                       ) : (
                                         <StarBorderOutlinedIcon key={index} style={style.tabAssessItemStar} />
