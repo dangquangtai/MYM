@@ -77,7 +77,7 @@ export const apiEndpoints = {
   get_dept_list_by_process_role: '/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
   get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
-
+  get_department_deactive_list: 'ry/?FlowAlias=bs_api_dept_get_all_inactive_department_by_page&action=api',
   // Meida
   // // Playlist
   get_all_active_playlist: '/Primary/?FlowAlias=bs_media_api_get_list_playlist_active&action=api',
@@ -313,9 +313,11 @@ export const accountActions = {
 };
 export const departmentActions = {
   list_active_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_ACTIVE_LIST',
-  list_inactive_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_DEACTIVE_LIST',
 };
-
+export const departmentDeactiveActions ={
+  list_inactive_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_DEACTIVE_LIST',
+  
+}
 export const playlistActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_PLAYLIST_LIST',
   inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_PLAYLIST_LIST',

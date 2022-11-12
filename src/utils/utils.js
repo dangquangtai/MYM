@@ -26,6 +26,7 @@ import {
   notificationMessageActions,
   orderActions,
   counsellingPriceActions,
+  departmentDeactiveActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -161,6 +162,9 @@ export function getUrlByAction(selectedFolder) {
     }
     case counsellingPriceActions.active_list: {
       return apiEndpoints.get_all_counselling_price;
+    }
+    case departmentDeactiveActions.list_inactive_department:{
+      return apiEndpoints.get_department_deactive_list;
     }
     default: {
       return '';

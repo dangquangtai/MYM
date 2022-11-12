@@ -541,6 +541,10 @@ export default function GeneralTable(props) {
       detailDocument = await getDetailPrice(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, counsellingPriceDocument: true });
+    } else if (documentType === 'departmentList') {
+      detailDocument = await getDepartmentDetail(selectedDocument.department_code);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
 
@@ -1576,7 +1580,7 @@ export default function GeneralTable(props) {
                                               }
                                             />
                                           );
-                                        case 'department':
+                                        case 'departmentList':
                                           return (
                                             <FormControlLabel
                                               control={

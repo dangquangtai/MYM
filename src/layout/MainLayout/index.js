@@ -43,7 +43,7 @@ import OrderModal from '../../views/Order/Detail';
 
 import PriceModal from '../../views/Sale/Price/Detail';
 import FileTypeModal from './../../views/Document/FileType/Detail/index';
-
+import DepartmentListModal from '../../views/DepartmentList/Detail';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -170,6 +170,9 @@ const MainLayout = ({ children }) => {
 
       case 'counsellingPrice':
         return <PriceModal />;
+      case 'departmentList':
+        return <DepartmentListModal />;
+        
     }
   };
 
