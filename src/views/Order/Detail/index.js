@@ -23,11 +23,15 @@ import {
   DescriptionOutlined as DescriptionOutlinedIcon,
   ImageOutlined as ImageIcon,
 } from '@material-ui/icons';
+import { format as formatDate } from 'date-fns';
+import Avatar from '../../../component/Avatar/index';
+import CheckIcon from '@material-ui/icons/Check';
+import DescriptionTwoToneIcon from '@material-ui/icons/DescriptionTwoTone';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Alert from '../../../component/Alert/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { view } from '../../../store/constant.js';
+import { gridSpacing,view } from '../../../store/constant.js';
 import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
@@ -217,6 +221,17 @@ const OrderModal = () => {
                     }
                     value={0}
                     {...a11yProps(0)}
+                  />
+                   <Tab
+                    className={classes.unUpperCase}
+                    label={
+                      <Typography className={classes.tabLabels} component="span" variant="subtitle1">
+                        <AccountCircleOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
+                        Lịch sử
+                      </Typography>
+                    }
+                    value={1}
+                    {...a11yProps(1)}
                   />
                 </Tabs>
               </Grid>
@@ -489,6 +504,57 @@ const OrderModal = () => {
                       </div>
                     </Grid>
 
+                  </Grid>
+                </TabPanel>
+                <TabPanel value={tabIndex} index={1}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={6} md={6} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <DescriptionTwoToneIcon />
+                            <span>Chi tiết thay đổi</span>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid
+                            container
+                            spacing={gridSpacing}
+                            alignItems="center"
+                            className={classes.projecttablemain}
+                          >
+                            {order.transaction_log_list.length > 0 &&  order.transaction_log_list
+                              .slice(0)
+                              .reverse()
+                              .map((item, i, arr) => (
+                                <Grid item xs={12} key={i}>
+                                  <Grid container spacing={2}>
+                                    <Grid item>
+                                      <Avatar color="primary" size="small" className={classes.avatarIcon}>
+                                        <CheckIcon className={i === 0 ? classes.avatarIcon : classes.dnone} />
+                                      </Avatar>
+                                    </Grid>
+                                    <Grid item xs zeroMinWidth>
+                                      <Grid container spacing={0}>
+                                        <Grid item xs={12}>
+                                          <Typography align="left" variant="subtitle2">
+                                            {formatDate(new Date(item.time), 'dd/MM/yyyy h:mm aa')}
+                                          </Typography>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                          <Typography align="left" variant="body1">
+                                            {item.action_name}
+                                          </Typography>
+                                        </Grid>
+                                      </Grid>
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
+                              ))}
+                          </Grid>
+                        </div>
+                      </div>
+                    </Grid>
                   </Grid>
                 </TabPanel>
               </Grid>

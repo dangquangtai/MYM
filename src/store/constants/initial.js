@@ -217,6 +217,7 @@ export const initOrder = {
   status_display: '',
   total: 0,
   voucher_code: '',
+  transaction_log_list: [],
 };
 
 export const initFileData = {
