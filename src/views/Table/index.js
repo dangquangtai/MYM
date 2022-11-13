@@ -821,7 +821,6 @@ export default function GeneralTable(props) {
   };
 
   const handleClickAssignCard = () => {
-  
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, cardDocument: true });
   };
@@ -1137,7 +1136,7 @@ export default function GeneralTable(props) {
                         orderBy={order_by}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={documents.length}
+                        rowCount={documents?.length}
                         displayOptions={displayOptions}
                         documentType={documentType}
                       />

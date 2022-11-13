@@ -47,8 +47,6 @@ export const apiEndpoints = {
     '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
 
   get_option_role_template: '/Primary/?FlowAlias=bs_api_role_template_get_optinal_role&action=api',
-  get_all_role_template_by_department_code:
-    '/Primary/?FlowAlias=bs_api_dept_get_role_template_by_department_code&action=api',
 
   add_account_to_group: '/Primary/?FlowAlias=bs_api_user_add_acount_to_group&action=api',
   remove_account_to_group: '/Primary/?FlowAlias=bs_api_user_remove_account_from_group&action=api',
@@ -75,9 +73,7 @@ export const apiEndpoints = {
   get_department_detail: '/Primary/?FlowAlias=bs_api_dept_get_detail_department_by_name&action=api',
 
   get_dept_list_by_process_role: '/Primary/?FlowAlias=bs_api_dept_get_list_by_process_code&action=api',
-  get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
-  get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
-  get_department_deactive_list: 'ry/?FlowAlias=bs_api_dept_get_all_inactive_department_by_page&action=api',
+  get_department_deactive_list: '/Primary/?FlowAlias=bs_api_dept_get_all_inactive_department_by_page&action=api',
   // Meida
   // // Playlist
   get_all_active_playlist: '/Primary/?FlowAlias=bs_media_api_get_list_playlist_active&action=api',
@@ -295,7 +291,6 @@ export const apiEndpoints = {
   set_active_price: '/Primary/?FlowAlias=bs_sale_api_set_active_counselling_price&action=api',
   get_prepaid_card_order_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_list_by_page&action=api',
   get_prepaid_card_order: '/Primary/?FlowAlias=bs_api_sale_get_product_and_number_list_by_order_id&action=api',
-  
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -314,10 +309,9 @@ export const accountActions = {
 export const departmentActions = {
   list_active_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_ACTIVE_LIST',
 };
-export const departmentDeactiveActions ={
+export const departmentDeactiveActions = {
   list_inactive_department: 'MYM_ORGANISATION_HOME_OPEN_DEPARTMENT_DEACTIVE_LIST',
-  
-}
+};
 export const playlistActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_PLAYLIST_LIST',
   inactive_list: 'MYM_MEDIA_PODCAST_OPEN_INACTIVE_PLAYLIST_LIST',
@@ -411,8 +405,7 @@ export const notificationMessageActions = {
 export const orderActions = {
   booking_list: 'MYM_SALES_HOME_OPEN_COUNSELLING_ORDER_LIST',
   event_list: 'MYM_SALES_HOME_OPEN_EVENT_ORDER_LIST',
-  prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_LIST'
-  
+  prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_LIST',
 };
 
 export const counsellingPriceActions = {
