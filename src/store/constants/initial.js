@@ -200,6 +200,7 @@ export const initAccount = {
   phone_number: '',
   province_id: '',
   password: '',
+  id: '',
 };
 export const initOrder = {
   after_discount_total: 0,

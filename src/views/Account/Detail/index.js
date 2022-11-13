@@ -124,7 +124,7 @@ const AccountModal = () => {
   };
   const handleUpdateAccount = async () => {
     try {
-      if (!account.account_id) {
+      if (!account.id) {
         let check = await createAccount({
           ...account,
           outputtype: 'RawJson',
@@ -463,7 +463,7 @@ const AccountModal = () => {
                   Đóng
                 </Button>
               </Grid>
-              {!account.account_id && (
+              {!account.id && (
                 <Grid item>
                   <Button
                     variant="contained"
@@ -474,7 +474,7 @@ const AccountModal = () => {
                   </Button>
                 </Grid>
               )}
-              {buttonSave && !! account.account_id && (
+              {buttonSave && !! account.id && (
                 <Grid item>
                   <Button
                     variant="contained"

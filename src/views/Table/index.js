@@ -458,7 +458,7 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     } else if (documentType === 'account') {
-      detailDocument = await getAccountDetail(selectedDocument.account_id);
+      detailDocument = await getAccountDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, accountDocument: true });
     } else if (documentType === 'mentor') {
