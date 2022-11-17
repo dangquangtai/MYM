@@ -35,6 +35,19 @@ export const AccountProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getAccountByOrder = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_user_profile_by_order_id, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news } = response.data;
+          return news;
+        } else return {};
+      });
+  };
   const getAllTask = async () => {
     return axiosInstance
       .post(apiEndpoints.get_all_task, {
@@ -130,6 +143,7 @@ export const AccountProvider = ({ children }) => {
         assignAccount,
         removeAccount,
         getAccount,
+        getAccountByOrder,
       }}
     >
       {children}

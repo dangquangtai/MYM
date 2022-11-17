@@ -86,7 +86,7 @@ const OrderModal = () => {
   const { selectedDocument } = useSelector((state) => state.document);
   const [order, setOrder] = useState(initOrder);
   const [account, setAccount] = useState(initAccount);
-  const { getAccount } = useAccount();
+  const { getAccount, getAccountByOrder } = useAccount();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenModalCard,setOpenModalCard] = useState(false);
   const [products, setProducts] =useState([]);
@@ -94,13 +94,20 @@ const OrderModal = () => {
     if (!selectedDocument) return;
     setOrder(selectedDocument);
     const fetchAccount = async()=>{
-      let data= await getAccount(selectedDocument.account_id);
+      let data;
+      if (selectedDocument.ref_object_type === 'BS_COUNSELLING_BOOKING') {
+         data= await getAccountByOrder(selectedDocument.account_id);
+      } else{
+         data= await getAccount(selectedDocument.account_id);
+      }
       setAccount(data);
     }
     fetchAccount();
   }, [selectedDocument]);
 
   const handleCloseDialog = () => {
+    setOrder(initOrder);
+    setAccount(initAccount);
     setDocumentToDefault();
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
   };
@@ -301,7 +308,7 @@ const OrderModal = () => {
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Prepaid_Card_Serial: </span>
+                              <span className={classes.tabItemLabelField}>Prepaid Card Serial: </span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -311,7 +318,7 @@ const OrderModal = () => {
                                 variant="outlined"
                                 name="password"
                                 type='password'
-                                value={account.prepaid_card_serial|| ''}
+                                value={order.prepaid_card_serial|| ''}
                                 className={classes.inputField}
                               />
                             </Grid>
