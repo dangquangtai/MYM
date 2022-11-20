@@ -17,6 +17,7 @@ import {
   ListSubheader,
   ListItemSecondaryAction,
   Typography,
+  Divider
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -24,9 +25,9 @@ import NotificationsNoneTwoToneIcon from '@material-ui/icons/NotificationsNoneTw
 import { subHours } from 'date-fns';
 import QueryBuilderTwoToneIcon from '@material-ui/icons/QueryBuilderTwoTone';
 import User1 from './../../../../assets/images/users/avatar-1.jpg';
-import useAcount from './../../../../hooks/useAccount';
+import useAccount from './../../../../hooks/useAccount';
 import useBooking from '../../../../hooks/useBooking';
-import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE } from '../../../../store/actions';
+import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE, SELECTED_APP_CHANGE } from '../../../../store/actions';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -148,11 +149,9 @@ const NotificationSection = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const dateToday = new Date().getDate();
   const [taskList, setTask] = React.useState(tasks);
-  const currentlyTasks = taskList.filter((task) => new Date(task.assigned_date).getDate() === dateToday);
-  const laterTasks = taskList.filter((task) => new Date(task.assigned_date) < subHours(new Date(), 1));
-  const { getAllTask } = useAcount();
+
+  const { getAllTask } = useAccount();
   const { getBookingDetail } = useBooking();
   const getTask = async () => {
     try {
@@ -165,7 +164,7 @@ const NotificationSection = () => {
   };
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
-    // getTask();
+    getTask();
   };
 
   const handleClose = (event) => {
@@ -187,12 +186,12 @@ const NotificationSection = () => {
     prevOpen.current = open;
   }, [open]);
   React.useEffect(() => {
-    // getTask();
+    getTask();
   }, []);
   return (
     <React.Fragment>
       <Button className={classes.menuButton} color="inherit">
-        <NotificationsNoneTwoToneIcon className={classes.menuIIcon} />
+      <AssignmentIndIcon></AssignmentIndIcon>
       </Button>
       <Button
         className={classes.menuButton}
@@ -202,7 +201,8 @@ const NotificationSection = () => {
         onClick={handleToggle}
         color="inherit"
       >
-        <AssignmentIndIcon></AssignmentIndIcon>
+       
+        <NotificationsNoneTwoToneIcon className={classes.menuIIcon} />
         <span>
           <sup
             style={{
@@ -244,119 +244,71 @@ const NotificationSection = () => {
               <ClickAwayListener onClickAway={handleClose}>
                 <List className={classes.root}>
                   <PerfectScrollbar className={classes.ScrollHeight}>
-                    {currentlyTasks.map(
+                    {taskList.map(
                       (
-                        {
-                          assigned_date,
-                          assigned_date_time,
-                          assignment_id,
-                          case_object_id,
-                          customer_name,
-                          data_object_id,
-                          due_date,
-                          task_url,
-                        },
-                        index
+                        task,
+                        index,
                       ) => (
+                        <>
                         <ListItem
                           button
                           alignItems="flex-start"
                           className={classes.pT0}
                           key={index}
-                          onClick={() => handleOpenDetail(data_object_id)}
+                          onClick={() => handleOpenDetail(task.data_object_id)}
                         >
                           <ListItemAvatar>
-                            <AssignmentIndIcon
+                            {/* <AssignmentIndIcon
                               style={{
                                 fontSize: '40px',
                               }}
-                            />
+                            /> */}
+                             <Avatar alt="Cindy Baker" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" />
                           </ListItemAvatar>
                           <ListItemText
-                            primary={<Typography variant="subtitle1">{task_url}</Typography>}
+                            primary={<Typography variant="subtitle1">{task.task_title}</Typography>}
                             secondary={
-                              <Typography variant="subtitle2">
-                                {customer_name} Ngày {assigned_date}
+                              <React.Fragment>
+                              <Typography
+                                sx={{ display: 'inline' }}
+                                component="span"
+                                variant="body2"
+                                color="text.primary"
+                              >
+                                {task.customer_name}
                               </Typography>
+                              {task.action_title}
+                            </React.Fragment>
                             }
                           />
+                       
+                        
                           <ListItemSecondaryAction className={classes.listAction}>
                             <Grid container justifyContent="flex-end">
                               <Grid item>
                                 <QueryBuilderTwoToneIcon className={classes.actionIcon} />
                               </Grid>
                               <Grid item>
-                                <Typography
-                                  variant="caption"
-                                  display="block"
-                                  gutterBottom
-                                  className={classes.actionColor}
-                                >
-                                  now
-                                </Typography>
+                              <Typography
+                               variant="caption"
+                               display="block"
+                               gutterBottom
+                               className={classes.actionColor}
+                             >
+                                {task.customer_name} Ngày {task.assigned_date}
+                             </Typography>
                               </Grid>
+                              
                             </Grid>
                           </ListItemSecondaryAction>
                         </ListItem>
+                         <Divider variant="inset" component="li" />
+                       
+                         </>
                       )
                     )}
-                    {laterTasks.length && (
-                      <ListSubheader disableSticky>
-                        <Chip size="small" variant="outlined" label="EARLIER" />
-                      </ListSubheader>
-                    )}
-                    {laterTasks.map(
-                      (
-                        {
-                          assigned_date,
-                          assigned_date_time,
-                          assignment_id,
-                          case_object_id,
-                          customer_name,
-                          data_object_id,
-                          due_date,
-                          task_url,
-                        },
-                        index
-                      ) => (
-                        <ListItem
-                          button
-                          alignItems="flex-start"
-                          className={classes.pT0}
-                          key={index}
-                          onClick={() => handleOpenDetail(data_object_id)}
-                        >
-                          <ListItemAvatar>
-                            <AssignmentIndIcon
-                              style={{
-                                fontSize: '40px',
-                              }}
-                            />
-                          </ListItemAvatar>
-                          <ListItemText
-                            primary={<Typography variant="subtitle1">{task_url}</Typography>}
-                            secondary={
-                              <Typography variant="subtitle2">
-                                {customer_name} Ngày {assigned_date}
-                              </Typography>
-                            }
-                          />
-                          <ListItemSecondaryAction className={classes.listAction}>
-                            <Grid container justifyContent="flex-end">
-                              <Grid item></Grid>
-                              <Grid item>
-                                <Typography
-                                  variant="caption"
-                                  display="block"
-                                  gutterBottom
-                                  className={classes.actionColor}
-                                ></Typography>
-                              </Grid>
-                            </Grid>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      )
-                    )}
+                  
+                  
                   </PerfectScrollbar>
                 </List>
               </ClickAwayListener>

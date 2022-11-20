@@ -96,7 +96,7 @@ const OrderModal = () => {
     const fetchAccount = async()=>{
       let data;
       if (selectedDocument.ref_object_type === 'BS_COUNSELLING_BOOKING') {
-         data= await getAccountByOrder(selectedDocument.account_id);
+         data= await getAccountByOrder(selectedDocument.id);
       } else{
          data= await getAccount(selectedDocument.account_id);
       }

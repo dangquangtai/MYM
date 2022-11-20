@@ -486,10 +486,12 @@ const DetailDocumentDialog = () => {
                             <AccountCircleOutlinedIcon />
                             <span>Thông tin khách hàng</span>
                           </div>
-                          <div className={classes.tabItemEdit} onClick={() => handleClickEditButton('profile')}>
+                          {document.counselling_service_code === 'BS_CATEGORY_CAREER' &&(
+                            <div className={classes.tabItemEdit} onClick={() => handleClickEditButton('profile')}>
                             <EditOutlinedIcon />
                             <span>Chỉnh sửa</span>
                           </div>
+                          )}
                         </div>
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -532,6 +534,9 @@ const DetailDocumentDialog = () => {
                               {document.gender_name}
                             </Grid>
                           </Grid>
+                          {document.counselling_service_code === 'BS_CATEGORY_CAREER' &&(
+                            <>
+                            
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Điểm mạnh:</span>
@@ -564,6 +569,29 @@ const DetailDocumentDialog = () => {
                               {document.topic_name_list != null ? document.topic_name_list.join(', ') : ''}
                             </Grid>
                           </Grid>
+                          </>
+                          )}
+                          {document.counselling_service_code === 'BS_CATEGORY_HIGH_SCHOOL' &&(
+                            <>
+                             <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={6} md={6} xs={6}>
+                              <span className={classes.tabItemLabelField}>Thế mạnh và sở thích cá nhân:</span>
+                            </Grid>
+                            <Grid item lg={6} md={6} xs={6}>
+                              {document?.strength}
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={6} md={6} xs={6}>
+                              <span className={classes.tabItemLabelField}>Ngành nghề quan tâm:</span>
+                            </Grid>
+                            <Grid item lg={6} md={6} xs={6}>
+                              {document?.major}
+                            </Grid>
+                          </Grid>
+                            </>
+                          )
+}
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Tỉnh:</span>

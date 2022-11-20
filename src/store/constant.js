@@ -24,7 +24,7 @@ export const apiEndpoints = {
   remove_account_from_dept: '/Primary/?FlowAlias=bs_api_user_api_remove_account_from_department&action=api',
   active_account: '/Primary/?FlowAlias=bs_api_user_active_account&action=api',
   get_account_list_by_process_role: '/Primary/?FlowAlias=bs_api_user_get_list_by_process_role&action=api',
-  get_all_task: '/Primary/?FlowAlias=hnn_api_booking_get_all_task&action=api',
+  get_all_task: '/Primary/?FlowAlias=bs_api_process_get_all_task_by_current_user&action=api',
   get_all_department_by_page: '/Primary/?FlowAlias=bs_api_dept_get_all_active_department_by_page&action=api',
   get_department_role_by_group: '/Primary/?FlowAlias=bs_api_dept_get_department_role_by_group_id&action=api',
   get_all_account_list: '/Primary/?FlowAlias=bs_api_booking_user_get_all_account&action=api',
@@ -149,17 +149,19 @@ export const apiEndpoints = {
 
   // // Booking
   get_log_data: '/Primary/?FlowAlias=bs_api_counselling_get_log_activity_list_by_counselling_id&action=api',
-  get_counselted_counselling_list_by_page:
-    '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
-  get_uncompleted_counselling_list_by_page:
-    '/Primary/?FlowAlias=bs_api_counselling_get_uncompleted_counselling_list&action=api',
+  get_counselted_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_counselling_get_uncompleted_counselling_list&action=api',
   get_cancel_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_cancel_counselling_list&action=api',
   get_handle_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_handle_counselling_list&action=api',
+ //High School
+  get_completed_high_school_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_high_school_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_high_school_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_high_school_counselling_get_uncompleted_counselling_list&action=api',
+  get_cancel_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_cancel_counselling_list&action=api',
+  get_list_high_school_counselling: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_list_by_page&action=api',
+  
   get_booking_detail: '/Primary/?FlowAlias=bs_api_counselling_get_counselling_detail&action=api',
   get_counselling_by_evnet_id: '/Primary/?FlowAlias=bs_api_booking_get_counselling_list_by_event_id&action=api',
-
-  get_mentors_list_by_career_category_id:
-    '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
+  get_mentors_list_by_career_category_id:'/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
   update_booking: '/Primary/?FlowAlias=bs_api_counselling_update_infor_counselling&action=api',
   get_list_counselling: '/Primary/?FlowAlias=bs_api_counselling_get_list_by_page&action=api',
   update_booking_mentor: '/Primary/?FlowAlias=bs_api_counselling_update_mentor_and_timeslot&action=api',
@@ -170,6 +172,7 @@ export const apiEndpoints = {
   get_mentor_detail_by_id: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_detail_by_id&action=api',
   get_full_calendar: '/Primary/?FlowAlias=bs_api_counselling_get_full_calendar&action=api',
   get_feedback_detail: '/Primary/?FlowAlias=bs_api_counselling_get_feedback_detail&action=api',
+
   // Marketing
   // // Batch
   get_all_active_batch: '/Primary/?FlowAlias=bs_api_marketing_get_all_active_batch&action=api',
@@ -345,6 +348,10 @@ export const counsellingActions = {
   handle_list: 'MYM_BOOKING_COUNSELING_OPEN_HANDLE_COUNSELLING_LIST',
   uncompleted_list: 'MYM_BOOKING_COUNSELING_OPEN_UNCOMPLETED_COUNSELING_LIST',
   calendar: 'MYM_BOOKING_HOME_OPEN_CALENDAR',
+  high_school_uncompleted_list: 'MYM_BOOKING_HOME_OPEN_UNCOMPLETED_COUNSELING_LIST',
+  high_school_cancel_list: 'MYM_BOOKING_HOME_OPEN_CANCEL_COUNSELLING_LIST',
+  high_school_completed_list: 'MYM_BOOKING_HOME_OPEN_COMPLETED_COUNSELLING_LIST',
+  high_school_all_list: 'MYM_BOOKING_HOME_OPEN_COUNSELLING_LIST',
 };
 
 export const batchActions = {

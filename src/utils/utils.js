@@ -166,6 +166,18 @@ export function getUrlByAction(selectedFolder) {
     case departmentDeactiveActions.list_inactive_department:{
       return apiEndpoints.get_department_deactive_list;
     }
+    case counsellingActions.high_school_completed_list: {
+      return apiEndpoints.get_completed_high_school_counselling_list_by_page;
+    }
+    case counsellingActions.high_school_cancel_list: {
+      return apiEndpoints.get_cancel_high_school_counselling_list_by_page;
+    }
+    case counsellingActions.high_school_all_list: {
+      return apiEndpoints.get_list_high_school_counselling;
+    }
+    case counsellingActions.high_school_uncompleted_list: {
+      return apiEndpoints.get_uncompleted_high_school_counselling_list_by_page;
+    }
     default: {
       return '';
     }

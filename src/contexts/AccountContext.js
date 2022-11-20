@@ -52,7 +52,6 @@ export const AccountProvider = ({ children }) => {
     return axiosInstance
       .post(apiEndpoints.get_all_task, {
         outputtype: 'RawJson',
-        company_id: null,
       })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {

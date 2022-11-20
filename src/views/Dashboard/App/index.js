@@ -8,7 +8,7 @@ import { gridSpacing } from './../../../store/constant';
 import AppCard from './Card/index';
 import useShare from './../../../hooks/useShare';
 import HoverCard from './HoverCard/index';
-
+import DetailDocumentDialog from './../../Detail/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.common.black,
@@ -68,8 +68,10 @@ const App = () => {
   const handleAppClick = (app) => {
     dispatch({ type: SELECTED_APP_CHANGE, app });
   };
-
+  
   return (
+    <>
+    <DetailDocumentDialog/>
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12} sm={12} md={12} lg={12}>
         <Typography variant="h2" className={classes.margin}>
@@ -92,6 +94,7 @@ const App = () => {
         </Grid>
       </Grid>
     </Grid>
+    </>
   );
 };
 

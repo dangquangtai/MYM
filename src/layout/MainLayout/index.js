@@ -101,7 +101,7 @@ const MainLayout = ({ children }) => {
     // eslint-disable-next-line default-case
     switch (documentType) {
       case 'booking':
-        return <DetailDocumentDialog />;
+        return <DetailDocumentDialog/>;
       case 'account':
         return <AccountModal />;
       case 'mentor':
@@ -199,6 +199,7 @@ const MainLayout = ({ children }) => {
         <FloatingMenu />
         <UploadFile />
         {renderDetailDialog()}
+     
       </main>
       {loading && <Loading />}
       <ConfirmPopup />
