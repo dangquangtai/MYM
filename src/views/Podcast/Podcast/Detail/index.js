@@ -230,7 +230,9 @@ const PodcastModal = () => {
   const handleDeleteEpisode = (id) => {
     const newSelectionList = selectedEpisodes.filter((val) => val !== id);
     setSelectedEpisodes(newSelectionList);
-    const newEpisodes = [...episodes, ...filterObj(id)];
+    const selectedEpisode = filterObj(id);
+    selectedEpisode[0].podcast_id = '';
+    const newEpisodes = [...episodes, ...selectedEpisode];
     setEpisodes(newEpisodes);
   };
 
@@ -259,11 +261,11 @@ const PodcastModal = () => {
     const fetchEpisodes = async () => {
       const res = await getAllEpisode({
         page: 1,
-        no_item_per_page: 100,
+        no_item_per_page: 1000,
         search_text: '',
       });
       setInitEpisodes(res);
-      setEpisodes(res);
+      setEpisodes(res?.filter((item) => item.podcast_id === '' || item.podcast_id === null));
     };
     const fetchMentorList = async () => {
       const res = await getMentorbyCategory();
