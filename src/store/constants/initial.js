@@ -1,5 +1,3 @@
-import { dateOfWeek, timeWorking, workingType } from './time';
-
 export const mentorDisplayOptions = {
   fullname: true,
   email_address: true,
@@ -12,6 +10,9 @@ export const mentorDisplayOptions = {
 
 export const userAvatar = 'https://obs.multicampus.vn/wp-content/uploads/2019/01/avatar.png';
 
+export const bannerImage =
+  'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Document%2FImage%2Fbackground.png?alt=media&token=e1cc029f-6c35-4589-892d-f44970815322';
+
 export const initMentorData = {
   fullname: '',
   email_address: '',
@@ -19,6 +20,8 @@ export const initMentorData = {
   title: '',
   description: '',
   image_url: '',
+  banner_url:
+    'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Document%2FImage%2Fbackground.png?alt=media&token=e1cc029f-6c35-4589-892d-f44970815322',
   fb_url: '',
   linkedin_url: '',
   address: '',
@@ -171,7 +174,7 @@ export const initEvent = {
   map_url: '',
   map_image_url: '',
   mentor_list: [],
-  mentor_id_list:[],
+  mentor_id_list: [],
   address_title: '',
   title: '',
   category_id_1: ' ',

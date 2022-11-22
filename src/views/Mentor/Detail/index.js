@@ -32,7 +32,7 @@ import useView from '../../../hooks/useView';
 import usePartner from '../../../hooks/usePartner';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, CONFIRM_CHANGE } from '../../../store/actions.js';
 import { tinyMCESecretKey, view } from '../../../store/constant';
-import { userAvatar, initMentorData } from '../../../store/constants/initial';
+import { userAvatar, initMentorData, bannerImage } from '../../../store/constants/initial';
 import { timeWorking } from '../../../store/constants/time';
 import ScheduleModal from '../ScheduleModal';
 import { convertDate } from '../../../utils/table.js';
@@ -44,6 +44,7 @@ import {
   AccountCircleOutlined as AccountCircleOutlinedIcon,
   ImageOutlined as ImageIcon,
   Today as TodayIcon,
+  PanoramaOutlined as BannerIcon,
 } from '@material-ui/icons';
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -91,7 +92,10 @@ const MentorModal = () => {
   const generateButton = formButtons.find((button) => button.name === view.mentor.detail.generate_timeslot);
 
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
+  const [dialogUpload, setDialogUpload] = useState({
+    open: false,
+    type: '',
+  });
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
@@ -162,14 +166,24 @@ const MentorModal = () => {
     }
   };
   const setURL = (image) => {
-    setMentorData({ ...mentorData, image_url: image });
+    if (dialogUpload.type === 'image') {
+      setMentorData({ ...mentorData, image_url: image });
+    } else if (dialogUpload.type === 'banner') {
+      setMentorData({ ...mentorData, banner_url: image });
+    }
   };
 
-  const handleOpenDiaLog = () => {
-    setOpenDiaLogUploadImage(true);
+  const handleOpenDiaLog = (type) => {
+    setDialogUpload({
+      open: true,
+      type: type,
+    });
   };
   const handleCloseDiaLog = () => {
-    setOpenDiaLogUploadImage(false);
+    setDialogUpload({
+      open: false,
+      type: '',
+    });
   };
 
   const handleChangeMentor = (event) => {
@@ -269,6 +283,7 @@ const MentorModal = () => {
       ...selectedDocument,
       phone_number: selectedDocument?.phone_number || '',
       image_url: selectedDocument?.image_url || userAvatar,
+      banner_url: selectedDocument?.banner_url || bannerImage,
     });
     getTimeslotByMentor(selectedDocument.id);
   }, [selectedDocument]);
@@ -338,7 +353,7 @@ const MentorModal = () => {
         </Snackbar>
       )}
       <FirebaseUpload
-        open={openDialogUploadImage || false}
+        open={dialogUpload.open || false}
         onSuccess={setURL}
         onClose={handleCloseDiaLog}
         type="image"
@@ -444,7 +459,7 @@ const MentorModal = () => {
                           <img src={mentorData.image_url} alt="image_url" />
                           <div>
                             <div>Upload/Change Mentor's Profile Image</div>
-                            <Button onClick={handleOpenDiaLog}>Chọn hình đại diện</Button>
+                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
                           </div>
                         </div>
                       </div>
@@ -512,6 +527,21 @@ const MentorModal = () => {
                       </div>
                     </Grid>
                     <Grid item lg={6} md={6} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <BannerIcon />
+                            <span>Banner</span>
+                          </div>
+                        </div>
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                          <img className={classes.bannerImage} src={mentorData.banner_url} alt="" />
+                          <div>
+                            <div>Upload/Change Banner Image</div>
+                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
+                          </div>
+                        </div>
+                      </div>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>

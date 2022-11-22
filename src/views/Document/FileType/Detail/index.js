@@ -75,8 +75,7 @@ const FileTypeModal = () => {
   const { fileTypeDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const saveButton = formButtons.find((button) => button.name === view.fileType.detail.save);
-  const { createFileType, updateFileType, removeGroup, addGroup } = useDocument();
-  const { getDepartmentRoleList } = useDepartment();
+  const { createFileType, updateFileType } = useDocument();
 
   const [tabIndex, setTabIndex] = React.useState(0);
 
@@ -87,7 +86,6 @@ const FileTypeModal = () => {
   });
 
   const [fileTypeData, setFileTypeData] = useState(initFileTypeData);
-  const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
     type: '',
@@ -137,7 +135,6 @@ const FileTypeModal = () => {
   };
 
   const handleOpenDiaLog = (type) => {
-    setOpenDiaLogUploadImage(true);
     setDialogUpload({
       open: true,
       type: type,
@@ -145,7 +142,6 @@ const FileTypeModal = () => {
   };
 
   const handleCloseDiaLog = () => {
-    setOpenDiaLogUploadImage(false);
     setDialogUpload({
       open: false,
       type: '',
