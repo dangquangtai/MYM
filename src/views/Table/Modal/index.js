@@ -67,6 +67,7 @@ export default function BasicModal({
   selectedBooking,
   selectedOrder,
   handleProcessOrder,
+  handleReject,
   children,
   ...props
 }) {
@@ -85,6 +86,8 @@ export default function BasicModal({
       case 'order':
         return 'Xác nhận đã thanh toán mã order: '+selectedOrder?.order_code+' tổng tiền '+selectedOrder?.final_total.toLocaleString()
         ;
+      case 'collaborator':
+        return 'Xác nhận từ chối đăng ký cộng tác viên.'
     }
   };
 
@@ -199,6 +202,11 @@ export default function BasicModal({
               )}
                {selectedOrder && (
                 <Button type="submit" variant="contained" style={style.submitButton} onClick={handleProcessOrder}>
+                  Xác nhận
+                </Button>
+              )}
+               {type === 'collaborator' && (
+                <Button type="submit" variant="contained" style={style.submitButton} onClick={handleReject}>
                   Xác nhận
                 </Button>
               )}

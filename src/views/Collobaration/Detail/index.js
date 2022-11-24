@@ -36,7 +36,7 @@ import {
   Today as TodayIcon,
 } from '@material-ui/icons';
 import { Editor } from '@tinymce/tinymce-react';
-
+import Modal from './../../Table/Modal/index';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -116,7 +116,7 @@ const CollaboratorModal = () => {
   const { selectedDocument } = useSelector((state) => state.document);
   const { provinces, genders } = useSelector((state) => state.metadata);
   const [openMentorForm, setOpenMentorForm] = useState(false);
-
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const handleCloseDialog = () => {
     setMentorData(initMentorData);
     setDocumentToDefault();
@@ -199,7 +199,11 @@ const CollaboratorModal = () => {
   };
   const handleReject = async () => {
     await setVerified(selectedDocument.id, false);
+    dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'collaborator' });
+    handleCloseDialog();
+    setIsOpenModal(false);
   };
+
   const [pageNumber, setNumperPage] = useState(0);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -256,6 +260,13 @@ const CollaboratorModal = () => {
 
   return (
     <React.Fragment>
+      <Modal
+        isOpen={isOpenModal}
+        handleClose={() => setIsOpenModal(false)}
+        type={'collaborator'}
+        handleReject={handleReject}
+      
+      />
       {snackbarStatus.isOpen && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -1071,7 +1082,7 @@ const CollaboratorModal = () => {
                 {!openMentorForm && (
                   <>
                     {rejectButton && (
-                      <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={handleReject}>
+                      <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={()=> setIsOpenModal(true)}>
                         {rejectButton.text}
                       </Button>
                     )}
