@@ -166,8 +166,9 @@ export const BookingProvider = ({ children }) => {
     });
   };
 
-  const getStatisticData = async () => {
-    return axiosInstance.post(apiEndpoints.get_statistic_data, { outputtype: 'RawJson' }).then((response) => {
+
+  const getStatisticData = async (date) => {
+    return axiosInstance.post(apiEndpoints.get_statistic_data, { outputtype: 'RawJson', ...date }).then((response) => {
       if (response.status === 200 && response.data.return === 200) {
         const { data } = response.data;
         return data;
@@ -206,18 +207,19 @@ export const BookingProvider = ({ children }) => {
   };
   const getCounsellingByEvent = async (event_id, page, no_item_per_page, search_text, order_by, order_type) => {
     return axiosInstance
-      .post(apiEndpoints.get_counselling_by_evnet_id, { 
-        outputtype: 'RawJson', 
-        event_id: event_id, 
+      .post(apiEndpoints.get_counselling_by_evnet_id, {
+        outputtype: 'RawJson',
+        event_id: event_id,
         company_code: 'MYM',
         page: page,
         no_item_per_page: no_item_per_page,
         search_text: search_text,
         order_by: order_by,
-        order_type: order_type })
+        order_type: order_type
+      })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
-          const { list} = response.data;
+          const { list } = response.data;
           return list;
         } else return {};
       });

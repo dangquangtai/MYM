@@ -149,19 +149,23 @@ export const apiEndpoints = {
 
   // // Booking
   get_log_data: '/Primary/?FlowAlias=bs_api_counselling_get_log_activity_list_by_counselling_id&action=api',
-  get_counselted_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
-  get_uncompleted_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_counselling_get_uncompleted_counselling_list&action=api',
+  get_counselted_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_uncompleted_counselling_list&action=api',
   get_cancel_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_cancel_counselling_list&action=api',
   get_handle_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_handle_counselling_list&action=api',
- //High School
-  get_completed_high_school_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_high_school_counselling_get_completed_counselling_list&action=api',
-  get_uncompleted_high_school_counselling_list_by_page:'/Primary/?FlowAlias=bs_api_high_school_counselling_get_uncompleted_counselling_list&action=api',
+
+  //Booking_DashBoard
+  get_statistic_data: '/Primary/?FlowAlias=bs_api_get_booking_branches_dasboard_data&action=api',
+
+  //High School
+  get_completed_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_uncompleted_counselling_list&action=api',
   get_cancel_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_cancel_counselling_list&action=api',
   get_list_high_school_counselling: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_list_by_page&action=api',
-  
+
   get_booking_detail: '/Primary/?FlowAlias=bs_api_counselling_get_counselling_detail&action=api',
   get_counselling_by_evnet_id: '/Primary/?FlowAlias=bs_api_booking_get_counselling_list_by_event_id&action=api',
-  get_mentors_list_by_career_category_id:'/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
+  get_mentors_list_by_career_category_id: '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
   update_booking: '/Primary/?FlowAlias=bs_api_counselling_update_infor_counselling&action=api',
   get_list_counselling: '/Primary/?FlowAlias=bs_api_counselling_get_list_by_page&action=api',
   update_booking_mentor: '/Primary/?FlowAlias=bs_api_counselling_update_mentor_and_timeslot&action=api',

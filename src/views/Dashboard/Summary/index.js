@@ -48,8 +48,9 @@ const Summnary = () => {
 
   const getStatistic = async () => {
     try {
-      const data = await getStatisticData();
+      const data = await getStatisticData(formData);
       setStatistic(data);
+      console.log(statistic);
     } catch (e) {
       console.log(e);
     }
@@ -131,7 +132,7 @@ const Summnary = () => {
           </Grid>
         </Grid> */}
       </Grid>
-      {/* <Grid item xs={12}>
+      <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={5} xs={12}>
             <Grid container spacing={gridSpacing}>
@@ -145,8 +146,8 @@ const Summnary = () => {
               </Grid>
               <Grid item lg={6} sm={6} xs={12}>
                 <ReportCard
-                  primary={statistic.handle}
-                  secondary="Cần xử lý"
+                  primary={statistic.processing}
+                  secondary="Tiềm năng"
                   color={theme.palette.warning.main}
                   iconPrimary={InfoOutlinedIcon}
                   footerData=""
@@ -158,16 +159,16 @@ const Summnary = () => {
             <Grid container spacing={gridSpacing}>
               <Grid item lg={4} sm={6} xs={12}>
                 <ReportCard
-                  primary={statistic.scheduled}
-                  secondary="Đã lên lịch"
+                  primary={statistic.completed}
+                  secondary="Đã hoàn thành"
                   color={theme.palette.success.main}
                   iconPrimary={ScheduleIcon}
                 />
               </Grid>
               <Grid item lg={4} sm={6} xs={12}>
                 <ReportCard
-                  primary={statistic.completed}
-                  secondary="Đã hoàn thành"
+                  primary={statistic.scheduled}
+                  secondary="Đang chờ tư vấn"
                   color={theme.palette.primary.main}
                   iconPrimary={CheckCircleOutlineIcon}
                   footerData=""
@@ -176,7 +177,7 @@ const Summnary = () => {
               <Grid item lg={4} sm={6} xs={12}>
                 <ReportCard
                   primary={statistic.cancel}
-                  secondary="Đã huỷ"
+                  secondary="Bị hủy"
                   color={theme.palette.error.main}
                   iconPrimary={CancelOutlinedIcon}
                   footerData=""
@@ -185,7 +186,7 @@ const Summnary = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Grid> */}
+      </Grid>
       {selectedApp.app_code === 'BOOKING' && (
         <>
           <Grid item xs={12}>
