@@ -86,11 +86,13 @@ const ProcessRoleUserModal = () => {
     text: '',
   })
   const [userList, setUserList] = useState([]);
-
+  const [userAll, setUserAll] = useState([]);
+  const [userSelected, setUserSelected] = useState([]);
   useEffect(() => {
     const fetchUserList = async () => {
       let data = await getAllUser();
       setUserList([...data]);
+      setUserAll([...data]);
     }
     fetchUserList();
     setRole({ ...role, role_code: process_role_code })
@@ -104,10 +106,11 @@ const ProcessRoleUserModal = () => {
       role_code: '',
     });
     setUserSelected([]);
+    setUserList(userAll);
     dispatch({ type: FLOATING_MENU_CHANGE, processUserDocument: false });
   };
 
-  const [userSelected, setUserSelected] = useState([]);
+  
 
   const handleUpdateSelected = (user) => {
     if (!!user){

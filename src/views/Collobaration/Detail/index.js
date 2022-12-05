@@ -1033,7 +1033,63 @@ const CollaboratorModal = () => {
                                   rowsMax={1}
                                   variant="outlined"
                                   name="address"
-                                  value={mentorData?.dob}
+                                  value={mentorData?.dob_string}
+                                  className={classes.inputField}
+                                  onChange={handleChangeMentor}
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Chức vụ:</span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                                <TextField
+                                  fullWidth
+                                  rows={1}
+                                  disabled={true}
+                                  rowsMax={1}
+                                  variant="outlined"
+                                  name="address"
+                                  value={mentorData?.collaboration_type_name}
+                                  className={classes.inputField}
+                                  onChange={handleChangeMentor}
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Đăng ký đến ngày:</span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                                <TextField
+                                  fullWidth
+                                  rows={1}
+                                  disabled={true}
+                                  rowsMax={1}
+                                  variant="outlined"
+                                  name="address"
+                                  value={mentorData?.expiry_date_string}
+                                  className={classes.inputField}
+                                  onChange={handleChangeMentor}
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Mô tả:</span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                                <TextField
+                                  fullWidth
+                                  rows={3}
+                                  multiline
+                                  type='text'
+                                  disabled={true}
+                                  rowsMax={3}
+                                  variant="outlined"
+                                  name="address"
+                                  value={mentorData?.notes}
                                   className={classes.inputField}
                                   onChange={handleChangeMentor}
                                 />
@@ -1053,7 +1109,7 @@ const CollaboratorModal = () => {
                           <div className={classes.tabItemBody}>
                             <Grid container className={classes.gridItemInfo} alignItems="center">
                               <Grid item lg={12} md={12} xs={12}>
-                                <object width="100%" height="400" data={mentorData.file_path} type="application/pdf">
+                                <object width="100%" height="600" data={mentorData.file_path} type="application/pdf">
                                   {' '}
                                 </object>
                               </Grid>

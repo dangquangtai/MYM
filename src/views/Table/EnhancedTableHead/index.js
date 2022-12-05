@@ -31,7 +31,8 @@ function EnhancedTableHead(props) {
     documentType
   } = props;
   const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
+    console.log("order", property)
+    onRequestSort(property);
   };
 
   if(documentType === 'mentor') {
