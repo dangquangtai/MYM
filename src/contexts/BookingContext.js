@@ -167,8 +167,8 @@ export const BookingProvider = ({ children }) => {
   };
 
 
-  const getStatisticData = async (date) => {
-    return axiosInstance.post(apiEndpoints.get_statistic_data, { outputtype: 'RawJson', ...date }).then((response) => {
+  const getStatisticData = async () => {
+    return axiosInstance.post(apiEndpoints.get_statistic_data, { outputtype: 'RawJson', }).then((response) => {
       if (response.status === 200 && response.data.return === 200) {
         const { data } = response.data;
         return data;
