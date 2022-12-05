@@ -23,6 +23,7 @@ import EHoritionalBarChart from '../../Chart/EHoritionalBarChart';
 import EStackableBarChart from '../../Chart/EStackableBarChart';
 import EClolorfullBarChart from '../../Chart/EClolorfullBarChart';
 import { useSelector } from 'react-redux';
+import StarIcon from '@material-ui/icons/Star';
 
 const Summnary = () => {
   const theme = useTheme();
@@ -149,7 +150,7 @@ const Summnary = () => {
                   primary={statistic.processing}
                   secondary="Tiềm năng"
                   color={theme.palette.warning.main}
-                  iconPrimary={InfoOutlinedIcon}
+                  iconPrimary={StarIcon}
                   footerData=""
                 />
               </Grid>
@@ -159,19 +160,19 @@ const Summnary = () => {
             <Grid container spacing={gridSpacing}>
               <Grid item lg={4} sm={6} xs={12}>
                 <ReportCard
-                  primary={statistic.completed}
-                  secondary="Đã hoàn thành"
-                  color={theme.palette.success.main}
-                  iconPrimary={ScheduleIcon}
-                />
-              </Grid>
-              <Grid item lg={4} sm={6} xs={12}>
-                <ReportCard
                   primary={statistic.scheduled}
                   secondary="Đang chờ tư vấn"
                   color={theme.palette.primary.main}
                   iconPrimary={CheckCircleOutlineIcon}
                   footerData=""
+                />
+              </Grid>
+              <Grid item lg={4} sm={6} xs={12}>
+                <ReportCard
+                  primary={statistic.completed}
+                  secondary="Đã hoàn thành"
+                  color={theme.palette.success.main}
+                  iconPrimary={ScheduleIcon}
                 />
               </Grid>
               <Grid item lg={4} sm={6} xs={12}>
