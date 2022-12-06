@@ -133,63 +133,63 @@ const Summnary = () => {
           </Grid>
         </Grid> */}
       </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item lg={5} xs={12}>
-            <Grid container spacing={gridSpacing}>
-              <Grid item lg={6} sm={6} xs={12}>
-                <ReportCard
-                  primary={statistic.total}
-                  secondary="Tổng đăng ký"
-                  color={theme.palette.info.main}
-                  iconPrimary={MonetizationOnTwoTone}
-                />
-              </Grid>
-              <Grid item lg={6} sm={6} xs={12}>
-                <ReportCard
-                  primary={statistic.processing}
-                  secondary="Tiềm năng"
-                  color={theme.palette.warning.main}
-                  iconPrimary={StarIcon}
-                  footerData=""
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item lg={7} xs={12}>
-            <Grid container spacing={gridSpacing}>
-              <Grid item lg={4} sm={6} xs={12}>
-                <ReportCard
-                  primary={statistic.scheduled}
-                  secondary="Đang chờ tư vấn"
-                  color={theme.palette.primary.main}
-                  iconPrimary={CheckCircleOutlineIcon}
-                  footerData=""
-                />
-              </Grid>
-              <Grid item lg={4} sm={6} xs={12}>
-                <ReportCard
-                  primary={statistic.completed}
-                  secondary="Đã hoàn thành"
-                  color={theme.palette.success.main}
-                  iconPrimary={ScheduleIcon}
-                />
-              </Grid>
-              <Grid item lg={4} sm={6} xs={12}>
-                <ReportCard
-                  primary={statistic.cancel}
-                  secondary="Bị hủy"
-                  color={theme.palette.error.main}
-                  iconPrimary={CancelOutlinedIcon}
-                  footerData=""
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
       {selectedApp.app_code === 'BOOKING' && (
         <>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item lg={5} xs={12}>
+                <Grid container spacing={gridSpacing}>
+                  <Grid item lg={6} sm={6} xs={12}>
+                    <ReportCard
+                      primary={statistic.total}
+                      secondary="Tổng đăng ký"
+                      color={theme.palette.info.main}
+                      iconPrimary={MonetizationOnTwoTone}
+                    />
+                  </Grid>
+                  <Grid item lg={6} sm={6} xs={12}>
+                    <ReportCard
+                      primary={statistic.processing}
+                      secondary="Tiềm năng"
+                      color={theme.palette.warning.main}
+                      iconPrimary={StarIcon}
+                      footerData=""
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item lg={7} xs={12}>
+                <Grid container spacing={gridSpacing}>
+                  <Grid item lg={4} sm={6} xs={12}>
+                    <ReportCard
+                      primary={statistic.scheduled}
+                      secondary="Đang chờ tư vấn"
+                      color={theme.palette.primary.main}
+                      iconPrimary={ScheduleIcon}
+                      footerData=""
+                    />
+                  </Grid>
+                  <Grid item lg={4} sm={6} xs={12}>
+                    <ReportCard
+                      primary={statistic.completed}
+                      secondary="Đã hoàn thành"
+                      color={theme.palette.success.main}
+                      iconPrimary={CheckCircleOutlineIcon}
+                    />
+                  </Grid>
+                  <Grid item lg={4} sm={6} xs={12}>
+                    <ReportCard
+                      primary={statistic.cancel}
+                      secondary="Bị hủy"
+                      color={theme.palette.error.main}
+                      iconPrimary={CancelOutlinedIcon}
+                      footerData=""
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               <Grid item lg={6} xs={12}>
