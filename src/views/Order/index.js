@@ -31,6 +31,30 @@ const OrderWrapper = () => {
       } 
       else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_event_order_list_by_page&action=api'){
         setTitle('Danh sách đơn hàng sự kiện');
+        
+      }else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_event_order_pending_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng sự kiện chờ thanh toán');
+        
+      }
+      else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_booking_order_pending_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng tư vấn chờ thanh toán');
+        
+      }
+      else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_pending_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng mua mã thẻ chờ thanh toán');
+        
+      }
+      else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_event_order_draft_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng sự kiện nháp');
+        
+      }
+      else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_booking_order_draft_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng tư vấn nháp');
+        
+      }
+      else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_draft_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng mua mã thẻ nháp');
+        
       } else {
         setTitle('Danh sách đơn hàng mua mã thẻ');
       }
