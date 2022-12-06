@@ -87,6 +87,7 @@ export default function GeneralTable(props) {
   useEffect(() => {
     const initOptions = {
       id: tableColumns.includes('id'),
+      order_number: tableColumns.includes('order_number'),
       image_url: tableColumns.includes('image_url'),
       title: tableColumns.includes('title'),
       voucher_code: tableColumns.includes('voucher_code'),
@@ -135,6 +136,7 @@ export default function GeneralTable(props) {
       price: tableColumns.includes('price'),
       online: tableColumns.includes('online'),
       available: tableColumns.includes('available'),
+      cancel_by: tableColumns.includes('cancel_by'),
       menuButtons: !!menuButtons.length || false,
       is_used: tableColumns.includes('is_used'),
       type: tableColumns.includes('type'),
@@ -357,6 +359,7 @@ export default function GeneralTable(props) {
 
   const fetchDocument = (additionalQuery) => {
     const queries = { ...defaultQueries, ...additionalQuery };
+    console.log(additionalQuery);
     getDocuments(url, documentType, selectedProject?.id, selectedFolder?.id, queries);
   };
 
@@ -391,9 +394,10 @@ export default function GeneralTable(props) {
     reloadCurrentDocuments();
   };
 
-  const handleRequestSort = (event, property) => {
+  const handleRequestSort = ( property) => {
     const isAsc = order_by === property && order_type === 'asc';
-    fetchDocument(url, documentType, project_id, folder_id, {
+
+    fetchDocument({url, documentType, project_id, folder_id, 
       page: 1,
       order_by: property,
       order_type: isAsc ? 'desc' : 'asc',
@@ -1174,6 +1178,18 @@ export default function GeneralTable(props) {
                                   </div>
                                 </TableCell>
                               )}
+                              {displayOptions.order_number && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                     {row.order_number}
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
                               {displayOptions.order_code && (
                                 <TableCell align="left">
                                   <div
@@ -1242,7 +1258,7 @@ export default function GeneralTable(props) {
                                   align="left"
                                 >
                                   <>
-                                    <span className={classes.tableItemName}>{row.price.toLocaleString()}</span>
+                                    <span className={classes.tableItemName}>{row?.price?.toLocaleString()}</span>
                                     &nbsp;&nbsp;
                                   </>
                                 </TableCell>
@@ -1395,6 +1411,7 @@ export default function GeneralTable(props) {
                                   <span>{row.mentor_name || ''}</span>
                                 </TableCell>
                               )}
+                              {displayOptions.cancel_by && <TableCell align="left">{row.cancel_by || ''}</TableCell>}
                               {displayOptions.link && (
                                 <TableCell align="left">
                                   <a style={style.meetingLink} href={row.link_meeting || '#'} target="_blank">

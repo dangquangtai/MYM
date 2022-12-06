@@ -13,7 +13,7 @@ const OrderWrapper = () => {
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
   const { selectedFolder } = useSelector((state) => state.folder);
-
+  const [title,setTitle] = React.useState('');
   useEffect(() => {
     async function fetchData() {
       dispatch({ type: DOCUMENT_CHANGE, documentType: 'order' });
@@ -22,11 +22,26 @@ const OrderWrapper = () => {
       fetchData();
     }
   }, [selectedProject]);
+  useEffect(() => {
+  
+  
+      let data = getUrlByAction(selectedFolder);
+      if (data=== '/Primary/?FlowAlias=bs_api_sales_get_booking_order_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng tư vấn');
+      } 
+      else if (data=== '/Primary/?FlowAlias=bs_api_sales_get_event_order_list_by_page&action=api'){
+        setTitle('Danh sách đơn hàng sự kiện');
+      } else {
+        setTitle('Danh sách đơn hàng mua mã thẻ');
+      }
+   
+    
+  }, [selectedFolder]);
 
   return (
     <React.Fragment>
       <OrderTable
-        tableTitle="Quản lý đơn hàng"
+        tableTitle={title}
         url={getUrlByAction(selectedFolder)}
         categories={categories}
         documentType="order"

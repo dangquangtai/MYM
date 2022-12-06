@@ -756,6 +756,22 @@ const EventModal = () => {
                               />
                             </Grid>
                           </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Link đăng ký:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                type="text"
+                                variant="outlined"
+                                name="action_link"
+                                value={eventData.action_link}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
                         </div>
                       </div>
                       <div className={classes.tabItem}>

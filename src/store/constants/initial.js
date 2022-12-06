@@ -187,6 +187,7 @@ export const initEvent = {
   province_id: '',
   description: '',
   price: 0,
+  action_link: '',
 };
 export const initAccount = {
   current_school: '',

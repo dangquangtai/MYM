@@ -1,5 +1,6 @@
 export const headCells = [
   { id: 'id', numeric: false, disablePadding: false, label: 'Mã đăng ký', maxWidth: 150 },
+  { id: 'order_number', numeric: false, disablePadding: false, label: 'Mã order', maxWidth: 150 },
   { id: 'image_url', numeric: false, disablePadding: false, label: 'Ảnh', maxWidth: 50 },
   { id: 'fullname', numeric: false, disablePadding: false, label: 'Khách hàng', maxWidth: 150 },
   { id: 'title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
@@ -26,6 +27,7 @@ export const headCells = [
   { id: 'amount', numeric: false, disablePadding: false, label: 'Số lượng', maxWidth: 100 },
   { id: 'used_date', numeric: false, disablePadding: false, label: 'Ngày sử dụng', maxWidth: 100 },
   { id: 'expiration_date', numeric: false, disablePadding: false, label: 'Ngày hết hạn', maxWidth: 100 },
+  { id: 'cancel_by', numeric: false, disablePadding: false, label: 'Người huỷ', maxWidth: 100 },
   { id: 'status', numeric: false, disablePadding: false, label: 'Trạng thái', maxWidth: 100 },
   { id: 'rating', numeric: false, disablePadding: false, label: 'Đánh giá', maxWidth: 100 },
   { id: 'total', numeric: false, disablePadding: false, label: 'Tổng số', maxWidth: 100 },
@@ -44,6 +46,7 @@ export const headCells = [
   { id: 'mentee', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
   { id: 'mentor', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
   { id: 'meeting', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
+ 
   { id: 'feedback', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
   {
     id: 'visible_for_selection',
@@ -70,6 +73,7 @@ export const headCells = [
   { id: 'final_total', numeric: false, disablePadding: false, label: 'Tổng cuối', maxWidth: 150 },
   { id: 'status_display', numeric: false, disablePadding: false, label: 'Trạng thái', maxWidth: 150 },
   { id: 'menuButtons', numeric: false, disablePadding: false, label: '', maxWidth: 150 },
+
 ];
 
 export const bookingStatusList = [
