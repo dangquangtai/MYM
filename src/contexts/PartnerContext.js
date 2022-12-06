@@ -22,6 +22,18 @@ export const PartnerProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getMentorbyEmail = async (email) => {
+    return axiosInstance
+      .post(apiEndpoints.get_mentor_by_email, {
+        outputtype: 'RawJson',
+        email_address:email,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200 && response.data.code === 0 ) {
+          return true;
+        } else return false;
+      });
+  };
 
   const createMentor = async (mentor) => {
     return axiosInstance.post(apiEndpoints.create_mentor, { outputtype: 'RawJson', ...mentor }).then((response) => {
@@ -245,6 +257,7 @@ export const PartnerProvider = ({ children }) => {
         createPartnerCategory,
         updatePartnerCategory,
         getPartnerListInactive,
+        getMentorbyEmail
       }}
     >
       {children}

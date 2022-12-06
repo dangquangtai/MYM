@@ -85,7 +85,7 @@ const CollaboratorModal = () => {
     setTabIndex(newValue);
   };
 
-  const { createMentor, getCareerAndTopic } = usePartner();
+  const { createMentor, getCareerAndTopic, getMentorbyEmail } = usePartner();
   const { setConfirmPopup } = useConfirmPopup();
 
   const [snackbarStatus, setSnackbarStatus] = useState({
@@ -160,6 +160,17 @@ const CollaboratorModal = () => {
   const handleCloseDiaLog = () => {
     setOpenMentorForm(false);
     setOpenDiaLogUploadImage(false);
+  };
+  const handleOpenFormMentor = async() => {
+    let check= await getMentorbyEmail(mentorData.email_address);
+    if (check) {
+      await setVerified(selectedDocument.id, true);
+      handleOpenSnackbar(true, 'success', 'Duyệt Mentor thành công!');
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'collaborator' });
+      handleCloseDialog();
+    } else {
+      setOpenMentorForm(true);
+    }
   };
 
   const handleChangeMentor = (event) => {
@@ -1146,7 +1157,7 @@ const CollaboratorModal = () => {
                       <Button
                         variant="contained"
                         className={classes.gridItemInfoButton}
-                        onClick={() => setOpenMentorForm(true)}
+                        onClick={handleOpenFormMentor}
                       >
                         {approveButton.text}
                       </Button>

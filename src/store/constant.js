@@ -146,7 +146,7 @@ export const apiEndpoints = {
   update_list_mentor: '/Primary/?FlowAlias=bs_api_partner_update_list_mentor&action=api',
   set_active_list_mentor: '/Primary/?FlowAlias=bs_api_partner_set_active_list_mentor&action=api',
   set_featured_list_mentor: '/Primary/?FlowAlias=bs_api_partner_set_featured_list_mentor&action=api',
-
+  get_mentor_by_email: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_by_email&action=api',
   // // Booking
   get_log_data: '/Primary/?FlowAlias=bs_api_counselling_get_log_activity_list_by_counselling_id&action=api',
   get_counselted_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
@@ -286,6 +286,16 @@ export const apiEndpoints = {
   get_event_order_list: '/Primary/?FlowAlias=bs_api_sales_get_event_order_list_by_page&action=api',
   get_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_list_by_page&action=api',
   get_order_detai: '/Primary/?FlowAlias=bs_api_sales_get_order_detail_by_id&action=api',
+  get_prepaid_card_order_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_list_by_page&action=api',
+  
+  get_pending_event_order_list: '/Primary/?FlowAlias=bs_api_sales_get_event_order_pending_list_by_page&action=api',
+  get_pending_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_pending_list_by_page&action=api',
+  get_prepaid_card_order_pending_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_pending_list_by_page&action=api',
+
+  get_draft_event_order_list: '/Primary/?FlowAlias=bs_api_sales_get_event_order_draft_list_by_page&action=api',
+  get_draft_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_draft_list_by_page&action=api',
+  get_prepaid_card_order_draft_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_draft_list_by_page&action=api',
+  
   approve_pending_order: '/Primary/?FlowAlias=bs_api_sales_approve_pending_order_by_id&action=api',
 
   //  Price
@@ -296,7 +306,7 @@ export const apiEndpoints = {
   create_counselling_price: '/Primary/?FlowAlias=bs_sale_api_create_counselling_price&action=api',
   update_counselling_price: '/Primary/?FlowAlias=bs_sale_api_update_counselling_price&action=api',
   set_active_price: '/Primary/?FlowAlias=bs_sale_api_set_active_counselling_price&action=api',
-  get_prepaid_card_order_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_list_by_page&action=api',
+  
   get_prepaid_card_order: '/Primary/?FlowAlias=bs_api_sale_get_product_and_number_list_by_order_id&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
@@ -415,8 +425,14 @@ export const notificationMessageActions = {
 
 export const orderActions = {
   booking_list: 'MYM_SALES_HOME_OPEN_COUNSELLING_ORDER_LIST',
+  pending_booking_list: 'MYM_SALES_HOME_COUNSELING_ORDER_PENDING_LIST',
+  draft_booking_list: 'MYM_SALES_HOME_COUNSELING_ORDER_DRAFT_LIST',
   event_list: 'MYM_SALES_HOME_OPEN_EVENT_ORDER_LIST',
+  pending_event_list: 'MYM_SALES_HOME_EVENT_OPEN_PENDING_LIST',
+  draft_event_list: 'MYM_SALES_HOME_EVENT_OPEN_DRAFT_LIST',
   prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_LIST',
+  pending_prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_ORDER_PENDINGLIST',
+  draft_prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_ORDER_DRAFT_LIST',
 };
 
 export const counsellingPriceActions = {

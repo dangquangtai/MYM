@@ -178,6 +178,24 @@ export function getUrlByAction(selectedFolder) {
     case counsellingActions.high_school_uncompleted_list: {
       return apiEndpoints.get_uncompleted_high_school_counselling_list_by_page;
     }
+    case orderActions.pending_booking_list: {
+      return apiEndpoints.get_pending_booking_order_list;
+    }
+    case orderActions.pending_event_list: {
+      return apiEndpoints.get_pending_event_order_list;
+    }
+    case orderActions.pending_prepaid_list: {
+      return apiEndpoints.get_prepaid_card_order_pending_list;
+    }
+    case orderActions.draft_booking_list: {
+      return apiEndpoints.get_draft_booking_order_list;
+    }
+    case orderActions.draft_event_list: {
+      return apiEndpoints.get_draft_event_order_list;
+    }
+    case orderActions.draft_prepaid_list: {
+      return apiEndpoints.get_prepaid_card_order_draft_list;
+    }
     default: {
       return '';
     }
