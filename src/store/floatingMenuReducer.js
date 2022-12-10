@@ -28,6 +28,7 @@ export const initialState = {
   notificationCategoryDocument: false,
   notificationMessageDocument: false,
   counsellingPriceDocument: false,
+  broadcastDocument: false,
 };
 
 const floatingMenuReducer = (state = initialState, action) => {
@@ -62,6 +63,7 @@ const floatingMenuReducer = (state = initialState, action) => {
         notificationCategoryDocument: action.notificationCategoryDocument,
         notificationMessageDocument: action.notificationMessageDocument,
         counsellingPriceDocument: action.counsellingPriceDocument,
+        broadcastDocument: action.broadcastDocument,
       };
     default:
       return state;

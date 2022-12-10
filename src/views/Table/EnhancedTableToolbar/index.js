@@ -105,6 +105,8 @@ const EnhancedTableToolbar = (props) => {
     CreateCounsellingPrice,
     handleDeactiveDepartment,
     buttondeactiveDepartment,
+    buttonCreateBroadcast,
+    createBroadcast,
   } = props;
 
   const filterRef = useRef(null);
@@ -457,6 +459,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={CreateCounsellingPrice}>
                       {buttonCreateCounsellingPrice.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateBroadcast && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createBroadcast}>
+                      {buttonCreateBroadcast.text}
                     </Button>
                   </Grid>
                 )}

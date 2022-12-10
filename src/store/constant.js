@@ -149,8 +149,10 @@ export const apiEndpoints = {
   get_mentor_by_email: '/Primary/?FlowAlias=bs_api_private_partner_get_mentor_by_email&action=api',
   // // Booking
   get_log_data: '/Primary/?FlowAlias=bs_api_counselling_get_log_activity_list_by_counselling_id&action=api',
-  get_counselted_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
-  get_uncompleted_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_uncompleted_counselling_list&action=api',
+  get_counselted_counselling_list_by_page:
+    '/Primary/?FlowAlias=bs_api_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_counselling_list_by_page:
+    '/Primary/?FlowAlias=bs_api_counselling_get_uncompleted_counselling_list&action=api',
   get_cancel_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_cancel_counselling_list&action=api',
   get_handle_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_counselling_get_handle_counselling_list&action=api',
 
@@ -158,14 +160,18 @@ export const apiEndpoints = {
   get_statistic_data: '/Primary/?FlowAlias=bs_api_get_booking_branches_dasboard_data&action=api',
 
   //High School
-  get_completed_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_completed_counselling_list&action=api',
-  get_uncompleted_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_uncompleted_counselling_list&action=api',
-  get_cancel_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_cancel_counselling_list&action=api',
+  get_completed_high_school_counselling_list_by_page:
+    '/Primary/?FlowAlias=bs_api_high_school_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_high_school_counselling_list_by_page:
+    '/Primary/?FlowAlias=bs_api_high_school_counselling_get_uncompleted_counselling_list&action=api',
+  get_cancel_high_school_counselling_list_by_page:
+    '/Primary/?FlowAlias=bs_api_high_school_counselling_get_cancel_counselling_list&action=api',
   get_list_high_school_counselling: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_list_by_page&action=api',
 
   get_booking_detail: '/Primary/?FlowAlias=bs_api_counselling_get_counselling_detail&action=api',
   get_counselling_by_evnet_id: '/Primary/?FlowAlias=bs_api_booking_get_counselling_list_by_event_id&action=api',
-  get_mentors_list_by_career_category_id: '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
+  get_mentors_list_by_career_category_id:
+    '/Primary/?FlowAlias=bs_api_partner_get_list_mentor_by_counseling_category_id&action=api',
   update_booking: '/Primary/?FlowAlias=bs_api_counselling_update_infor_counselling&action=api',
   get_list_counselling: '/Primary/?FlowAlias=bs_api_counselling_get_list_by_page&action=api',
   update_booking_mentor: '/Primary/?FlowAlias=bs_api_counselling_update_mentor_and_timeslot&action=api',
@@ -287,15 +293,17 @@ export const apiEndpoints = {
   get_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_list_by_page&action=api',
   get_order_detai: '/Primary/?FlowAlias=bs_api_sales_get_order_detail_by_id&action=api',
   get_prepaid_card_order_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_list_by_page&action=api',
-  
+
   get_pending_event_order_list: '/Primary/?FlowAlias=bs_api_sales_get_event_order_pending_list_by_page&action=api',
   get_pending_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_pending_list_by_page&action=api',
-  get_prepaid_card_order_pending_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_pending_list_by_page&action=api',
+  get_prepaid_card_order_pending_list:
+    '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_pending_list_by_page&action=api',
 
   get_draft_event_order_list: '/Primary/?FlowAlias=bs_api_sales_get_event_order_draft_list_by_page&action=api',
   get_draft_booking_order_list: '/Primary/?FlowAlias=bs_api_sales_get_booking_order_draft_list_by_page&action=api',
-  get_prepaid_card_order_draft_list: '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_draft_list_by_page&action=api',
-  
+  get_prepaid_card_order_draft_list:
+    '/Primary/?FlowAlias=bs_api_sales_get_prepaid_card_order_draft_list_by_page&action=api',
+
   approve_pending_order: '/Primary/?FlowAlias=bs_api_sales_approve_pending_order_by_id&action=api',
 
   //  Price
@@ -306,8 +314,15 @@ export const apiEndpoints = {
   create_counselling_price: '/Primary/?FlowAlias=bs_sale_api_create_counselling_price&action=api',
   update_counselling_price: '/Primary/?FlowAlias=bs_sale_api_update_counselling_price&action=api',
   set_active_price: '/Primary/?FlowAlias=bs_sale_api_set_active_counselling_price&action=api',
-  
+
   get_prepaid_card_order: '/Primary/?FlowAlias=bs_api_sale_get_product_and_number_list_by_order_id&action=api',
+
+  // Broadcast
+  get_broadcast_list: '/Primary/?FlowAlias=bs_api_broadcast_get_broadcast_list_by_page&action=api',
+  get_broadcast_detail: '/Primary/?FlowAlias=bs_api_broadcast_get_broadcast_detail_by_id&action=api',
+  create_broadcast: '/Primary/?FlowAlias=bs_api_broadcast_create_broadcast&action=api',
+  update_broadcast: '/Primary/?FlowAlias=bs_api_broadcast_update_broadcast&action=api',
+  get_category_and_channel: '/Primary/?FlowAlias=bs_api_broadcast_get_category_and_channel&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -437,6 +452,10 @@ export const orderActions = {
 
 export const counsellingPriceActions = {
   active_list: 'MYM_SALES_HOME_OPEN_PRICE_LIST',
+};
+
+export const broadcastActions = {
+  active_list: 'MYM_BROADCAST_HOME_OPEN_BROADCAST_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -666,6 +685,14 @@ export const view = {
     },
     detail: {
       save: 'MYM_SALES_HOME_PRICE_SAVE_FORM_BUTTON',
+    },
+  },
+  broadcast: {
+    list: {
+      create: 'MYM_BROADCAST_HOME_BROADCAST_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_BROADCAST_HOME_BROADCAST_SAVE_FORM_BUTTON',
     },
   },
 };

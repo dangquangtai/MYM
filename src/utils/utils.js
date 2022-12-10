@@ -27,6 +27,7 @@ import {
   orderActions,
   counsellingPriceActions,
   departmentDeactiveActions,
+  broadcastActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -163,7 +164,7 @@ export function getUrlByAction(selectedFolder) {
     case counsellingPriceActions.active_list: {
       return apiEndpoints.get_all_counselling_price;
     }
-    case departmentDeactiveActions.list_inactive_department:{
+    case departmentDeactiveActions.list_inactive_department: {
       return apiEndpoints.get_department_deactive_list;
     }
     case counsellingActions.high_school_completed_list: {
@@ -195,6 +196,9 @@ export function getUrlByAction(selectedFolder) {
     }
     case orderActions.draft_prepaid_list: {
       return apiEndpoints.get_prepaid_card_order_draft_list;
+    }
+    case broadcastActions.active_list: {
+      return apiEndpoints.get_broadcast_list;
     }
     default: {
       return '';

@@ -51,6 +51,7 @@ import { withStyles } from '@material-ui/core/styles';
 import useDepartment from '../../../../hooks/useDepartment';
 import RoleModal from '../../../Department/RoleModal/index.js';
 import useAccount from './../../../../hooks/useAccount';
+import { initObjectType } from './../../../../store/constants/initial';
 
 const style = {
   box: {
@@ -181,7 +182,7 @@ const NotificationMessageModall = () => {
   const [selectednotificationMessage, setselectednotificationMessage] = useState([]);
   const [listObject, setlistObject] = useState([]);
   const [selectedObject, setselectedObject] = useState('');
-  const [listObjectType, setlistObjectType] = useState(['Mentor', 'Podcast', 'Event', 'Mentee']);
+  const [listObjectType, setlistObjectType] = useState(initObjectType);
   const [selectedObjectType, setselectedObjectType] = useState('');
   const [action, setAction] = useState(initNotificationMessage.action);
   const handleCloseDialog = () => {
@@ -648,8 +649,8 @@ const NotificationMessageModall = () => {
                                 onChange={handleChangeAction}
                               >
                                 {listObject?.map((item) => (
-                                  <MenuItem key={item.Value} value={item.Value}>
-                                    {item.Key}
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.value}
                                   </MenuItem>
                                 ))}
                               </Select>

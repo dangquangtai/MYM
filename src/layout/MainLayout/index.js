@@ -44,6 +44,7 @@ import OrderModal from '../../views/Order/Detail';
 import PriceModal from '../../views/Sale/Price/Detail';
 import FileTypeModal from './../../views/Document/FileType/Detail/index';
 import DepartmentListModal from '../../views/DepartmentList/Detail';
+import BroadcastModal from './../../views/Broadcast/Broadcast/Detail/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -101,7 +102,7 @@ const MainLayout = ({ children }) => {
     // eslint-disable-next-line default-case
     switch (documentType) {
       case 'booking':
-        return <DetailDocumentDialog/>;
+        return <DetailDocumentDialog />;
       case 'account':
         return <AccountModal />;
       case 'mentor':
@@ -166,13 +167,18 @@ const MainLayout = ({ children }) => {
         return <NotificationMessageModall />;
 
       case 'order':
-        return <><OrderModal /></>;
+        return (
+          <>
+            <OrderModal />
+          </>
+        );
 
       case 'counsellingPrice':
         return <PriceModal />;
       case 'departmentList':
         return <DepartmentListModal />;
-        
+      case 'broadcast':
+        return <BroadcastModal />;
     }
   };
 
@@ -199,7 +205,6 @@ const MainLayout = ({ children }) => {
         <FloatingMenu />
         <UploadFile />
         {renderDetailDialog()}
-     
       </main>
       {loading && <Loading />}
       <ConfirmPopup />

@@ -46,7 +46,7 @@ export const headCells = [
   { id: 'mentee', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
   { id: 'mentor', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
   { id: 'meeting', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
- 
+
   { id: 'feedback', numeric: false, disablePadding: false, label: '', maxWidth: 100 },
   {
     id: 'visible_for_selection',
@@ -58,8 +58,10 @@ export const headCells = [
   { id: 'active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 100 },
   { id: 'episodes', numeric: false, disablePadding: false, label: 'Số tập', maxWidth: 100 },
   { id: 'duration', numeric: false, disablePadding: false, label: 'Thời gian', maxWidth: 100 },
+  { id: 'scheduled_datetime', numeric: false, disablePadding: false, label: 'Lịch gửi', maxWidth: 100 },
   { id: 'created_by', numeric: false, disablePadding: false, label: 'Người tạo', maxWidth: 100 },
   { id: 'created_date', numeric: false, disablePadding: false, label: 'Ngày tạo', maxWidth: 100 },
+  { id: 'is_completed', numeric: false, disablePadding: false, label: 'Hoàn thành', maxWidth: 100 },
   { id: 'is_used', numeric: false, disablePadding: false, label: 'Trạng thái', maxWidth: 100 },
   { id: 'is_active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 150 },
   { id: 'is_featured', numeric: false, disablePadding: false, label: 'Nổi bật', maxWidth: 150 },
@@ -73,7 +75,6 @@ export const headCells = [
   { id: 'final_total', numeric: false, disablePadding: false, label: 'Tổng cuối', maxWidth: 150 },
   { id: 'status_display', numeric: false, disablePadding: false, label: 'Trạng thái', maxWidth: 150 },
   { id: 'menuButtons', numeric: false, disablePadding: false, label: '', maxWidth: 150 },
-
 ];
 
 export const bookingStatusList = [

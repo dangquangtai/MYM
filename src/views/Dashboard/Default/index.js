@@ -34,6 +34,7 @@ import {
   orderActions,
   counsellingPriceActions,
   departmentDeactiveActions,
+  broadcastActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -62,6 +63,7 @@ import OrderWrapper from './../../Order/index';
 import CounsellingPriceWrapper from '../../Sale/Price';
 import FileTypeWrapper from './../../Document/FileType/index';
 import DepartmentListWrapper from './../../DepartmentList/index';
+import BroadcastWrapper from './../../Broadcast/Broadcast/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -97,6 +99,7 @@ const Default = () => {
   const availableOrderEndpoint = Object.values(orderActions);
   const availableCounsellingPriceEndpoint = Object.values(counsellingPriceActions);
   const availableDepartmentDeactiveEndpoint = Object.values(departmentDeactiveActions);
+  const availableBroadcastEndpoint = Object.values(broadcastActions);
 
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
@@ -135,6 +138,7 @@ const Default = () => {
           {availableOrderEndpoint.includes(selectedFolder?.action) && <OrderWrapper />}
           {availableCounsellingPriceEndpoint.includes(selectedFolder?.action) && <CounsellingPriceWrapper />}
           {availableDepartmentDeactiveEndpoint.includes(selectedFolder?.action) && <DepartmentListWrapper />}
+          {availableBroadcastEndpoint.includes(selectedFolder?.action) && <BroadcastWrapper />}
         </Grid>
       )}
     </Grid>

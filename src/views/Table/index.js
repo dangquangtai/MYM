@@ -56,6 +56,7 @@ import useCollaborator from './../../hooks/useCollaborator';
 import useNotification from './../../hooks/useNotification';
 import useOrder from './../../hooks/useOrder';
 import useSale from '../../hooks/useSale';
+import useShare from './../../hooks/useShare';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -149,6 +150,8 @@ export default function GeneralTable(props) {
       status_display: tableColumns.includes('status_display'),
       is_featured: tableColumns.includes('is_featured'),
       is_active: tableColumns.includes('is_active'),
+      scheduled_datetime: tableColumns.includes('scheduled_datetime'),
+      is_completed: tableColumns.includes('is_completed'),
     };
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
@@ -209,6 +212,8 @@ export default function GeneralTable(props) {
     (button) => button.name === view.notificationMessage.list.create
   );
   const buttonCreateCounsellingPrice = menuButtons.find((button) => button.name === view.counsellingPrice.list.create);
+
+  const buttonCreateBroadcast = menuButtons.find((button) => button.name === view.broadcast.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -306,6 +311,8 @@ export default function GeneralTable(props) {
 
   const { getDetailPrice } = useSale();
 
+  const { getBroadcastDetail } = useShare();
+
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
       fetchDocument(url, documentType, selectedProject.id, selectedFolder.id);
@@ -336,9 +343,10 @@ export default function GeneralTable(props) {
       };
 
       fetchRoleList();
+      reloadCurrentDocuments();
     }
-    reloadCurrentDocuments();
   }, [department_code_selected]);
+
   useEffect(() => {
     const fetchUserList = async () => {
       let data = await getAllUser();
@@ -346,10 +354,15 @@ export default function GeneralTable(props) {
       data = await getAllDepartment();
       setDeptList(data);
     };
-    fetchUserList();
+    if (documentType === 'department') {
+      fetchUserList();
+    }
   }, []);
+
   useEffect(() => {
-    reloadCurrentDocuments(page);
+    if (selectedDocument === null && documents.length > 0) {
+      reloadCurrentDocuments(page);
+    }
     if (changeDeptReload === 0) {
       ReloadDept(1);
     } else {
@@ -394,10 +407,14 @@ export default function GeneralTable(props) {
     reloadCurrentDocuments();
   };
 
-  const handleRequestSort = ( property) => {
+  const handleRequestSort = (property) => {
     const isAsc = order_by === property && order_type === 'asc';
 
-    fetchDocument({url, documentType, project_id, folder_id, 
+    fetchDocument({
+      url,
+      documentType,
+      project_id,
+      folder_id,
       page: 1,
       order_by: property,
       order_type: isAsc ? 'desc' : 'asc',
@@ -442,13 +459,13 @@ export default function GeneralTable(props) {
   };
 
   const handleChangePage = (event, newPage) => {
-    fetchDocument({ page: newPage + 1 });
     let page = newPage + 1;
+    fetchDocument({ page: page, search_text });
     setPage(page);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    fetchDocument({ page: 1, no_item_per_page: event.target.value });
+    fetchDocument({ page: 1, no_item_per_page: event.target.value, search_text });
     setPage(1);
   };
 
@@ -549,6 +566,10 @@ export default function GeneralTable(props) {
       detailDocument = await getDepartmentDetail(selectedDocument.department_code);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    } else if (documentType === 'broadcast') {
+      detailDocument = await getBroadcastDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, broadcastDocument: true });
     }
   };
 
@@ -925,6 +946,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, fileTypeDocument: true });
   };
 
+  const handleClickCreateBroadcast = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, broadcastDocument: true });
+  };
+
   const handleDownload = (url) => {
     var link = document.createElement('a');
     link.download = 'Code.xlsx';
@@ -1096,6 +1122,8 @@ export default function GeneralTable(props) {
                 createNotificationMessage={handleClickCreateNotificationMessage}
                 buttonCreateCounsellingPrice={buttonCreateCounsellingPrice}
                 CreateCounsellingPrice={handleClickCreateCounsellingPrice}
+                buttonCreateBroadcast={buttonCreateBroadcast}
+                createBroadcast={handleClickCreateBroadcast}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1185,7 +1213,7 @@ export default function GeneralTable(props) {
                                       className={classes.tableItemName}
                                       onClick={(event) => openDetailDocument(event, row)}
                                     >
-                                     {row.order_number}
+                                      {row.order_number}
                                     </span>
                                   </>
                                 </TableCell>
@@ -1498,10 +1526,26 @@ export default function GeneralTable(props) {
                               )}
                               {displayOptions.episodes && <TableCell align="left">{row.episodes || ''}</TableCell>}
                               {displayOptions.duration && <TableCell align="left">{row.duration || ''}</TableCell>}
+                              {displayOptions.scheduled_datetime && (
+                                <TableCell align="left">
+                                  {row.scheduled_datetime
+                                    ? formatDate(new Date(row.scheduled_datetime), 'HH:mm dd/MM/yyyy')
+                                    : ''}
+                                </TableCell>
+                              )}
                               {displayOptions.created_by && <TableCell align="left">{row.created_by || ''}</TableCell>}
                               {displayOptions.created_date && (
                                 <TableCell align="left">
                                   {row.created_date ? formatDate(new Date(row.created_date), 'dd/MM/yyyy') : ''}
+                                </TableCell>
+                              )}
+                              {displayOptions.is_completed && (
+                                <TableCell align="left">
+                                  {row.is_completed ? (
+                                    <Chip label="Đã hoàn thành" />
+                                  ) : (
+                                    <Chip color="primary" label="Chưa hoành thành" />
+                                  )}
                                 </TableCell>
                               )}
                               {displayOptions.category_code && (
@@ -1754,7 +1798,7 @@ export default function GeneralTable(props) {
                     count={count}
                     page={page - 1}
                     onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>

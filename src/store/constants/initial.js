@@ -285,3 +285,21 @@ export const initCounsellingPrice = {
   available_to_date: '',
   available_from_date: '',
 };
+
+export const initBroadcastData = {
+  title: '',
+  subject: '',
+  body: '',
+  is_active: true,
+  is_send_all: false,
+  scheduled_datetime: '',
+  is_actionable: false,
+  action_title: '',
+  object_id: '',
+  object_type: '',
+  email_list_string: '',
+  category_id: '',
+  channel_code: [],
+};
+
+export const initObjectType = ['PODCAST', 'EPISODE', 'MENTOR', 'EVENT', 'VOUCHER'];
