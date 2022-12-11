@@ -1,38 +1,27 @@
 import React from 'react';
-import ReactECharts from "echarts-for-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import ReactECharts from 'echarts-for-react';
+import { Card, CardContent, CardHeader, Divider, Grid, Typography } from '@material-ui/core';
 
 const EPieChart = ({ name, series, title, percent, height = '300px' }) => {
+  const chartRef = React.useRef(null);
 
   const option = {
-    title: {
-      text: name,
-      //   subtext: 'Fake Data',
-      left: 'center'
-    },
     responsive: true,
     maintainAspectRatio: false,
     tooltip: {
       trigger: 'item',
 
-      formatter: percent ? function (params) {
-
-        return `${params.seriesName}<br />
+      formatter: percent
+        ? function (params) {
+            return `${params.seriesName}<br />
                 ${params.name}: ${params.data.value} (${params.percent}%)<br />`;
-      } : undefined
-
+          }
+        : undefined,
     },
     legend: {
       orient: 'horizontal',
 
-      bottom: 10
+      bottom: 10,
     },
     series: [
       {
@@ -44,32 +33,29 @@ const EPieChart = ({ name, series, title, percent, height = '300px' }) => {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
   };
 
-  const iconBooking = (<Typography t="div" className="card-header">
-    {title}
-  </Typography>)
+  const iconBooking = <Typography className="card-header">{title}</Typography>;
+
+  React.useEffect(() => {
+    if (chartRef && chartRef.current) {
+      chartRef.current.getEchartsInstance().resize();
+    }
+  }, [chartRef]);
 
   return (
-
     <Card>
-
-      <CardHeader
-        title={
-          iconBooking
-        }
-      />
+      <CardHeader title={iconBooking} />
       <Divider />
-      <CardContent >
+      <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-
-            <ReactECharts style={{ minHeight: height }} option={option} />
+            <ReactECharts ref={chartRef} style={{ minHeight: height }} option={option} />
           </Grid>
         </Grid>
       </CardContent>

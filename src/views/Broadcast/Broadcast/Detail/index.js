@@ -88,13 +88,13 @@ const BroadcastModal = () => {
     text: '',
   });
 
-  const [broadcastData, setBroadcastData] = useState({});
+  const [broadcastData, setBroadcastData] = useState(initBroadcastData);
   const [broadcast, setBroadcast] = useState({
     channel: [],
     category: [],
   });
   const [objectList, setObjectList] = useState([]);
-  const [selectedObject, setSelectedObject] = useState(initBroadcastData);
+  const [selectedObject, setSelectedObject] = useState({ id: '', value: '' });
   const objectTypes = initObjectType;
 
   const handleCloseDialog = () => {
@@ -116,7 +116,7 @@ const BroadcastModal = () => {
 
   const setDocumentToDefault = async () => {
     setBroadcastData(initBroadcastData);
-    setSelectedObject(null);
+    setSelectedObject({ id: '', value: '' });
     setTabIndex(0);
   };
 
@@ -357,7 +357,7 @@ const BroadcastModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <Switch
-                                checked={broadcastData.is_active || true}
+                                checked={broadcastData.is_active}
                                 onChange={(e) => setBroadcastData({ ...broadcastData, is_active: e.target.checked })}
                                 color="primary"
                               />
@@ -394,71 +394,72 @@ const BroadcastModal = () => {
                       </div>
                     </Grid>
                     <Grid item lg={5} md={5} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <InfoOutlinedIcon />
-                            <span>Thông tin thêm</span>
+                      {broadcastData.is_actionable && (
+                        <div className={classes.tabItem}>
+                          <div className={classes.tabItemTitle}>
+                            <div className={classes.tabItemLabel}>
+                              <InfoOutlinedIcon />
+                              <span>Action</span>
+                            </div>
+                          </div>
+                          <div className={classes.tabItemBody}>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Action Title:</span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                                <TextField
+                                  fullWidth
+                                  variant="outlined"
+                                  name="action_title"
+                                  value={broadcastData.action_title || ''}
+                                  className={classes.inputField}
+                                  onChange={handleChanges}
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>Type:</span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                                <Select
+                                  name="object_type"
+                                  className={classes.multpleSelectField}
+                                  value={broadcastData.object_type || ''}
+                                  onChange={handleChanges}
+                                >
+                                  {objectTypes?.map((item) => (
+                                    <MenuItem key={item} value={item}>
+                                      {item}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </Grid>
+                            </Grid>
+                            <Grid container className={classes.gridItemInfo} alignItems="center">
+                              <Grid item lg={4} md={4} xs={4}>
+                                <span className={classes.tabItemLabelField}>ID:</span>
+                              </Grid>
+                              <Grid item lg={8} md={8} xs={8}>
+                                <Autocomplete
+                                  size="small"
+                                  options={objectList}
+                                  getOptionLabel={(option) => option.value}
+                                  value={selectedObject}
+                                  onChange={(event, newValue) => {
+                                    setBroadcastData({ ...broadcastData, object_id: newValue?.id });
+                                    setSelectedObject(newValue);
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField {...params} variant="outlined" className={classes.inputField} />
+                                  )}
+                                />
+                              </Grid>
+                            </Grid>
                           </div>
                         </div>
-                        <div className={classes.tabItemBody}>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Action Title:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <TextField
-                                fullWidth
-                                variant="outlined"
-                                name="action_title"
-                                value={broadcastData.action_title || ''}
-                                className={classes.inputField}
-                                onChange={handleChanges}
-                              />
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Type:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Select
-                                name="object_type"
-                                className={classes.multpleSelectField}
-                                value={broadcastData.object_type || ''}
-                                onChange={handleChanges}
-                              >
-                                {objectTypes?.map((item) => (
-                                  <MenuItem key={item} value={item}>
-                                    {item}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>ID:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Autocomplete
-                                size="small"
-                                options={objectList}
-                                getOptionLabel={(option) => option.value}
-                                value={selectedObject}
-                                onChange={(event, newValue) => {
-                                  setBroadcastData({ ...broadcastData, object_id: newValue?.id });
-                                  setSelectedObject(newValue);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField {...params} variant="outlined" className={classes.inputField} />
-                                )}
-                              />
-                            </Grid>
-                          </Grid>
-                        </div>
-                      </div>
-
+                      )}
                       {!broadcastData.is_send_all && (
                         <div className={classes.tabItem}>
                           <div className={classes.tabItemTitle}>
