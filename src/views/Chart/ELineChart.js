@@ -9,12 +9,12 @@ import {
   Typography,
 } from '@material-ui/core';
 
-const LineChart = ({ xAxis, legend, series }) => {
+const LineChart = ({ xAxis, legend, series, title }) => {
 
   const option = {
-    title: {
-      text: 'Stacked Line'
-    },
+    // title: {
+    //   text: title
+    // },
     tooltip: {
       trigger: 'axis'
     },
@@ -44,7 +44,7 @@ const LineChart = ({ xAxis, legend, series }) => {
   };
 
   const iconBooking = (<Typography t="div" className="card-header">
-    Booking
+    {title}
   </Typography>)
 
   return (

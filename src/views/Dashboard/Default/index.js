@@ -35,6 +35,7 @@ import {
   counsellingPriceActions,
   departmentDeactiveActions,
   broadcastActions,
+  bookingDashboardActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -57,6 +58,7 @@ import ProcessRoleWrapper from '../../ProcessRole';
 import FileWrapper from './../../Document/File/index';
 import FileCategoryWrapper from './../../Document/FileCategory/index';
 import Calendar from './../../Booking/FullCalendar/index';
+import BookingDashboard from './../../Booking/Dashboard/index';
 import NotificationWrapper from './../../Notification/Category/index';
 import NotificationMessageWrapper from './../../Notification/Message/index';
 import OrderWrapper from './../../Order/index';
@@ -64,6 +66,7 @@ import CounsellingPriceWrapper from '../../Sale/Price';
 import FileTypeWrapper from './../../Document/FileType/index';
 import DepartmentListWrapper from './../../DepartmentList/index';
 import BroadcastWrapper from './../../Broadcast/Broadcast/index';
+import { Dashboard } from '@material-ui/icons';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -101,14 +104,17 @@ const Default = () => {
   const availableDepartmentDeactiveEndpoint = Object.values(departmentDeactiveActions);
   const availableBroadcastEndpoint = Object.values(broadcastActions);
 
+
+
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
   }
 
   return (
     <Grid container spacing={gridSpacing}>
-      {!getUrlByAction(selectedFolder) && <Summnary />}
+      {(!getUrlByAction(selectedFolder) && (selectedFolder?.action !== counsellingActions.calendar) && (selectedFolder?.action !== counsellingActions.dashboard)) && <Summnary />}
       {selectedFolder?.action === counsellingActions.calendar && <Calendar />}
+      {selectedFolder?.action === counsellingActions.dashboard && <BookingDashboard />}
       {getUrlByAction(selectedFolder) && (
         <Grid item xs={12}>
           {availableAccountEndpoint.includes(selectedFolder?.action) && <AccountWrapper />}
@@ -139,6 +145,7 @@ const Default = () => {
           {availableCounsellingPriceEndpoint.includes(selectedFolder?.action) && <CounsellingPriceWrapper />}
           {availableDepartmentDeactiveEndpoint.includes(selectedFolder?.action) && <DepartmentListWrapper />}
           {availableBroadcastEndpoint.includes(selectedFolder?.action) && <BroadcastWrapper />}
+
         </Grid>
       )}
     </Grid>

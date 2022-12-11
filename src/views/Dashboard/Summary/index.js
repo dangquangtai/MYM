@@ -30,12 +30,7 @@ const Summnary = () => {
   const { getStatisticData } = useBooking();
   const { getBookingDataByCareer } = useChart();
   const [statistic, setStatistic] = useState({});
-  const [categories, setCategories] = useState([]);
-  const [series, setSeries] = useState([]);
-  const [dataStatus, setDataStatus] = useState([]);
-  const [dataMentor, setDataMentor] = useState([]);
-  const [dataCareer, setDataCareer] = useState([]);
-  const [dataRatting, setDataRatting] = useState([]);
+
   const [formData, setFormData] = useState({
     from_date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     to_date: new Date(Date.now() + 3600 * 1000 * 24),
@@ -44,7 +39,6 @@ const Summnary = () => {
 
   useEffect(() => {
     getStatistic();
-    getChartByCareer();
   }, []);
 
   const getStatistic = async () => {
@@ -57,32 +51,9 @@ const Summnary = () => {
     }
   };
 
-  const getChartByCareer = async () => {
-    try {
-      const data = await getBookingDataByCareer(formData);
-      setDataCareer(data?.data);
-      setDataStatus(data?.data_booking_status_display);
-      setCategories(data?.data_booking_set_time?.xAxis);
-      setSeries(data?.data_booking_set_time?.series);
-      setDataMentor(data?.data_count_of_booking_by_mentor_name);
-      setDataRatting(data?.data_mentor_ratting);
-      // console.log(dataCareer?.data_count_of_booking_by_mentor_name);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
-  const handleSubmit = async () => {
-    try {
-      // getBarChartData();
-      // getChartByStatus();
-      // getChartByMentor();
-      // getChartByCareer();
-      // getChartByRatting();
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
+
 
   return (
     <React.Fragment>
@@ -190,7 +161,7 @@ const Summnary = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               <Grid item lg={6} xs={12}>
                 <EHoritionalBarChart
@@ -228,7 +199,7 @@ const Summnary = () => {
                 ></EClolorfullBarChart>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
         </>
       )}
     </React.Fragment>

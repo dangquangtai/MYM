@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-const EHoritionalBarChart = ({ xAxis, series ,title}) => {
+const EHoritionalBarChart = ({ xAxis, series, title }) => {
 
   const option = {
     textStyle: {
@@ -29,23 +29,22 @@ const EHoritionalBarChart = ({ xAxis, series ,title}) => {
     },
     xAxis: [
       {
-        type: 'value',
-  
-       
+        type: 'category',
+        data: xAxis,
+        axisTick: {
+          alignWithLabel: true
+        }
+
       }
     ],
     yAxis: [
       {
-        type: 'category',
-        data: xAxis,
-         axisTick: {
-          alignWithLabel: true
-        }
+        type: 'value',
       }
     ],
     series: series
-   
-};
+
+  };
 
   const iconBooking = (<Typography t="div" className="card-header">
     {title}
