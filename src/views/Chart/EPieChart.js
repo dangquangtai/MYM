@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-const EPieChart = ({ name, series, title }) => {
+const EPieChart = ({ name, series, title, percent, height = '300px' }) => {
 
   const option = {
     title: {
@@ -17,12 +17,22 @@ const EPieChart = ({ name, series, title }) => {
       //   subtext: 'Fake Data',
       left: 'center'
     },
+    responsive: true,
+    maintainAspectRatio: false,
     tooltip: {
-      trigger: 'item'
+      trigger: 'item',
+
+      formatter: percent ? function (params) {
+
+        return `${params.seriesName}<br />
+                ${params.name}: ${params.data.value} (${params.percent}%)<br />`;
+      } : undefined
+
     },
     legend: {
-      orient: 'vertical',
-      left: 'right'
+      orient: 'horizontal',
+
+      bottom: 10
     },
     series: [
       {
@@ -46,17 +56,20 @@ const EPieChart = ({ name, series, title }) => {
   </Typography>)
 
   return (
+
     <Card>
+
       <CardHeader
         title={
           iconBooking
         }
       />
       <Divider />
-      <CardContent>
+      <CardContent >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <ReactECharts option={option} />
+
+            <ReactECharts style={{ minHeight: height }} option={option} />
           </Grid>
         </Grid>
       </CardContent>

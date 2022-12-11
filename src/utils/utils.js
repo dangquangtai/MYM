@@ -200,6 +200,7 @@ export function getUrlByAction(selectedFolder) {
     case broadcastActions.active_list: {
       return apiEndpoints.get_broadcast_list;
     }
+
     default: {
       return '';
     }
