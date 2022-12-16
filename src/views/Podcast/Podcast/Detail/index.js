@@ -24,6 +24,7 @@ import {
   Paper,
   IconButton,
   FormControl,
+  Tooltip,
 } from '@material-ui/core';
 import { Editor } from '@tinymce/tinymce-react';
 import Alert from '../../../../component/Alert';
@@ -33,7 +34,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions.js';
 import { view } from '../../../../store/constant';
-import PermissionModal from '../../../FloatingMenu/UploadFile/index.js';
 import useStyles from './../../../../utils/classes';
 import { initPodcastData, userAvatar } from '../../../../store/constants/initial.js';
 import useMedia from './../../../../hooks/useMedia';
@@ -48,7 +48,6 @@ import {
   PanoramaOutlined as BannerIcon,
   LibraryMusicOutlined as LibraryMusicOutlinedIcon,
 } from '@material-ui/icons';
-import { Autocomplete } from '@material-ui/lab';
 import { NoPaddingAutocomplete } from '../../../../component/Autocomplete/index.js';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 import { tinyMCESecretKey } from './../../../../store/constant';
@@ -88,7 +87,7 @@ function a11yProps(index) {
 const StyledTableCell = withStyles((theme) => ({
   root: {
     '&:not(:first-child)': {
-      padding: '16px 2px',
+      padding: '10px 2px',
     },
     '&:first-child': {
       padding: '16px 2px 16px 20px',
@@ -115,7 +114,6 @@ const PodcastModal = () => {
   const [selectedEpisodes, setSelectedEpisodes] = useState([]);
 
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
     type: '',
@@ -165,7 +163,6 @@ const PodcastModal = () => {
   };
 
   const handleOpenDiaLog = (type) => {
-    setOpenDiaLogUploadImage(true);
     setDialogUpload({
       open: true,
       type: type,
@@ -173,7 +170,6 @@ const PodcastModal = () => {
   };
 
   const handleCloseDiaLog = () => {
-    setOpenDiaLogUploadImage(false);
     setDialogUpload({
       open: false,
       type: '',
@@ -266,6 +262,7 @@ const PodcastModal = () => {
       });
       setInitEpisodes(res);
       setEpisodes(res?.filter((item) => item.podcast_id === '' || item.podcast_id === null));
+      console.log(res?.filter((item) => item.podcast_id === '' || item.podcast_id === null));
     };
     const fetchMentorList = async () => {
       const res = await getMentorbyCategory();
@@ -279,7 +276,9 @@ const PodcastModal = () => {
   useEffect(() => {
     if (selectedDocument) {
       setEpisodes(
-        Object.values(initEpisodes)?.filter((item) => !selectedEpisodes?.includes(item.id) && item.podcast_id === '')
+        Object.values(initEpisodes)?.filter(
+          (item) => !selectedEpisodes?.includes(item.id) && (item.podcast_id === '' || item.podcast_id === null)
+        )
       );
     } else {
       setEpisodes(Object.values(initEpisodes).filter((item) => item.podcast_id === '' || item.podcast_id === null));
@@ -593,8 +592,8 @@ const PodcastModal = () => {
                               <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
                                   <TableRow>
-                                    <StyledTableCell>Tập</StyledTableCell>
-                                    <StyledTableCell align="left">Ảnh</StyledTableCell>
+                                    <StyledTableCell></StyledTableCell>
+                                    <StyledTableCell align="center">Ảnh</StyledTableCell>
                                     <StyledTableCell align="left">Tiêu đề</StyledTableCell>
                                     <StyledTableCell align="left">Xoá</StyledTableCell>
                                   </TableRow>
@@ -608,7 +607,13 @@ const PodcastModal = () => {
                                         <StyledTableCell align="left">
                                           <img src={data[0]?.image_url} alt="" width="60" />
                                         </StyledTableCell>
-                                        <StyledTableCell align="left">{data[0]?.title}</StyledTableCell>
+                                        <StyledTableCell
+                                          style={{ maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                          align="left"
+                                          title={data[0]?.title}
+                                        >
+                                          {data[0]?.title}
+                                        </StyledTableCell>
                                         <StyledTableCell align="left">
                                           <IconButton
                                             aria-label="delete"
