@@ -31,6 +31,11 @@ const EHoritionalBarChart = ({ xAxis, series, title }) => {
       {
         type: 'category',
         data: xAxis,
+        axisLabel: {
+          show: true,
+          interval: 0,
+          rotate: 45,
+        },
         axisTick: {
           alignWithLabel: true
         }
