@@ -24,6 +24,9 @@ import EStackableBarChart from '../../Chart/EStackableBarChart';
 import EClolorfullBarChart from '../../Chart/EClolorfullBarChart';
 import { useSelector } from 'react-redux';
 import StarIcon from '@material-ui/icons/Star';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DeviceUnknownIcon from '@material-ui/icons/DeviceUnknown';
+import { string } from 'yup/lib/locale';
 
 const Summnary = () => {
   const theme = useTheme();
@@ -154,6 +157,30 @@ const Summnary = () => {
                       secondary="Bị hủy"
                       color={theme.palette.error.main}
                       iconPrimary={CancelOutlinedIcon}
+                      footerData=""
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+
+            </Grid>
+            <Grid container spacing={gridSpacing}>
+              <Grid item lg={5} xs={12}>
+                <Grid container spacing={gridSpacing}>
+                  <Grid item lg={6} sm={6} xs={12}>
+                    <ReportCard
+                      primary={statistic.device}
+                      secondary="Truy cập trong tuần"
+                      color={theme.palette.primary.light}
+                      iconPrimary={DeviceUnknownIcon}
+                    />
+                  </Grid>
+                  <Grid item lg={6} sm={6} xs={12}>
+                    <ReportCard
+                      primary={statistic.register}
+                      secondary="Tài khoản đăng ký mới "
+                      color={theme.palette.info.light}
+                      iconPrimary={AccountCircleIcon}
                       footerData=""
                     />
                   </Grid>
