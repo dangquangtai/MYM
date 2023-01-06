@@ -16,6 +16,7 @@ const BookingDashboard = () => {
   const [dataComputeBooking, setdataComputeBooking] = useState([]);
   const [countOfPercentSchool, setcountOfPercentSchool] = useState([]);
   const [dataReasonCancel, setdataReasonCancel] = useState([]);
+  const [dataLoginAndRegister, setdataLoginAndRegister] = useState([]);
   const [formData, setFormData] = useState({
     from_date: new Date(Date.now() - 3600 * 1000 * 24 * 6),
     to_date: new Date(Date.now()),
@@ -35,6 +36,7 @@ const BookingDashboard = () => {
       setdataComputeBooking(data?.data_compute_booking);
       setcountOfPercentSchool(data?.data_percent_school);
       setdataReasonCancel(data?.data_cancel_reason);
+      setdataLoginAndRegister(data?.data_login_and_register);
     } catch (e) {
       console.log(e);
     }
@@ -89,6 +91,18 @@ const BookingDashboard = () => {
                   series={dataReasonCancel.chart_data}
                   title={'Lý do hủy booking'}
                 ></EPieChart>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={gridSpacing}>
+                <Grid item lg={12} xs={12}>
+                  <ELineChart
+                    xAxis={dataLoginAndRegister.xAxis}
+                    series={dataLoginAndRegister.series}
+                    title={'Truy cập và tài khoản'}
+                  ></ELineChart>
+                </Grid>
+
               </Grid>
             </Grid>
           </Grid>
