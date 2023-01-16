@@ -553,6 +553,7 @@ export const view = {
     },
     detail: {
       save: 'MYM_BOOKING_COUNSELING_SAVE_FORM_BUTTON',
+      change_timeslot: 'MYM_BOOKING_HOME_CHANGE_TIMESLOT_FORM_BUTTON'
     },
   },
   batch: {

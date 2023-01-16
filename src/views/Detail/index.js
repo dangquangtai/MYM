@@ -46,6 +46,7 @@ import useView from './../../hooks/useView';
 import { format as formatDate } from 'date-fns';
 import EditModal from './EditModal';
 import { style } from './style';
+
 import useStyles from './classes';
 import { withStyles } from '@material-ui/core/styles';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, TASK_CHANGE } from '../../store/actions';
@@ -114,6 +115,8 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const DetailDocumentDialog = () => {
+
+  
   const classes = useStyles();
   const dispatch = useDispatch();
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
@@ -153,7 +156,7 @@ const DetailDocumentDialog = () => {
   const [selectedNoteList, setSelectedNoteList] = useState([]);
 
   const { form_buttons: formButtons, tabs } = useView();
-
+  const changeTimeSlot = formButtons.find((button) => button.name === view.counselling.detail.change_timeslot);
   const tabDisplayOptions = {
     mentee: tabs.includes('mentee'),
     mentor: tabs.includes('mentor'),
@@ -939,7 +942,7 @@ const DetailDocumentDialog = () => {
                   </Button>
                 </Grid>
               )}
-              {(selectedDocument?.status==='MYM_BOOKING_COUNSELING_START_CONSULTATION'|| selectedDocument?.status==='MYM_BOOKING_COUNSELING_CREATE_CALENDAR') && (
+              {(selectedDocument?.status==='MYM_BOOKING_COUNSELING_START_CONSULTATION'|| selectedDocument?.status==='MYM_BOOKING_COUNSELING_CREATE_CALENDAR' && changeTimeSlot) && (
                 <Grid item>
                   <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={()=>setScheduleModole(true)}>
                     {'Thay đổi lịch tư vấn '}

@@ -9,6 +9,7 @@ import {  DOCUMENT_CHANGE } from '../../../store/actions';
 export default function ScheduleModal({ isOpen, handleClose,time_slot, case_number, setOpen, id }) {
   const classes = useStyles();
   const {UpdateTimeSlot, getBookingDetail} = useBooking();
+  
   const [time_slot_date,setTimeSlot]= useState(time_slot);
   const dispatch = useDispatch()
   const handleSubmit =async()=>{
