@@ -53,7 +53,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Avatar from './../../component/Avatar/index';
 import NoteModal from './../Table/NoteModal/index';
-
+import ScheduleModal from './ScheduleModal/index.js';
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
@@ -162,7 +162,7 @@ const DetailDocumentDialog = () => {
   };
 
   const buttonSaveBooking = formButtons.find((button) => button.name === view.counselling.detail.save);
-
+  const [scheduleOpen, setScheduleModole]=useState(false)
   const handleChangeTab = (event, newValue) => {
     if (newValue === 1) {
       getLogDetail(selectedDocument.id);
@@ -391,6 +391,13 @@ const DetailDocumentDialog = () => {
 
   return (
     <React.Fragment>
+      <ScheduleModal
+      isOpen={scheduleOpen}
+      time_slot={selectedDocument?.time_slot_date}
+      setOpen={setScheduleModole}
+      case_number={selectedDocument?.case_number}
+      id ={selectedDocument?.id}
+      />
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         open={isOpenSnackbar}
@@ -932,6 +939,14 @@ const DetailDocumentDialog = () => {
                   </Button>
                 </Grid>
               )}
+              {(selectedDocument?.status==='MYM_BOOKING_COUNSELING_START_CONSULTATION'|| selectedDocument?.status==='MYM_BOOKING_COUNSELING_CREATE_CALENDAR') && (
+                <Grid item>
+                  <Button variant="contained" style={{ background: 'rgb(97, 42, 255)' }} onClick={()=>setScheduleModole(true)}>
+                    {'Thay đổi lịch tư vấn '}
+                  </Button>
+                </Grid>
+              )}
+             
             </Grid>
           </DialogActions>
         </Dialog>

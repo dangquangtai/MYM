@@ -736,7 +736,7 @@ export default function GeneralTable(props) {
     } finally {
       reloadCurrentDocuments();
     }
-  };
+  }
   const handleRemoveAccountToRole = async (email_address) => {
     try {
       await removeUser(process_role_code_selected, email_address);

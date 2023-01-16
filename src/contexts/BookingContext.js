@@ -88,6 +88,18 @@ export const BookingProvider = ({ children }) => {
         return false;
       });
   };
+  const UpdateTimeSlot = async (case_number , time_slot) => {
+    return axiosInstance
+      .post(apiEndpoints.update_new_time_slot, {
+        outputtype: 'RawJson',
+        case_number: case_number,
+        new_meeting_time: time_slot
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
 
   const updateBookingMentor = async (id, data) => {
     return axiosInstance
@@ -246,6 +258,7 @@ export const BookingProvider = ({ children }) => {
         getLitsNote,
         getFullCalendar,
         getCounsellingByEvent,
+        UpdateTimeSlot
       }}
     >
       {children}
