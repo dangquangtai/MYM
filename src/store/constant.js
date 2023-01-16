@@ -323,6 +323,7 @@ export const apiEndpoints = {
   create_broadcast: '/Primary/?FlowAlias=bs_api_broadcast_create_broadcast&action=api',
   update_broadcast: '/Primary/?FlowAlias=bs_api_broadcast_update_broadcast&action=api',
   get_category_and_channel: '/Primary/?FlowAlias=bs_api_broadcast_get_category_and_channel&action=api',
+  update_new_time_slot: '/Primary/?FlowAlias=bs_api_counselling_update_new_timeslot_meeting&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
