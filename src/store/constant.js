@@ -136,7 +136,7 @@ export const apiEndpoints = {
   get_counseling_category_detail: '/Primary/?FlowAlias=bs_api_partner_get_counseling_category_detail&action=api',
   create_counseling_category: '/Primary/?FlowAlias=bs_api_partner_create_counseling_category&action=api',
   update_counseling_category: '/Primary/?FlowAlias=bs_api_partner_update_counseling_category&action=api',
-
+  download_data: '/Primary/?FlowAlias=bs_api_booking_export_all_data&action=api',
   get_career_and_topic: '/Primary/?FlowAlias=bs_api_partner_get_career_and_topic&action=api',
 
   // // List Mentor
@@ -550,6 +550,7 @@ export const view = {
       note: 'MYM_BOOKING_COUNSELING_NOTE',
       meeting: 'MYM_BOOKING_COUNSELING_MEETING',
       cancel: 'MYM_BOOKING_COUNSELING_CANCEL_COUNSELLING',
+      download: 'MYM_BOOKING_HOME_DOWNLOAD_MENU_BUTTON'
     },
     detail: {
       save: 'MYM_BOOKING_COUNSELING_SAVE_FORM_BUTTON',

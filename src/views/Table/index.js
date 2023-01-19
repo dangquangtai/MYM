@@ -181,6 +181,7 @@ export default function GeneralTable(props) {
   const buttonBookingReview = menuButtons.find((button) => button.name === view.counselling.list.review);
   const buttonBookingNote = menuButtons.find((button) => button.name === view.counselling.list.note);
   const buttonBookingCancel = menuButtons.find((button) => button.name === view.counselling.list.cancel);
+  const buttonDownloadData = menuButtons.find((button) => button.name === view.counselling.list.download);
 
   const buttonCreateEvent = menuButtons.find((button) => button.name === view.event.list.create);
   const buttonCreateEventCategory = menuButtons.find((button) => button.name === view.eventcategory.list.create);
@@ -281,6 +282,7 @@ export default function GeneralTable(props) {
     setCompletedBooking,
     getListUniversity,
     cancelBooking,
+    downloadData,
   } = useBooking();
 
   const { activeDepartment, getDepartmentDetail, getAllDepartment } = useDepartment();
@@ -874,6 +876,11 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, counsellingPriceDocument: true });
   };
+  const handleClickDownloadData = async () => {
+    const url = await downloadData();
+    if (url === '') return
+    downloadFile(url);
+  };
 
   const handleClickProcessRoleDetail = async () => {
     if (process_role_code_selected !== '') {
@@ -951,9 +958,8 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, broadcastDocument: true });
   };
 
-  const handleDownload = (url) => {
-    var link = document.createElement('a');
-    link.download = 'Code.xlsx';
+  const downloadFile = (url) => {
+    const link = document.createElement('a');
     link.href = url;
     document.body.appendChild(link);
     link.click();
@@ -1009,7 +1015,7 @@ export default function GeneralTable(props) {
     });
   };
 
-  const clickSuccess = () => {};
+  const clickSuccess = () => { };
 
   return (
     <React.Fragment>
@@ -1124,6 +1130,8 @@ export default function GeneralTable(props) {
                 CreateCounsellingPrice={handleClickCreateCounsellingPrice}
                 buttonCreateBroadcast={buttonCreateBroadcast}
                 createBroadcast={handleClickCreateBroadcast}
+                buttonDownloadData={buttonDownloadData}
+                downloadData={handleClickDownloadData}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1154,12 +1162,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                          ? classes.table3
-                          : classes.table
+                            ? classes.table3
+                            : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                      // aria-label="enhanced table"
+                    // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}
@@ -1748,6 +1756,7 @@ export default function GeneralTable(props) {
                                         </Button>
                                       </Tooltip>
                                     )}
+
                                     {buttonBookingMeeting && row.link_meeting !== null && (
                                       <Tooltip title={buttonBookingMeeting.text}>
                                         <Button className={`${classes.handleButton} ${classes.handleButtonMeeting}`}>
