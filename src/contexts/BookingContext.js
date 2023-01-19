@@ -36,6 +36,15 @@ export const BookingProvider = ({ children }) => {
         return false;
       });
   };
+  const downloadData = async () => {
+    return axiosInstance
+      .post(apiEndpoints.download_data, { outputtype: 'RawJson' })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200)
+          return response.data.url;
+        else return '';
+      });
+  };
 
   const reviewBooking = async (id, action, note) => {
     return axiosInstance
@@ -88,7 +97,7 @@ export const BookingProvider = ({ children }) => {
         return false;
       });
   };
-  const UpdateTimeSlot = async (case_number , time_slot) => {
+  const UpdateTimeSlot = async (case_number, time_slot) => {
     return axiosInstance
       .post(apiEndpoints.update_new_time_slot, {
         outputtype: 'RawJson',
@@ -258,7 +267,8 @@ export const BookingProvider = ({ children }) => {
         getLitsNote,
         getFullCalendar,
         getCounsellingByEvent,
-        UpdateTimeSlot
+        UpdateTimeSlot,
+        downloadData
       }}
     >
       {children}

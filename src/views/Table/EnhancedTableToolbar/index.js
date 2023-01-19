@@ -107,6 +107,8 @@ const EnhancedTableToolbar = (props) => {
     buttondeactiveDepartment,
     buttonCreateBroadcast,
     createBroadcast,
+    buttonDownloadData,
+    downloadData
   } = props;
 
   const filterRef = useRef(null);
@@ -196,10 +198,10 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const [dataDepartmentList, setDepartment] = React.useState();
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   useEffect(() => {
     setFilter({
@@ -466,6 +468,14 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createBroadcast}>
                       {buttonCreateBroadcast.text}
+                    </Button>
+                  </Grid>
+                )}
+
+                {buttonDownloadData && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={downloadData}>
+                      {buttonDownloadData?.text}
                     </Button>
                   </Grid>
                 )}
