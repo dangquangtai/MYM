@@ -44,6 +44,8 @@ export const initMentorData = {
   counselling_topic3_id: [],
   order_number: 0,
   is_active: true,
+  file_path: '',
+  dob: '',
 };
 export const initPartnerData = {
   id: '',

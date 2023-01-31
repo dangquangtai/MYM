@@ -40,6 +40,7 @@ import useStyles from './../../../utils/classes';
 import FirebaseUpload from './../../FloatingMenu/FirebaseUpload/index';
 import useConfirmPopup from './../../../hooks/useConfirmPopup';
 import { format as formatDate } from 'date-fns';
+import { LocalLibraryOutlined } from '@material-ui/icons';
 import {
   AccountCircleOutlined as AccountCircleOutlinedIcon,
   ImageOutlined as ImageIcon,
@@ -430,6 +431,7 @@ const MentorModal = () => {
                     />
                   )}
                   {mentorData?.id && (
+                 
                     <Tab
                       className={classes.unUpperCase}
                       label={
@@ -441,7 +443,22 @@ const MentorModal = () => {
                       value={4}
                       {...a11yProps(4)}
                     />
+                    
                   )}
+                  {mentorData?.id &&(
+                     <Tab
+                      className={classes.unUpperCase}
+                      label={
+                        <Typography className={classes.tabLabels} component="span" variant="subtitle1">
+                          <LocalLibraryOutlined className={`${tabIndex === 5 ? classes.tabActiveIcon : ''}`} />
+                          CV
+                        </Typography>
+                      }
+                      value={5}
+                      {...a11yProps(5)}
+                    />
+                  )}
+                  
                 </Tabs>
               </Grid>
               <Grid item xs={12}>
@@ -601,6 +618,22 @@ const MentorModal = () => {
                                   </MenuItem>
                                 ))}
                               </Select>
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Ngày sinh:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                            <TextField
+                                fullWidth
+                              
+                                variant="outlined"
+                                disabled
+                                value={mentorData?.dob}
+                                className={classes.inputField}
+                               
+                              />
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -1199,6 +1232,7 @@ const MentorModal = () => {
                   </TabPanel>
                 )}
                 {mentorData?.id && (
+                  <>
                   <TabPanel value={tabIndex} index={4}>
                     <Grid container spacing={1}>
                       <Grid item lg={10} md={12} xs={12}>
@@ -1249,6 +1283,26 @@ const MentorModal = () => {
                       </Grid>
                     </Grid>
                   </TabPanel>
+                  <TabPanel value={tabIndex} index={5}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={12} md={12} xs={12}>
+                        <div className={classes.tabItem}>
+                          <div className={classes.tabItemTitle}>
+                            <div className={classes.tabItemLabel}>
+                             <LocalLibraryOutlined/>
+                              <span>CV</span>
+                            </div>
+                          </div>
+                          <div className={classes.tabItemBody}>
+                                <object width="100%" height="600" data={mentorData.file_path} type="application/pdf">
+                                  {' '}
+                                </object>
+                          </div>
+                        </div>
+                      </Grid>
+                    </Grid>
+                  </TabPanel>
+                  </>
                 )}
               </Grid>
             </Grid>
