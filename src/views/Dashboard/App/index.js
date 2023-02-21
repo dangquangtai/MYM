@@ -68,32 +68,32 @@ const App = () => {
   const handleAppClick = (app) => {
     dispatch({ type: SELECTED_APP_CHANGE, app });
   };
-  
+
   return (
     <>
-    <DetailDocumentDialog/>
-    <Grid container justifyContent="center" alignItems="center">
-      <Grid item xs={12} sm={12} md={12} lg={12}>
-        <Typography variant="h2" className={classes.margin}>
-          Meet Your Mentor App Center
-        </Typography>
-        <Grid container spacing={gridSpacing} justifyContent="center" alignItems="center">
-          {apps.map((app) => (
-            <Grid key={app.app_code} item lg={3} sm={6} xs={12}>
-              <RouterLink className={classes.link} to="/dashboard/default" onClick={() => handleAppClick(app)}>
-                {/* <AppCard
+      <DetailDocumentDialog />
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Typography variant="h2" className={classes.margin}>
+            Meet Your Mentor App Center
+          </Typography>
+          <Grid container spacing={gridSpacing} alignItems="center">
+            {apps.map((app) => (
+              <Grid key={app.app_code} item lg={3} sm={6} xs={12}>
+                <RouterLink className={classes.link} to="/dashboard/default" onClick={() => handleAppClick(app)}>
+                  {/* <AppCard
                   title={app.app_name}
                   // description={app.app_description}
                   image={app.icon}
                   color={app.color}
                 /> */}
-                <HoverCard title={app.app_name} image={app.icon} color={app.color} />
-              </RouterLink>
-            </Grid>
-          ))}
+                  <HoverCard title={app.app_name} image={app.icon} color={app.color} />
+                </RouterLink>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
     </>
   );
 };

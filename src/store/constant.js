@@ -324,6 +324,16 @@ export const apiEndpoints = {
   update_broadcast: '/Primary/?FlowAlias=bs_api_broadcast_update_broadcast&action=api',
   get_category_and_channel: '/Primary/?FlowAlias=bs_api_broadcast_get_category_and_channel&action=api',
   update_new_time_slot: '/Primary/?FlowAlias=bs_api_counselling_update_new_timeslot_meeting&action=api',
+
+  // News
+  get_news_list: '/Primary/?FlowAlias=bs_api_news_get_news_list_active_by_page&action=api',
+  get_inactive_news_list: '/Primary/?FlowAlias=bs_api_news_get_news_list_inactive_by_page&action=api',
+  get_news_detail: '/Primary/?FlowAlias=bs_api_news_get_news_detail_by_id&action=api',
+  create_news: '/Primary/?FlowAlias=bs_api_news_create_news&action=api',
+  update_news: '/Primary/?FlowAlias=bs_api_news_update_news&action=api',
+  get_category: '/Primary/?FlowAlias=bs_api_news_get_category&action=api',
+  set_active_news: '/Primary/?FlowAlias=bs_api_news_set_active_news&action=api',
+  set_featured_news: '/Primary/?FlowAlias=bs_api_news_set_featured_news&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -426,20 +436,16 @@ export const fileCategoryActions = {
 export const fileTypeActions = {
   active_list: 'MYM_DOCUMENT_HOME_OPEN_FILE_TYPE_LIST',
 };
-
 export const collaborationActions = {
   process_list: 'MYM_SHARE_HOME_OPEN_COLLABORATOR_REGISTRATION_LIST',
   deprocess_list: 'MYM_SHARE_HOME_OPEN_REJECT_COLLABORATOR_REGISTRATION_LIST',
 };
-
 export const notificationActions = {
   active_list: 'MYM_NOTIFICATION_HOME_OPEN_CATEGORY_LIST',
 };
-
 export const notificationMessageActions = {
   active_list: 'MYM_NOTIFICATION_HOME_OPEN_MESSAGE_LIST',
 };
-
 export const orderActions = {
   booking_list: 'MYM_SALES_HOME_OPEN_COUNSELLING_ORDER_LIST',
   pending_booking_list: 'MYM_SALES_HOME_COUNSELING_ORDER_PENDING_LIST',
@@ -451,13 +457,15 @@ export const orderActions = {
   pending_prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_ORDER_PENDINGLIST',
   draft_prepaid_list: 'MYM_SALES_HOME_OPEN_PREPAIDCARD_ORDER_DRAFT_LIST',
 };
-
 export const counsellingPriceActions = {
   active_list: 'MYM_SALES_HOME_OPEN_PRICE_LIST',
 };
-
 export const broadcastActions = {
   active_list: 'MYM_BROADCAST_HOME_OPEN_BROADCAST_LIST',
+};
+export const newsActions = {
+  active_list: 'MYM_SITE_HOME_OPEN_NEWS_LIST',
+  inactive_list: 'MYM_SITE_HOME_OPEN_INACTIVE_NEWS_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -550,11 +558,11 @@ export const view = {
       note: 'MYM_BOOKING_COUNSELING_NOTE',
       meeting: 'MYM_BOOKING_COUNSELING_MEETING',
       cancel: 'MYM_BOOKING_COUNSELING_CANCEL_COUNSELLING',
-      download: 'MYM_BOOKING_HOME_DOWNLOAD_MENU_BUTTON'
+      download: 'MYM_BOOKING_HOME_DOWNLOAD_MENU_BUTTON',
     },
     detail: {
       save: 'MYM_BOOKING_COUNSELING_SAVE_FORM_BUTTON',
-      change_timeslot: 'MYM_BOOKING_HOME_CHANGE_TIMESLOT_FORM_BUTTON'
+      change_timeslot: 'MYM_BOOKING_HOME_CHANGE_TIMESLOT_FORM_BUTTON',
     },
   },
   batch: {
@@ -697,6 +705,14 @@ export const view = {
     },
     detail: {
       save: 'MYM_BROADCAST_HOME_BROADCAST_SAVE_FORM_BUTTON',
+    },
+  },
+  news: {
+    list: {
+      create: 'MYM_SITE_HOME_NEWS_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SITE_HOME_NEWS_SAVE_FORM_BUTTON',
     },
   },
 };

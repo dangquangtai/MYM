@@ -35,7 +35,7 @@ import {
   counsellingPriceActions,
   departmentDeactiveActions,
   broadcastActions,
-  bookingDashboardActions,
+  newsActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -67,6 +67,7 @@ import FileTypeWrapper from './../../Document/FileType/index';
 import DepartmentListWrapper from './../../DepartmentList/index';
 import BroadcastWrapper from './../../Broadcast/Broadcast/index';
 import { Dashboard } from '@material-ui/icons';
+import NewsWrapper from './../../News/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -103,8 +104,7 @@ const Default = () => {
   const availableCounsellingPriceEndpoint = Object.values(counsellingPriceActions);
   const availableDepartmentDeactiveEndpoint = Object.values(departmentDeactiveActions);
   const availableBroadcastEndpoint = Object.values(broadcastActions);
-
-
+  const availableNewsEndpoint = Object.values(newsActions);
 
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
@@ -112,7 +112,9 @@ const Default = () => {
 
   return (
     <Grid container spacing={gridSpacing}>
-      {(!getUrlByAction(selectedFolder) && (selectedFolder?.action !== counsellingActions.calendar) && (selectedFolder?.action !== counsellingActions.dashboard)) && <Summnary />}
+      {!getUrlByAction(selectedFolder) &&
+        selectedFolder?.action !== counsellingActions.calendar &&
+        selectedFolder?.action !== counsellingActions.dashboard && <Summnary />}
       {selectedFolder?.action === counsellingActions.calendar && <Calendar />}
       {selectedFolder?.action === counsellingActions.dashboard && <BookingDashboard />}
       {getUrlByAction(selectedFolder) && (
@@ -145,7 +147,7 @@ const Default = () => {
           {availableCounsellingPriceEndpoint.includes(selectedFolder?.action) && <CounsellingPriceWrapper />}
           {availableDepartmentDeactiveEndpoint.includes(selectedFolder?.action) && <DepartmentListWrapper />}
           {availableBroadcastEndpoint.includes(selectedFolder?.action) && <BroadcastWrapper />}
-
+          {availableNewsEndpoint.includes(selectedFolder?.action) && <NewsWrapper />}
         </Grid>
       )}
     </Grid>

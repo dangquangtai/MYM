@@ -38,6 +38,7 @@ import { DocumentProvider } from '../contexts/DocumentContext.js';
 import { NotificationProvider } from '../contexts/NotificationContex.js';
 import { OrderProvider } from '../contexts/OrderContext';
 import { SaleProvider } from '../contexts/SaleContext';
+import { SiteProvider } from './../contexts/SiteContext';
 
 function loadLocaleData(locale) {
   switch (locale) {
@@ -98,14 +99,13 @@ const App = () => {
                                                               <CollaboratorProvider>
                                                                 <NotificationProvider>
                                                                   <SaleProvider>
-                                                                  <OrderProvider>
-                                                                  <Routes />
-                                                                  <Snackbar />
-                                                                  </OrderProvider>
-
-                                                               
+                                                                    <OrderProvider>
+                                                                      <SiteProvider>
+                                                                        <Routes />
+                                                                        <Snackbar />
+                                                                      </SiteProvider>
+                                                                    </OrderProvider>
                                                                   </SaleProvider>
-
                                                                 </NotificationProvider>
                                                               </CollaboratorProvider>
                                                             </DocumentProvider>

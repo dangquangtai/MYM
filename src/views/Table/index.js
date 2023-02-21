@@ -57,6 +57,7 @@ import useNotification from './../../hooks/useNotification';
 import useOrder from './../../hooks/useOrder';
 import useSale from '../../hooks/useSale';
 import useShare from './../../hooks/useShare';
+import useSite from './../../hooks/useSite';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -215,6 +216,7 @@ export default function GeneralTable(props) {
   const buttonCreateCounsellingPrice = menuButtons.find((button) => button.name === view.counsellingPrice.list.create);
 
   const buttonCreateBroadcast = menuButtons.find((button) => button.name === view.broadcast.list.create);
+  const buttonCreateNews = menuButtons.find((button) => button.name === view.news.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -315,6 +317,8 @@ export default function GeneralTable(props) {
 
   const { getBroadcastDetail } = useShare();
 
+  const { getNewsDetail } = useSite();
+
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
       fetchDocument(url, documentType, selectedProject.id, selectedFolder.id);
@@ -362,7 +366,7 @@ export default function GeneralTable(props) {
   }, []);
 
   useEffect(() => {
-    if (selectedDocument === null && documents.length > 0) {
+    if (selectedDocument === null && documents?.length > 0) {
       reloadCurrentDocuments(page);
     }
     if (changeDeptReload === 0) {
@@ -572,6 +576,10 @@ export default function GeneralTable(props) {
       detailDocument = await getBroadcastDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, broadcastDocument: true });
+    } else if (documentType === 'news') {
+      detailDocument = await getNewsDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, newsDocument: true });
     }
   };
 
@@ -738,7 +746,7 @@ export default function GeneralTable(props) {
     } finally {
       reloadCurrentDocuments();
     }
-  }
+  };
   const handleRemoveAccountToRole = async (email_address) => {
     try {
       await removeUser(process_role_code_selected, email_address);
@@ -878,7 +886,7 @@ export default function GeneralTable(props) {
   };
   const handleClickDownloadData = async () => {
     const url = await downloadData();
-    if (url === '') return
+    if (url === '') return;
     downloadFile(url);
   };
 
@@ -958,6 +966,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, broadcastDocument: true });
   };
 
+  const handleClickCreateNews = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, newsDocument: true });
+  };
+
   const downloadFile = (url) => {
     const link = document.createElement('a');
     link.href = url;
@@ -1015,7 +1028,7 @@ export default function GeneralTable(props) {
     });
   };
 
-  const clickSuccess = () => { };
+  const clickSuccess = () => {};
 
   return (
     <React.Fragment>
@@ -1132,6 +1145,8 @@ export default function GeneralTable(props) {
                 createBroadcast={handleClickCreateBroadcast}
                 buttonDownloadData={buttonDownloadData}
                 downloadData={handleClickDownloadData}
+                buttonCreateNews={buttonCreateNews}
+                createNews={handleClickCreateNews}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1162,12 +1177,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                            ? classes.table3
-                            : classes.table
+                          ? classes.table3
+                          : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                    // aria-label="enhanced table"
+                      // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}

@@ -42,7 +42,6 @@ const EnhancedTableToolbar = (props) => {
     createNewRole,
     buttonSelectDepartment,
     buttonSyncDepartment,
-
     buttonCreatePodcast,
     createPodcast,
     buttonCreateEpisode,
@@ -70,19 +69,14 @@ const EnhancedTableToolbar = (props) => {
     buttonAssignCard,
     assignCard,
     handleSyncRole,
-
     department_code_selected,
-
     handleAssignAccount,
     handleUpdateDepartment,
     setSelectedRoleTemplate,
     buttonCreateProcessRole,
     buttonUpdateProcessRole,
-
     createNewProcessRole,
-
     handleClickProcessRoleDetail,
-
     handleClickUpdateUserProcessRole,
     handleClickUpdateDeptProcessRole,
     userList,
@@ -96,7 +90,6 @@ const EnhancedTableToolbar = (props) => {
     buttonAddAccountRole,
     buttonSyncRole,
     handleSyncProcessRole,
-
     buttonCreateNotificationCategory,
     createNotificationCategory,
     buttonCreateNotificationMessage,
@@ -108,7 +101,9 @@ const EnhancedTableToolbar = (props) => {
     buttonCreateBroadcast,
     createBroadcast,
     buttonDownloadData,
-    downloadData
+    downloadData,
+    buttonCreateNews,
+    createNews,
   } = props;
 
   const filterRef = useRef(null);
@@ -198,10 +193,10 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   const [dataDepartmentList, setDepartment] = React.useState();
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setFilter({
@@ -476,6 +471,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={downloadData}>
                       {buttonDownloadData?.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateNews && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNews}>
+                      {buttonCreateNews?.text}
                     </Button>
                   </Grid>
                 )}

@@ -28,6 +28,7 @@ import {
   counsellingPriceActions,
   departmentDeactiveActions,
   broadcastActions,
+  newsActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -200,7 +201,12 @@ export function getUrlByAction(selectedFolder) {
     case broadcastActions.active_list: {
       return apiEndpoints.get_broadcast_list;
     }
-
+    case newsActions.active_list: {
+      return apiEndpoints.get_news_list;
+    }
+    case newsActions.inactive_list: {
+      return apiEndpoints.get_inactive_news_list;
+    }
     default: {
       return '';
     }
