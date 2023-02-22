@@ -217,6 +217,7 @@ export default function GeneralTable(props) {
 
   const buttonCreateBroadcast = menuButtons.find((button) => button.name === view.broadcast.list.create);
   const buttonCreateNews = menuButtons.find((button) => button.name === view.news.list.create);
+  const buttonCreateLandingPage = menuButtons.find((button) => button.name === view.landingPage.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -317,7 +318,7 @@ export default function GeneralTable(props) {
 
   const { getBroadcastDetail } = useShare();
 
-  const { getNewsDetail } = useSite();
+  const { getNewsDetail, getLandingPageDetail } = useSite();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -580,6 +581,10 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsDocument: true });
+    } else if (documentType === 'landingPage') {
+      detailDocument = await getLandingPageDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, landingPageDocument: true });
     }
   };
 
@@ -971,6 +976,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, newsDocument: true });
   };
 
+  const handleClickCreateLandingPage = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, landingPageDocument: true });
+  };
+
   const downloadFile = (url) => {
     const link = document.createElement('a');
     link.href = url;
@@ -1147,6 +1157,8 @@ export default function GeneralTable(props) {
                 downloadData={handleClickDownloadData}
                 buttonCreateNews={buttonCreateNews}
                 createNews={handleClickCreateNews}
+                buttonCreateLandingPage={buttonCreateLandingPage}
+                createLandingPage={handleClickCreateLandingPage}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (

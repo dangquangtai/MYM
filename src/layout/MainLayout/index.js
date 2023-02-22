@@ -46,6 +46,8 @@ import FileTypeModal from './../../views/Document/FileType/Detail/index';
 import DepartmentListModal from '../../views/DepartmentList/Detail';
 import BroadcastModal from './../../views/Broadcast/Broadcast/Detail/index';
 import NewsModal from './../../views/Site/News/Detail/index';
+import LandingPageModal from './../../views/Site/LandingPage/Detail/index';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -182,6 +184,8 @@ const MainLayout = ({ children }) => {
         return <BroadcastModal />;
       case 'news':
         return <NewsModal />;
+      case 'landingPage':
+        return <LandingPageModal />;
     }
   };
 
