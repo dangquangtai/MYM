@@ -106,6 +106,8 @@ const EnhancedTableToolbar = (props) => {
     createNews,
     buttonCreateLandingPage,
     createLandingPage,
+    buttonCreateNewsCategory,
+    createNewsCategory,
   } = props;
 
   const filterRef = useRef(null);
@@ -487,6 +489,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createLandingPage}>
                       {buttonCreateLandingPage?.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateNewsCategory && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNewsCategory}>
+                      {buttonCreateNewsCategory?.text}
                     </Button>
                   </Grid>
                 )}

@@ -218,6 +218,7 @@ export default function GeneralTable(props) {
   const buttonCreateBroadcast = menuButtons.find((button) => button.name === view.broadcast.list.create);
   const buttonCreateNews = menuButtons.find((button) => button.name === view.news.list.create);
   const buttonCreateLandingPage = menuButtons.find((button) => button.name === view.landingPage.list.create);
+  const buttonCreateNewsCategory = menuButtons.find((button) => button.name === view.newsCategory.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -318,7 +319,7 @@ export default function GeneralTable(props) {
 
   const { getBroadcastDetail } = useShare();
 
-  const { getNewsDetail, getLandingPageDetail } = useSite();
+  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail } = useSite();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -585,6 +586,10 @@ export default function GeneralTable(props) {
       detailDocument = await getLandingPageDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, landingPageDocument: true });
+    } else if (documentType === 'newsCategory') {
+      detailDocument = await getNewsCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
     }
   };
 
@@ -981,6 +986,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, landingPageDocument: true });
   };
 
+  const handleClickCreateNewsCategory = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
+  };
+
   const downloadFile = (url) => {
     const link = document.createElement('a');
     link.href = url;
@@ -1159,6 +1169,8 @@ export default function GeneralTable(props) {
                 createNews={handleClickCreateNews}
                 buttonCreateLandingPage={buttonCreateLandingPage}
                 createLandingPage={handleClickCreateLandingPage}
+                buttonCreateNewsCategory={buttonCreateNewsCategory}
+                createNewsCategory={handleClickCreateNewsCategory}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1515,6 +1527,20 @@ export default function GeneralTable(props) {
                                   </>
                                 </TableCell>
                               )}
+                              {displayOptions.category_code && (
+                                <TableCell
+                                  align="left"
+                                  className={classes.tableItemName}
+                                  onClick={(event) => openDetailDocument(event, row)}
+                                >
+                                  {row.category_code || ''}
+                                </TableCell>
+                              )}
+                              {displayOptions.category_name && (
+                                <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
+                                  {row.category_name || ''}{' '}
+                                </TableCell>
+                              )}
                               {displayOptions.approval_role && (
                                 <TableCell align="left">
                                   <>
@@ -1581,20 +1607,6 @@ export default function GeneralTable(props) {
                                   ) : (
                                     <Chip color="primary" label="Chưa hoành thành" />
                                   )}
-                                </TableCell>
-                              )}
-                              {displayOptions.category_code && (
-                                <TableCell
-                                  align="left"
-                                  className={classes.tableItemName}
-                                  onClick={(event) => openDetailDocument(event, row)}
-                                >
-                                  {row.category_code || ''}
-                                </TableCell>
-                              )}
-                              {displayOptions.category_name && (
-                                <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
-                                  {row.category_name || ''}{' '}
                                 </TableCell>
                               )}
                               {displayOptions.is_used && (

@@ -55,6 +55,9 @@ export const headCells = [
     label: 'Hiển thị trong danh sách chọn',
     maxWidth: 150,
   },
+  { id: 'category_code', numeric: false, disablePadding: false, label: 'Mã danh mục', maxWidth: 150 },
+  { id: 'category_name', numeric: false, disablePadding: false, label: 'Tên danh mục', maxWidth: 150 },
+
   { id: 'active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 100 },
   { id: 'episodes', numeric: false, disablePadding: false, label: 'Số tập', maxWidth: 100 },
   { id: 'duration', numeric: false, disablePadding: false, label: 'Thời gian', maxWidth: 100 },
@@ -65,8 +68,6 @@ export const headCells = [
   { id: 'is_used', numeric: false, disablePadding: false, label: 'Trạng thái', maxWidth: 100 },
   { id: 'is_active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 150 },
   { id: 'is_featured', numeric: false, disablePadding: false, label: 'Nổi bật', maxWidth: 150 },
-  { id: 'category_code', numeric: false, disablePadding: false, label: 'Mã', maxWidth: 150 },
-  { id: 'category_name', numeric: false, disablePadding: false, label: 'Tên danh mục', maxWidth: 150 },
   { id: 'order_code', numeric: false, disablePadding: false, label: 'Mã order', maxWidth: 150 },
   { id: 'order_title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },
   { id: 'payment_type_display', numeric: false, disablePadding: false, label: 'Hình thức thanh toán', maxWidth: 150 },

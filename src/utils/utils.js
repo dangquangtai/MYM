@@ -30,6 +30,7 @@ import {
   broadcastActions,
   newsActions,
   landingPageActions,
+  newsCategoryActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -213,6 +214,9 @@ export function getUrlByAction(selectedFolder) {
     }
     case landingPageActions.inactive_list: {
       return apiEndpoints.get_inactive_landing_page_list;
+    }
+    case newsCategoryActions.active_list: {
+      return apiEndpoints.get_news_category_list;
     }
     default: {
       return '';

@@ -77,6 +77,41 @@ export const SiteProvider = ({ children }) => {
     });
   };
 
+  // News Category
+  const getNewsCategoryDetail = async (id) => {
+    return axiosInstance
+
+      .post(apiEndpoints.get_news_category_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: newsCategory, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return newsCategory;
+        } else return {};
+      });
+  };
+
+  const createNewsCategory = async (data) => {
+    return axiosInstance
+      .post(apiEndpoints.create_news_category, { outputtype: 'RawJson', ...data })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
+
+  const updateNewsCategory = async (data) => {
+    return axiosInstance
+      .post(apiEndpoints.update_news_category, { outputtype: 'RawJson', ...data })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
+
   return (
     <SiteContext.Provider
       value={{
@@ -87,6 +122,9 @@ export const SiteProvider = ({ children }) => {
         getLandingPageDetail,
         createLandingPage,
         updateLandingPage,
+        getNewsCategoryDetail,
+        createNewsCategory,
+        updateNewsCategory,
       }}
     >
       {children}

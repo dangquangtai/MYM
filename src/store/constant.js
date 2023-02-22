@@ -342,6 +342,13 @@ export const apiEndpoints = {
   create_landing_page: '/Primary/?FlowAlias=bs_api_site_create_landing_page&action=api',
   update_landing_page: '/Primary/?FlowAlias=bs_api_site_update_landing_page&action=api',
   set_active_landing_page: '/Primary/?FlowAlias=bs_api_site_set_active_landing_page&action=api',
+
+  // News Category
+  get_news_category_list: '/Primary/?FlowAlias=bs_api_news_get_news_category_list_by_page&action=api',
+  get_news_category_detail: '/Primary/?FlowAlias=bs_api_news_get_news_category_detail_by_id&action=api',
+  create_news_category: '/Primary/?FlowAlias=bs_api_news_create_news_category&action=api',
+  update_news_category: '/Primary/?FlowAlias=bs_api_news_update_news_category&action=api',
+  set_active_news_category: '/Primary/?FlowAlias=bs_api_news_set_active_news_category&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -478,6 +485,9 @@ export const newsActions = {
 export const landingPageActions = {
   active_list: 'MYM_SITE_HOME_OPEN_LANDING_PAGE_LIST',
   inactive_list: 'MYM_SITE_HOME_OPEN_INACTIVE_LANDING_PAGE_LIST',
+};
+export const newsCategoryActions = {
+  active_list: 'MYM_SITE_HOME_OPEN_NEWS_CATEGORY_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -733,6 +743,14 @@ export const view = {
     },
     detail: {
       save: 'MYM_SITE_HOME_LANDING_PAGE_SAVE_FORM_BUTTON',
+    },
+  },
+  newsCategory: {
+    list: {
+      create: 'MYM_SITE_HOME_NEWS_CATEGORY_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SITE_HOME_NEWS_CATEGORY_SAVE_FORM_BUTTON',
     },
   },
 };
