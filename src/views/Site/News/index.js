@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Table from '../Table';
-import { getUrlByAction } from '../../utils/utils';
-import { DOCUMENT_CHANGE } from '../../store/actions';
+import Table from '../../Table';
+import { getUrlByAction } from '../../../utils/utils';
+import { DOCUMENT_CHANGE } from '../../../store/actions';
 // import axiosInstance from '../../services/axios';
-import { apiEndpoints } from './../../store/constant';
+import { apiEndpoints } from '../../../store/constant';
 
 const NewsWrapper = () => {
   const dispatch = useDispatch();

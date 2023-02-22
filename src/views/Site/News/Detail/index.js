@@ -24,13 +24,16 @@ import {
   LibraryMusicOutlined as LibraryMusicOutlinedIcon,
 } from '@material-ui/icons';
 import { Editor } from '@tinymce/tinymce-react';
-import useStyles from './../../../utils/classes';
-import useView from './../../../hooks/useView';
-import { view, tinyMCESecretKey } from './../../../store/constant';
-import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE } from '../../../store/actions.js';
-import Alert from './../../../component/Alert/index';
-import FirebaseUpload from './../../FloatingMenu/FirebaseUpload/index';
-import useSite from './../../../hooks/useSite';
+import { storage } from '../../../../services/firebase';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import useStyles from './../../../../utils/classes';
+import useView from './../../../../hooks/useView';
+import useSite from './../../../../hooks/useSite';
+import { view } from '../../../../store/constant.js';
+import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE } from '../../../../store/actions.js';
+import Alert from './../../../../component/Alert/index';
+import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
+import { tinyMCESecretKey } from './../../../../store/constant';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -452,9 +455,44 @@ const NewsModal = () => {
                                 init={{
                                   height: 500,
                                   menubar: false,
-                                  plugins: 'emoticons',
-                                  toolbar: 'undo redo | ' + 'emoticons',
-                                  content_style: 'body { font-family:Roboto,sans-serif; font-size:15px }',
+                                  plugins: [
+                                    'advlist autolink lists link image charmap print preview anchor',
+                                    'searchreplace visualblocks code fullscreen',
+                                    'insertdatetime media table paste code help wordcount',
+                                  ],
+                                  toolbar:
+                                    'undo redo | formatselect | ' +
+                                    'image |' +
+                                    'bold italic backcolor | alignleft aligncenter ' +
+                                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                                    'removeformat | fullscreen preview | help',
+                                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                                  file_picker_types: 'image',
+                                  image_title: false,
+                                  image_description: false,
+                                  automatic_uploads: true,
+                                  images_upload_handler: async function (blobInfo, success, failure) {
+                                    const newName = `${blobInfo.filename()}-${new Date().getTime()}`;
+                                    const file = new File([blobInfo.blob()], newName, { type: blobInfo.blob().type });
+                                    const storageRef = ref(storage, `News/Upload/${file.name}`);
+                                    const uploadTask = uploadBytesResumable(storageRef, file);
+                                    uploadTask.on(
+                                      'state_changed',
+                                      (snapshot) => {
+                                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                        console.log('Upload is ' + progress + '% done');
+                                      },
+                                      (error) => {
+                                        console.log(error);
+                                        failure('');
+                                      },
+                                      () => {
+                                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                                          success(downloadURL);
+                                        });
+                                      }
+                                    );
+                                  },
                                 }}
                               />
                             </Grid>

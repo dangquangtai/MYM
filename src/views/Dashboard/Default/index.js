@@ -66,8 +66,7 @@ import CounsellingPriceWrapper from '../../Sale/Price';
 import FileTypeWrapper from './../../Document/FileType/index';
 import DepartmentListWrapper from './../../DepartmentList/index';
 import BroadcastWrapper from './../../Broadcast/Broadcast/index';
-import { Dashboard } from '@material-ui/icons';
-import NewsWrapper from './../../News/index';
+import NewsWrapper from '../../Site/News/index.js';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);

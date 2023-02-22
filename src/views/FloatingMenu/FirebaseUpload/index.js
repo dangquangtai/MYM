@@ -3,11 +3,9 @@ import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import React from 'react';
 import Dropzone, { useDropzone } from 'react-dropzone';
-import api from '../../../services/api';
-import { apiDomain, apiEndpoints, gridSpacing } from '../../../store/constant';
+import { gridSpacing } from '../../../store/constant';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../services/firebase.js';
-import { vietnameseToSlug } from '../../../utils/utils.js';
 
 function getModalStyle() {
   return {

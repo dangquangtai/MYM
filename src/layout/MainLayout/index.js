@@ -45,7 +45,7 @@ import PriceModal from '../../views/Sale/Price/Detail';
 import FileTypeModal from './../../views/Document/FileType/Detail/index';
 import DepartmentListModal from '../../views/DepartmentList/Detail';
 import BroadcastModal from './../../views/Broadcast/Broadcast/Detail/index';
-import NewsModal from './../../views/News/Detail/index';
+import NewsModal from './../../views/Site/News/Detail/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
