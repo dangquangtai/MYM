@@ -108,6 +108,8 @@ const EnhancedTableToolbar = (props) => {
     createLandingPage,
     buttonCreateNewsCategory,
     createNewsCategory,
+    buttonCreateBanner,
+    createBanner,
   } = props;
 
   const filterRef = useRef(null);
@@ -197,10 +199,10 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const [dataDepartmentList, setDepartment] = React.useState();
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   useEffect(() => {
     setFilter({
@@ -496,6 +498,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createNewsCategory}>
                       {buttonCreateNewsCategory?.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateBanner && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createBanner}>
+                      {buttonCreateBanner?.text}
                     </Button>
                   </Grid>
                 )}

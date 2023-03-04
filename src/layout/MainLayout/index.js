@@ -48,6 +48,7 @@ import BroadcastModal from './../../views/Broadcast/Broadcast/Detail/index';
 import NewsModal from './../../views/Site/News/Detail/index';
 import LandingPageModal from './../../views/Site/LandingPage/Detail/index';
 import NewsCategoryModal from '../../views/Site/NewCategory/Detail/index.js';
+import BannerModal from '../../views/Website/Banner/Detail';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -189,6 +190,8 @@ const MainLayout = ({ children }) => {
         return <LandingPageModal />;
       case 'newsCategory':
         return <NewsCategoryModal />;
+      case 'banner':
+        return <BannerModal />;
     }
   };
 
