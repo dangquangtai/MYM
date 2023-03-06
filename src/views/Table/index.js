@@ -58,6 +58,7 @@ import useOrder from './../../hooks/useOrder';
 import useSale from '../../hooks/useSale';
 import useShare from './../../hooks/useShare';
 import useSite from './../../hooks/useSite';
+import useBanner from './../../hooks/useBanner';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -221,6 +222,8 @@ export default function GeneralTable(props) {
   const buttonCreateLandingPage = menuButtons.find((button) => button.name === view.landingPage.list.create);
   const buttonCreateNewsCategory = menuButtons.find((button) => button.name === view.newsCategory.list.create);
 
+  const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
+
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [modalType, setModalType] = React.useState('');
@@ -321,6 +324,8 @@ export default function GeneralTable(props) {
   const { getBroadcastDetail } = useShare();
 
   const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail } = useSite();
+
+  const { getBannerDetail } = useBanner();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -591,6 +596,11 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
+    }
+    else if (documentType === 'banner') {
+      detailDocument = await getBannerDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: true });
     }
   };
 
@@ -991,6 +1001,10 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
   };
+  const handleClickCreateBanner = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: true });
+  };
 
   const downloadFile = (url) => {
     const link = document.createElement('a');
@@ -1049,7 +1063,7 @@ export default function GeneralTable(props) {
     });
   };
 
-  const clickSuccess = () => {};
+  const clickSuccess = () => { };
 
   return (
     <React.Fragment>
@@ -1172,6 +1186,8 @@ export default function GeneralTable(props) {
                 createLandingPage={handleClickCreateLandingPage}
                 buttonCreateNewsCategory={buttonCreateNewsCategory}
                 createNewsCategory={handleClickCreateNewsCategory}
+                buttonCreateBanner={buttonCreateBanner}
+                createBanner={handleClickCreateBanner}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1202,12 +1218,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                          ? classes.table3
-                          : classes.table
+                            ? classes.table3
+                            : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                      // aria-label="enhanced table"
+                    // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}

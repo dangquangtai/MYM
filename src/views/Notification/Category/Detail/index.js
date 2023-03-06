@@ -90,9 +90,7 @@ const NotificationCategoryModal = () => {
     text: '',
   });
 
-  // const [mentorListData, setMentorListData] = useState(initMentorListData);
-  const [categories, setCategories] = useState([]);
-  const [listMentor, setListMentor] = useState([]);
+
   const [notificationCategory, setnotificationCategory] = useState(initNotification);
   const [selectednotificationCategory, setselectednotificationCategory] = useState([]);
   const handleCloseDialog = () => {
