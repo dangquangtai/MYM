@@ -14,14 +14,23 @@ import {
   Typography,
   TextField,
   MenuItem,
+  Checkbox,
+  ListItemText,
+  Paper,
+  ListItem,
+  ListItemIcon,
+  List,
+  FormControl,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  AttachFileOutlined,
   DescriptionOutlined as DescriptionOutlinedIcon,
   ImageOutlined as ImageIcon,
-  LibraryMusicOutlined as LibraryMusicOutlinedIcon,
+  PostAddOutlined,
+  InfoOutlined,
 } from '@material-ui/icons';
 import { Editor } from '@tinymce/tinymce-react';
 import { storage } from '../../../../services/firebase';
@@ -34,6 +43,7 @@ import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE } from '../../../../store/actions
 import Alert from './../../../../component/Alert/index';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 import { tinyMCESecretKey } from './../../../../store/constant';
+import Chip from './../../../../component/Chip/index';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -74,11 +84,22 @@ const NewsModal = () => {
   const { newsDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const [categories, setCategories] = useState([]);
-  const { createNews, updateNews, getNewsCategory } = useSite();
+  const { createNews, updateNews, getNewsCategory, searchPublishedNews } = useSite();
   const editorRef = React.useRef(null);
 
-  const [newsData, setNews] = useState({});
+  const [newsData, setNews] = useState({
+    is_active: true,
+    is_featured: false,
+    source_name: '',
+    source_url: '',
+    related_news_id_list: [],
+  });
   const [landingPage, setLandingPage] = useState([]);
+
+  const [relatedNews, setRelatedNews] = useState([]);
+  const [publishedNews, setPublishedNews] = React.useState([]);
+  const [featuredNews, setFeaturedNews] = React.useState([]);
+  const [checkedNews, setCheckedNews] = React.useState([]);
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -93,13 +114,15 @@ const NewsModal = () => {
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleCloseDialog = () => {
-    setNews({});
     setDocumentToDefault();
     dispatch({ type: FLOATING_MENU_CHANGE, newsDocument: false });
   };
 
   const handleChangeTab = (news, newValue) => {
     setTabIndex(newValue);
+    let tmpContent =
+      editorRef.current && editorRef.current.getContent() ? editorRef.current.getContent() : newsData?.content;
+    setNews({ ...newsData, content: tmpContent });
   };
 
   const handleOpenSnackbar = (isOpen, type, text) => {
@@ -112,6 +135,10 @@ const NewsModal = () => {
 
   const setDocumentToDefault = async () => {
     setTabIndex(0);
+    setNews({ is_active: true, is_featured: false });
+    setFeaturedNews([]);
+    setPublishedNews([]);
+    setCheckedNews([]);
     if (editorRef.current) editorRef.current.setContent('');
   };
   const setURL = (image) => {
@@ -142,20 +169,17 @@ const NewsModal = () => {
   };
   const handleSubmitForm = async () => {
     try {
-      let content =
-        editorRef.current && editorRef.current.getContent() ? editorRef.current.getContent() : newsData.content;
+      const data = {
+        ...newsData,
+        content:
+          editorRef.current && editorRef.current.getContent() ? editorRef.current.getContent() : newsData?.content,
+        related_news_id_list: featuredNews ? featuredNews.map((news) => news.id) : [],
+      };
       if (selectedDocument?.id) {
-        await updateNews({
-          ...newsData,
-          content: content,
-        });
+        await updateNews(data);
         handleOpenSnackbar(true, 'success', 'Cập nhật thành công!');
       } else {
-        console.log(editorRef.current.getContent());
-        await createNews({
-          ...newsData,
-          content: content,
-        });
+        await createNews(data);
         handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'news' });
@@ -165,18 +189,88 @@ const NewsModal = () => {
     }
   };
 
+  const _searchPublishedNews = async (event) => {
+    if (event.key !== 'Enter') return;
+    if (!newsData.landing_page_id) return;
+    const publishedNew = await searchPublishedNews(newsData?.id || '', newsData.landing_page_id, event.target.value);
+    // get news not in featuredNews
+    const notInFeaturedNews = publishedNew.filter((news) => !featuredNews.find((fnews) => fnews.id === news.id));
+    setPublishedNews(notInFeaturedNews);
+  };
+
+  function not(a, b) {
+    return a.filter((value) => b.indexOf(value) === -1);
+  }
+
+  function intersection(a, b) {
+    return a.filter(({ id }) => b.find((news) => news.id === id) !== undefined);
+  }
+
+  const handleToggle = (news) => () => {
+    const currentIndex = checkedNews.findIndex((checkedNews) => checkedNews.id === news.id);
+    const newChecked = [...checkedNews];
+
+    if (currentIndex === -1) {
+      newChecked.push(news);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setCheckedNews(newChecked);
+  };
+
+  const SelectedNewList = (news) => (
+    <Paper className={classes.paper}>
+      <List dense component="div" role="list" className={classes.listSelectedNews}>
+        {news?.map((news) => {
+          const labelId = `transfer-list-item-${news.id}-label`;
+          return (
+            <ListItem key={news.id} role="listitem" button onClick={handleToggle(news)}>
+              <ListItemIcon>
+                <Checkbox
+                  checked={checkedNews.findIndex((checkNews) => checkNews.id === news.id) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ 'aria-labelledby': labelId }}
+                />
+              </ListItemIcon>
+              <ListItemText id={labelId} primary={`${news.title}`} />
+            </ListItem>
+          );
+        })}
+        <ListItem />
+      </List>
+    </Paper>
+  );
+
+  const leftChecked = intersection(checkedNews, publishedNews);
+  const rightChecked = intersection(checkedNews, featuredNews);
+
+  const handleCheckedRight = () => {
+    setFeaturedNews(featuredNews.concat(leftChecked));
+    setPublishedNews(not(publishedNews, leftChecked));
+    setCheckedNews(not(checkedNews, leftChecked));
+  };
+
+  const handleCheckedLeft = () => {
+    setPublishedNews(publishedNews.concat(rightChecked));
+    setFeaturedNews(not(featuredNews, rightChecked));
+    setCheckedNews(not(checkedNews, rightChecked));
+  };
+
   useEffect(() => {
     if (!selectedDocument) return;
     setNews({
       ...newsData,
       ...selectedDocument,
     });
+    setFeaturedNews(selectedDocument?.related_news_list);
+    console.log(selectedDocument?.related_news_list);
   }, [selectedDocument]);
 
   useEffect(() => {
     const getCategories = async () => {
       const { newsCategory, landingPage } = await getNewsCategory();
-      console.log(newsCategory, landingPage);
       setCategories(newsCategory);
       setLandingPage(landingPage);
     };
@@ -236,7 +330,7 @@ const NewsModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <DescriptionOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
+                        <InfoOutlined />
                         Chi tiết
                       </Typography>
                     }
@@ -247,12 +341,34 @@ const NewsModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <DescriptionOutlinedIcon className={`${tabIndex === 0 ? classes.tabActiveIcon : ''}`} />
+                        <DescriptionOutlinedIcon />
                         Nội dung
                       </Typography>
                     }
                     value={1}
                     {...a11yProps(1)}
+                  />
+                  <Tab
+                    className={classes.unUpperCase}
+                    label={
+                      <Typography className={classes.tabLabels} component="span" variant="subtitle1">
+                        <PostAddOutlined />
+                        Tin liên quan
+                      </Typography>
+                    }
+                    value={2}
+                    {...a11yProps(2)}
+                  />
+                  <Tab
+                    className={classes.unUpperCase}
+                    label={
+                      <Typography className={classes.tabLabels} component="span" variant="subtitle1">
+                        <AttachFileOutlined />
+                        File đính kèm
+                      </Typography>
+                    }
+                    value={3}
+                    {...a11yProps(3)}
                   />
                 </Tabs>
               </Grid>
@@ -329,8 +445,8 @@ const NewsModal = () => {
                               <TextField
                                 fullWidth
                                 multiline
-                                rows={4}
-                                maxRows={8}
+                                rows={6}
+                                maxRows={10}
                                 name="description"
                                 size="small"
                                 type="text"
@@ -433,6 +549,43 @@ const NewsModal = () => {
                           </Grid>
                         </div>
                       </div>
+                      {/* <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <span>Tin liên quan</span>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={12} md={12} xs={12}>
+                              <TextField
+                                fullWidth
+                                select
+                                multiple
+                                size="small"
+                                variant="outlined"
+                                name="related_news_id_list"
+                                value={newsData.related_news_id_list || []}
+                                onChange={handleChanges}
+                                renderValue={(selected) => (
+                                  <div className={classes.chips}>
+                                    {selected.map((value) => (
+                                      <Chip key={value} label={value} className={classes.chip} />
+                                    ))}
+                                  </div>
+                                )}
+                              >
+                                {relatedNews?.map((option) => (
+                                  <MenuItem key={option.id} value={option.id}>
+                                    <Checkbox checked={newsData?.related_news_id_list.indexOf(option.id) > -1} />
+                                    <ListItemText primary={option.title} />
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div> */}
                     </Grid>
                   </Grid>
                 </TabPanel>
@@ -496,6 +649,85 @@ const NewsModal = () => {
                                 }}
                               />
                             </Grid>
+                          </Grid>
+                        </div>
+                      </div>
+                    </Grid>
+                  </Grid>
+                </TabPanel>
+                <TabPanel value={tabIndex} index={2}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={12} md={12} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <span>Tin liên quan</span>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container spacing={2} alignItems="center">
+                            <Grid item lg={8} xs={12}>
+                              <FormControl variant="outlined" className={classes.formControl}>
+                                <TextField
+                                  // disabled={shouldDisabledView}
+                                  label="Tìm kiếm tin liên quan"
+                                  variant="outlined"
+                                  onKeyDown={_searchPublishedNews}
+                                />
+                              </FormControl>
+                            </Grid>
+                            <Grid item lg={12} md={12} xs={12}>
+                              <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
+                                <Grid item lg={5}>
+                                  {SelectedNewList(publishedNews)}
+                                </Grid>
+                                <Grid item>
+                                  <Grid container direction="column" alignItems="center">
+                                    <Button
+                                      variant="outlined"
+                                      size="small"
+                                      className={classes.button}
+                                      onClick={handleCheckedRight}
+                                      disabled={leftChecked.length === 0}
+                                      aria-label="move selected right"
+                                    >
+                                      &gt;
+                                    </Button>
+                                    <Button
+                                      variant="outlined"
+                                      size="small"
+                                      className={classes.button}
+                                      onClick={handleCheckedLeft}
+                                      disabled={rightChecked.length === 0}
+                                      aria-label="move selected left"
+                                    >
+                                      &lt;
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                                <Grid item lg={5}>
+                                  {SelectedNewList(featuredNews)}
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div>
+                    </Grid>
+                  </Grid>
+                </TabPanel>
+                <TabPanel value={tabIndex} index={3}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={12} md={12} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <span>File đính kèm</span>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container spacing={1}>
+                            <Grid item xs={12}></Grid>
                           </Grid>
                         </div>
                       </div>

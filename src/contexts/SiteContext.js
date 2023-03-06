@@ -112,6 +112,17 @@ export const SiteProvider = ({ children }) => {
       });
   };
 
+  const searchPublishedNews = async (id, landing_page_id, search_text) => {
+    return axiosInstance
+      .post(apiEndpoints.search_published_news, { outputtype: 'RawJson', id, landing_page_id, search_text })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list: news } = response.data;
+          return news;
+        } else return [];
+      });
+  };
+
   return (
     <SiteContext.Provider
       value={{
@@ -125,6 +136,7 @@ export const SiteProvider = ({ children }) => {
         getNewsCategoryDetail,
         createNewsCategory,
         updateNewsCategory,
+        searchPublishedNews,
       }}
     >
       {children}

@@ -334,6 +334,7 @@ export const apiEndpoints = {
   get_category: '/Primary/?FlowAlias=bs_api_news_get_category&action=api',
   set_active_news: '/Primary/?FlowAlias=bs_api_news_set_active_news&action=api',
   set_featured_news: '/Primary/?FlowAlias=bs_api_news_set_featured_news&action=api',
+  search_published_news: '/Primary/?FlowAlias=bs_api_news_search_published_news_by_page&action=api',
 
   // Landing Page
   get_landing_page_list: '/Primary/?FlowAlias=bs_api_site_get_landing_page_list_by_page&action=api',

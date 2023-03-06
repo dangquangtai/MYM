@@ -153,6 +153,7 @@ export default function GeneralTable(props) {
       is_active: tableColumns.includes('is_active'),
       scheduled_datetime: tableColumns.includes('scheduled_datetime'),
       is_completed: tableColumns.includes('is_completed'),
+      landing_page_name: tableColumns.includes('landing_page_name'),
     };
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
@@ -1527,6 +1528,11 @@ export default function GeneralTable(props) {
                                   </>
                                 </TableCell>
                               )}
+                              {displayOptions.landing_page_name && (
+                                <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
+                                  {row.landing_page_name || ''}
+                                </TableCell>
+                              )}
                               {displayOptions.category_code && (
                                 <TableCell
                                   align="left"
@@ -1538,7 +1544,7 @@ export default function GeneralTable(props) {
                               )}
                               {displayOptions.category_name && (
                                 <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
-                                  {row.category_name || ''}{' '}
+                                  {row.category_name || ''}
                                 </TableCell>
                               )}
                               {displayOptions.approval_role && (
