@@ -223,6 +223,7 @@ export default function GeneralTable(props) {
   const buttonCreateNewsCategory = menuButtons.find((button) => button.name === view.newsCategory.list.create);
 
   const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
+  const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -325,7 +326,7 @@ export default function GeneralTable(props) {
 
   const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail } = useSite();
 
-  const { getBannerDetail } = useBanner();
+  const { getBannerDetail, getBannerListDetail } = useBanner();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -596,11 +597,14 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
-    }
-    else if (documentType === 'banner') {
+    } else if (documentType === 'banner') {
       detailDocument = await getBannerDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: true });
+    } else if (documentType === 'bannerList') {
+      detailDocument = await getBannerListDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
     }
   };
 
@@ -1006,6 +1010,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: true });
   };
 
+  const handleClickCreateBannerList = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
+  };
+
   const downloadFile = (url) => {
     const link = document.createElement('a');
     link.href = url;
@@ -1063,7 +1072,7 @@ export default function GeneralTable(props) {
     });
   };
 
-  const clickSuccess = () => { };
+  const clickSuccess = () => {};
 
   return (
     <React.Fragment>
@@ -1188,6 +1197,8 @@ export default function GeneralTable(props) {
                 createNewsCategory={handleClickCreateNewsCategory}
                 buttonCreateBanner={buttonCreateBanner}
                 createBanner={handleClickCreateBanner}
+                buttonCreateBannerList={buttonCreateBannerList}
+                createBannerList={handleClickCreateBannerList}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1218,12 +1229,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                            ? classes.table3
-                            : classes.table
+                          ? classes.table3
+                          : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                    // aria-label="enhanced table"
+                      // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}

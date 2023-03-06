@@ -32,6 +32,7 @@ import {
   landingPageActions,
   newsCategoryActions,
   bannerActions,
+  bannerListActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -224,6 +225,12 @@ export function getUrlByAction(selectedFolder) {
     }
     case bannerActions.inactive_list: {
       return apiEndpoints.get_banner_list_inactive;
+    }
+    case bannerListActions.active_list: {
+      return apiEndpoints.get_bannerlist_list;
+    }
+    case bannerListActions.inactive_list: {
+      return apiEndpoints.get_bannelist_list_inactive;
     }
     default: {
       return '';

@@ -39,6 +39,7 @@ import {
   landingPageActions,
   newsCategoryActions,
   bannerActions,
+  bannerListActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -73,6 +74,7 @@ import NewsWrapper from '../../Site/News/index.js';
 import LandingPageWrapper from './../../Site/LandingPage/index';
 import NewsCategoryWrapper from '../../Site/NewCategory/index.js';
 import BannerWrapper from '../../Website/Banner';
+import BannerListWrapper from './../../Website/BannerList/index';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -113,6 +115,7 @@ const Default = () => {
   const availableLandingPageEndpoint = Object.values(landingPageActions);
   const availableNewsCategoryEndpoint = Object.values(newsCategoryActions);
   const availableBannerEndpoint = Object.values(bannerActions);
+  const availableBannerListEndpoint = Object.values(bannerListActions);
 
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
@@ -159,6 +162,7 @@ const Default = () => {
           {availableLandingPageEndpoint.includes(selectedFolder?.action) && <LandingPageWrapper />}
           {availableNewsCategoryEndpoint.includes(selectedFolder?.action) && <NewsCategoryWrapper />}
           {availableBannerEndpoint.includes(selectedFolder?.action) && <BannerWrapper />}
+          {availableBannerListEndpoint.includes(selectedFolder?.action) && <BannerListWrapper />}
         </Grid>
       )}
     </Grid>

@@ -14,6 +14,9 @@ import {
   Tabs,
   Typography,
   TextField,
+  MenuItem,
+  Select,
+  Chip,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -21,15 +24,14 @@ import { view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
+import useBanner from '../../../../hooks/useBanner';
 import {
   QueueMusic,
   History,
   DescriptionOutlined as DescriptionOutlinedIcon,
-  ImageOutlined as ImageIcon,
+  RadioOutlined as RadioOutlinedIcon,
 } from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
-import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
-import useBanner from './../../../../hooks/useBanner';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -63,28 +65,29 @@ function a11yProps(index) {
   };
 }
 
-const BannerModal = () => {
+const BannerListModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const { form_buttons: formButtons } = useView();
-  const { bannerDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { bannerListDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const saveButton = formButtons.find((button) => button.name === view.banner.detail.save);
-  const { createBanner, updateBanner } = useBanner();
+  const saveButton = formButtons.find((button) => button.name === view.bannerList.detail.save);
+  const { createBannerList, updateBannerList, getAllBanner } = useBanner();
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
     type: '',
     text: '',
   });
-  const [banner, setbanner] = useState([]);
+
+  const [bannerListData, setbannerListData] = useState({});
+  const [banners, setBanners] = useState([]);
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: false });
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -99,51 +102,54 @@ const BannerModal = () => {
     });
   };
 
-  const setURL = (image) => {
-    setbanner({ ...banner, banner_url: image, video_url: image });
-  };
-
   const setDocumentToDefault = async () => {
-    setbanner([]);
+    setbannerListData({});
     setTabIndex(0);
-  };
-
-  const handleOpenDiaLog = () => {
-    setOpenDiaLogUploadImage(true);
-  };
-
-  const handleCloseDiaLog = () => {
-    setOpenDiaLogUploadImage(false);
   };
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setbanner({ ...banner, [name]: value });
+    setbannerListData({ ...bannerListData, [name]: value });
   };
 
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updateBanner(banner);
-        handleOpenSnackbar(true, 'success', 'Cập nhật banner thành công!');
+        await updateBannerList(bannerListData);
+        handleOpenSnackbar(true, 'success', 'Cập nhật BannerList thành công!');
       } else {
-        await createBanner(banner);
-        handleOpenSnackbar(true, 'success', 'Tạo mới banner thành công!');
+        await createBannerList(bannerListData);
+        handleOpenSnackbar(true, 'success', 'Tạo mới BannerList thành công!');
       }
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'banner' });
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'bannerList' });
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
 
+  const handleChangeBanner = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setbannerListData({ ...bannerListData, banner_id_list: value });
+  };
+
   useEffect(() => {
     if (!selectedDocument) return;
-    setbanner({
-      ...banner,
+    setbannerListData({
+      ...bannerListData,
       ...selectedDocument,
     });
   }, [selectedDocument]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAllBanner();
+      setBanners(res);
+    };
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
@@ -163,24 +169,17 @@ const BannerModal = () => {
           </Alert>
         </Snackbar>
       )}
-      <FirebaseUpload
-        open={openDialogUploadImage || false}
-        onSuccess={setURL}
-        onClose={handleCloseDiaLog}
-        type={banner.is_video ? 'video' : 'image'}
-        folder="Banner"
-      />
       <Grid container>
         <Dialog
           open={openDialog || false}
           TransitionComponent={Transition}
           keepMounted
           onClose={handleCloseDialog}
-          className={classes.partnerdialog}
+          className={classes.useradddialog}
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Banner
+              BannerList
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -221,94 +220,130 @@ const BannerModal = () => {
               <Grid item xs={12}>
                 <TabPanel value={tabIndex} index={0}>
                   <Grid container spacing={1}>
-                    <Grid item lg={12} md={12} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <ImageIcon />
-                            <span>Hình ảnh</span>
-                          </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img
-                            src={
-                              banner.is_video
-                                ? banner.video_url
-                                  ? 'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
-                                  : undefined
-                                : banner.banner_url
-                            }
-                            alt=""
-                          />
-                          <div>
-                            <div>
-                              <span className={classes.tabItemLabelField}>Video banner:</span>
-                              <Switch
-                                checked={banner.is_video || false}
-                                onChange={(e) => setbanner({ ...banner, is_video: e.target.checked })}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                              />
-                            </div>
-                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn ảnh/video banner</Button>
-                          </div>
-                        </div>
-                      </div>
+                    <Grid item lg={6} md={6} xs={12}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <QueueMusic />
-                            <span>Chi tiết Banner</span>
+                            <span>Chi tiết BannerList</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tên banner:</span>
+                              <span className={classes.tabItemLabelField}>Tiêu đề:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                rows={1}
-                                rowsMax={1}
                                 variant="outlined"
                                 name="title"
-                                value={banner.title || ''}
-                                className={classes.inputField}
+                                value={bannerListData.title || ''}
+                                size="small"
                                 onChange={handleChanges}
                               />
                             </Grid>
                           </Grid>
-
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Số thứ tự:</span>
+                              <span className={classes.tabItemLabelField}>Mô tả:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                rows={1}
-                                rowsMax={1}
+                                multiline
+                                rows={4}
+                                rowsMax={4}
+                                variant="outlined"
+                                name="description"
+                                value={bannerListData.description || ''}
+                                size="small"
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thứ tự:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
                                 variant="outlined"
                                 type="number"
                                 name="order_number"
-                                value={banner.order_number || ''}
-                                className={classes.inputField}
+                                value={bannerListData.order_number || ''}
+                                size="small"
                                 onChange={handleChanges}
                               />
                             </Grid>
                           </Grid>
-                          <Grid container className={classes.gridItem} alignItems="center">
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Hoạt động:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <Switch
-                                checked={banner.is_active || false}
-                                onChange={(e) => setbanner({ ...banner, is_active: e.target.checked })}
+                                checked={bannerListData.is_active || false}
+                                onChange={(e) => setbannerListData({ ...bannerListData, is_active: e.target.checked })}
                                 color="primary"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Ẩn:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Switch
+                                checked={bannerListData.is_hidden || false}
+                                onChange={(e) => setbannerListData({ ...bannerListData, is_hidden: e.target.checked })}
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={12}>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <RadioOutlinedIcon />
+                            <span>Danh sách Banner</span>
+                          </div>
+                        </div>
+                        <div className={classes.tabItemBody}>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={12}>
+                              <span className={classes.tabItemLabelField}>Banner:</span>
+                            </Grid>
+                            <Grid item lg={10} md={10} xs={12}>
+                              <Select
+                                multiple
+                                className={classes.multpleSelectField}
+                                value={bannerListData?.banner_id_list || []}
+                                onChange={handleChangeBanner}
+                                renderValue={(selected) => (
+                                  <div className={classes.chips}>
+                                    {selected.map((value) => (
+                                      <Chip
+                                        key={value}
+                                        label={banners?.find((i) => i.id === value)?.title}
+                                        className={classes.chip}
+                                      />
+                                    ))}
+                                  </div>
+                                )}
+                              >
+                                {banners?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.title}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </Grid>
                           </Grid>
                         </div>
@@ -356,4 +391,4 @@ const BannerModal = () => {
   );
 };
 
-export default BannerModal;
+export default BannerListModal;
