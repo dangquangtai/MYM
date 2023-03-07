@@ -33,6 +33,7 @@ import {
   newsCategoryActions,
   bannerActions,
   bannerListActions,
+  newsListActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -231,6 +232,9 @@ export function getUrlByAction(selectedFolder) {
     }
     case bannerListActions.inactive_list: {
       return apiEndpoints.get_bannelist_list_inactive;
+    }
+    case newsListActions.active_list: {
+      return apiEndpoints.get_newslist_list;
     }
     default: {
       return '';

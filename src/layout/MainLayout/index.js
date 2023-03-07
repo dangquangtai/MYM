@@ -50,6 +50,7 @@ import LandingPageModal from './../../views/Site/LandingPage/Detail/index';
 import NewsCategoryModal from '../../views/Site/NewCategory/Detail/index.js';
 import BannerModal from '../../views/Website/Banner/Detail';
 import BannerListModal from './../../views/Website/BannerList/Detail/index';
+import NewsListModal from './../../views/Site/NewsList/Detail/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -195,6 +196,8 @@ const MainLayout = ({ children }) => {
         return <BannerModal />;
       case 'bannerList':
         return <BannerListModal />;
+      case 'newsList':
+        return <NewsListModal />;
     }
   };
 

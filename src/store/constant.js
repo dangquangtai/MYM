@@ -335,6 +335,7 @@ export const apiEndpoints = {
   set_active_news: '/Primary/?FlowAlias=bs_api_news_set_active_news&action=api',
   set_featured_news: '/Primary/?FlowAlias=bs_api_news_set_featured_news&action=api',
   search_published_news: '/Primary/?FlowAlias=bs_api_news_search_published_news_by_page&action=api',
+  get_all_news: '/Primary/?FlowAlias=bs_api_news_get_all_news_by_page&action=api',
 
   // Landing Page
   get_landing_page_list: '/Primary/?FlowAlias=bs_api_site_get_landing_page_list_by_page&action=api',
@@ -366,6 +367,13 @@ export const apiEndpoints = {
   get_bannerlist_detail: '/Primary/?FlowAlias=bs_api_site_banner_get_bannerlist_detail&action=api',
   create_new_bannerlist: '/Primary/?FlowAlias=bs_api_site_banner_create_new_bannerlist&action=api',
   update_bannerlist: '/Primary/?FlowAlias=bs_api_site_banner_update_bannerlist&action=api',
+
+  // NewsList
+  get_newslist_list: '/Primary/?FlowAlias=bs_api_news_get_news_list_by_page&action=api',
+  get_newslist_detail: '/Primary/?FlowAlias=bs_api_news_get_newslist_detail_by_id&action=api',
+  create_new_newslist: '/Primary/?FlowAlias=bs_api_news_create_new_newslist&action=api',
+  update_newslist: '/Primary/?FlowAlias=bs_api_news_update_newslist&action=api',
+  set_active_newslist: '/Primary/?FlowAlias=bs_api_news_set_active_newslist&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -513,6 +521,10 @@ export const bannerActions = {
 export const bannerListActions = {
   active_list: 'MYM_SITE_HOME_OPEN_BANNERLIST_LIST',
   inactive_list: 'MYM_SITE_HOME_BANNERLIST_INACTIVE_LIST',
+};
+export const newsListActions = {
+  active_list: 'MYM_SITE_HOME_OPEN_NEWSLIST_LIST',
+  inactive_list: 'MYM_SITE_HOME_NEWSLIST_INACTIVE_LIST',
 };
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -792,6 +804,14 @@ export const view = {
     },
     detail: {
       save: 'MYM_SITE_HOME_BANNERLIST_SAVE_FORM_BUTTON',
+    },
+  },
+  newsList: {
+    list: {
+      create: 'MYM_SITE_HOME_NEWSLIST_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SITE_HOME_NEWSLIST_SAVE_FORM_BUTTON',
     },
   },
 };

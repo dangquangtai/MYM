@@ -62,7 +62,8 @@ export default function FirebaseUpload(props) {
   const [fileType, setFileType] = React.useState(type);
 
   function onDrop(files) {
-    if (type === 'image' && files[0].size > 500) {
+    console.log(files[0].size);
+    if (type === 'image' && files[0].size / 1024 > 500) {
       dispatch({
         type: SNACKBAR_OPEN,
         open: true,

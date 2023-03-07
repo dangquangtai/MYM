@@ -24,7 +24,7 @@ import { view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
-import useBanner from '../../../../hooks/useBanner';
+import useSite from '../../../../hooks/useSite';
 import {
   QueueMusic,
   History,
@@ -65,15 +65,15 @@ function a11yProps(index) {
   };
 }
 
-const BannerListModal = () => {
+const NewsListModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const { form_buttons: formButtons } = useView();
-  const { bannerListDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { newsListDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const saveButton = formButtons.find((button) => button.name === view.bannerList.detail.save);
-  const { createBannerList, updateBannerList, getAllBanner } = useBanner();
+  const saveButton = formButtons.find((button) => button.name === view.newsList.detail.save);
+  const { createNewsList, updateNewsList, getAllNews } = useSite();
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const [snackbarStatus, setSnackbarStatus] = useState({
@@ -82,12 +82,17 @@ const BannerListModal = () => {
     text: '',
   });
 
-  const [bannerListData, setbannerListData] = useState({});
-  const [banners, setBanners] = useState([]);
+  const [newsListData, setnewsListData] = useState({
+    is_active: true,
+    is_hidden: false,
+    order_number: 0,
+    description: '',
+  });
+  const [news, setNews] = useState([]);
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: false });
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -103,50 +108,55 @@ const BannerListModal = () => {
   };
 
   const setDocumentToDefault = async () => {
-    setbannerListData({});
+    setnewsListData({
+      is_active: true,
+      is_hidden: false,
+      order_number: 0,
+      description: '',
+    });
     setTabIndex(0);
   };
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setbannerListData({ ...bannerListData, [name]: value });
+    setnewsListData({ ...newsListData, [name]: value });
   };
 
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updateBannerList(bannerListData);
-        handleOpenSnackbar(true, 'success', 'Cập nhật BannerList thành công!');
+        await updateNewsList(newsListData);
+        handleOpenSnackbar(true, 'success', 'Cập nhật NewsList thành công!');
       } else {
-        await createBannerList(bannerListData);
-        handleOpenSnackbar(true, 'success', 'Tạo mới BannerList thành công!');
+        await createNewsList(newsListData);
+        handleOpenSnackbar(true, 'success', 'Tạo mới NewsList thành công!');
       }
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'bannerList' });
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'newsList' });
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
     }
   };
 
-  const handleChangeBanner = (e) => {
+  const handleChangeNews = (e) => {
     const {
       target: { value },
     } = e;
-    setbannerListData({ ...bannerListData, banner_id_list: value });
+    setnewsListData({ ...newsListData, news_id_list: value });
   };
 
   useEffect(() => {
     if (!selectedDocument) return;
-    setbannerListData({
-      ...bannerListData,
+    setnewsListData({
+      ...newsListData,
       ...selectedDocument,
     });
   }, [selectedDocument]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllBanner();
-      setBanners(res);
+      const res = await getAllNews();
+      setNews(res);
     };
     fetchData();
   }, []);
@@ -179,7 +189,7 @@ const BannerListModal = () => {
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              BannerList
+              NewsList
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -225,7 +235,7 @@ const BannerListModal = () => {
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             {/* <QueueMusic /> */}
-                            <span>Chi tiết BannerList</span>
+                            <span>Chi tiết NewsList</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
@@ -238,7 +248,7 @@ const BannerListModal = () => {
                                 fullWidth
                                 variant="outlined"
                                 name="title"
-                                value={bannerListData.title || ''}
+                                value={newsListData.title || ''}
                                 size="small"
                                 onChange={handleChanges}
                               />
@@ -256,7 +266,7 @@ const BannerListModal = () => {
                                 rowsMax={4}
                                 variant="outlined"
                                 name="description"
-                                value={bannerListData.description || ''}
+                                value={newsListData.description || ''}
                                 size="small"
                                 onChange={handleChanges}
                               />
@@ -272,7 +282,7 @@ const BannerListModal = () => {
                                 variant="outlined"
                                 type="number"
                                 name="order_number"
-                                value={bannerListData.order_number || ''}
+                                value={newsListData.order_number || ''}
                                 size="small"
                                 onChange={handleChanges}
                               />
@@ -284,8 +294,8 @@ const BannerListModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <Switch
-                                checked={bannerListData.is_active || false}
-                                onChange={(e) => setbannerListData({ ...bannerListData, is_active: e.target.checked })}
+                                checked={newsListData.is_active || false}
+                                onChange={(e) => setnewsListData({ ...newsListData, is_active: e.target.checked })}
                                 color="primary"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
@@ -297,8 +307,8 @@ const BannerListModal = () => {
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <Switch
-                                checked={bannerListData.is_hidden || false}
-                                onChange={(e) => setbannerListData({ ...bannerListData, is_hidden: e.target.checked })}
+                                checked={newsListData.is_hidden || false}
+                                onChange={(e) => setnewsListData({ ...newsListData, is_hidden: e.target.checked })}
                                 color="primary"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
@@ -312,33 +322,33 @@ const BannerListModal = () => {
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             {/* <RadioOutlinedIcon /> */}
-                            <span>Danh sách Banner</span>
+                            <span>Danh sách News</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={2} md={2} xs={12}>
-                              <span className={classes.tabItemLabelField}>Banner:</span>
+                              <span className={classes.tabItemLabelField}>News:</span>
                             </Grid>
                             <Grid item lg={10} md={10} xs={12}>
                               <Select
                                 multiple
                                 className={classes.multpleSelectField}
-                                value={bannerListData?.banner_id_list || []}
-                                onChange={handleChangeBanner}
+                                value={newsListData?.news_id_list || []}
+                                onChange={handleChangeNews}
                                 renderValue={(selected) => (
                                   <div className={classes.chips}>
                                     {selected.map((value) => (
                                       <Chip
                                         key={value}
-                                        label={banners?.find((i) => i.id === value)?.title}
+                                        label={news?.find((i) => i.id === value)?.title}
                                         className={classes.chip}
                                       />
                                     ))}
                                   </div>
                                 )}
                               >
-                                {banners?.map((item) => (
+                                {news?.map((item) => (
                                   <MenuItem key={item.id} value={item.id}>
                                     {item.title}
                                   </MenuItem>
@@ -391,4 +401,4 @@ const BannerListModal = () => {
   );
 };
 
-export default BannerListModal;
+export default NewsListModal;

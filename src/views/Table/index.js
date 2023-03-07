@@ -224,6 +224,7 @@ export default function GeneralTable(props) {
 
   const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
   const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
+  const buttonCreateNewsList = menuButtons.find((button) => button.name === view.newsList.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -324,7 +325,7 @@ export default function GeneralTable(props) {
 
   const { getBroadcastDetail } = useShare();
 
-  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail } = useSite();
+  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail } = useSite();
 
   const { getBannerDetail, getBannerListDetail } = useBanner();
 
@@ -605,6 +606,10 @@ export default function GeneralTable(props) {
       detailDocument = await getBannerListDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
+    } else if (documentType === 'newsList') {
+      detailDocument = await getNewsListDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
     }
   };
 
@@ -1015,6 +1020,11 @@ export default function GeneralTable(props) {
     dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
   };
 
+  const handleClickCreateNewsList = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
+  };
+
   const downloadFile = (url) => {
     const link = document.createElement('a');
     link.href = url;
@@ -1199,6 +1209,8 @@ export default function GeneralTable(props) {
                 createBanner={handleClickCreateBanner}
                 buttonCreateBannerList={buttonCreateBannerList}
                 createBannerList={handleClickCreateBannerList}
+                buttonCreateNewsList={buttonCreateNewsList}
+                createNewsList={handleClickCreateNewsList}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
