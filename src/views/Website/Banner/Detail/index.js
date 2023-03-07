@@ -9,6 +9,8 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  Select,
+  MenuItem,
   Slide,
   Tab,
   Tabs,
@@ -73,8 +75,11 @@ const BannerModal = () => {
   const saveButton = formButtons.find((button) => button.name === view.banner.detail.save);
   const { createBanner, updateBanner } = useBanner();
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
-
+  const [dialogUpload, setDialogUpload] = useState({
+    open: false,
+    type: ''
+  });
+  const [bannerType, setBannerType] = useState([{ id: 'VIDEO', value: 'Video' }, { id: 'IMAGE', value: 'Hình ảnh' }]);
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
     type: '',
@@ -100,7 +105,13 @@ const BannerModal = () => {
   };
 
   const setURL = (image) => {
-    setbanner({ ...banner, banner_url: image, video_url: image });
+    if (dialogUpload.type === 'image') {
+      setbanner({ ...banner, image_url: image });
+    }
+    if (dialogUpload.type === 'video') {
+      setbanner({ ...banner, video_url: image });
+    }
+
   };
 
   const setDocumentToDefault = async () => {
@@ -108,14 +119,18 @@ const BannerModal = () => {
     setTabIndex(0);
   };
 
-  const handleOpenDiaLog = () => {
-    setOpenDiaLogUploadImage(true);
+  const handleOpenDiaLog = (type) => {
+    setDialogUpload({ open: true, type: type })
   };
 
-  const handleCloseDiaLog = () => {
-    setOpenDiaLogUploadImage(false);
+  const handleCloseDiaLog = (type) => {
+    setDialogUpload({ open: false, type: type })
   };
-
+  const handleChangeObjectType = async (e) => {
+    const { name, value } = e.target;
+    const newBanner = { ...banner, [name]: value };
+    setbanner(newBanner);
+  };
   const handleChanges = (e) => {
     const { name, value } = e.target;
     setbanner({ ...banner, [name]: value });
@@ -164,10 +179,10 @@ const BannerModal = () => {
         </Snackbar>
       )}
       <FirebaseUpload
-        open={openDialogUploadImage || false}
+        open={dialogUpload.open || false}
         onSuccess={setURL}
         onClose={handleCloseDiaLog}
-        type={banner.is_video ? 'video' : 'image'}
+        type={dialogUpload.type === 'video' ? 'video' : 'image'}
         folder="Banner"
       />
       <Grid container>
@@ -176,7 +191,7 @@ const BannerModal = () => {
           TransitionComponent={Transition}
           keepMounted
           onClose={handleCloseDialog}
-          className={classes.partnerdialog}
+          className={classes.useradddialog}
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
@@ -222,38 +237,56 @@ const BannerModal = () => {
                 <TabPanel value={tabIndex} index={0}>
                   <Grid container spacing={1}>
                     <Grid item lg={12} md={12} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <ImageIcon />
-                            <span>Hình ảnh</span>
-                          </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img
-                            src={
-                              banner.is_video
-                                ? banner.video_url
-                                  ? 'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
-                                  : undefined
-                                : banner.banner_url
-                            }
-                            alt=""
-                          />
-                          <div>
-                            <div>
-                              <span className={classes.tabItemLabelField}>Video banner:</span>
-                              <Switch
-                                checked={banner.is_video || false}
-                                onChange={(e) => setbanner({ ...banner, is_video: e.target.checked })}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                              />
+                      <Grid container spacing={1}>
+                        <Grid item lg={6} md={6} xs={12}>
+                          <div className={classes.tabItem}>
+                            <div className={classes.tabItemTitle}>
+                              <div className={classes.tabItemLabel}>
+                                <ImageIcon />
+                                <span>Hình ảnh</span>
+                              </div>
                             </div>
-                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn ảnh/video banner</Button>
+                            <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                              <img
+                                src={
+
+                                  banner?.image_url
+                                }
+                                alt=""
+                              />
+                              <div>
+                                <Button onClick={() => handleOpenDiaLog('image')}>Chọn ảnh banner</Button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                        </Grid>
+                        <Grid item lg={6} md={6} xs={12}>
+                          <div className={classes.tabItem}>
+                            <div className={classes.tabItemTitle}>
+                              <div className={classes.tabItemLabel}>
+                                <ImageIcon />
+                                <span>Video</span>
+                              </div>
+                            </div>
+                            <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                              <img
+                                src={
+                                  banner.video_url
+                                    ? 'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
+                                    : undefined
+
+                                }
+                                alt=""
+                              />
+                              <div>
+
+                                {banner.banner_type === 'VIDEO' ? <Button onClick={() => handleOpenDiaLog('video')}>Chọn video banner</Button> : undefined}
+                              </div>
+                            </div>
+                          </div>
+                        </Grid>
+
+                      </Grid>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
@@ -296,6 +329,27 @@ const BannerModal = () => {
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Loại banner:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Select
+                                name="banner_type"
+                                labelId="career-label"
+                                id="banner_type"
+                                className={classes.multpleSelectField}
+                                value={banner.banner_type || ''}
+                                onChange={handleChanges}
+                              >
+                                {bannerType?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.value}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
