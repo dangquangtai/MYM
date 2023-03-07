@@ -38,6 +38,8 @@ import {
   newsActions,
   landingPageActions,
   newsCategoryActions,
+  universityActions,
+  careerActions,
   bannerActions,
   bannerListActions,
   newsListActions,
@@ -74,20 +76,20 @@ import BroadcastWrapper from './../../Broadcast/Broadcast/index';
 import NewsWrapper from '../../Site/News/index.js';
 import LandingPageWrapper from './../../Site/LandingPage/index';
 import NewsCategoryWrapper from '../../Site/NewCategory/index.js';
+import UniverSityWrapper from '../../University/index';
+import CareerWrapper from '../../Career/index';
 import BannerWrapper from '../../Website/Banner';
 import BannerListWrapper from './../../Website/BannerList/index';
 import NewsListWrapper from './../../Site/NewsList/index';
+
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
   const { projects } = useSelector((state) => state.project);
   const { selectedApp } = useSelector((state) => state.app);
-
   const availableAccountEndpoint = Object.values(accountActions);
   const availableDepartmentEndpoint = Object.values(departmentActions);
-
   const availableRoleEndpoint = Object.values(roleActions);
-
   const avaiablePlaylistEndpoint = Object.values(playlistActions);
   const availablePodcastEndpoint = Object.values(podcastActions);
   const availableEpisodeEndpoint = Object.values(episodeActions);
@@ -116,6 +118,8 @@ const Default = () => {
   const availableNewsEndpoint = Object.values(newsActions);
   const availableLandingPageEndpoint = Object.values(landingPageActions);
   const availableNewsCategoryEndpoint = Object.values(newsCategoryActions);
+  const availableUniversityEndpoint = Object.values(universityActions);
+  const availableCareerEndpoint = Object.values(careerActions);
   const availableBannerEndpoint = Object.values(bannerActions);
   const availableBannerListEndpoint = Object.values(bannerListActions);
   const availableNewsListEndpoint = Object.values(newsListActions);
@@ -164,6 +168,8 @@ const Default = () => {
           {availableNewsEndpoint.includes(selectedFolder?.action) && <NewsWrapper />}
           {availableLandingPageEndpoint.includes(selectedFolder?.action) && <LandingPageWrapper />}
           {availableNewsCategoryEndpoint.includes(selectedFolder?.action) && <NewsCategoryWrapper />}
+          {availableUniversityEndpoint.includes(selectedFolder?.action)&& <UniverSityWrapper/>}
+          {availableCareerEndpoint.includes(selectedFolder?.action) &&<CareerWrapper/>}
           {availableBannerEndpoint.includes(selectedFolder?.action) && <BannerWrapper />}
           {availableBannerListEndpoint.includes(selectedFolder?.action) && <BannerListWrapper />}
           {availableNewsListEndpoint.includes(selectedFolder?.action) && <NewsListWrapper />}

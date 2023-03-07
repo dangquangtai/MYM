@@ -7,6 +7,7 @@ export const initialState = {
   degree: [],
   careers: [],
   topics: [],
+  universities: [],
 };
 
 const metadataReducer = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const metadataReducer = (state = initialState, action) => {
         degree: action.degree,
         careers: action.careers,
         topics: action.topics,
+        universities: action.universities,
       };
     default:
       return state;

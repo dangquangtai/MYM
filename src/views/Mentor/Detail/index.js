@@ -134,7 +134,7 @@ const MentorModal = () => {
 
   const { mentorDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const { provinces, genders, weekday } = useSelector((state) => state.metadata);
+  const { provinces, genders, weekday, universities } = useSelector((state) => state.metadata);
 
   const handleCloseDialog = () => {
     setMentorData(initMentorData);
@@ -538,6 +538,25 @@ const MentorModal = () => {
                                 className={classes.inputField}
                                 onChange={handleChangeMentor}
                               />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Trường:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                            <Select
+                                name="university_id"
+                                className={classes.multpleSelectField}
+                                value={mentorData.university_id || ''}
+                                onChange={handleChangeMentor}
+                              >
+                                {universities?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.value}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </Grid>
                           </Grid>
                         </div>

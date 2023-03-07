@@ -46,6 +46,7 @@ export const initMentorData = {
   is_active: true,
   file_path: '',
   dob: '',
+  university_id:'',
 };
 export const initPartnerData = {
   id: '',

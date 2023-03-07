@@ -48,6 +48,12 @@ import BroadcastModal from './../../views/Broadcast/Broadcast/Detail/index';
 import NewsModal from './../../views/Site/News/Detail/index';
 import LandingPageModal from './../../views/Site/LandingPage/Detail/index';
 import NewsCategoryModal from '../../views/Site/NewCategory/Detail/index.js';
+
+import UniveristyModal from '../../views/University/Detail';
+import CareerModal from '../../views/Career/Detail';
+import CareerListModal from '../../views/Career/ListDetail';
+import UniversityListModal from '../../views/University/ListDetail';
+
 import BannerModal from '../../views/Website/Banner/Detail';
 import BannerListModal from './../../views/Website/BannerList/Detail/index';
 import NewsListModal from './../../views/Site/NewsList/Detail/index';
@@ -192,12 +198,23 @@ const MainLayout = ({ children }) => {
         return <LandingPageModal />;
       case 'newsCategory':
         return <NewsCategoryModal />;
+
+      case 'university':
+        return <UniveristyModal/>;
+      case 'career':
+        return <CareerModal/>;
+      case 'careerlist':
+        return <CareerListModal/>;
+      case 'universitylist': 
+        return <UniversityListModal/>
+
       case 'banner':
         return <BannerModal />;
       case 'bannerList':
         return <BannerListModal />;
       case 'newsList':
         return <NewsListModal />;
+
     }
   };
 

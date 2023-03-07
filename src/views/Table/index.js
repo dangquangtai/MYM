@@ -58,6 +58,9 @@ import useOrder from './../../hooks/useOrder';
 import useSale from '../../hooks/useSale';
 import useShare from './../../hooks/useShare';
 import useSite from './../../hooks/useSite';
+
+import useUniversity from './../../hooks/useUniversity';
+import useCareer from '../../hooks/useCareer';
 import useBanner from './../../hooks/useBanner';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
@@ -90,8 +93,10 @@ export default function GeneralTable(props) {
   useEffect(() => {
     const initOptions = {
       id: tableColumns.includes('id'),
-      order_number: tableColumns.includes('order_number'),
       image_url: tableColumns.includes('image_url'),
+      career_title: tableColumns.includes('career_title'),
+      list_title: tableColumns.includes('list_title'),
+      order_number: tableColumns.includes('order_number'),
       title: tableColumns.includes('title'),
       voucher_code: tableColumns.includes('voucher_code'),
       card_code: tableColumns.includes('card_code'),
@@ -102,6 +107,7 @@ export default function GeneralTable(props) {
       department_parent: tableColumns.includes('department_parent'),
       number_member: tableColumns.includes('number_member'),
       university_name: tableColumns.includes('university'),
+      university: tableColumns.includes('university_name'),
       email_address: tableColumns.includes('email_address'),
       number_phone: tableColumns.includes('number_phone'),
       career: tableColumns.includes('career'),
@@ -147,6 +153,7 @@ export default function GeneralTable(props) {
       order_title: tableColumns.includes('order_title'),
       payment_type_display: tableColumns.includes('payment_type_display'),
       total_order: tableColumns.includes('total_order'),
+      university_code: tableColumns.includes('university_code'),
       discount_amount: tableColumns.includes('discount_amount'),
       final_total: tableColumns.includes('final_total'),
       status_display: tableColumns.includes('status_display'),
@@ -204,11 +211,10 @@ export default function GeneralTable(props) {
   const buttonAddDeptRole = menuButtons.find((button) => button.name === view.processrole.list.adddept);
   const buttonAddAccountRole = menuButtons.find((button) => button.name === view.processrole.list.adduser);
   const buttonSyncRole = menuButtons.find((button) => button.name === view.processrole.list.syncRole);
-
   const buttonCreateFile = menuButtons.find((button) => button.name === view.file.list.create);
   const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
   const buttonCreateFileType = menuButtons.find((button) => button.name === view.fileType.list.create);
-
+  const buttonCreateUniversity = menuButtons.find((button)=> button.name===view.university.list.create);
   const buttonCreateNotificationCategory = menuButtons.find(
     (button) => button.name === view.notificationCategory.list.create
   );
@@ -216,15 +222,20 @@ export default function GeneralTable(props) {
     (button) => button.name === view.notificationMessage.list.create
   );
   const buttonCreateCounsellingPrice = menuButtons.find((button) => button.name === view.counsellingPrice.list.create);
-
   const buttonCreateBroadcast = menuButtons.find((button) => button.name === view.broadcast.list.create);
   const buttonCreateNews = menuButtons.find((button) => button.name === view.news.list.create);
   const buttonCreateLandingPage = menuButtons.find((button) => button.name === view.landingPage.list.create);
   const buttonCreateNewsCategory = menuButtons.find((button) => button.name === view.newsCategory.list.create);
 
+  const buttonCreateCareer = menuButtons.find((button) => button.name === view.career.list.create);
+  const buttonCreateCareerList = menuButtons.find((button) => button.name === view.careerlist.list.create);
+  const buttonCreateUniversityList = menuButtons.find((button) => button.name === view.university.list.create_list);
+
+
   const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
   const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
   const buttonCreateNewsList = menuButtons.find((button) => button.name === view.newsList.list.create);
+
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -243,7 +254,7 @@ export default function GeneralTable(props) {
   const reduxDocuments = useSelector((state) => state.task);
   const [changeDeptReload, ReloadDept] = React.useState(0);
   const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
-
+  const {getCareerDetail,getCareerDetailList} = useCareer();
   const {
     documents = [],
     total_item: count = 0,
@@ -318,15 +329,13 @@ export default function GeneralTable(props) {
   const { getFileDetail, getFileCategoryDetail, getFileTypeDetail } = useDocument();
   const { getDetail } = useCollaborator();
   const { getDetailNotificatonCategory, getDetailNotificatonMessage } = useNotification();
-
+  const { getUniversityDetail,getUniversityListDetail } = useUniversity();
   const { getOrderDetail } = useOrder();
-
   const { getDetailPrice } = useSale();
-
   const { getBroadcastDetail } = useShare();
 
-  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail } = useSite();
 
+  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail } = useSite();
   const { getBannerDetail, getBannerListDetail } = useBanner();
 
   useEffect(() => {
@@ -598,6 +607,27 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
+
+    }else if (documentType === 'university') {
+      detailDocument = await getUniversityDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    
+    }else if (documentType === 'universitylist') {
+      detailDocument = await getUniversityListDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }
+    else if (documentType === 'career') {
+      detailDocument = await getCareerDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }
+    else if (documentType === 'careerlist') {
+      detailDocument = await getCareerDetailList(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+
     } else if (documentType === 'banner') {
       detailDocument = await getBannerDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
@@ -610,6 +640,7 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsListDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
+
     }
   };
 
@@ -623,7 +654,23 @@ export default function GeneralTable(props) {
     } else if (documentType === 'role') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }else if (documentType === 'university') {
+      dispatch({ type: DOCUMENT_CHANGE, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
+    else if (documentType === 'career') {
+      dispatch({ type: DOCUMENT_CHANGE, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }
+    else if (documentType === 'careerlist') {
+      dispatch({ type: DOCUMENT_CHANGE, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }
+    else if (documentType === 'universitylist') {
+      dispatch({ type: DOCUMENT_CHANGE, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }
+    
   };
 
   const handleUpdateDepartment = async () => {
@@ -1205,6 +1252,11 @@ export default function GeneralTable(props) {
                 createLandingPage={handleClickCreateLandingPage}
                 buttonCreateNewsCategory={buttonCreateNewsCategory}
                 createNewsCategory={handleClickCreateNewsCategory}
+                buttonCreateUniversity={buttonCreateUniversity}
+                createUniversity = {openDialogCreate}
+                buttonCreateCareer = {buttonCreateCareer}
+                buttonCreateCareerList = {buttonCreateCareerList}
+                buttonCreateUniversityList = {buttonCreateUniversityList}
                 buttonCreateBanner={buttonCreateBanner}
                 createBanner={handleClickCreateBanner}
                 buttonCreateBannerList={buttonCreateBannerList}
@@ -1293,6 +1345,42 @@ export default function GeneralTable(props) {
                                   </div>
                                 </TableCell>
                               )}
+                                {displayOptions.image_url && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      <img alt="" src={row.image_url} style={style.tableUserAvatar} />
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
+                               {displayOptions.career_title && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      {row.career_title}
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
+                               {displayOptions.list_title && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      {row.list_title}
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
                               {displayOptions.order_number && (
                                 <TableCell align="left">
                                   <>
@@ -1316,18 +1404,9 @@ export default function GeneralTable(props) {
                                   </div>
                                 </TableCell>
                               )}
-                              {displayOptions.image_url && (
-                                <TableCell align="left">
-                                  <>
-                                    <span
-                                      className={classes.tableItemName}
-                                      onClick={(event) => openDetailDocument(event, row)}
-                                    >
-                                      <img alt="" src={row.image_url} style={style.tableUserAvatar} />
-                                    </span>
-                                  </>
-                                </TableCell>
-                              )}
+                            
+                             
+                              
                               {displayOptions.fullname && (
                                 <TableCell align="left">
                                   <>
@@ -1336,6 +1415,18 @@ export default function GeneralTable(props) {
                                       onClick={(event) => openDetailDocument(event, row)}
                                     >
                                       {row.fullname}
+                                    </span>
+                                  </>
+                                </TableCell>
+                              )}
+                              {displayOptions.university_code && (
+                                <TableCell align="left">
+                                  <>
+                                    <span
+                                      className={classes.tableItemName}
+                                      onClick={(event) => openDetailDocument(event, row)}
+                                    >
+                                      {row.university_code}
                                     </span>
                                   </>
                                 </TableCell>
@@ -1407,6 +1498,16 @@ export default function GeneralTable(props) {
                                     />
                                     &nbsp;&nbsp;
                                   </>
+                                </TableCell>
+                              )}
+                              {displayOptions.university && (
+                                <TableCell
+                                  style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                  align="left"
+                                  onClick={(event)=>openDetailDocument(event,row)}
+                                >
+                               {row.university_name}
+                                  
                                 </TableCell>
                               )}
                               {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
@@ -1499,9 +1600,10 @@ export default function GeneralTable(props) {
                                   style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                                   align="left"
                                 >
-                                  {row.university_name || row.current_school || ''}
+                                  {row.university_name || row.current_school ||  ''}
                                 </TableCell>
                               )}
+                            
                               {displayOptions.email_address && (
                                 <TableCell align="left">{row.email_address || ''}</TableCell>
                               )}

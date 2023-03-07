@@ -352,6 +352,41 @@ export const apiEndpoints = {
   update_news_category: '/Primary/?FlowAlias=bs_api_news_update_news_category&action=api',
   set_active_news_category: '/Primary/?FlowAlias=bs_api_news_set_active_news_category&action=api',
 
+  //University 
+  get_active_university_list: '/Primary/?FlowAlias=bs_api_share_university_get_active_university_list_by_page&action=api',
+  get_inactive_university_list: '/Primary/?FlowAlias=bs_api_share_university_get_inactive_university_list_by_page&action=api',
+  get_university_detail: '/Primary/?FlowAlias=bs_api_share_university_detail_id&action=api',
+  get_university_type_list: '/Primary/?FlowAlias=bs_api_share_university_get_type_list&action=api',
+  update_university: '/Primary/?FlowAlias=bs_api_share_university_update_detail&action=api',
+  active_university: '/Primary/?FlowAlias=bs_api_share_university_active&action=api',
+  create_university: '/Primary/?FlowAlias=bs_api_share_university_create_detail&action=api',
+  //UniversityList
+  get_active_universitylist: '/Primary/?FlowAlias=bs_api_university_get_active_universitylist_by_page&action=api',
+  get_inactive_universitylist: '/Primary/?FlowAlias=bs_api_university_get_inactive_universitylist_by_page&action=api',
+  get_universitylist_detail: '/Primary/?FlowAlias=bs_api_university_get_universitylist_detail&action=api',
+  update_universitylist: '/Primary/?FlowAlias=bs_api_university_update_universitylist_detail&action=api',
+  active_universitylist: '/Primary/?FlowAlias=bs_api_university_set_active_universitylist&action=api',
+  create_universitylist: '/Primary/?FlowAlias=bs_api_university_create_new_universitylist&action=api',
+  get_activenewslist: '/Primary/?FlowAlias=bs_api_news_get_active_newslist&action=api',
+
+  //Career
+  get_career_active_list: '/Primary/?FlowAlias=bs_api_partner_get_active_career_list_by_page&action=api',
+  get_career_inactive_list: '/Primary/?FlowAlias=bs_api_partner_get_inactive_career_list_by_page&action=api',
+  get_career_detail: '/Primary/?FlowAlias=bs_api_partner_get_career_detail_by_id&action=api',
+  create_career: '/Primary/?FlowAlias=bs_api_partner_create_new_career&action=api',
+  update_career: '/Primary/?FlowAlias=bs_api_parter_update_career_by_id&action=api',
+  
+  //CareerList
+  get_careerlist_active_list: '/Primary/?FlowAlias=bs_api_career_get_active_careerlist_by_page&action=api',
+  get_careerlist_inactive_list: '/Primary/?FlowAlias=bs_api_career_get_inactive_careerlist_by_page&action=api',
+  get_careerlist_detail: '/Primary/?FlowAlias=bs_api_partner_get_careerlist_detail_by_id&action=api',
+  create_careerlist: '/Primary/?FlowAlias=bs_api_partner_create_new_career_list&action=api',
+  update_careerlist: '/Primary/?FlowAlias=bs_api_parter_update_career_list_by_id&action=api',
+  get_active_list_career: '/Primary/?FlowAlias=bs_api_partner_get_active_list_career&action=api',
+  set_active_career: '/Primary/?FlowAlias=bs_api_partner_set_active_career&action=api',
+  set_active_career_list: '/Primary/?FlowAlias=bs_api_partner_set_active_career_list&action=api',
+  set_featured_career: '/Primary/?FlowAlias=bs_api_partner_set_featured_career_list&action=api',
+
   //Banner
   get_banner_list: '/Primary/?FlowAlias=bs_api_site_banner_get_list_banner_active&action=api',
   get_banner_list_inactive: '/Primary/?FlowAlias=bs_api_site_banner_get_list_banner_inactive&action=api',
@@ -374,6 +409,7 @@ export const apiEndpoints = {
   create_new_newslist: '/Primary/?FlowAlias=bs_api_news_create_new_newslist&action=api',
   update_newslist: '/Primary/?FlowAlias=bs_api_news_update_newslist&action=api',
   set_active_newslist: '/Primary/?FlowAlias=bs_api_news_set_active_newslist&action=api',
+
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -514,6 +550,22 @@ export const landingPageActions = {
 export const newsCategoryActions = {
   active_list: 'MYM_SITE_HOME_OPEN_NEWS_CATEGORY_LIST',
 };
+
+export const universityActions = {
+  active_list: 'MYM_PARTNER_HOME_OPEN_UNIVERSITY_ACTIVE_LIST',
+  inactive_list: 'MYM_PARTNER_HOME_OPEN_UNIVERSITY_INACTIVE_LIST',
+  activelist: 'MYM_PARTNER_HOME_OPEN_ACTIVE_UNIVERSITYLIST',
+  inactivelist: 'MYM_PARTNER_HOME_OPEN_INACTIVE_UNIVERSITYLIST'
+};
+
+export const careerActions = {
+  active_list: 'MYM_PARTNER_HOME_OPEN_CAREER_LIST',
+  inactive_list: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREER_LIST',
+  activelist: 'MYM_PARTNER_HOME_OPEN_CAREERLISST_LIST',
+  inactivelist: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREERLISST_LIST',
+};
+
+
 export const bannerActions = {
   active_list: 'MYM_SITE_HOME_OPEN_BANNER_LIST',
   inactive_list: 'MYM_SITE_HOME_BANNER_INACTIVE_LIST',
@@ -526,6 +578,7 @@ export const newsListActions = {
   active_list: 'MYM_SITE_HOME_OPEN_NEWSLIST_LIST',
   inactive_list: 'MYM_SITE_HOME_NEWSLIST_INACTIVE_LIST',
 };
+
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
@@ -790,6 +843,32 @@ export const view = {
       save: 'MYM_SITE_HOME_NEWS_CATEGORY_SAVE_FORM_BUTTON',
     },
   },
+
+  university: {
+    list: {
+      create: 'MYM_PARTNER_HOME_CREATE_UNIVERISTY_MENU_BUTTON',
+      create_list: 'MYM_PARTNER_HOME_CREATE_NEW_UNIVERSITYLIST'
+    },
+    detail: {
+      save: 'MYM_PARTNER_HOME_CREATE_UNIVERSITY_FORM_BUTTON',
+    }
+  },
+  career: {
+    list: {
+      create: 'MYM_PARTNER_HOME_CREATE_CAREER_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_HOME_SAVE_CAREER_DETAIL_FORM_BUTTON',
+    }
+  },
+  careerlist: {
+    list: {
+      create: 'MYM_PARTNER_HOME_CREATE_CAREERLIST_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_PARTNER_HOME_SAVE_CAREERLIST_DETAIL_FORM_BUTTON',
+    }
+
   banner: {
     list: {
       create: 'MYM_SITE_HOME_BANNER_CREATE_MENU_BUTTON',
@@ -813,5 +892,6 @@ export const view = {
     detail: {
       save: 'MYM_SITE_HOME_NEWSLIST_SAVE_FORM_BUTTON',
     },
+
   },
 };
