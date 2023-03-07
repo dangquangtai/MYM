@@ -93,6 +93,9 @@ export default function FirebaseUpload(props) {
       case 'video':
         setFileType('video/*');
         break;
+      case 'banner':
+        setFileType('video/*,image/*');
+        break;
       case 'other':
         setFileType('.csv,.doc,.docx,.xls,.xlsx,.txt');
         break;
