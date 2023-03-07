@@ -108,6 +108,11 @@ const EnhancedTableToolbar = (props) => {
     createLandingPage,
     buttonCreateNewsCategory,
     createNewsCategory,
+    buttonCreateUniversity,
+    createUniversity,
+    buttonCreateCareer,
+    buttonCreateCareerList,
+    buttonCreateUniversityList,
   } = props;
 
   const filterRef = useRef(null);
@@ -268,6 +273,13 @@ const EnhancedTableToolbar = (props) => {
                     </Button>
                   </Grid>
                 )}
+                {buttonCreateUniversityList && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createUniversity}>
+                      {buttonCreateUniversityList.text}
+                    </Button>
+                  </Grid>
+                )}
                 {buttondeactiveDepartment && (
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={handleDeactiveDepartment}>
@@ -283,11 +295,32 @@ const EnhancedTableToolbar = (props) => {
                     </Button>
                   </Grid>
                 )}
+                {buttonCreateCareer && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createUniversity}>
+                      {buttonCreateCareer.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateCareerList && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createUniversity}>
+                      {buttonCreateCareerList.text}
+                    </Button>
+                  </Grid>
+                )}
 
                 {buttonSyncDepartment && (
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={handleSyncRole}>
                       {buttonSyncDepartment.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateUniversity && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createUniversity}>
+                      {buttonCreateUniversity.text}
                     </Button>
                   </Grid>
                 )}

@@ -23,6 +23,7 @@ export const ShareProvider = ({ children }) => {
           degree_list: degree,
           career_category_list: careers,
           career_topic_list: topics,
+          university_list: universities
         } = response.data;
         dispatch({
           type: METADATA,
@@ -32,6 +33,7 @@ export const ShareProvider = ({ children }) => {
           degree,
           careers,
           topics,
+          universities,
         });
       }
     });

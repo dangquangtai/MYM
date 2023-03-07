@@ -31,6 +31,8 @@ import {
   newsActions,
   landingPageActions,
   newsCategoryActions,
+  universityActions,
+  careerActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -217,6 +219,30 @@ export function getUrlByAction(selectedFolder) {
     }
     case newsCategoryActions.active_list: {
       return apiEndpoints.get_news_category_list;
+    }
+    case universityActions.active_list: {
+      return apiEndpoints.get_active_university_list;
+    }
+    case universityActions.inactive_list: {
+      return apiEndpoints.get_inactive_university_list;
+    }
+    case universityActions.activelist: {
+      return apiEndpoints.get_active_universitylist;
+    }
+    case universityActions.inactivelist: {
+      return apiEndpoints.get_inactive_universitylist;
+    }
+    case careerActions.inactive_list: {
+      return apiEndpoints.get_career_inactive_list;
+    }
+    case careerActions.active_list: {
+      return apiEndpoints.get_career_active_list;
+    }
+    case careerActions.inactivelist: {
+      return apiEndpoints.get_careerlist_inactive_list;
+    }
+    case careerActions.activelist: {
+      return apiEndpoints.get_careerlist_active_list;
     }
     default: {
       return '';

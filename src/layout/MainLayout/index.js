@@ -48,7 +48,10 @@ import BroadcastModal from './../../views/Broadcast/Broadcast/Detail/index';
 import NewsModal from './../../views/Site/News/Detail/index';
 import LandingPageModal from './../../views/Site/LandingPage/Detail/index';
 import NewsCategoryModal from '../../views/Site/NewCategory/Detail/index.js';
-
+import UniveristyModal from '../../views/University/Detail';
+import CareerModal from '../../views/Career/Detail';
+import CareerListModal from '../../views/Career/ListDetail';
+import UniversityListModal from '../../views/University/ListDetail';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -189,6 +192,14 @@ const MainLayout = ({ children }) => {
         return <LandingPageModal />;
       case 'newsCategory':
         return <NewsCategoryModal />;
+      case 'university':
+        return <UniveristyModal/>;
+      case 'career':
+        return <CareerModal/>;
+      case 'careerlist':
+        return <CareerListModal/>;
+      case 'universitylist': 
+        return <UniversityListModal/>
     }
   };
 

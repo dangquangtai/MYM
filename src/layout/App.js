@@ -39,7 +39,8 @@ import { NotificationProvider } from '../contexts/NotificationContex.js';
 import { OrderProvider } from '../contexts/OrderContext';
 import { SaleProvider } from '../contexts/SaleContext';
 import { SiteProvider } from './../contexts/SiteContext';
-
+import {UniversityProvider} from './../contexts/UniversityContext';
+import { CareerProvider } from '../contexts/CareerContext';
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -101,7 +102,11 @@ const App = () => {
                                                                   <SaleProvider>
                                                                     <OrderProvider>
                                                                       <SiteProvider>
-                                                                        <Routes />
+                                                                        <UniversityProvider>
+                                                                          <CareerProvider>
+                                                                          <Routes />
+                                                                          </CareerProvider>
+                                                                        </UniversityProvider>
                                                                         <Snackbar />
                                                                       </SiteProvider>
                                                                     </OrderProvider>
