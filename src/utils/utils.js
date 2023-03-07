@@ -247,7 +247,7 @@ export function getUrlByAction(selectedFolder) {
     }
     case careerActions.activelist: {
       return apiEndpoints.get_careerlist_active_list;
-
+    }
     case bannerActions.active_list: {
       return apiEndpoints.get_banner_list;
     }

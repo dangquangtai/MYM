@@ -868,7 +868,7 @@ export const view = {
     detail: {
       save: 'MYM_PARTNER_HOME_SAVE_CAREERLIST_DETAIL_FORM_BUTTON',
     }
-
+  },
   banner: {
     list: {
       create: 'MYM_SITE_HOME_BANNER_CREATE_MENU_BUTTON',
