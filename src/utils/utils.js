@@ -33,6 +33,9 @@ import {
   newsCategoryActions,
   universityActions,
   careerActions,
+  bannerActions,
+  bannerListActions,
+  newsListActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -220,6 +223,7 @@ export function getUrlByAction(selectedFolder) {
     case newsCategoryActions.active_list: {
       return apiEndpoints.get_news_category_list;
     }
+
     case universityActions.active_list: {
       return apiEndpoints.get_active_university_list;
     }
@@ -243,6 +247,21 @@ export function getUrlByAction(selectedFolder) {
     }
     case careerActions.activelist: {
       return apiEndpoints.get_careerlist_active_list;
+
+    case bannerActions.active_list: {
+      return apiEndpoints.get_banner_list;
+    }
+    case bannerActions.inactive_list: {
+      return apiEndpoints.get_banner_list_inactive;
+    }
+    case bannerListActions.active_list: {
+      return apiEndpoints.get_bannerlist_list;
+    }
+    case bannerListActions.inactive_list: {
+      return apiEndpoints.get_bannelist_list_inactive;
+    }
+    case newsListActions.active_list: {
+      return apiEndpoints.get_newslist_list;
     }
     default: {
       return '';

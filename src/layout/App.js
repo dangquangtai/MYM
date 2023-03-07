@@ -41,6 +41,7 @@ import { SaleProvider } from '../contexts/SaleContext';
 import { SiteProvider } from './../contexts/SiteContext';
 import {UniversityProvider} from './../contexts/UniversityContext';
 import { CareerProvider } from '../contexts/CareerContext';
+import { BannerProvider } from '../contexts/BannerContext';
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -102,12 +103,19 @@ const App = () => {
                                                                   <SaleProvider>
                                                                     <OrderProvider>
                                                                       <SiteProvider>
+                                                                                                                                                  <BannerProvider>
                                                                         <UniversityProvider>
                                                                           <CareerProvider>
                                                                           <Routes />
+                                                                           <Snackbar />
                                                                           </CareerProvider>
                                                                         </UniversityProvider>
-                                                                        <Snackbar />
+                                                                       
+
+                                                                    
+                                                                         
+                                                                        </BannerProvider>
+
                                                                       </SiteProvider>
                                                                     </OrderProvider>
                                                                   </SaleProvider>

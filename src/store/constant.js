@@ -334,6 +334,8 @@ export const apiEndpoints = {
   get_category: '/Primary/?FlowAlias=bs_api_news_get_category&action=api',
   set_active_news: '/Primary/?FlowAlias=bs_api_news_set_active_news&action=api',
   set_featured_news: '/Primary/?FlowAlias=bs_api_news_set_featured_news&action=api',
+  search_published_news: '/Primary/?FlowAlias=bs_api_news_search_published_news_by_page&action=api',
+  get_all_news: '/Primary/?FlowAlias=bs_api_news_get_all_news_by_page&action=api',
 
   // Landing Page
   get_landing_page_list: '/Primary/?FlowAlias=bs_api_site_get_landing_page_list_by_page&action=api',
@@ -384,6 +386,30 @@ export const apiEndpoints = {
   set_active_career: '/Primary/?FlowAlias=bs_api_partner_set_active_career&action=api',
   set_active_career_list: '/Primary/?FlowAlias=bs_api_partner_set_active_career_list&action=api',
   set_featured_career: '/Primary/?FlowAlias=bs_api_partner_set_featured_career_list&action=api',
+
+  //Banner
+  get_banner_list: '/Primary/?FlowAlias=bs_api_site_banner_get_list_banner_active&action=api',
+  get_banner_list_inactive: '/Primary/?FlowAlias=bs_api_site_banner_get_list_banner_inactive&action=api',
+  get_banner_detai: '/Primary/?FlowAlias=bs_api_site_banner_get_banner_detail&action=api',
+  create_new_banner: '/Primary/?FlowAlias=bs_api_site_banner_create_new_banner&action=api',
+  update_banner: '/Primary/?FlowAlias=bs_api_site_banner_update_banner&action=api',
+  set_active_banner: '/Primary/?FlowAlias=bs_api_site_banner_set_active_banner&action=api',
+  get_all_banner: '/Primary/?FlowAlias=bs_api_site_banner_get_all_banner&action=api',
+
+  // BannerList
+  get_bannerlist_list: '/Primary/?FlowAlias=bs_api_site_banner_get_list_banner_by_page&action=api',
+  get_bannelist_list_inactive: '/Primary/?FlowAlias=bs_api_site_banner_get_list_banner_inactive_by_page&action=api',
+  get_bannerlist_detail: '/Primary/?FlowAlias=bs_api_site_banner_get_bannerlist_detail&action=api',
+  create_new_bannerlist: '/Primary/?FlowAlias=bs_api_site_banner_create_new_bannerlist&action=api',
+  update_bannerlist: '/Primary/?FlowAlias=bs_api_site_banner_update_bannerlist&action=api',
+
+  // NewsList
+  get_newslist_list: '/Primary/?FlowAlias=bs_api_news_get_news_list_by_page&action=api',
+  get_newslist_detail: '/Primary/?FlowAlias=bs_api_news_get_newslist_detail_by_id&action=api',
+  create_new_newslist: '/Primary/?FlowAlias=bs_api_news_create_new_newslist&action=api',
+  update_newslist: '/Primary/?FlowAlias=bs_api_news_update_newslist&action=api',
+  set_active_newslist: '/Primary/?FlowAlias=bs_api_news_set_active_newslist&action=api',
+
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -524,6 +550,7 @@ export const landingPageActions = {
 export const newsCategoryActions = {
   active_list: 'MYM_SITE_HOME_OPEN_NEWS_CATEGORY_LIST',
 };
+
 export const universityActions = {
   active_list: 'MYM_PARTNER_HOME_OPEN_UNIVERSITY_ACTIVE_LIST',
   inactive_list: 'MYM_PARTNER_HOME_OPEN_UNIVERSITY_INACTIVE_LIST',
@@ -536,6 +563,20 @@ export const careerActions = {
   inactive_list: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREER_LIST',
   activelist: 'MYM_PARTNER_HOME_OPEN_CAREERLISST_LIST',
   inactivelist: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREERLISST_LIST',
+};
+
+
+export const bannerActions = {
+  active_list: 'MYM_SITE_HOME_OPEN_BANNER_LIST',
+  inactive_list: 'MYM_SITE_HOME_BANNER_INACTIVE_LIST',
+};
+export const bannerListActions = {
+  active_list: 'MYM_SITE_HOME_OPEN_BANNERLIST_LIST',
+  inactive_list: 'MYM_SITE_HOME_BANNERLIST_INACTIVE_LIST',
+};
+export const newsListActions = {
+  active_list: 'MYM_SITE_HOME_OPEN_NEWSLIST_LIST',
+  inactive_list: 'MYM_SITE_HOME_NEWSLIST_INACTIVE_LIST',
 };
 
 
@@ -802,6 +843,7 @@ export const view = {
       save: 'MYM_SITE_HOME_NEWS_CATEGORY_SAVE_FORM_BUTTON',
     },
   },
+
   university: {
     list: {
       create: 'MYM_PARTNER_HOME_CREATE_UNIVERISTY_MENU_BUTTON',
@@ -826,5 +868,30 @@ export const view = {
     detail: {
       save: 'MYM_PARTNER_HOME_SAVE_CAREERLIST_DETAIL_FORM_BUTTON',
     }
+
+  banner: {
+    list: {
+      create: 'MYM_SITE_HOME_BANNER_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SITE_HOME_BANNER_SAVE_FORM_BUTTON',
+    },
+  },
+  bannerList: {
+    list: {
+      create: 'MYM_SITE_HOME_BANNERLIST_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SITE_HOME_BANNERLIST_SAVE_FORM_BUTTON',
+    },
+  },
+  newsList: {
+    list: {
+      create: 'MYM_SITE_HOME_NEWSLIST_CREATE_MENU_BUTTON',
+    },
+    detail: {
+      save: 'MYM_SITE_HOME_NEWSLIST_SAVE_FORM_BUTTON',
+    },
+
   },
 };

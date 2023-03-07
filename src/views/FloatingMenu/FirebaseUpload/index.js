@@ -6,6 +6,8 @@ import Dropzone, { useDropzone } from 'react-dropzone';
 import { gridSpacing } from '../../../store/constant';
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../services/firebase.js';
+import { useDispatch } from 'react-redux';
+import { SNACKBAR_OPEN } from './../../../store/actions';
 
 function getModalStyle() {
   return {
@@ -46,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FirebaseUpload(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const matchDownXs = useMediaQuery(theme.breakpoints.down('xs'));
   const [modalStyle] = React.useState(getModalStyle);
@@ -59,6 +62,17 @@ export default function FirebaseUpload(props) {
   const [fileType, setFileType] = React.useState(type);
 
   function onDrop(files) {
+    console.log(files[0].size);
+    if (type === 'image' && files[0].size / 1024 > 500) {
+      dispatch({
+        type: SNACKBAR_OPEN,
+        open: true,
+        message: 'Kích thước hình ảnh không được quá 500kb',
+        variant: 'alert',
+        alertSeverity: 'error',
+      });
+      return;
+    }
     setSelectedFile(files);
   }
 
@@ -75,6 +89,9 @@ export default function FirebaseUpload(props) {
         break;
       case 'zip':
         setFileType('.zip,.rar');
+        break;
+      case 'video':
+        setFileType('video/*');
         break;
       case 'other':
         setFileType('.csv,.doc,.docx,.xls,.xlsx,.txt');

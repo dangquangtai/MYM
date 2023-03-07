@@ -58,8 +58,11 @@ import useOrder from './../../hooks/useOrder';
 import useSale from '../../hooks/useSale';
 import useShare from './../../hooks/useShare';
 import useSite from './../../hooks/useSite';
+
 import useUniversity from './../../hooks/useUniversity';
 import useCareer from '../../hooks/useCareer';
+import useBanner from './../../hooks/useBanner';
+
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
     .post(setFeaturedUrl, { outputtype: 'RawJson', id: documentId, value: isFeatured })
@@ -158,6 +161,7 @@ export default function GeneralTable(props) {
       is_active: tableColumns.includes('is_active'),
       scheduled_datetime: tableColumns.includes('scheduled_datetime'),
       is_completed: tableColumns.includes('is_completed'),
+      landing_page_name: tableColumns.includes('landing_page_name'),
     };
     setDisplayOptions(initOptions);
   }, [tableColumns, selectedFolder]);
@@ -222,9 +226,17 @@ export default function GeneralTable(props) {
   const buttonCreateNews = menuButtons.find((button) => button.name === view.news.list.create);
   const buttonCreateLandingPage = menuButtons.find((button) => button.name === view.landingPage.list.create);
   const buttonCreateNewsCategory = menuButtons.find((button) => button.name === view.newsCategory.list.create);
+
   const buttonCreateCareer = menuButtons.find((button) => button.name === view.career.list.create);
   const buttonCreateCareerList = menuButtons.find((button) => button.name === view.careerlist.list.create);
   const buttonCreateUniversityList = menuButtons.find((button) => button.name === view.university.list.create_list);
+
+
+  const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
+  const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
+  const buttonCreateNewsList = menuButtons.find((button) => button.name === view.newsList.list.create);
+
+
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [modalType, setModalType] = React.useState('');
@@ -321,7 +333,10 @@ export default function GeneralTable(props) {
   const { getOrderDetail } = useOrder();
   const { getDetailPrice } = useSale();
   const { getBroadcastDetail } = useShare();
-  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail } = useSite();
+
+
+  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail } = useSite();
+  const { getBannerDetail, getBannerListDetail } = useBanner();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -592,6 +607,7 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
+
     }else if (documentType === 'university') {
       detailDocument = await getUniversityDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
@@ -611,6 +627,20 @@ export default function GeneralTable(props) {
       detailDocument = await getCareerDetailList(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+
+    } else if (documentType === 'banner') {
+      detailDocument = await getBannerDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: true });
+    } else if (documentType === 'bannerList') {
+      detailDocument = await getBannerListDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
+    } else if (documentType === 'newsList') {
+      detailDocument = await getNewsListDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
+
     }
   };
 
@@ -1027,6 +1057,20 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
   };
+  const handleClickCreateBanner = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: true });
+  };
+
+  const handleClickCreateBannerList = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
+  };
+
+  const handleClickCreateNewsList = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
+  };
 
   const downloadFile = (url) => {
     const link = document.createElement('a');
@@ -1213,6 +1257,12 @@ export default function GeneralTable(props) {
                 buttonCreateCareer = {buttonCreateCareer}
                 buttonCreateCareerList = {buttonCreateCareerList}
                 buttonCreateUniversityList = {buttonCreateUniversityList}
+                buttonCreateBanner={buttonCreateBanner}
+                createBanner={handleClickCreateBanner}
+                buttonCreateBannerList={buttonCreateBannerList}
+                createBannerList={handleClickCreateBannerList}
+                buttonCreateNewsList={buttonCreateNewsList}
+                createNewsList={handleClickCreateNewsList}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1619,6 +1669,11 @@ export default function GeneralTable(props) {
                                   </>
                                 </TableCell>
                               )}
+                              {displayOptions.landing_page_name && (
+                                <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
+                                  {row.landing_page_name || ''}
+                                </TableCell>
+                              )}
                               {displayOptions.category_code && (
                                 <TableCell
                                   align="left"
@@ -1630,7 +1685,7 @@ export default function GeneralTable(props) {
                               )}
                               {displayOptions.category_name && (
                                 <TableCell align="left" onClick={(event) => openDetailDocument(event, row)}>
-                                  {row.category_name || ''}{' '}
+                                  {row.category_name || ''}
                                 </TableCell>
                               )}
                               {displayOptions.approval_role && (

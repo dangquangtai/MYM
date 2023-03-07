@@ -112,6 +112,55 @@ export const SiteProvider = ({ children }) => {
       });
   };
 
+  const searchPublishedNews = async (id, landing_page_id, search_text) => {
+    return axiosInstance
+      .post(apiEndpoints.search_published_news, { outputtype: 'RawJson', id, landing_page_id, search_text })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list: news } = response.data;
+          return news;
+        } else return [];
+      });
+  };
+
+  const getAllNews = async () => {
+    return axiosInstance.post(apiEndpoints.get_all_news, { outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { list: news } = response.data;
+        return news;
+      } else return [];
+    });
+  };
+
+  const getNewsListDetail = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_newslist_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: newsList, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return newsList;
+        } else return {};
+      });
+  };
+
+  const createNewsList = async (data) => {
+    return axiosInstance.post(apiEndpoints.create_new_newslist, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
+  const updateNewsList = async (data) => {
+    return axiosInstance.post(apiEndpoints.update_newslist, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
   return (
     <SiteContext.Provider
       value={{
@@ -125,6 +174,11 @@ export const SiteProvider = ({ children }) => {
         getNewsCategoryDetail,
         createNewsCategory,
         updateNewsCategory,
+        searchPublishedNews,
+        getAllNews,
+        getNewsListDetail,
+        createNewsList,
+        updateNewsList,
       }}
     >
       {children}

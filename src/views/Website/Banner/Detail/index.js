@@ -21,19 +21,15 @@ import { view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
-import { userAvatar, initNotification } from '../../../../store/constants/initial';
 import {
+  QueueMusic,
   History,
   DescriptionOutlined as DescriptionOutlinedIcon,
-  InfoOutlined as InfoOutlinedIcon,
   ImageOutlined as ImageIcon,
-  PanoramaOutlined as BannerIcon,
 } from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
-import useMedia from './../../../../hooks/useMedia';
-import { Autocomplete } from '@material-ui/lab';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
-import useNotification from '../../../../hooks/useNotification';
+import useBanner from './../../../../hooks/useBanner';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -67,35 +63,28 @@ function a11yProps(index) {
   };
 }
 
-const NotificationCategoryModal = () => {
+const BannerModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const { form_buttons: formButtons } = useView();
-  const { notificationCategoryDocument: openDialog } = useSelector((state) => state.floatingMenu);
+  const { bannerDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
-  const saveButton = formButtons.find((button) => button.name === view.notificationCategory.detail.save);
-  const { create_notification_category, update_notification_category, getMentorList } = useNotification();
-  const { getCounselingCategories } = useMedia();
+  const saveButton = formButtons.find((button) => button.name === view.banner.detail.save);
+  const { createBanner, updateBanner } = useBanner();
   const [tabIndex, setTabIndex] = React.useState(0);
   const [openDialogUploadImage, setOpenDiaLogUploadImage] = React.useState(false);
-  const [dialogUpload, setDialogUpload] = useState({
-    open: false,
-    type: '',
-  });
 
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
     type: '',
     text: '',
   });
+  const [banner, setbanner] = useState([]);
 
-
-  const [notificationCategory, setnotificationCategory] = useState(initNotification);
-  const [selectednotificationCategory, setselectednotificationCategory] = useState([]);
   const handleCloseDialog = () => {
     setDocumentToDefault();
-    dispatch({ type: FLOATING_MENU_CHANGE, notificationCategoryDocument: false });
+    dispatch({ type: FLOATING_MENU_CHANGE, bannerDocument: false });
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -111,56 +100,37 @@ const NotificationCategoryModal = () => {
   };
 
   const setURL = (image) => {
-    if (dialogUpload.type === 'image') {
-      setnotificationCategory({ ...notificationCategory, image_url: image });
-    }
-    if (dialogUpload.type === 'banner') {
-      setnotificationCategory({ ...notificationCategory, banner_url: image });
-    }
+    setbanner({ ...banner, banner_url: image, video_url: image });
   };
 
   const setDocumentToDefault = async () => {
-    // setMentorListData(initMentorListData);
-    setnotificationCategory(initNotification);
+    setbanner([]);
     setTabIndex(0);
   };
 
-  const handleOpenDiaLog = (type) => {
+  const handleOpenDiaLog = () => {
     setOpenDiaLogUploadImage(true);
-    setDialogUpload({
-      open: true,
-      type: type,
-    });
   };
 
-  const handleCloseDiaLog = (type) => {
+  const handleCloseDiaLog = () => {
     setOpenDiaLogUploadImage(false);
-    setDialogUpload({
-      open: false,
-      type: type,
-    });
   };
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setnotificationCategory({ ...notificationCategory, [name]: value });
+    setbanner({ ...banner, [name]: value });
   };
-
-  //   const handleChangeMentor = (e, value) => {
-  //     setSelectedMentor(value);
-  //     setMentorListData({ ...mentorListData, mentor_id_list: value.map((item) => item.id) });
-  //   };
 
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await update_notification_category(notificationCategory);
-        handleOpenSnackbar(true, 'success', 'Cập nhật danh mục thông báo thành công!');
+        await updateBanner(banner);
+        handleOpenSnackbar(true, 'success', 'Cập nhật banner thành công!');
       } else {
-        await create_notification_category(notificationCategory);
-        handleOpenSnackbar(true, 'success', 'Tạo mới danh mục thông báo thành công!');
+        await createBanner(banner);
+        handleOpenSnackbar(true, 'success', 'Tạo mới banner thành công!');
       }
-      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'notificationCategory' });
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'banner' });
       handleCloseDialog();
     } catch (error) {
       handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
@@ -169,24 +139,11 @@ const NotificationCategoryModal = () => {
 
   useEffect(() => {
     if (!selectedDocument) return;
-    setnotificationCategory({
-      ...notificationCategory,
+    setbanner({
+      ...banner,
       ...selectedDocument,
-      image_url: selectedDocument.image_url || userAvatar,
-      banner_url: selectedDocument?.banner_url || userAvatar,
     });
-    // setSelectedMentor(listMentor.filter((item) => selectedDocument?.mentor_id_list?.includes(item.id)));
   }, [selectedDocument]);
-
-  //   useEffect(() => {
-  //     const fetch = async () => {
-  //       const data = await getCounselingCategories();
-  //       setCategories(data);
-  //       const res = await getMentorList();
-  //       setListMentor(res);
-  //     };
-  //     fetch();
-  //   }, []);
 
   return (
     <React.Fragment>
@@ -210,8 +167,8 @@ const NotificationCategoryModal = () => {
         open={openDialogUploadImage || false}
         onSuccess={setURL}
         onClose={handleCloseDiaLog}
-        type="image"
-        folder="Mentor"
+        type={banner.is_video ? 'video' : 'image'}
+        folder="Banner"
       />
       <Grid container>
         <Dialog
@@ -219,11 +176,11 @@ const NotificationCategoryModal = () => {
           TransitionComponent={Transition}
           keepMounted
           onClose={handleCloseDialog}
-          className={classes.useradddialog}
+          className={classes.partnerdialog}
         >
           <DialogTitle className={classes.dialogTitle}>
             <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
-              Danh mục thông báo
+              Banner
             </Grid>
           </DialogTitle>
           <DialogContent className={classes.dialogContent}>
@@ -264,7 +221,7 @@ const NotificationCategoryModal = () => {
               <Grid item xs={12}>
                 <TabPanel value={tabIndex} index={0}>
                   <Grid container spacing={1}>
-                    <Grid item lg={6} md={6} xs={12}>
+                    <Grid item lg={12} md={12} xs={12}>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
@@ -273,24 +230,41 @@ const NotificationCategoryModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img src={notificationCategory.image_url} alt="" />
+                          <img
+                            src={
+                              banner.is_video
+                                ? banner.video_url
+                                  ? 'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
+                                  : undefined
+                                : banner.banner_url
+                            }
+                            alt=""
+                          />
                           <div>
-                            <div>Upload/Change Image</div>
-                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình đại diện</Button>
+                            <div>
+                              <span className={classes.tabItemLabelField}>Video banner:</span>
+                              <Switch
+                                checked={banner.is_video || false}
+                                onChange={(e) => setbanner({ ...banner, is_video: e.target.checked })}
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                            </div>
+                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn ảnh/video banner</Button>
                           </div>
                         </div>
                       </div>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <InfoOutlinedIcon />
-                            <span>Chi tiết danh mục thông báo</span>
+                            <QueueMusic />
+                            <span>Chi tiết Banner</span>
                           </div>
                         </div>
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tiêu đề:</span>
+                              <span className={classes.tabItemLabelField}>Tên banner:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -299,91 +273,44 @@ const NotificationCategoryModal = () => {
                                 rowsMax={1}
                                 variant="outlined"
                                 name="title"
-                                value={notificationCategory.title}
+                                value={banner.title || ''}
                                 className={classes.inputField}
                                 onChange={handleChanges}
                               />
                             </Grid>
                           </Grid>
-                          {selectedDocument?.id && (
-                            <>
-                              <Grid container className={classes.gridItem} alignItems="center">
-                                <Grid item lg={4} md={4} xs={4}>
-                                  <span className={classes.tabItemLabelField}>Ngày tạo:</span>
-                                </Grid>
-                                <Grid item lg={8} md={8} xs={8}>
-                                  <TextField
-                                    fullWidth
-                                    multiline
-                                    rows={1}
-                                    rowsMax={1}
-                                    readOnly={true}
-                                    disabled
-                                    variant="outlined"
-                                    name="description"
-                                    value={notificationCategory.created_date}
-                                    className={classes.multilineInputField}
-                                    onChange={handleChanges}
-                                  />
-                                </Grid>
-                              </Grid>
-                              <Grid container className={classes.gridItem} alignItems="center">
-                                <Grid item lg={4} md={4} xs={4}>
-                                  <span className={classes.tabItemLabelField}>Người tạo:</span>
-                                </Grid>
-                                <Grid item lg={8} md={8} xs={8}>
-                                  <TextField
-                                    fullWidth
-                                    multiline
-                                    rows={1}
-                                    rowsMax={1}
-                                    readOnly={true}
-                                    disabled
-                                    variant="outlined"
-                                    name="description"
-                                    value={notificationCategory.created_by}
-                                    className={classes.multilineInputField}
-                                    onChange={handleChanges}
-                                  />
-                                </Grid>
-                              </Grid>
-                            </>
-                          )}
+
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Số thứ tự:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                rows={1}
+                                rowsMax={1}
+                                variant="outlined"
+                                type="number"
+                                name="order_number"
+                                value={banner.order_number || ''}
+                                className={classes.inputField}
+                                onChange={handleChanges}
+                              />
+                            </Grid>
+                          </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Hoạt động:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <Switch
-                                checked={notificationCategory.is_active}
-                                onChange={() =>
-                                  setnotificationCategory({
-                                    ...notificationCategory,
-                                    is_hidden: !notificationCategory.is_hidden,
-                                  })
-                                }
+                                checked={banner.is_active || false}
+                                onChange={(e) => setbanner({ ...banner, is_active: e.target.checked })}
                                 color="primary"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
                             </Grid>
                           </Grid>
-                        </div>
-                      </div>
-                    </Grid>
-                    <Grid item lg={6} md={6} xs={12}>
-                      <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <BannerIcon />
-                            <span>Banner</span>
-                          </div>
-                        </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                          <img className={classes.bannerImage} src={notificationCategory.banner_url} alt="" />
-                          <div>
-                            <div>Upload/Change Banner Image</div>
-                            <Button onClick={() => handleOpenDiaLog('banner')}>Chọn hình đại diện</Button>
-                          </div>
                         </div>
                       </div>
                     </Grid>
@@ -399,7 +326,7 @@ const NotificationCategoryModal = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="contained"
@@ -429,4 +356,4 @@ const NotificationCategoryModal = () => {
   );
 };
 
-export default NotificationCategoryModal;
+export default BannerModal;

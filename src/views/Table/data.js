@@ -59,9 +59,9 @@ export const headCells = [
     label: 'Hiển thị trong danh sách chọn',
     maxWidth: 150,
   },
+  { id: 'landing_page_name', numeric: false, disablePadding: false, label: 'Tên trang', maxWidth: 150 },
   { id: 'category_code', numeric: false, disablePadding: false, label: 'Mã danh mục', maxWidth: 150 },
   { id: 'category_name', numeric: false, disablePadding: false, label: 'Tên danh mục', maxWidth: 150 },
-
   { id: 'active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 100 },
   { id: 'episodes', numeric: false, disablePadding: false, label: 'Số tập', maxWidth: 100 },
   { id: 'duration', numeric: false, disablePadding: false, label: 'Thời gian', maxWidth: 100 },
