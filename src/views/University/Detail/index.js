@@ -155,7 +155,7 @@ const UniveristyModal = () => {
   };
   const handleUpdateuniversity = async () => {
     try {
-      let description =editorRef.current && editorRef.current.getContent() ? editorRef.current.getContent() : university.description;
+      let description =editorRef.current && editorRef.current.getContent() ? editorRef.current.getContent({ format: 'text' }) : university.description;
       if (!university.id) {
         let check = await createUniversity({...university, description:description });
         if (check == true) {
@@ -289,6 +289,22 @@ const UniveristyModal = () => {
                           <div className={classes.tabItemLabel}>
                             <ImageIcon />
                             <span>Hình ảnh</span>
+                          </div>
+                        </div>
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`} >
+                          <img src={university.image_url} alt="" />
+                          <div>
+                            <div>Upload/Change Image</div>
+                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình </Button>
+                          </div>
+                        </div>
+                    
+                      </div>
+                      <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                          <div className={classes.tabItemLabel}>
+                            <ImageIcon />
+                            <span>Danh sách hình ảnh</span>
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`} >
