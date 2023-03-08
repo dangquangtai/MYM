@@ -146,7 +146,7 @@ const CareerModal = () => {
   const handleUpdateCareer = async () => {
     try {
       let content =
-      editorRef.current && editorRef.current.getContent() ? editorRef.current.getContent() : Career.career_description;
+      editorRef.current && editorRef.current.getContent() ? editorRef.current.getContent({ format: 'text' }) : Career.career_description;
       if (!Career.id) {
         let check =await createCareer({...Career, career_description: content});
         if (check == true) {
