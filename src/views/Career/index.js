@@ -34,11 +34,14 @@ const CareerWrapper = () => {
   return (
     <React.Fragment>
       <CareerTable
-        tableTitle={selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list? 'Quản lý ngành':'Quản lý danh sách ngành'}
+        tableTitle={selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list? 'Quản lý ngành': 
+        selectedFolder.action === careerActions.categoryactive || selectedFolder.action === careerActions.categoryinactive?'Quản lý danh mục ngành':'Quản lý danh sách ngành'}
         url={getUrlByAction(selectedFolder)}
         categories={categories}
-        documentType={selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list?'career':'careerlist' }
-        setActiveUrl={selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list?apiEndpoints.set_active_career: apiEndpoints.set_active_career_list}
+        documentType={selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list?'career':
+        selectedFolder.action === careerActions.categoryactive || selectedFolder.action === careerActions.categoryinactive?'careerCategory':'careerlist' }
+        setActiveUrl={selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list?apiEndpoints.set_active_career: 
+          selectedFolder.action === careerActions.categoryactive || selectedFolder.action === careerActions.categoryinactive?apiEndpoints.set_active_career_category:apiEndpoints.set_active_career_list}
         setFeaturedUrl={apiEndpoints.set_featured_career}
       />
     </React.Fragment>

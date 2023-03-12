@@ -235,7 +235,7 @@ export default function GeneralTable(props) {
   const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
   const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
   const buttonCreateNewsList = menuButtons.find((button) => button.name === view.newsList.list.create);
-
+  const buttonCreateNewCareerCategory = menuButtons.find((button)=>button.name === view.careerCategory.list.create);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -254,7 +254,7 @@ export default function GeneralTable(props) {
   const reduxDocuments = useSelector((state) => state.task);
   const [changeDeptReload, ReloadDept] = React.useState(0);
   const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
-  const {getCareerDetail,getCareerDetailList} = useCareer();
+  const {getCareerDetail,getCareerDetailList,getCareerCategoryDetail} = useCareer();
   const {
     documents = [],
     total_item: count = 0,
@@ -642,6 +642,12 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
 
     }
+    else if (documentType === 'careerCategory') {
+      detailDocument = await getCareerCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+
+    }
   };
 
   const openDialogCreate = () => {
@@ -670,7 +676,10 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
-    
+    else if (documentType === 'careerCategory'){
+      dispatch({type: DOCUMENT_CHANGE, documentType});
+      dispatch({type: FLOATING_MENU_CHANGE, detailDocument: true});
+    }
   };
 
   const handleUpdateDepartment = async () => {
@@ -1263,6 +1272,7 @@ export default function GeneralTable(props) {
                 createBannerList={handleClickCreateBannerList}
                 buttonCreateNewsList={buttonCreateNewsList}
                 createNewsList={handleClickCreateNewsList}
+                buttonCreateNewCareerCategory={buttonCreateNewCareerCategory}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (

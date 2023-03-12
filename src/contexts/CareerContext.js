@@ -22,6 +22,20 @@ export const CareerProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getCareerCategoryDetail = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_career_category_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: news, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return news;
+        } else return {};
+      });
+  };
   const getCareerList = async () => {
     return axiosInstance
       .post(apiEndpoints.get_active_list_career, {
@@ -83,6 +97,28 @@ export const CareerProvider = ({ children }) => {
         } else return false;
       });
   };
+  const createCareerCategory = async (career) => {
+    return axiosInstance
+      .post(apiEndpoints.create_career_category, {...career,
+        outputtype: 'RawJson',
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          return true;
+        } else return false;
+      });
+  };
+  const updateCareerCategory = async (career) => {
+    return axiosInstance
+      .post(apiEndpoints.update_career_category, {...career,
+        outputtype: 'RawJson',
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          return true;
+        } else return false;
+      });
+  };
   const getCareerDetailList = async (id) => {
     return axiosInstance
       .post(apiEndpoints.get_careerlist_detail, {
@@ -125,7 +161,10 @@ export const CareerProvider = ({ children }) => {
         createCareerList,
         updateCareerList,
         getCareerDetailList,
-        getCareerListPage
+        getCareerListPage,
+        createCareerCategory,
+        updateCareerCategory,
+        getCareerCategoryDetail,
       }}
     >
       {children}
