@@ -32,6 +32,7 @@ import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
 import FirebaseUpload from '../../FloatingMenu/FirebaseUpload/index.js';
+import MultipleFirebaseUpload from '../../FloatingMenu/FirebaseUpload/multiple.js';
 import useCareer from '../../../hooks/useCareer.js';
 import useUniversity from '../../../hooks/useUniversity.js';
 import { Editor } from '@tinymce/tinymce-react';
@@ -99,7 +100,8 @@ const UniveristyModal = () => {
    university_category_id: '',
    university_type_id: '',
    career_list_id:'',
-   news_list_id:''
+   news_list_id:'',
+   image_url_list:[]
   });
 
   useEffect(() => {
@@ -137,7 +139,8 @@ const UniveristyModal = () => {
       university_category_id: '',
       unibersity_type_id: '',
       career_list_id:'',
-      news_list_id:''
+      news_list_id:'',
+      image_url_list:[]
     });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
   };
@@ -199,12 +202,18 @@ const UniveristyModal = () => {
       image_url: image,
     });
   };
+  const setURLList = (image) => {
+    setuniversity({
+      ...university,
+      image_url_list: image,
+    });
+  };
 
   const handleOpenDiaLog = () => {
     setDialogUpload({open: true , type: 'image'})
   };
   const handleCloseDiaLog = () => {
-    setDialogUpload({open: false , type: 'image'})
+    setDialogUpload({open: false ,openmultiple:false, type: 'image'})
   };
   return (
     <React.Fragment>
@@ -230,6 +239,13 @@ const UniveristyModal = () => {
         onClose={handleCloseDiaLog}
         folder="Avataruniversity"
         type="image"
+      />
+      <MultipleFirebaseUpload
+       open={dialogUpload.openmultiple || false}
+       onSuccess={setURLList}
+       onClose={handleCloseDiaLog}
+       folder="Avataruniversity"
+       type="image"
       />
       <Grid container>
         <Dialog
@@ -308,10 +324,13 @@ const UniveristyModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`} >
-                          <img src={university.image_url} alt="" />
+                          {university?.image_url_list.map((image_url)=>(
+                              <img src={image_url} alt="" />
+                          ))}
+                        
                           <div>
                             <div>Upload/Change Image</div>
-                            <Button onClick={() => handleOpenDiaLog('image')}>Chọn hình </Button>
+                            <Button onClick={() => setDialogUpload({openmultiple: true , type: 'image'})}>Chọn hình </Button>
                           </div>
                         </div>
                     
