@@ -119,7 +119,9 @@ const EnhancedTableToolbar = (props) => {
     createBannerList,
     buttonCreateNewsList,
     createNewsList,
-    buttonCreateNewCareerCategory
+    buttonCreateNewCareerCategory,
+    buttonImportMentor,
+    openFireBase
   } = props;
 
   const filterRef = useRef(null);
@@ -367,6 +369,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createMentor}>
                       {buttonCreateMentor.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonImportMentor && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={openFireBase} >
+                      {buttonImportMentor.text}
                     </Button>
                   </Grid>
                 )}

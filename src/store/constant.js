@@ -419,6 +419,8 @@ export const apiEndpoints = {
   get_inactive_career_category_list: '/Primary/?FlowAlias=bs_api_partner_career_get_inactive_career_category_list_by_page&action=api',
   get_career_category_list_key_value: '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list&action=api',
 
+  //Mentor Import
+  import_mentor_data: '/Primary/?FlowAlias=bs_api_mentor_import_data_from_url&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -667,6 +669,7 @@ export const view = {
   mentor: {
     list: {
       create: 'MYM_PARTNER_MENTOR_MENTOR_CREATE_MENU_BUTTON',
+      importData: 'MYM_PARTNER_MENTOR_IMPORT_DATA_MENU_BUTTON',
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTOR_SAVE_FORM_BUTTON',
@@ -739,6 +742,7 @@ export const view = {
   mentorlist: {
     list: {
       create: 'MYM_PARTNER_MENTOR_MENTORLIST_CREATE_MENU_BUTTON',
+      
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',

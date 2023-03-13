@@ -232,6 +232,14 @@ export const PartnerProvider = ({ children }) => {
         return false;
       });
   };
+  const importMentor = async (url) => {
+    return axiosInstance
+      .post(apiEndpoints.import_mentor_data, { outputtype: 'RawJson', file_url: url})
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) return true;
+        return false;
+      });
+  };
 
   return (
     <PartnerContext.Provider
@@ -257,7 +265,7 @@ export const PartnerProvider = ({ children }) => {
         createPartnerCategory,
         updatePartnerCategory,
         getPartnerListInactive,
-        getMentorbyEmail
+        getMentorbyEmail,importMentor
       }}
     >
       {children}

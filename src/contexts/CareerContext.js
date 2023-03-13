@@ -151,6 +151,19 @@ export const CareerProvider = ({ children }) => {
         } else return [];
       });
   };
+  const getCareerCategoryList = async () => {
+    return axiosInstance
+      .post(apiEndpoints.get_career_category_list_key_value, {
+        outputtype: 'RawJson',
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+         
+          return list;
+        } else return [];
+      });
+  };
   return (
     <CareerContext.Provider
       value={{
@@ -165,6 +178,7 @@ export const CareerProvider = ({ children }) => {
         createCareerCategory,
         updateCareerCategory,
         getCareerCategoryDetail,
+        getCareerCategoryList
       }}
     >
       {children}

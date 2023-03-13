@@ -99,9 +99,13 @@ export default function FirebaseUpload(props) {
       case 'other':
         setFileType('.csv,.doc,.docx,.xls,.xlsx,.txt');
         break;
+      case 'excel':
+        setFileType('.csv,.xls,.xlsx');
+        break;
       default:
         setFileType('image/*');
         break;
+
     }
   }, [type]);
 

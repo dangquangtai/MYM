@@ -68,6 +68,7 @@ export default function BasicModal({
   selectedOrder,
   handleProcessOrder,
   handleReject,
+  handleImportData,
   children,
   ...props
 }) {
@@ -88,6 +89,8 @@ export default function BasicModal({
         ;
       case 'collaborator':
         return 'Xác nhận từ chối đăng ký cộng tác viên.'
+      case 'importdataa':
+        return 'Xác nhận cập nhật dữ liêu mentor mới.'
     }
   };
 
@@ -169,7 +172,7 @@ export default function BasicModal({
       >
         <Box style={style.box}>
           <div id="modal-modal-title" style={style.title} variant="h6" component="h2">
-            {type === 'review' ? 'Xử lý' : 'Huỷ đăng ký'}
+            {type === 'review' ? 'Xử lý' :type==='importdata'?'Xác nhận cập nhật dữ liệu': 'Huỷ đăng ký'}
           </div>
           <div id="modal-modal-description" style={style.body}>
             <div style={style.formlabel}>{getTitle()}</div>
@@ -207,6 +210,11 @@ export default function BasicModal({
               )}
                {type === 'collaborator' && (
                 <Button type="submit" variant="contained" style={style.submitButton} onClick={handleReject}>
+                  Xác nhận
+                </Button>
+              )}
+               {type === 'importdata' && (
+                <Button type="submit" variant="contained" style={style.submitButton} onClick={handleImportData}>
                   Xác nhận
                 </Button>
               )}
