@@ -28,19 +28,15 @@ import PartnerCategoryModal from '../../views/Partner/Partner/Partner Category/D
 import CardBatchModal from './../../views/Payment/Batch/Detail/index';
 import CardModal from './../../views/Payment/PrepaidCard/AssignModal/index';
 import CardOrderModal from './../../views/Order/AssignModal/index';
-
 import ProcessRoleModal from '../../views/ProcessRole/Detail';
 import ProcessRoleUserModal from '../../views/ProcessRole/User';
 import ProcessRoleDeptModal from '../../views/ProcessRole/Department';
-
 import FileModal from './../../views/Document/File/Detail/index';
 import FileCategoryModal from './../../views/Document/FileCategory/Detail/index';
 import CollaboratorModal from '../../views/Collobaration/Detail';
 import NotificationCategoryModal from './../../views/Notification/Category/Detail/index';
 import NotificationMessageModall from './../../views/Notification/Message/Detail/index';
-
 import OrderModal from '../../views/Order/Detail';
-
 import PriceModal from '../../views/Sale/Price/Detail';
 import FileTypeModal from './../../views/Document/FileType/Detail/index';
 import DepartmentListModal from '../../views/DepartmentList/Detail';
@@ -48,15 +44,14 @@ import BroadcastModal from './../../views/Broadcast/Broadcast/Detail/index';
 import NewsModal from './../../views/Site/News/Detail/index';
 import LandingPageModal from './../../views/Site/LandingPage/Detail/index';
 import NewsCategoryModal from '../../views/Site/NewCategory/Detail/index.js';
-
 import UniveristyModal from '../../views/University/Detail';
 import CareerModal from '../../views/Career/Detail';
 import CareerListModal from '../../views/Career/ListDetail';
 import UniversityListModal from '../../views/University/ListDetail';
-
 import BannerModal from '../../views/Website/Banner/Detail';
 import BannerListModal from './../../views/Website/BannerList/Detail/index';
 import NewsListModal from './../../views/Site/NewsList/Detail/index';
+import CareerCategoryModal from '../../views/Career/Category';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -198,7 +193,6 @@ const MainLayout = ({ children }) => {
         return <LandingPageModal />;
       case 'newsCategory':
         return <NewsCategoryModal />;
-
       case 'university':
         return <UniveristyModal/>;
       case 'career':
@@ -214,6 +208,8 @@ const MainLayout = ({ children }) => {
         return <BannerListModal />;
       case 'newsList':
         return <NewsListModal />;
+      case 'careerCategory':
+        return <CareerCategoryModal/>
 
     }
   };

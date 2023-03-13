@@ -72,7 +72,7 @@ const CareerListModal = () => {
   const dispatch = useDispatch();
   const [tabIndex, setTabIndex] = React.useState(0);
   const { form_buttons: formButtons } = useView();
-  const buttonSave = formButtons.find((button) => button.name === view.user.detail.save);
+  const buttonSave = formButtons.find((button) => button.name === view.careerlist.detail.save);
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
@@ -486,14 +486,14 @@ const CareerListModal = () => {
                   </Button>
                 </Grid>
               )}
-              { Career.id && (
+              { buttonSave && (
                 <Grid item>
                   <Button
                     variant="contained"
                     style={{ background: 'rgb(97, 42, 255)' }}
                     onClick={() => handleUpdateCareer()}
                   >
-                    Lưu
+                    {buttonSave.text}
                   </Button>
                 </Grid>
               )}

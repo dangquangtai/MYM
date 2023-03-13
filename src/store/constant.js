@@ -410,6 +410,17 @@ export const apiEndpoints = {
   update_newslist: '/Primary/?FlowAlias=bs_api_news_update_newslist&action=api',
   set_active_newslist: '/Primary/?FlowAlias=bs_api_news_set_active_newslist&action=api',
 
+  //Career Category
+  create_career_category: '/Primary/?FlowAlias=bs_api_partner_career_create_career_category&action=api',
+  update_career_category: '/Primary/?FlowAlias=bs_api_partner_career_update_career_category&action=api',
+  set_active_career_category: '/Primary/?FlowAlias=bs_api_partner_career_set_active_career_category&action=api',
+  get_career_category_detail: '/Primary/?FlowAlias=bs_api_partner_career_get_career_category_detail&action=api',
+  get_active_career_category_list: '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list_by_page&action=api',
+  get_inactive_career_category_list: '/Primary/?FlowAlias=bs_api_partner_career_get_inactive_career_category_list_by_page&action=api',
+  get_career_category_list_key_value: '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list&action=api',
+
+  //Mentor Import
+  import_mentor_data: '/Primary/?FlowAlias=bs_api_mentor_import_data_from_url&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -563,6 +574,8 @@ export const careerActions = {
   inactive_list: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREER_LIST',
   activelist: 'MYM_PARTNER_HOME_OPEN_CAREERLISST_LIST',
   inactivelist: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREERLISST_LIST',
+  categoryactive: 'MYM_PARTNER_HOME_OPEN_ACTIVE_CAREER_CATEGORY_LIST',
+  categoryinactive: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREER_CATEGORY_LIST'
 };
 
 
@@ -656,6 +669,7 @@ export const view = {
   mentor: {
     list: {
       create: 'MYM_PARTNER_MENTOR_MENTOR_CREATE_MENU_BUTTON',
+      importData: 'MYM_PARTNER_MENTOR_IMPORT_DATA_MENU_BUTTON',
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTOR_SAVE_FORM_BUTTON',
@@ -728,6 +742,7 @@ export const view = {
   mentorlist: {
     list: {
       create: 'MYM_PARTNER_MENTOR_MENTORLIST_CREATE_MENU_BUTTON',
+      
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',
@@ -894,4 +909,13 @@ export const view = {
     },
 
   },
+  careerCategory: {
+   list: {
+    create: 'MYM_PARTNER_HOME_CREATE_CAREER_CATEGORY_MENU_BUTTON'
+   },
+   detail: {
+    save: 'MYM_PARTNER_HOME_UPDATE_CAREER_CATEGORY_FORM_BUTTON'
+   }
+
+  }
 };

@@ -248,6 +248,12 @@ export function getUrlByAction(selectedFolder) {
     case careerActions.activelist: {
       return apiEndpoints.get_careerlist_active_list;
     }
+    case careerActions.categoryinactive: {
+      return apiEndpoints.get_inactive_career_category_list;
+    }
+    case careerActions.categoryactive: {
+      return apiEndpoints.get_active_career_category_list;
+    }
     case bannerActions.active_list: {
       return apiEndpoints.get_banner_list;
     }

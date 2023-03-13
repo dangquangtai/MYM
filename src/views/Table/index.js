@@ -58,7 +58,7 @@ import useOrder from './../../hooks/useOrder';
 import useSale from '../../hooks/useSale';
 import useShare from './../../hooks/useShare';
 import useSite from './../../hooks/useSite';
-
+import FirebaseUpload from '../FloatingMenu/FirebaseUpload';
 import useUniversity from './../../hooks/useUniversity';
 import useCareer from '../../hooks/useCareer';
 import useBanner from './../../hooks/useBanner';
@@ -167,42 +167,34 @@ export default function GeneralTable(props) {
   }, [tableColumns, selectedFolder]);
 
   const buttonAccountCreate = menuButtons.find((button) => button.name === view.user.list.create);
-
   const buttonDeptCreate = menuButtons.find((button) => button.name === view.department.list.create);
   const buttonDeptUpdate = menuButtons.find((button) => button.name === view.department.list.update);
   const buttonDeptAddUser = menuButtons.find((button) => button.name === view.department.list.adduser);
   const buttonDeptRemoveUser = menuButtons.find((button) => button.name === view.department.list.removeaccount);
   const buttonSyncDepartment = menuButtons.find((button) => button.name === view.department.list.syncDept);
   const buttondeactiveDepartment = menuButtons.find((button) => button.name === view.department.list.deactive);
-
   const buttonCreateRole = menuButtons.find((button) => button.name === view.role.list.create);
-
   const buttonCreatePodcast = menuButtons.find((button) => button.name === view.podcast.list.create);
   const buttonCreateEpisode = menuButtons.find((button) => button.name === view.episode.list.create);
   const buttonCreatePlaylist = menuButtons.find((button) => button.name === view.playlist.list.create);
-
   const buttonCreatePartner = menuButtons.find((button) => button.name === view.partner.list.create);
   const buttonCreatePartnerCategory = menuButtons.find((button) => button.name === view.partner_category.list.create);
-
   const buttonCreateMentor = menuButtons.find((button) => button.name === view.mentor.list.create);
+  const buttonImportMentor = menuButtons.find((button) => button.name === view.mentor.list.importData);
   const buttonCreateMentorList = menuButtons.find((button) => button.name === view.mentorlist.list.create);
-
   const buttonBookingMeeting = menuButtons.find((button) => button.name === view.counselling.list.meeting);
   const buttonBookingReview = menuButtons.find((button) => button.name === view.counselling.list.review);
   const buttonBookingNote = menuButtons.find((button) => button.name === view.counselling.list.note);
   const buttonBookingCancel = menuButtons.find((button) => button.name === view.counselling.list.cancel);
   const buttonDownloadData = menuButtons.find((button) => button.name === view.counselling.list.download);
-
   const buttonCreateEvent = menuButtons.find((button) => button.name === view.event.list.create);
   const buttonCreateEventCategory = menuButtons.find((button) => button.name === view.eventcategory.list.create);
   const buttonCreateBatch = menuButtons.find((button) => button.name === view.batch.list.create);
   const buttonSendEmail = menuButtons.find((button) => button.name === view.batch.list.send_email);
   const buttonAssignVoucher = menuButtons.find((button) => button.name === view.voucher.list.assign);
-
   const butttonCreateCardBatch = menuButtons.find((button) => button.name === view.prepaidcardbatch.list.create);
   const buttonSendEmailCard = menuButtons.find((button) => button.name === view.prepaidcardbatch.list.send_email);
   const buttonAssignCard = menuButtons.find((button) => button.name === view.prepaidcard.list.assign);
-
   const buttonCreateProcessRole = menuButtons.find((button) => button.name === view.processrole.list.create);
   const buttonUpdateProcessRole = menuButtons.find((button) => button.name === view.processrole.list.update);
   const buttonUpdateDeptRole = menuButtons.find((button) => button.name === view.processrole.list.update_dept_role);
@@ -215,26 +207,20 @@ export default function GeneralTable(props) {
   const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
   const buttonCreateFileType = menuButtons.find((button) => button.name === view.fileType.list.create);
   const buttonCreateUniversity = menuButtons.find((button)=> button.name===view.university.list.create);
-  const buttonCreateNotificationCategory = menuButtons.find(
-    (button) => button.name === view.notificationCategory.list.create
-  );
-  const buttonCreateNotificationMessage = menuButtons.find(
-    (button) => button.name === view.notificationMessage.list.create
-  );
+  const buttonCreateNotificationCategory = menuButtons.find((button) => button.name === view.notificationCategory.list.create);
+  const buttonCreateNotificationMessage = menuButtons.find((button) => button.name === view.notificationMessage.list.create);
   const buttonCreateCounsellingPrice = menuButtons.find((button) => button.name === view.counsellingPrice.list.create);
   const buttonCreateBroadcast = menuButtons.find((button) => button.name === view.broadcast.list.create);
   const buttonCreateNews = menuButtons.find((button) => button.name === view.news.list.create);
   const buttonCreateLandingPage = menuButtons.find((button) => button.name === view.landingPage.list.create);
   const buttonCreateNewsCategory = menuButtons.find((button) => button.name === view.newsCategory.list.create);
-
   const buttonCreateCareer = menuButtons.find((button) => button.name === view.career.list.create);
   const buttonCreateCareerList = menuButtons.find((button) => button.name === view.careerlist.list.create);
   const buttonCreateUniversityList = menuButtons.find((button) => button.name === view.university.list.create_list);
-
-
   const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
   const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
   const buttonCreateNewsList = menuButtons.find((button) => button.name === view.newsList.list.create);
+  const buttonCreateNewCareerCategory = menuButtons.find((button)=>button.name === view.careerCategory.list.create);
 
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
@@ -252,9 +238,10 @@ export default function GeneralTable(props) {
   const [userList, setUserList] = React.useState([]);
   const [deptList, setDeptList] = React.useState([]);
   const reduxDocuments = useSelector((state) => state.task);
+  const [openFireBase,setOpenFireBase] = React.useState(false);
   const [changeDeptReload, ReloadDept] = React.useState(0);
   const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
-  const {getCareerDetail,getCareerDetailList} = useCareer();
+  const {getCareerDetail,getCareerDetailList,getCareerCategoryDetail} = useCareer();
   const {
     documents = [],
     total_item: count = 0,
@@ -319,7 +306,7 @@ export default function GeneralTable(props) {
   } = useRole();
 
   const { getAccountDetail, activeAccount, getAllUserByDept, assignAccount, removeAccount, getAllUser } = useAccount();
-  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail } =
+  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail,importMentor } =
     usePartner();
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
   const { getBatchDetail, sendEmailVoucher } = useMarketing();
@@ -333,7 +320,7 @@ export default function GeneralTable(props) {
   const { getOrderDetail } = useOrder();
   const { getDetailPrice } = useSale();
   const { getBroadcastDetail } = useShare();
-
+  const [urlexcel,setURLLink] = React.useState('');
 
   const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail } = useSite();
   const { getBannerDetail, getBannerListDetail } = useBanner();
@@ -642,6 +629,12 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
 
     }
+    else if (documentType === 'careerCategory') {
+      detailDocument = await getCareerCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+
+    }
   };
 
   const openDialogCreate = () => {
@@ -670,7 +663,10 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
-    
+    else if (documentType === 'careerCategory'){
+      dispatch({type: DOCUMENT_CHANGE, documentType});
+      dispatch({type: FLOATING_MENU_CHANGE, detailDocument: true});
+    }
   };
 
   const handleUpdateDepartment = async () => {
@@ -1119,7 +1115,23 @@ export default function GeneralTable(props) {
       onSuccess: reloadCurrentDocuments,
     });
   };
-
+  const setURL = (url)=>{
+    setOpenFireBase(false)
+    setIsOpenModal(true);
+    setURLLink(url)
+    setModalType('importdata');
+  }
+  const handleCloseDiaLog = () =>{
+    setOpenFireBase(false)
+  }
+  
+  const handleOpen = () =>{
+    setOpenFireBase(true)
+  }
+  const handleImportData = async() =>{
+         await importMentor(urlexcel);
+         setIsOpenModal(false)
+  }
   const handleSyncProcessRole = async () => {
     showConfirmPopup({
       message: `Xác nhận đồng bộ ?`,
@@ -1142,12 +1154,20 @@ export default function GeneralTable(props) {
           selectedBooking={selectedRecord}
         />
       )}
+       <FirebaseUpload
+        open={openFireBase || false}
+        onSuccess={setURL}
+        onClose={handleCloseDiaLog}
+        folder="ExcelMentor"
+        type="excel"
+      />
       <Modal
         isOpen={isOpenModal}
         handleClose={() => setIsOpenModal(false)}
         type={modalType}
         handleCancel={handleCancelBooking}
         handleReview={handleReviewBooking}
+        handleImportData={handleImportData}
         selectedBooking={selected[0]}
       />
 
@@ -1263,6 +1283,9 @@ export default function GeneralTable(props) {
                 createBannerList={handleClickCreateBannerList}
                 buttonCreateNewsList={buttonCreateNewsList}
                 createNewsList={handleClickCreateNewsList}
+                buttonCreateNewCareerCategory={buttonCreateNewCareerCategory}
+                buttonImportMentor={buttonImportMentor}
+                openFireBase = {handleOpen}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (

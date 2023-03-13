@@ -72,12 +72,12 @@ const CareerModal = () => {
   const dispatch = useDispatch();
   const [tabIndex, setTabIndex] = React.useState(0);
   const { form_buttons: formButtons } = useView();
-  const buttonSave = formButtons.find((button) => button.name === view.user.detail.save);
+  const buttonSave = formButtons.find((button) => button.name === view.career.detail.save);
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
   const editorRef = React.useRef(null);
-  const {createCareer,updateCareer} = useCareer();
+  const {createCareer,updateCareer,getCareerCategoryList} = useCareer();
   const {getUniversityList, getNewsList} = useUniversity();
   const [univeristyList,setUniversityList] = useState([]);
   const [newsList, setNewList] = useState([]);
@@ -97,8 +97,9 @@ const CareerModal = () => {
     order_number:0,
     news_list_id:'',
     univeristyList:'',
+    category_id: '',
   });
-
+  const [CareerCategory, setCareerCategory] = useState([]);
   useEffect(() => {
     if (!selectedDocument) return;
     setCareer({
@@ -113,6 +114,8 @@ const CareerModal = () => {
     setUniversityList(data);
     data = await getNewsList();
     setNewList(data);
+    data= await getCareerCategoryList();
+    setCareerCategory(data)
   }
   fetch()
   }, []);
@@ -127,9 +130,11 @@ const CareerModal = () => {
       career_description: '',
       order_number:0,
       news_list_id:'',
-    univeristyList:'',
+      univeristyList:'',
+      category_id: ''
     });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
+    
   };
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
@@ -333,6 +338,25 @@ const CareerModal = () => {
                           </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Danh mục:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={Career.category_id || ''}
+                                onChange={(event) => setCareer({ ...Career, category_id: event.target.value })}
+                              >
+                                {CareerCategory &&
+                                  CareerCategory.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.value}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                          </Grid>  
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Danh sách trường:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
@@ -480,14 +504,14 @@ const CareerModal = () => {
                   </Button>
                 </Grid>
               )}
-              { Career.id && (
+              { buttonSave && (
                 <Grid item>
                   <Button
                     variant="contained"
                     style={{ background: 'rgb(97, 42, 255)' }}
                     onClick={() => handleUpdateCareer()}
                   >
-                    Lưu
+                    {buttonSave.text}
                   </Button>
                 </Grid>
               )}

@@ -119,6 +119,9 @@ const EnhancedTableToolbar = (props) => {
     createBannerList,
     buttonCreateNewsList,
     createNewsList,
+    buttonCreateNewCareerCategory,
+    buttonImportMentor,
+    openFireBase
   } = props;
 
   const filterRef = useRef(null);
@@ -286,6 +289,13 @@ const EnhancedTableToolbar = (props) => {
                     </Button>
                   </Grid>
                 )}
+                {buttonCreateNewCareerCategory && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createUniversity}>
+                      {buttonCreateNewCareerCategory.text}
+                    </Button>
+                  </Grid>
+                )}
                 {buttondeactiveDepartment && (
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={handleDeactiveDepartment}>
@@ -359,6 +369,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createMentor}>
                       {buttonCreateMentor.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonImportMentor && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={openFireBase} >
+                      {buttonImportMentor.text}
                     </Button>
                   </Grid>
                 )}
