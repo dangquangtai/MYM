@@ -14,7 +14,10 @@ import {
   TableCell,
   TableContainer,
   Chip,
+  Snackbar,
+  Portal
 } from '@material-ui/core';
+import Alert from '../../component/Alert/index';
 import React, { useEffect } from 'react';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DuoIcon from '@material-ui/icons/Duo';
@@ -242,6 +245,11 @@ export default function GeneralTable(props) {
   const [changeDeptReload, ReloadDept] = React.useState(0);
   const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
   const {getCareerDetail,getCareerDetailList,getCareerCategoryDetail} = useCareer();
+  const [snackbarStatus, setSnackbarStatus] = React.useState({
+    isOpen: false,
+    type: '',
+    text: '',
+  });
   const {
     documents = [],
     total_item: count = 0,
@@ -1129,8 +1137,14 @@ export default function GeneralTable(props) {
     setOpenFireBase(true)
   }
   const handleImportData = async() =>{
-         await importMentor(urlexcel);
+        let check =  await importMentor(urlexcel);
+       
          setIsOpenModal(false)
+         if (check){
+          setSnackbarStatus({isOpen: true, type: 'success',text: 'Cập nhật dự liệu thành công'})
+         } else {
+          setSnackbarStatus({isOpen: true, type: 'error',text: 'Cập nhật dự liệu lỗi'})
+         }
   }
   const handleSyncProcessRole = async () => {
     showConfirmPopup({
@@ -1142,7 +1156,7 @@ export default function GeneralTable(props) {
   };
 
   const clickSuccess = () => {};
-
+ 
   return (
     <React.Fragment>
       {isOpenModalNote && (
@@ -1153,6 +1167,27 @@ export default function GeneralTable(props) {
           handleSubmit={handleNoteBooking}
           selectedBooking={selectedRecord}
         />
+      )}
+      {snackbarStatus.isOpen && (<>
+   <Portal>
+   <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={snackbarStatus.isOpen}
+          autoHideDuration={3000}
+          onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
+        >
+          <Alert
+            onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
+            severity={snackbarStatus.type}
+            sx={{ width: '100%' }}
+          >
+            {snackbarStatus.text}
+          </Alert>
+        </Snackbar>
+   </Portal>
+
+       
+        </>
       )}
        <FirebaseUpload
         open={openFireBase || false}
