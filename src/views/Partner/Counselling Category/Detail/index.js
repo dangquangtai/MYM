@@ -20,7 +20,7 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { view } from '../../../../store/constant';
+import { image_default, view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
@@ -90,7 +90,9 @@ const CounsellingCategoryModal = () => {
     });
 
 
-    const [counsellingCategoryData, setcounsellingCategoryData] = useState([]);
+    const [counsellingCategoryData, setcounsellingCategoryData] = useState({
+        image_url: image_default,
+    });
     const [menuItems, setMenuItems] = useState([]);
 
 
@@ -117,7 +119,7 @@ const CounsellingCategoryModal = () => {
     };
 
     const setDocumentToDefault = async () => {
-        setcounsellingCategoryData([]);
+        setcounsellingCategoryData({image_url: image_default});
         setTabIndex(0);
     };
 
@@ -148,21 +150,21 @@ const CounsellingCategoryModal = () => {
                 await createCounsellingCategory(counsellingCategoryData);
                 handleOpenSnackbar(true, 'success', 'Tạo mới dịch vụ thành công!');
             }
-            dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'counsellingCategoryDocument' });
+            dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'counsellingCategory' });
             handleCloseDialog();
         } catch (error) {
             handleOpenSnackbar(true, 'error', 'Có lỗi xảy ra, vui lòng thử lại sau!');
         }
     };
 
-    // console.log('mentorListData', selectedMentor);
+
 
     useEffect(() => {
         if (!selectedDocument) return;
         setcounsellingCategoryData({
             ...counsellingCategoryData,
-            ...selectedDocument,
-            image_url: selectedDocument.image_url || userAvatar,
+            ...selectedDocument
+            
         });
     }, [selectedDocument]);
 
@@ -170,8 +172,7 @@ const CounsellingCategoryModal = () => {
         const fetch = async () => {
             const data = await getMenuItemList();
             setMenuItems(data);
-            // const res = await getMentorList();
-            // setListMentor(res);
+        
         };
         fetch();
     }, []);
@@ -181,6 +182,8 @@ const CounsellingCategoryModal = () => {
     return (
         <React.Fragment>
             {snackbarStatus.isOpen && (
+                <>
+                <span>xzcxzc</span>
                 <Snackbar
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     open={snackbarStatus.isOpen}
@@ -195,6 +198,7 @@ const CounsellingCategoryModal = () => {
                         {snackbarStatus.text}
                     </Alert>
                 </Snackbar>
+                </>
             )}
             <FirebaseUpload
                 open={openDialogUploadImage || false}
@@ -280,13 +284,12 @@ const CounsellingCategoryModal = () => {
                                                 <div className={classes.tabItemBody}>
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
                                                         <Grid item lg={4} md={4} xs={4}>
-                                                            <span className={classes.tabItemLabelField}>Tên dịch vụ:</span>
+                                                            <span className={classes.tabItemLabelField}>Tên dịch vụ(*):</span>
                                                         </Grid>
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
+                                                              
                                                                 variant="outlined"
                                                                 name="category_name"
                                                                 value={counsellingCategoryData.category_name}
@@ -302,8 +305,7 @@ const CounsellingCategoryModal = () => {
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
+                                                         
                                                                 variant="outlined"
                                                                 name="category_label"
                                                                 value={counsellingCategoryData.category_label}
@@ -332,7 +334,7 @@ const CounsellingCategoryModal = () => {
                                                     </Grid>
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
                                                         <Grid item lg={4} md={4} xs={4}>
-                                                            <span className={classes.tabItemLabelField}>Số thứ tự:</span>
+                                                            <span className={classes.tabItemLabelField}>Số thứ tự(*):</span>
                                                         </Grid>
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
@@ -425,21 +427,21 @@ const CounsellingCategoryModal = () => {
                                                             </Select>
                                                         </Grid>
                                                     </Grid>
-                                                    {/* <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Ẩn:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Switch
-                                checked={mentorListData.is_hidden}
-                                onChange={() =>
-                                  setMentorListData({ ...mentorListData, is_hidden: !mentorListData.is_hidden })
-                                }
-                                color="primary"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                              />
-                            </Grid>
-                          </Grid> */}
+                                                    <Grid container className={classes.gridItem} alignItems="center">
+                                                                    <Grid item lg={4} md={4} xs={4}>
+                                                                    <span className={classes.tabItemLabelField}>Ẩn:</span>
+                                                                    </Grid>
+                                                                    <Grid item lg={8} md={8} xs={8}>
+                                                                    <Switch
+                                                                        checked={counsellingCategoryData.is_hidden}
+                                                                        onChange={() =>
+                                                                        setcounsellingCategoryData({ ...counsellingCategoryData, is_hidden: !counsellingCategoryData.is_hidden })
+                                                                        }
+                                                                        color="primary"
+                                                                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                                                    />
+                                                                    </Grid>
+                                                                </Grid> 
                                                 </div>
                                             </div>
                                         </Grid>

@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../services/firebase';
-import { gridSpacing,tinyMCESecretKey, view } from '../../../store/constant.js';
+import { gridSpacing,image_default,tinyMCESecretKey, view } from '../../../store/constant.js';
 import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
@@ -96,7 +96,7 @@ const UniveristyModal = () => {
    is_active: true,
    is_hidden: false,
    description:'',
-   image_url:'',
+   image_url: image_default,
    university_category_id: '',
    university_type_id: '',
    career_list_id:'',
@@ -135,7 +135,7 @@ const UniveristyModal = () => {
       is_active: true,
       is_hidden: false,
       description:'',
-      image_url:'',
+      image_url: image_default,
       university_category_id: '',
       unibersity_type_id: '',
       career_list_id:'',

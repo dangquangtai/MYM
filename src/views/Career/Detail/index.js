@@ -24,7 +24,7 @@ import {
 import Alert from '../../../component/Alert/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { tinyMCESecretKey, view } from '../../../store/constant.js';
+import { image_default, tinyMCESecretKey, view } from '../../../store/constant.js';
 import useView from '../../../hooks/useView';
 import useStyles from './classes.js';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../store/actions.js';
@@ -89,7 +89,7 @@ const CareerModal = () => {
   });
 
   const [Career, setCareer] = useState({
-    image_url: '',
+    image_url: image_default,
     career_title: '',
     is_featured: true,
     is_active: true,
@@ -123,7 +123,7 @@ const CareerModal = () => {
   const handleCloseDialog = () => {
     setDocumentToDefault();
     setCareer({
-      image_url: '',
+      image_url: image_default,
       career_title: '',
       is_featured: true,
       is_active: true,

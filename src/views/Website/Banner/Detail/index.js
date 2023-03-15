@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { view } from '../../../../store/constant';
+import { image_default, view } from '../../../../store/constant';
 import useView from '../../../../hooks/useView';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE } from '../../../../store/actions';
 import Alert from '../../../../component/Alert';
@@ -85,7 +85,11 @@ const BannerModal = () => {
     type: '',
     text: '',
   });
-  const [banner, setbanner] = useState([]);
+  const [banner, setbanner] = useState({
+    image_url: image_default,
+    video_url:'',
+    is_active: true,
+  });
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
@@ -115,7 +119,11 @@ const BannerModal = () => {
   };
 
   const setDocumentToDefault = async () => {
-    setbanner([]);
+    setbanner({
+      image_url: image_default,
+      video_url:'',
+      is_active: true,
+    });
     setTabIndex(0);
   };
 
@@ -250,7 +258,7 @@ const BannerModal = () => {
                               <img
                                 src={
 
-                                  banner?.image_url
+                                  banner.image_url
                                 }
                                 alt=""
                               />
@@ -271,16 +279,14 @@ const BannerModal = () => {
                             <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
                               <img
                                 src={
-                                  banner.video_url
-                                    ? 'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
-                                    : undefined
-
+                              
+                                     'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
                                 }
                                 alt=""
                               />
                               <div>
 
-                                {banner.banner_type === 'VIDEO' ? <Button onClick={() => handleOpenDiaLog('video')}>Chọn video banner</Button> : undefined}
+                                {banner.banner_type === 'VIDEO' ? <Button onClick={() => handleOpenDiaLog('video')}>Chọn video</Button> : undefined}
                               </div>
                             </div>
                           </div>
@@ -297,7 +303,7 @@ const BannerModal = () => {
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tên banner:</span>
+                              <span className={classes.tabItemLabelField}>Tên banner(*):</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -320,8 +326,6 @@ const BannerModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                rows={1}
-                                rowsMax={1}
                                 variant="outlined"
                                 type="number"
                                 name="order_number"
@@ -333,7 +337,7 @@ const BannerModal = () => {
                           </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Loại banner:</span>
+                              <span className={classes.tabItemLabelField}>Loại banner(*):</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <Select
