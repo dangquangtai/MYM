@@ -36,6 +36,7 @@ import {
   bannerActions,
   bannerListActions,
   newsListActions,
+  counsellingCategoryActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -268,6 +269,9 @@ export function getUrlByAction(selectedFolder) {
     }
     case newsListActions.active_list: {
       return apiEndpoints.get_newslist_list;
+    }
+    case counsellingCategoryActions.active_list: {
+      return apiEndpoints.get_counselling_category_list;
     }
     default: {
       return '';

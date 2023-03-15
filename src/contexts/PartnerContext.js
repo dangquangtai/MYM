@@ -26,10 +26,10 @@ export const PartnerProvider = ({ children }) => {
     return axiosInstance
       .post(apiEndpoints.get_mentor_by_email, {
         outputtype: 'RawJson',
-        email_address:email,
+        email_address: email,
       })
       .then((response) => {
-        if (response.status === 200 && response.data.return === 200 && response.data.code === 0 ) {
+        if (response.status === 200 && response.data.return === 200 && response.data.code === 0) {
           return true;
         } else return false;
       });
@@ -162,8 +162,8 @@ export const PartnerProvider = ({ children }) => {
         if (response.status === 200 && response.data.return === 200) return true;
         return false;
       });
-  }; 
-  
+  };
+
   const updatePartnerCategory = async (data) => {
     return axiosInstance
       .post(apiEndpoints.update_partner_category, { outputtype: 'RawJson', ...data })
@@ -180,8 +180,8 @@ export const PartnerProvider = ({ children }) => {
         if (response.status === 200 && response.data.return === 200) return true;
         return false;
       });
-  }; 
-  
+  };
+
   const updatePartner = async (data) => {
     return axiosInstance
       .post(apiEndpoints.update_partner, { outputtype: 'RawJson', ...data })
@@ -234,7 +234,7 @@ export const PartnerProvider = ({ children }) => {
   };
   const importMentor = async (url) => {
     return axiosInstance
-      .post(apiEndpoints.import_mentor_data, { outputtype: 'RawJson', file_url: url})
+      .post(apiEndpoints.import_mentor_data, { outputtype: 'RawJson', file_url: url })
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) return true;
         return false;
@@ -265,7 +265,7 @@ export const PartnerProvider = ({ children }) => {
         createPartnerCategory,
         updatePartnerCategory,
         getPartnerListInactive,
-        getMentorbyEmail,importMentor
+        getMentorbyEmail, importMentor
       }}
     >
       {children}

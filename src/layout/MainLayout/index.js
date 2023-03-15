@@ -52,6 +52,7 @@ import BannerModal from '../../views/Website/Banner/Detail';
 import BannerListModal from './../../views/Website/BannerList/Detail/index';
 import NewsListModal from './../../views/Site/NewsList/Detail/index';
 import CareerCategoryModal from '../../views/Career/Category';
+import CounsellingCategoryModal from '../../views/Partner/Counselling Category/Detail';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -194,13 +195,13 @@ const MainLayout = ({ children }) => {
       case 'newsCategory':
         return <NewsCategoryModal />;
       case 'university':
-        return <UniveristyModal/>;
+        return <UniveristyModal />;
       case 'career':
-        return <CareerModal/>;
+        return <CareerModal />;
       case 'careerlist':
-        return <CareerListModal/>;
-      case 'universitylist': 
-        return <UniversityListModal/>
+        return <CareerListModal />;
+      case 'universitylist':
+        return <UniversityListModal />
 
       case 'banner':
         return <BannerModal />;
@@ -209,7 +210,9 @@ const MainLayout = ({ children }) => {
       case 'newsList':
         return <NewsListModal />;
       case 'careerCategory':
-        return <CareerCategoryModal/>
+        return <CareerCategoryModal />
+      case 'counsellingCategory':
+        return <CounsellingCategoryModal />
 
     }
   };

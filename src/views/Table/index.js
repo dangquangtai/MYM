@@ -65,6 +65,7 @@ import FirebaseUpload from '../FloatingMenu/FirebaseUpload';
 import useUniversity from './../../hooks/useUniversity';
 import useCareer from '../../hooks/useCareer';
 import useBanner from './../../hooks/useBanner';
+import useCounsellingCategory from '../../hooks/useCounsellingCategory';
 
 async function setFeatured(setFeaturedUrl, documentId, isFeatured) {
   return await axiosInstance
@@ -209,7 +210,7 @@ export default function GeneralTable(props) {
   const buttonCreateFile = menuButtons.find((button) => button.name === view.file.list.create);
   const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
   const buttonCreateFileType = menuButtons.find((button) => button.name === view.fileType.list.create);
-  const buttonCreateUniversity = menuButtons.find((button)=> button.name===view.university.list.create);
+  const buttonCreateUniversity = menuButtons.find((button) => button.name === view.university.list.create);
   const buttonCreateNotificationCategory = menuButtons.find((button) => button.name === view.notificationCategory.list.create);
   const buttonCreateNotificationMessage = menuButtons.find((button) => button.name === view.notificationMessage.list.create);
   const buttonCreateCounsellingPrice = menuButtons.find((button) => button.name === view.counsellingPrice.list.create);
@@ -223,7 +224,8 @@ export default function GeneralTable(props) {
   const buttonCreateBanner = menuButtons.find((button) => button.name === view.banner.list.create);
   const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
   const buttonCreateNewsList = menuButtons.find((button) => button.name === view.newsList.list.create);
-  const buttonCreateNewCareerCategory = menuButtons.find((button)=>button.name === view.careerCategory.list.create);
+  const buttonCreateNewCareerCategory = menuButtons.find((button) => button.name === view.careerCategory.list.create);
+  // const buttonCreateNewCounsellingCategory = menuButtons.find((button) => button.name === view.counsellingCategory.list.create);
 
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
@@ -241,10 +243,10 @@ export default function GeneralTable(props) {
   const [userList, setUserList] = React.useState([]);
   const [deptList, setDeptList] = React.useState([]);
   const reduxDocuments = useSelector((state) => state.task);
-  const [openFireBase,setOpenFireBase] = React.useState(false);
+  const [openFireBase, setOpenFireBase] = React.useState(false);
   const [changeDeptReload, ReloadDept] = React.useState(0);
   const { getProcessDetail, addDeptUser, removeUser, removeDept, syncProcessRole } = useProcessRole();
-  const {getCareerDetail,getCareerDetailList,getCareerCategoryDetail} = useCareer();
+  const { getCareerDetail, getCareerDetailList, getCareerCategoryDetail } = useCareer();
   const [snackbarStatus, setSnackbarStatus] = React.useState({
     isOpen: false,
     type: '',
@@ -314,7 +316,7 @@ export default function GeneralTable(props) {
   } = useRole();
 
   const { getAccountDetail, activeAccount, getAllUserByDept, assignAccount, removeAccount, getAllUser } = useAccount();
-  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail,importMentor } =
+  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail, importMentor } =
     usePartner();
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
   const { getBatchDetail, sendEmailVoucher } = useMarketing();
@@ -324,14 +326,15 @@ export default function GeneralTable(props) {
   const { getFileDetail, getFileCategoryDetail, getFileTypeDetail } = useDocument();
   const { getDetail } = useCollaborator();
   const { getDetailNotificatonCategory, getDetailNotificatonMessage } = useNotification();
-  const { getUniversityDetail,getUniversityListDetail } = useUniversity();
+  const { getUniversityDetail, getUniversityListDetail } = useUniversity();
   const { getOrderDetail } = useOrder();
   const { getDetailPrice } = useSale();
   const { getBroadcastDetail } = useShare();
-  const [urlexcel,setURLLink] = React.useState('');
+  const [urlexcel, setURLLink] = React.useState('');
 
   const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail } = useSite();
   const { getBannerDetail, getBannerListDetail } = useBanner();
+  const { getCounsellingCategoryDetail } = useCounsellingCategory();
 
   useEffect(() => {
     if (selectedProject && selectedFolder && url) {
@@ -603,12 +606,12 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
 
-    }else if (documentType === 'university') {
+    } else if (documentType === 'university') {
       detailDocument = await getUniversityDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    
-    }else if (documentType === 'universitylist') {
+
+    } else if (documentType === 'universitylist') {
       detailDocument = await getUniversityListDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
@@ -643,6 +646,12 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
 
     }
+    else if (documentType === 'counsellingCategory') {
+      detailDocument = await getCounsellingCategoryDetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, counsellingCategoryDocument: true });
+
+    }
   };
 
   const openDialogCreate = () => {
@@ -655,7 +664,7 @@ export default function GeneralTable(props) {
     } else if (documentType === 'role') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }else if (documentType === 'university') {
+    } else if (documentType === 'university') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
@@ -671,9 +680,13 @@ export default function GeneralTable(props) {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
-    else if (documentType === 'careerCategory'){
-      dispatch({type: DOCUMENT_CHANGE, documentType});
-      dispatch({type: FLOATING_MENU_CHANGE, detailDocument: true});
+    else if (documentType === 'careerCategory') {
+      dispatch({ type: DOCUMENT_CHANGE, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }
+    else if (documentType === 'counsellingCategory') {
+      dispatch({ type: DOCUMENT_CHANGE, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
   };
 
@@ -1075,6 +1088,10 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
   };
+  const handleClickCreateNewCounsellingCategory = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, counsellingCategoryDocument: true });
+  };
 
   const downloadFile = (url) => {
     const link = document.createElement('a');
@@ -1123,28 +1140,28 @@ export default function GeneralTable(props) {
       onSuccess: reloadCurrentDocuments,
     });
   };
-  const setURL = (url)=>{
+  const setURL = (url) => {
     setOpenFireBase(false)
     setIsOpenModal(true);
     setURLLink(url)
     setModalType('importdata');
   }
-  const handleCloseDiaLog = () =>{
+  const handleCloseDiaLog = () => {
     setOpenFireBase(false)
   }
-  
-  const handleOpen = () =>{
+
+  const handleOpen = () => {
     setOpenFireBase(true)
   }
-  const handleImportData = async() =>{
-        let check =  await importMentor(urlexcel);
-       
-         setIsOpenModal(false)
-         if (check){
-          setSnackbarStatus({isOpen: true, type: 'success',text: 'Cập nhật dự liệu thành công'})
-         } else {
-          setSnackbarStatus({isOpen: true, type: 'error',text: 'Cập nhật dự liệu lỗi'})
-         }
+  const handleImportData = async () => {
+    let check = await importMentor(urlexcel);
+
+    setIsOpenModal(false)
+    if (check) {
+      setSnackbarStatus({ isOpen: true, type: 'success', text: 'Cập nhật dự liệu thành công' })
+    } else {
+      setSnackbarStatus({ isOpen: true, type: 'error', text: 'Cập nhật dự liệu lỗi' })
+    }
   }
   const handleSyncProcessRole = async () => {
     showConfirmPopup({
@@ -1155,8 +1172,8 @@ export default function GeneralTable(props) {
     });
   };
 
-  const clickSuccess = () => {};
- 
+  const clickSuccess = () => { };
+
   return (
     <React.Fragment>
       {isOpenModalNote && (
@@ -1169,27 +1186,27 @@ export default function GeneralTable(props) {
         />
       )}
       {snackbarStatus.isOpen && (<>
-   <Portal>
-   <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          open={snackbarStatus.isOpen}
-          autoHideDuration={3000}
-          onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
-        >
-          <Alert
+        <Portal>
+          <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            open={snackbarStatus.isOpen}
+            autoHideDuration={3000}
             onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
-            severity={snackbarStatus.type}
-            sx={{ width: '100%' }}
           >
-            {snackbarStatus.text}
-          </Alert>
-        </Snackbar>
-   </Portal>
+            <Alert
+              onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
+              severity={snackbarStatus.type}
+              sx={{ width: '100%' }}
+            >
+              {snackbarStatus.text}
+            </Alert>
+          </Snackbar>
+        </Portal>
 
-       
-        </>
+
+      </>
       )}
-       <FirebaseUpload
+      <FirebaseUpload
         open={openFireBase || false}
         onSuccess={setURL}
         onClose={handleCloseDiaLog}
@@ -1308,10 +1325,10 @@ export default function GeneralTable(props) {
                 buttonCreateNewsCategory={buttonCreateNewsCategory}
                 createNewsCategory={handleClickCreateNewsCategory}
                 buttonCreateUniversity={buttonCreateUniversity}
-                createUniversity = {openDialogCreate}
-                buttonCreateCareer = {buttonCreateCareer}
-                buttonCreateCareerList = {buttonCreateCareerList}
-                buttonCreateUniversityList = {buttonCreateUniversityList}
+                createUniversity={openDialogCreate}
+                buttonCreateCareer={buttonCreateCareer}
+                buttonCreateCareerList={buttonCreateCareerList}
+                buttonCreateUniversityList={buttonCreateUniversityList}
                 buttonCreateBanner={buttonCreateBanner}
                 createBanner={handleClickCreateBanner}
                 buttonCreateBannerList={buttonCreateBannerList}
@@ -1320,7 +1337,9 @@ export default function GeneralTable(props) {
                 createNewsList={handleClickCreateNewsList}
                 buttonCreateNewCareerCategory={buttonCreateNewCareerCategory}
                 buttonImportMentor={buttonImportMentor}
-                openFireBase = {handleOpen}
+                // buttonCreateNewCounsellingCategory={buttonCreateNewCounsellingCategory}
+                // createNewCounsellingCategory={handleClickCreateNewCounsellingCategory}
+                openFireBase={handleOpen}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1351,12 +1370,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                          ? classes.table3
-                          : classes.table
+                            ? classes.table3
+                            : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                      // aria-label="enhanced table"
+                    // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}
@@ -1403,7 +1422,7 @@ export default function GeneralTable(props) {
                                   </div>
                                 </TableCell>
                               )}
-                                {displayOptions.image_url && (
+                              {displayOptions.image_url && (
                                 <TableCell align="left">
                                   <>
                                     <span
@@ -1415,7 +1434,7 @@ export default function GeneralTable(props) {
                                   </>
                                 </TableCell>
                               )}
-                               {displayOptions.career_title && (
+                              {displayOptions.career_title && (
                                 <TableCell align="left">
                                   <>
                                     <span
@@ -1427,7 +1446,7 @@ export default function GeneralTable(props) {
                                   </>
                                 </TableCell>
                               )}
-                               {displayOptions.list_title && (
+                              {displayOptions.list_title && (
                                 <TableCell align="left">
                                   <>
                                     <span
@@ -1462,9 +1481,9 @@ export default function GeneralTable(props) {
                                   </div>
                                 </TableCell>
                               )}
-                            
-                             
-                              
+
+
+
                               {displayOptions.fullname && (
                                 <TableCell align="left">
                                   <>
@@ -1562,10 +1581,10 @@ export default function GeneralTable(props) {
                                 <TableCell
                                   style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                                   align="left"
-                                  onClick={(event)=>openDetailDocument(event,row)}
+                                  onClick={(event) => openDetailDocument(event, row)}
                                 >
-                               {row.university_name}
-                                  
+                                  {row.university_name}
+
                                 </TableCell>
                               )}
                               {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
@@ -1658,10 +1677,10 @@ export default function GeneralTable(props) {
                                   style={{ maxWidth: 450, overflow: 'hidden', textOverflow: 'ellipsis' }}
                                   align="left"
                                 >
-                                  {row.university_name || row.current_school ||  ''}
+                                  {row.university_name || row.current_school || ''}
                                 </TableCell>
                               )}
-                            
+
                               {displayOptions.email_address && (
                                 <TableCell align="left">{row.email_address || ''}</TableCell>
                               )}

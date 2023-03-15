@@ -39,9 +39,10 @@ import { NotificationProvider } from '../contexts/NotificationContex.js';
 import { OrderProvider } from '../contexts/OrderContext';
 import { SaleProvider } from '../contexts/SaleContext';
 import { SiteProvider } from './../contexts/SiteContext';
-import {UniversityProvider} from './../contexts/UniversityContext';
+import { UniversityProvider } from './../contexts/UniversityContext';
 import { CareerProvider } from '../contexts/CareerContext';
 import { BannerProvider } from '../contexts/BannerContext';
+import { CounsellingCategoryProvider } from '../contexts/CounsellingCategoryContext';
 function loadLocaleData(locale) {
   switch (locale) {
     case 'fr':
@@ -103,17 +104,21 @@ const App = () => {
                                                                   <SaleProvider>
                                                                     <OrderProvider>
                                                                       <SiteProvider>
-                                                                                                                                                  <BannerProvider>
-                                                                        <UniversityProvider>
-                                                                          <CareerProvider>
-                                                                          <Routes />
-                                                                           <Snackbar />
-                                                                          </CareerProvider>
-                                                                        </UniversityProvider>
-                                                                       
+                                                                        <BannerProvider>
+                                                                          <UniversityProvider>
+                                                                            <DepartmentProvider>
+                                                                              <CareerProvider>
+                                                                                <CounsellingCategoryProvider>
+                                                                                  <Routes />
+                                                                                  <Snackbar />
+                                                                                </CounsellingCategoryProvider>
+                                                                              </CareerProvider>
+                                                                            </DepartmentProvider>
+                                                                          </UniversityProvider>
 
-                                                                    
-                                                                         
+
+
+
                                                                         </BannerProvider>
 
                                                                       </SiteProvider>

@@ -121,6 +121,8 @@ const EnhancedTableToolbar = (props) => {
     createNewsList,
     buttonCreateNewCareerCategory,
     buttonImportMentor,
+    buttonCreateNewCounsellingCategory,
+    createNewCounsellingCategory,
     openFireBase
   } = props;
 
@@ -211,10 +213,10 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const [dataDepartmentList, setDepartment] = React.useState();
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   useEffect(() => {
     setFilter({
@@ -573,6 +575,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createNewsList}>
                       {buttonCreateNewsList?.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateNewCounsellingCategory && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNewCounsellingCategory}>
+                      {buttonCreateNewCounsellingCategory?.text}
                     </Button>
                   </Grid>
                 )}
