@@ -2,7 +2,7 @@ export const gridSpacing = 3;
 export const drawerWidth = 320;
 export const drawerWidthIcon = 120;
 export const comanyCode = 'MYM';
-export const image_default = 'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Avatar%20Nam.jpg?alt=media&token=8208326e-faa9-4bdf-b811-a48481839cb5';
+export const image_default = 'https://firebasestorage.googleapis.com/v0/b/meetyourmentor-8ad17.appspot.com/o/Icon%2Ficon_dashbaord.png?alt=media&token=c9ea28a4-3e9e-46ee-8741-425117d9e91e';
 export const apiEndpoints = {
   upload: '/upload',
   authenticate: '/Primary/?FlowAlias=bs_api_user_authenticate&action=api',
