@@ -375,7 +375,7 @@ export const apiEndpoints = {
   get_career_detail: '/Primary/?FlowAlias=bs_api_partner_get_career_detail_by_id&action=api',
   create_career: '/Primary/?FlowAlias=bs_api_partner_create_new_career&action=api',
   update_career: '/Primary/?FlowAlias=bs_api_parter_update_career_by_id&action=api',
-  
+
   //CareerList
   get_careerlist_active_list: '/Primary/?FlowAlias=bs_api_career_get_active_careerlist_by_page&action=api',
   get_careerlist_inactive_list: '/Primary/?FlowAlias=bs_api_career_get_inactive_careerlist_by_page&action=api',
@@ -418,6 +418,13 @@ export const apiEndpoints = {
   get_active_career_category_list: '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list_by_page&action=api',
   get_inactive_career_category_list: '/Primary/?FlowAlias=bs_api_partner_career_get_inactive_career_category_list_by_page&action=api',
   get_career_category_list_key_value: '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list&action=api',
+
+  // Counseling Category
+  create_counselling_category: '/Primary/?FlowAlias=bs_api_partner_create_new_counseling_category &action=api',
+  update_counselling_category: '/Primary/?FlowAlias=bs_api_partner_update_counseling_category&action=api',
+  get_counselling_category_detail: '/Primary/?FlowAlias=bs_api_partner_get_counselling_category_detail&action=api',
+  get_list_menu_item: '/Primary/?FlowAlias=bs_api_partner_get_list_menu_item&action=api',
+  get_counselling_category_list: '/Primary/?FlowAlias=bs_api_partner_get_list_counselling_category&action=api',
 
   //Mentor Import
   import_mentor_data: '/Primary/?FlowAlias=bs_api_mentor_import_data_from_url&action=api',
@@ -591,6 +598,9 @@ export const newsListActions = {
   active_list: 'MYM_SITE_HOME_OPEN_NEWSLIST_LIST',
   inactive_list: 'MYM_SITE_HOME_NEWSLIST_INACTIVE_LIST',
 };
+export const counsellingCategoryActions = {
+  active_list: 'MYM_PARTNER_HOME_OPEN_SERVICE_LIST',
+};
 
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
@@ -742,7 +752,7 @@ export const view = {
   mentorlist: {
     list: {
       create: 'MYM_PARTNER_MENTOR_MENTORLIST_CREATE_MENU_BUTTON',
-      
+
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',
@@ -910,12 +920,21 @@ export const view = {
 
   },
   careerCategory: {
-   list: {
-    create: 'MYM_PARTNER_HOME_CREATE_CAREER_CATEGORY_MENU_BUTTON'
-   },
-   detail: {
-    save: 'MYM_PARTNER_HOME_UPDATE_CAREER_CATEGORY_FORM_BUTTON'
-   }
+    list: {
+      create: 'MYM_PARTNER_HOME_CREATE_CAREER_CATEGORY_MENU_BUTTON'
+    },
+    detail: {
+      save: 'MYM_PARTNER_HOME_UPDATE_CAREER_CATEGORY_FORM_BUTTON'
+    }
+
+  },
+  counsellingCategory: {
+    list: {
+      create: 'MYM_PARTNER_HOME_COUSELLING_CATEGORY_CREATE_MENU_BUTTON'
+    },
+    detail: {
+      save: 'MYM_PARTNER_HOME_COUSELLING_CATEGORY_SAVE_FORM_BUTTON'
+    }
 
   }
 };
