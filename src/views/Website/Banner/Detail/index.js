@@ -28,11 +28,13 @@ import {
   History,
   DescriptionOutlined as DescriptionOutlinedIcon,
   ImageOutlined as ImageIcon,
+  RadioOutlined as RadioOutlinedIcon,
 } from '@material-ui/icons';
+import { initObjectType, initNotificationMessage } from '../../../../store/constants/initial';
 import useStyles from './../../../../utils/classes';
 import FirebaseUpload from './../../../FloatingMenu/FirebaseUpload/index';
 import useBanner from './../../../../hooks/useBanner';
-
+import useNotification from '../../../../hooks/useNotification';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -68,18 +70,24 @@ function a11yProps(index) {
 const BannerModal = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const [listObject, setlistObject] = useState([]);
+  const [listObjectType, setlistObjectType] = useState(initObjectType);
   const { form_buttons: formButtons } = useView();
   const { bannerDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const saveButton = formButtons.find((button) => button.name === view.banner.detail.save);
   const { createBanner, updateBanner } = useBanner();
   const [tabIndex, setTabIndex] = React.useState(0);
+  const { getListObject } = useNotification();
+  const [action, setAction] = useState({...initNotificationMessage.action,image_url:image_default});
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
-    type: ''
+    type: '',
   });
-  const [bannerType, setBannerType] = useState([{ id: 'VIDEO', value: 'Video' }, { id: 'IMAGE', value: 'Hình ảnh' }]);
+  const [bannerType, setBannerType] = useState([
+    { id: 'VIDEO', value: 'Video' },
+    { id: 'IMAGE', value: 'Hình ảnh' },
+  ]);
   const [snackbarStatus, setSnackbarStatus] = useState({
     isOpen: false,
     type: '',
@@ -87,7 +95,7 @@ const BannerModal = () => {
   });
   const [banner, setbanner] = useState({
     image_url: image_default,
-    video_url:'',
+    video_url: '',
     is_active: true,
   });
 
@@ -110,29 +118,31 @@ const BannerModal = () => {
 
   const setURL = (image) => {
     if (dialogUpload.type === 'image') {
-      setbanner({ ...banner, image_url: image });
+      if (choice) {
+        setAction({ ...action, image_url: image });
+      } else setbanner({ ...banner, image_url: image });
     }
     if (dialogUpload.type === 'video') {
       setbanner({ ...banner, video_url: image });
     }
-
   };
 
   const setDocumentToDefault = async () => {
     setbanner({
       image_url: image_default,
-      video_url:'',
+      video_url: '',
       is_active: true,
     });
+    setAction({image_url:image_default});
     setTabIndex(0);
   };
 
   const handleOpenDiaLog = (type) => {
-    setDialogUpload({ open: true, type: type })
+    setDialogUpload({ open: true, type: type });
   };
-
+  const [choice, setChoice] = useState(false);
   const handleCloseDiaLog = (type) => {
-    setDialogUpload({ open: false, type: type })
+    setDialogUpload({ open: false, type: type });
   };
   const handleChangeObjectType = async (e) => {
     const { name, value } = e.target;
@@ -147,10 +157,10 @@ const BannerModal = () => {
   const handleSubmitForm = async () => {
     try {
       if (selectedDocument?.id) {
-        await updateBanner(banner);
+        await updateBanner({...banner,action:action});
         handleOpenSnackbar(true, 'success', 'Cập nhật banner thành công!');
       } else {
-        await createBanner(banner);
+        await createBanner({...banner,action:action});
         handleOpenSnackbar(true, 'success', 'Tạo mới banner thành công!');
       }
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'banner' });
@@ -166,8 +176,21 @@ const BannerModal = () => {
       ...banner,
       ...selectedDocument,
     });
+    setAction({...action,...selectedDocument.action})
   }, [selectedDocument]);
+  // useEffect(() => {
+  //   getListObjectByType(action.object_type);
+  // }, [action.object_type]);
 
+  // const getListObjectByType = async (type) => {
+  //   const listObject = await getListObject(type);
+  //   setlistObject(listObject);
+  // };
+  const handleChangeAction = (e) => {
+    const { name, value } = e.target;
+    const newAction = { ...action, [name]: value };
+    setAction(newAction);
+  };
   return (
     <React.Fragment>
       {snackbarStatus.isOpen && (
@@ -255,15 +278,16 @@ const BannerModal = () => {
                               </div>
                             </div>
                             <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
-                              <img
-                                src={
-
-                                  banner.image_url
-                                }
-                                alt=""
-                              />
+                              <img src={banner.image_url} alt="" />
                               <div>
-                                <Button onClick={() => handleOpenDiaLog('image')}>Chọn ảnh banner</Button>
+                                <Button
+                                  onClick={() => {
+                                    handleOpenDiaLog('image');
+                                    setChoice(false);
+                                  }}
+                                >
+                                  Chọn ảnh banner
+                                </Button>
                               </div>
                             </div>
                           </div>
@@ -279,19 +303,18 @@ const BannerModal = () => {
                             <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
                               <img
                                 src={
-                              
-                                     'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
+                                  'https://firebasestorage.googleapis.com/v0/b/huongnghiepnhanh.appspot.com/o/Banner%2Fpng-transparent-computer-icons-video-player-scalable-graphics-youtube-video-player-icon-angle-rectangle-triangle-thumbnail.png?alt=media&token=143b3b76-4202-4f49-92a3-32218a6b465d'
                                 }
                                 alt=""
                               />
                               <div>
-
-                                {banner.banner_type === 'VIDEO' ? <Button onClick={() => handleOpenDiaLog('video')}>Chọn video</Button> : undefined}
+                                {banner.banner_type === 'VIDEO' ? (
+                                  <Button onClick={() => handleOpenDiaLog('video')}>Chọn video</Button>
+                                ) : undefined}
                               </div>
                             </div>
                           </div>
                         </Grid>
-
                       </Grid>
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
@@ -371,6 +394,115 @@ const BannerModal = () => {
                           </Grid>
                         </div>
                       </div>
+                      <Grid container spacing={1}>
+                        <Grid item lg={6} md={6} xs={6}>
+                          <div className={classes.tabItem}>
+                            <div className={classes.tabItemTitle}>
+                              <div className={classes.tabItemLabel}>
+                                <ImageIcon />
+                                <span>Hình ảnh</span>
+                              </div>
+                            </div>
+                            <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`}>
+                              <img src={action.image_url} alt="" />
+                              <div>
+                                <Button
+                                  onClick={() => {
+                                    handleOpenDiaLog('image');
+                                    setChoice(true);
+                                  }}
+                                >
+                                  Chọn ảnh
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </Grid>
+                        <Grid item lg={6} md={6} xs={6}>
+                          <div className={classes.tabItem}>
+                            <div className={classes.tabItemTitle}>
+                              <div className={classes.tabItemLabel}>
+                                <RadioOutlinedIcon />
+                                <span>Action</span>
+                              </div>
+                            </div>
+                            <div className={classes.tabItemBody}>
+                              <Grid container className={classes.gridItemInfo} alignItems="center">
+                                <Grid item lg={4} md={4} xs={4}>
+                                  <span className={classes.tabItemLabelField}>Action label:</span>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={8}>
+                                  <TextField
+                                    fullWidth
+                                    variant="outlined"
+                                    name="title"
+                                    value={action.title}
+                                    className={classes.inputField}
+                                    onChange={handleChangeAction}
+                                  />
+                                </Grid>
+                              </Grid>
+                              <Grid container className={classes.gridItemInfo} alignItems="center">
+                                <Grid item lg={4} md={4} xs={4}>
+                                  <span className={classes.tabItemLabelField}>Action Link:</span>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={8}>
+                                  <TextField
+                                    fullWidth
+                                    variant="outlined"
+                                    name="link"
+                                    value={action.link}
+                                    className={classes.inputField}
+                                    onChange={handleChangeAction}
+                                  />
+                                </Grid>
+                              </Grid>
+                              <Grid container className={classes.gridItemInfo} alignItems="center">
+                                <Grid item lg={4} md={4} xs={4}>
+                                  <span className={classes.tabItemLabelField}>Object Type:</span>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={8}>
+                                  <Select
+                                    name="object_type"
+                                    labelId="career-label"
+                                    id="code"
+                                    className={classes.multpleSelectField}
+                                    value={action.object_type}
+                                    onChange={handleChangeObjectType}
+                                  >
+                                    {listObjectType?.map((item) => (
+                                      <MenuItem key={item} value={item}>
+                                        {item}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </Grid>
+                              </Grid>
+                              <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Mã:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Select
+                                name="code"
+                                labelId="career-label"
+                                id="code"
+                                className={classes.multpleSelectField}
+                                value={action.code}
+                                onChange={handleChangeAction}
+                              >
+                                {["HIGH_SCHOOL","CAREER","MEET_UEB_MENTOR"].map((item) => (
+                                  <MenuItem key={item} value={item} selected={item===action.code}>
+                                    {item}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </Grid>
+                          </Grid>
+                            </div>
+                          </div>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </TabPanel>

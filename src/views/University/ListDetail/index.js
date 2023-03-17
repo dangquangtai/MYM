@@ -35,6 +35,7 @@ import { storage } from '../../../services/firebase';
 import useUniversity from '../../../hooks/useUniversity.js';
 import { Editor } from '@tinymce/tinymce-react';
 import useMedia from '../../../hooks/useMedia.js';
+import { Autocomplete } from '@material-ui/lab';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -78,7 +79,7 @@ const UniversityListModal = () => {
     setTabIndex(newValue);
   };
   const editorRef = React.useRef(null);
-
+  const [universitiselected,setSelected] = useState([]);
   const { createUniversityList,
     updateUniversityList,} = useUniversity();
   const {  universities } = useSelector((state) => state.metadata);
@@ -106,9 +107,16 @@ const UniversityListModal = () => {
      ...University,
      ...selectedDocument
     });
+    const filter = universities.filter(item=>selectedDocument.university_id_list.indexOf(item.id)>-1)
+    setSelected(filter)
   }, [selectedDocument]);
 
+  useEffect(()=>{
+    if(universitiselected.length===0 || !universitiselected) return;
+    let dataid = universitiselected.map(item=>item.id)
+    setUniversity({...University, university_id_list: dataid})
 
+  },[universitiselected])
 
   const handleCloseDialog = () => {
     setDocumentToDefault();
@@ -267,7 +275,7 @@ const UniversityListModal = () => {
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
                       <DescriptionOutlinedIcon className={`${tabIndex === 2 ? classes.tabActiveIcon : ''}`} />
-                        Danh sách ngành
+                        Danh sách trường
                       </Typography>
                     }
                     value={2}
@@ -289,7 +297,7 @@ const UniversityListModal = () => {
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tiêu đề danh sách ngành: </span>
+                              <span className={classes.tabItemLabelField}>Tiêu đề danh sách trường: </span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -418,10 +426,10 @@ const UniversityListModal = () => {
                   <Grid container className={classes.gridItem} alignItems="center">
                   
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Danh sách ngành:</span>
+                              <span className={classes.tabItemLabelField}>Danh sách trường:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              <Select
+                              {/* <Select
                                 className={classes.multpleSelectField}
                                 value={University.university_id_list || []}
                                 multiple
@@ -446,7 +454,21 @@ const UniversityListModal = () => {
                                       {item.value}
                                     </MenuItem>
                                   ))}
-                              </Select>
+                              </Select> */}
+                               <Autocomplete
+                                  name="university_id_list"
+                                  size="small"
+                                  multiple={true}
+                                  value={universitiselected}
+                                  options={universities}
+                                  getOptionLabel={(option) => option.value}
+                                  fullWidth
+                                  onChange={(e, value) => {
+                                    setSelected(value)
+                                   
+                                  }}
+                                  renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+                                />
                             </Grid>
                           </Grid>  
                           </div>

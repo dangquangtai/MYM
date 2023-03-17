@@ -96,6 +96,7 @@ const CareerListModal = () => {
     list_description: '',
     order_number:0,
     career_id_list:[],
+   
     counselling_category_id: ''
   });
 
@@ -486,14 +487,14 @@ const CareerListModal = () => {
                   </Button>
                 </Grid>
               )}
-              { buttonSave && (
+              { selectedDocument&&(
                 <Grid item>
                   <Button
                     variant="contained"
                     style={{ background: 'rgb(97, 42, 255)' }}
                     onClick={() => handleUpdateCareer()}
                   >
-                    {buttonSave.text}
+                    {'Lưu'}
                   </Button>
                 </Grid>
               )}

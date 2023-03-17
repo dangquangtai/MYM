@@ -96,7 +96,7 @@ const CareerModal = () => {
     career_description: '',
     order_number:0,
     news_list_id:'',
-    univeristyList:'',
+    university_list_id:'',
     category_id: '',
   });
   const [CareerCategory, setCareerCategory] = useState([]);
@@ -130,7 +130,7 @@ const CareerModal = () => {
       career_description: '',
       order_number:0,
       news_list_id:'',
-      univeristyList:'',
+      university_list_id:'',
       category_id: ''
     });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
@@ -504,7 +504,7 @@ const CareerModal = () => {
                   </Button>
                 </Grid>
               )}
-              { buttonSave && (
+              { buttonSave && selectedDocument&& (
                 <Grid item>
                   <Button
                     variant="contained"
