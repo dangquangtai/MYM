@@ -44,6 +44,7 @@ import {
   bannerListActions,
   newsListActions,
   counsellingCategoryActions,
+  qnaActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -83,6 +84,7 @@ import BannerWrapper from '../../Website/Banner';
 import BannerListWrapper from './../../Website/BannerList/index';
 import NewsListWrapper from './../../Site/NewsList/index';
 import CounsellingCategoryWrapper from '../../Partner/Counselling Category';
+import QnAWrapper from '../../Site/QnA';
 
 
 const Default = () => {
@@ -126,7 +128,7 @@ const Default = () => {
   const availableBannerListEndpoint = Object.values(bannerListActions);
   const availableNewsListEndpoint = Object.values(newsListActions);
   const availableCounsellingCategoryEndpoint = Object.values(counsellingCategoryActions);
-
+  const availableQnAEndpoint = Object.values(qnaActions);
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
   }
@@ -177,6 +179,7 @@ const Default = () => {
           {availableBannerListEndpoint.includes(selectedFolder?.action) && <BannerListWrapper />}
           {availableNewsListEndpoint.includes(selectedFolder?.action) && <NewsListWrapper />}
           {availableCounsellingCategoryEndpoint.includes(selectedFolder?.action) && <CounsellingCategoryWrapper />}
+          {availableQnAEndpoint.includes(selectedFolder?.action) && <QnAWrapper />}
         </Grid>
       )}
     </Grid>
