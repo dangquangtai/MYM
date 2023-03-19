@@ -427,6 +427,16 @@ export const apiEndpoints = {
   get_list_menu_item: '/Primary/?FlowAlias=bs_api_partner_get_list_menu_item&action=api',
   get_counselling_category_list: '/Primary/?FlowAlias=bs_api_partner_get_list_counselling_category&action=api',
 
+  // QnA
+  create_qna: '/Primary/?FlowAlias=bs_site_api_create_new_qna &action=api',
+  update_qna: '/Primary/?FlowAlias=bs_site_api_update_qna&action=api',
+  get_qna_detail: '/Primary/?FlowAlias=bs_site_api_get_qna_detail&action=api',
+  get_qna_list: '/Primary/?FlowAlias=bs_site_api_get_list_qna&action=api',
+  get_list_landing_page: '/Primary/?FlowAlias=bs_site_api_get_list_landing_page&action=api',
+  get_list_category: '/Primary/?FlowAlias=bs_site_api_get_list_category&action=api',
+  get_list_news: '/Primary/?FlowAlias=bs_site_api_get_list_news&action=api',
+  get_list_sub_category: '/Primary/?FlowAlias=bs_site_api_get_list_sub_category&action=api',
+
   //Mentor Import
   import_mentor_data: '/Primary/?FlowAlias=bs_api_mentor_import_data_from_url&action=api',
 };
@@ -601,6 +611,9 @@ export const newsListActions = {
 };
 export const counsellingCategoryActions = {
   active_list: 'MYM_PARTNER_HOME_OPEN_SERVICE_LIST',
+};
+export const qnaActions = {
+  active_list: 'MYM_SITE_HOME_OPEN_QNA_LIST',
 };
 
 
@@ -935,6 +948,15 @@ export const view = {
     },
     detail: {
       save: 'MYM_PARTNER_HOME_COUSELLING_CATEGORY_SAVE_FORM_BUTTON'
+    }
+
+  },
+  qna: {
+    list: {
+      create: 'MYM_SITE_HOME_QNA_CREATE_MENU_BUTTON'
+    },
+    detail: {
+      save: 'MYM_SITE_HOME_QNA_SAVE_FORM_BUTTON'
     }
 
   }

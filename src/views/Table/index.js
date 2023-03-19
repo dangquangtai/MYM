@@ -225,6 +225,7 @@ export default function GeneralTable(props) {
   const buttonCreateBannerList = menuButtons.find((button) => button.name === view.bannerList.list.create);
   const buttonCreateNewsList = menuButtons.find((button) => button.name === view.newsList.list.create);
   const buttonCreateNewCareerCategory = menuButtons.find((button) => button.name === view.careerCategory.list.create);
+  const buttonCreateNewQnA = menuButtons.find((button) => button.name === view.qna.list.create);
   // const buttonCreateNewCounsellingCategory = menuButtons.find((button) => button.name === view.counsellingCategory.list.create);
 
 
@@ -332,7 +333,7 @@ export default function GeneralTable(props) {
   const { getBroadcastDetail } = useShare();
   const [urlexcel, setURLLink] = React.useState('');
 
-  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail } = useSite();
+  const { getNewsDetail, getLandingPageDetail, getNewsCategoryDetail, getNewsListDetail, getQnADetail } = useSite();
   const { getBannerDetail, getBannerListDetail } = useBanner();
   const { getCounsellingCategoryDetail } = useCounsellingCategory();
 
@@ -652,6 +653,12 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, counsellingCategoryDocument: true });
 
     }
+    else if (documentType === 'qna') {
+      detailDocument = await getQnADetail(selectedDocument.id);
+      dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, qnaDocument: true });
+
+    }
   };
 
   const openDialogCreate = () => {
@@ -685,6 +692,10 @@ export default function GeneralTable(props) {
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
     else if (documentType === 'counsellingCategory') {
+      dispatch({ type: DOCUMENT_CHANGE, documentType });
+      dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+    }
+    else if (documentType === 'qna') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
@@ -1088,6 +1099,10 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
   };
+  const handleClickCreateQnA = () => {
+    dispatch({ type: DOCUMENT_CHANGE, documentType });
+    dispatch({ type: FLOATING_MENU_CHANGE, qnaDocument: true });
+  };
   const handleClickCreateNewCounsellingCategory = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, counsellingCategoryDocument: true });
@@ -1337,6 +1352,8 @@ export default function GeneralTable(props) {
                 createNewsList={handleClickCreateNewsList}
                 buttonCreateNewCareerCategory={buttonCreateNewCareerCategory}
                 buttonImportMentor={buttonImportMentor}
+                buttonCreateNewQnA={buttonCreateNewQnA}
+                createNewQnA={handleClickCreateQnA}
                 // buttonCreateNewCounsellingCategory={buttonCreateNewCounsellingCategory}
                 // createNewCounsellingCategory={handleClickCreateNewCounsellingCategory}
                 openFireBase={handleOpen}
