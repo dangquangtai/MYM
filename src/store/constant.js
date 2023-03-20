@@ -432,6 +432,7 @@ export const apiEndpoints = {
   update_qna: '/Primary/?FlowAlias=bs_site_api_update_qna&action=api',
   get_qna_detail: '/Primary/?FlowAlias=bs_site_api_get_qna_detail&action=api',
   get_qna_list: '/Primary/?FlowAlias=bs_site_api_get_list_qna&action=api',
+  get_qna_list_inactive: '/Primary/?FlowAlias=bs_site_api_get_list_qna_inactive&action=api',
   get_list_landing_page: '/Primary/?FlowAlias=bs_site_api_get_list_landing_page&action=api',
   get_list_category: '/Primary/?FlowAlias=bs_site_api_get_list_category&action=api',
   get_list_news: '/Primary/?FlowAlias=bs_site_api_get_list_news&action=api',
@@ -614,6 +615,7 @@ export const counsellingCategoryActions = {
 };
 export const qnaActions = {
   active_list: 'MYM_SITE_HOME_OPEN_QNA_LIST',
+  inactive_list: 'MYM_SITE_HOME_OPEN_QNA_INACTIVE_LIST',
 };
 
 

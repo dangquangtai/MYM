@@ -87,7 +87,10 @@ const QnAModal = () => {
 
 
     const [QnA, setQnA] = useState({
-        display_date: new Date()
+        display_date: new Date(),
+        is_active: true,
+        is_answered: false,
+        is_selected: false
     });
     const [news, setNews] = useState([]);
     const [landingPage, setLandingPage] = useState([]);
@@ -112,7 +115,11 @@ const QnAModal = () => {
     };
 
     const setDocumentToDefault = async () => {
-        setQnA({})
+        setQnA({
+            is_active: true,
+            is_answered: false,
+            is_selected: false
+        })
         setTabIndex(0);
     };
 
@@ -218,7 +225,7 @@ const QnAModal = () => {
                     TransitionComponent={Transition}
                     keepMounted
                     onClose={handleCloseDialog}
-                    className={classes.useradddialog}
+                    className={selectedDocument?.id ? (classes.useradddialog) : (classes.partnerdialog)}
                 >
                     <DialogTitle className={classes.dialogTitle}>
                         <Grid item xs={12} style={{ textTransform: 'uppercase' }}>
@@ -263,7 +270,7 @@ const QnAModal = () => {
                             <Grid item xs={12}>
                                 <TabPanel value={tabIndex} index={0}>
                                     <Grid container spacing={1}>
-                                        <Grid item lg={6} md={6} xs={12}>
+                                        <Grid item lg={selectedDocument?.id ? (6) : (12)} md={selectedDocument?.id ? (6) : (12)} xs={12}>
                                             <div className={classes.tabItem}>
                                                 <div className={classes.tabItemTitle}>
                                                     <div className={classes.tabItemLabel}>
@@ -370,6 +377,23 @@ const QnAModal = () => {
                                                         </Grid>
                                                     </Grid>
 
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={2} md={2} xs={12}>
+                                                            <span className={classes.tabItemLabelField}>Thứ tự:</span>
+                                                        </Grid>
+                                                        <Grid item lg={10} md={10} xs={12}>
+                                                            <TextField
+                                                                fullWidth
+                                                                variant="outlined"
+                                                                type='number'
+                                                                name="order_number"
+                                                                value={QnA.order_number || 0}
+                                                                size="small"
+                                                                onChange={handleChanges}
+                                                            />
+                                                        </Grid>
+                                                    </Grid>
+
 
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
                                                         <Grid item lg={4} md={4} xs={4}>
@@ -377,84 +401,11 @@ const QnAModal = () => {
                                                         </Grid>
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <Switch
-                                                                checked={QnA.is_active || false}
+                                                                checked={QnA.is_active}
                                                                 onChange={(e) => setQnA({ ...QnA, is_active: e.target.checked })}
                                                                 color="primary"
                                                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                                                             />
-                                                        </Grid>
-                                                    </Grid>
-
-                                                </div>
-                                            </div>
-                                        </Grid>
-                                        <Grid item lg={6} md={6} xs={12}>
-                                            <div className={classes.tabItem}>
-                                                <div className={classes.tabItemTitle}>
-                                                    <div className={classes.tabItemLabel}>
-                                                        {/* <RadioOutlinedIcon /> */}
-                                                        <span>Thông tin thêm</span>
-                                                    </div>
-                                                </div>
-                                                <div className={classes.tabItemBody}>
-                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
-                                                            <span className={classes.tabItemLabelField}>Người gửi:</span>
-                                                        </Grid>
-                                                        <Grid item lg={8} md={8} xs={8}>
-                                                            <TextField
-                                                                fullWidth
-                                                                variant="outlined"
-                                                                name="display_name"
-                                                                value={QnA.display_name || ''}
-                                                                size="small"
-                                                                onChange={handleChanges}
-                                                            />
-                                                        </Grid>
-                                                    </Grid>
-                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
-                                                            <span className={classes.tabItemLabelField}>Email:</span>
-                                                        </Grid>
-                                                        <Grid item lg={8} md={8} xs={8}>
-                                                            <TextField
-                                                                fullWidth
-                                                                variant="outlined"
-                                                                name="email_address"
-                                                                value={QnA.email_address || ''}
-                                                                size="small"
-                                                                onChange={handleChanges}
-                                                            />
-                                                        </Grid>
-                                                    </Grid>
-                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
-                                                            <span className={classes.tabItemLabelField}>SĐT:</span>
-                                                        </Grid>
-                                                        <Grid item lg={8} md={8} xs={8}>
-                                                            <TextField
-                                                                fullWidth
-                                                                variant="outlined"
-                                                                name="mobile"
-                                                                type='number'
-                                                                value={QnA.mobile || ''}
-                                                                size="small"
-                                                                onChange={handleChanges}
-                                                            />
-                                                        </Grid>
-                                                    </Grid>
-                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
-                                                            <span className={classes.tabItemLabelField}>Ngày gửi:</span>
-
-                                                        </Grid>
-
-                                                        <Grid item lg={8} md={8} xs={8}>
-                                                            <DatePicker
-                                                                date={QnA?.display_date}
-                                                                onChange={(date) => setQnA({ ...QnA, display_date: date })}
-                                                            />
-
                                                         </Grid>
                                                     </Grid>
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
@@ -463,7 +414,7 @@ const QnAModal = () => {
                                                         </Grid>
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <Switch
-                                                                checked={QnA.is_answered || false}
+                                                                checked={QnA.answer_news_id ? true : QnA.is_answered}
                                                                 onChange={(e) => setQnA({ ...QnA, is_answered: e.target.checked })}
                                                                 color="primary"
                                                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -476,16 +427,97 @@ const QnAModal = () => {
                                                         </Grid>
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <Switch
-                                                                checked={QnA.is_selected || false}
+                                                                checked={QnA.is_selected}
                                                                 onChange={(e) => setQnA({ ...QnA, is_selected: e.target.checked })}
                                                                 color="primary"
                                                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                                                             />
                                                         </Grid>
                                                     </Grid>
+
                                                 </div>
                                             </div>
                                         </Grid>
+
+                                        {selectedDocument?.id && (
+                                            <Grid item lg={6} md={6} xs={12}>
+                                                <div className={classes.tabItem}>
+                                                    <div className={classes.tabItemTitle}>
+                                                        <div className={classes.tabItemLabel}>
+                                                            {/* <RadioOutlinedIcon /> */}
+                                                            <span>Thông tin thêm</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className={classes.tabItemBody}>
+                                                        <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                            <Grid item lg={4} md={4} xs={4}>
+                                                                <span className={classes.tabItemLabelField}>Người gửi:</span>
+                                                            </Grid>
+                                                            <Grid item lg={8} md={8} xs={8}>
+                                                                <TextField
+                                                                    fullWidth
+                                                                    disabled
+                                                                    variant="outlined"
+                                                                    name="display_name"
+                                                                    value={QnA.display_name || ''}
+                                                                    size="small"
+                                                                    onChange={handleChanges}
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                            <Grid item lg={4} md={4} xs={4}>
+                                                                <span className={classes.tabItemLabelField}>Email:</span>
+                                                            </Grid>
+                                                            <Grid item lg={8} md={8} xs={8}>
+                                                                <TextField
+                                                                    fullWidth
+                                                                    disabled
+                                                                    variant="outlined"
+                                                                    name="email_address"
+                                                                    value={QnA.email_address || ''}
+                                                                    size="small"
+                                                                    onChange={handleChanges}
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                            <Grid item lg={4} md={4} xs={4}>
+                                                                <span className={classes.tabItemLabelField}>SĐT:</span>
+                                                            </Grid>
+                                                            <Grid item lg={8} md={8} xs={8}>
+                                                                <TextField
+                                                                    fullWidth
+                                                                    disabled
+                                                                    variant="outlined"
+                                                                    name="mobile"
+                                                                    type='number'
+                                                                    value={QnA.mobile || ''}
+                                                                    size="small"
+                                                                    onChange={handleChanges}
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+                                                        <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                            <Grid item lg={4} md={4} xs={4}>
+                                                                <span className={classes.tabItemLabelField}>Ngày gửi:</span>
+
+                                                            </Grid>
+
+                                                            <Grid item lg={8} md={8} xs={8}>
+                                                                <DatePicker
+                                                                    disabled
+                                                                    date={QnA?.display_date}
+                                                                    onChange={(date) => setQnA({ ...QnA, display_date: date })}
+                                                                />
+
+                                                            </Grid>
+                                                        </Grid>
+
+                                                    </div>
+                                                </div>
+                                            </Grid>
+                                        )}
                                     </Grid>
                                 </TabPanel>
                                 <TabPanel value={tabIndex} index={1}>
