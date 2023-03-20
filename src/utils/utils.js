@@ -277,6 +277,9 @@ export function getUrlByAction(selectedFolder) {
     case qnaActions.active_list: {
       return apiEndpoints.get_qna_list;
     }
+    case qnaActions.inactive_list: {
+      return apiEndpoints.get_qna_list_inactive;
+    }
     default: {
       return '';
     }
