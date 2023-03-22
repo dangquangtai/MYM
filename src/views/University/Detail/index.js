@@ -37,6 +37,8 @@ import useCareer from '../../../hooks/useCareer.js';
 import useUniversity from '../../../hooks/useUniversity.js';
 import { Editor } from '@tinymce/tinymce-react';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -78,6 +80,7 @@ const UniveristyModal = () => {
   const handleChangeTab = (event, newValue) => {
     setTabIndex(newValue);
   };
+  const [opendirect, setDirect] = useState({openDirect:false, link:''});
   const {getCareerListPage} = useCareer();
   const editorRef = React.useRef(null);
   const {getUniversityType,updateUniversity ,createUniversity,getNewsList } = useUniversity();
@@ -217,6 +220,9 @@ const UniveristyModal = () => {
   };
   return (
     <React.Fragment>
+      {opendirect.openDirect &&(
+        <Redirect to={opendirect.link} />
+      )}
       {snackbarStatus.isOpen && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -437,7 +443,7 @@ const UniveristyModal = () => {
                             <Grid item lg={2} md={2} xs={12}>
                               <span className={classes.tabItemLabelField}>Danh sách ngành:</span>
                             </Grid>
-                            <Grid item lg={10} md={10} xs={12}>
+                            <Grid item lg={8} md={8} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
                                 value={university.career_list_id || ''}
@@ -451,12 +457,26 @@ const UniveristyModal = () => {
                                   ))}
                               </Select>
                             </Grid>
+                             <Grid item lg={2} md={2} xs={12}>
+                              
+                                         <Link
+                                    to={'/dashboard/app?type=career&id='+university.career_list_id}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{color:'white',textDecoration:'none', }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >Sửa</Button>
+                                  </Link>
+                            </Grid>
                           </Grid>    
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={2} md={2} xs={12}>
                               <span className={classes.tabItemLabelField}>Danh sách blogs:</span>
                             </Grid>
-                            <Grid item lg={10} md={10} xs={12}>
+                            <Grid item lg={8} md={8} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
                                 value={university.news_list_id || ''}
@@ -469,6 +489,19 @@ const UniveristyModal = () => {
                                     </MenuItem>
                                   ))}
                               </Select>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={12}>
+                            <Link
+                                    to={'/dashboard/app?type=news&id='+university.news_list_id}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{ color:'white',textDecoration:'none' }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >Sửa</Button>
+                                  </Link>
                             </Grid>
                           </Grid>    
                         </div>

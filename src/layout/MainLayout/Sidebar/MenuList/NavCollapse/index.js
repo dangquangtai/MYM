@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   makeStyles,
   Typography,
@@ -16,9 +16,8 @@ import { useDispatch } from 'react-redux';
 import CustomIcon from '../CustomIcon/index';
 import * as actionTypes from '../../../../../store/actions';
 import { pageUrls } from '../../../../../store/constant';
-
 import NavItem from './../NavItem';
-
+import { useSelector } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
   collapseIcon: {
     fontSize: '1rem',
@@ -54,10 +53,9 @@ const NavCollapse = (props) => {
   const { menu, level, drawerToggle, drawerOpen } = props;
   const [open, setOpen] = React.useState(true);
   const [selected, setSelected] = React.useState(menu.id);
-
+  const { selectedApp } = useSelector((state) => state.app);
   const handleClick = (menu) => {
     dispatch({ type: actionTypes.SELECTED_FOLDER_CHANGE, selectedFolder: menu });
-
     if (window.location.pathname !== pageUrls.dashboard) {
       history.push(pageUrls.dashboard);
     }
@@ -68,9 +66,9 @@ const NavCollapse = (props) => {
     setSelected(!selected ? menu.id : null);
     setOpen(!open);
   };
-
   const menus = menu.children.map((item) => {
     item.type = item.children && item.children.length ? 'collapse' : 'item';
+  
     switch (item.type) {
       case 'collapse':
         return (
@@ -105,9 +103,7 @@ const NavCollapse = (props) => {
       fontSize={level > 0 ? 'inherit' : 'default'}
     />
   );
-
   let menuIconClass = !menu.icon ? classes.listIcon : classes.menuIcon;
-
   return (
     <React.Fragment>
       <Tooltip title={<Typography fontSize={17}>{menu.name}</Typography>} placement="right" arrow>

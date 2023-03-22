@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useMediaQuery, useTheme, AppBar, CssBaseline, Toolbar } from '@material-ui/core';
 import { useSelector } from 'react-redux';
@@ -104,9 +104,9 @@ const MainLayout = ({ children }) => {
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const { loading } = useLoading();
-
+  const {selectedApp} = useSelector((state)=>state.app);
   const { documentType } = useSelector((state) => state.document);
-
+ 
   const renderDetailDialog = () => {
     // eslint-disable-next-line default-case
     switch (documentType) {
@@ -117,17 +117,9 @@ const MainLayout = ({ children }) => {
       case 'mentor':
         return <MentorModal />;
       case 'department':
-        return (
-          <>
-            <DepartmentModal />
-          </>
-        );
+        return <DepartmentModal />;
       case 'role':
-        return (
-          <>
-            <RoleModal />
-          </>
-        );
+        return  <RoleModal />;
       case 'batch':
         return <BatchModal />;
       case 'podcast':
@@ -152,7 +144,6 @@ const MainLayout = ({ children }) => {
         return <CardBatchModal />;
       case 'prepaidcard':
         return <CardModal />;
-
       case 'processrole':
         return (
           <>
@@ -161,7 +152,6 @@ const MainLayout = ({ children }) => {
             <ProcessRoleDeptModal />
           </>
         );
-
       case 'file':
         return <FileModal />;
       case 'fileCategory':
@@ -174,14 +164,8 @@ const MainLayout = ({ children }) => {
         return <NotificationCategoryModal />;
       case 'notificationMessage':
         return <NotificationMessageModall />;
-
       case 'order':
-        return (
-          <>
-            <OrderModal />
-          </>
-        );
-
+        return <OrderModal />;
       case 'counsellingPrice':
         return <PriceModal />;
       case 'departmentList':
@@ -202,7 +186,6 @@ const MainLayout = ({ children }) => {
         return <CareerListModal />;
       case 'universitylist':
         return <UniversityListModal />
-
       case 'banner':
         return <BannerModal />;
       case 'bannerList':
@@ -217,15 +200,20 @@ const MainLayout = ({ children }) => {
     }
   };
 
+  
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
-
+ 
   React.useEffect(() => {
     setDrawerOpen(false);
   }, [matchUpMd]);
 
-  return (
+    
+  
+ 
+  return (<>
+  
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.header}>
@@ -244,6 +232,8 @@ const MainLayout = ({ children }) => {
       {loading && <Loading />}
       <ConfirmPopup />
     </div>
+ 
+  </>
   );
 };
 

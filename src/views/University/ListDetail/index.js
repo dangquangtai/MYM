@@ -98,7 +98,8 @@ const UniversityListModal = () => {
     description: '',
     order_number:0,
     university_id_list:[],
-    news_id_list: [],
+    is_show_category: true,
+    is_main_list: false,
   });
 
   useEffect(() => {
@@ -129,7 +130,8 @@ const UniversityListModal = () => {
       order_number:0,
       university_id_list:[],
       counselling_category_id: '',
-      news_id_list: [],
+      is_show_category: true,
+      is_main_list: false,
     });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
   };
@@ -327,6 +329,17 @@ const UniversityListModal = () => {
                               />
                             </Grid>
                           </Grid>
+                           {/* <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Hiển thị tiêu đề: </span>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <Switch
+                              checked={University.is_show_category}
+                              onChange={()=> setUniversity({...University,is_show_category: !University.is_show_category})}
+                              inputProps={{ 'aria-label': 'controlled' }} />
+                            </Grid>
+                          </Grid> */}
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Hoạt động: </span>
@@ -424,37 +437,11 @@ const UniversityListModal = () => {
                         </div>
                         <div className={classes.tabItemBody}>
                   <Grid container className={classes.gridItem} alignItems="center">
-                  
+                 
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Danh sách trường:</span>
+                              <span className={classes.tabItemLabelField}> {University.is_main_list?'Danh sách universitylist:': 'Danh sách trường:'}</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
-                              {/* <Select
-                                className={classes.multpleSelectField}
-                                value={University.university_id_list || []}
-                                multiple
-                                labelId="demo-multiple-name-label"
-                                id="demo-multiple-name"
-                                onChange={(event) => setUniversity({ ...University, university_id_list: event.target.value })}
-                                renderValue={(selected) => (
-                                  <div className={classes.chips}>
-                                    {selected.map((value) => (
-                                      <Chip
-                                        key={value}
-                                        label={universities?.find((i) => i.id === value)?.value}
-                                        className={classes.chip}
-                                      />
-                                    ))}
-                                  </div>
-                                )}
-                              >
-                                {universities &&
-                                  universities.map((item) => (
-                                    <MenuItem key={item.id} value={item.id}>
-                                      {item.value}
-                                    </MenuItem>
-                                  ))}
-                              </Select> */}
                                <Autocomplete
                                   name="university_id_list"
                                   size="small"

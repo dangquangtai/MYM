@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles, Grid, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,11 @@ import { gridSpacing } from './../../../store/constant';
 import AppCard from './Card/index';
 import useShare from './../../../hooks/useShare';
 import HoverCard from './HoverCard/index';
+import { useParams } from 'react-router-dom';
 import DetailDocumentDialog from './../../Detail/index';
+import { useLocation } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { useEffect } from 'react';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.common.black,
@@ -54,23 +58,50 @@ const App = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { apps } = useSelector((state) => state.app);
-
+  const [open,setRedirect] = useState(false)
   const { getApps } = useProject();
   const { getMetadata } = useShare();
-
+  const myParam = useLocation().search;
+  
   React.useEffect(() => {
     setTimeout(() => {
       getApps();
       getMetadata();
     }, 0);
+    
   }, []);
-
+  useEffect(()=>{
+    if (apps.length===0) return;
+    const id= new URLSearchParams(myParam).get("id");
+    const type = new URLSearchParams(myParam).get("type");
+    if (!type) return;
+    handleSelectedApp(type,id)
+    setRedirect(true)
+  },[apps])
   const handleAppClick = (app) => {
     dispatch({ type: SELECTED_APP_CHANGE, app });
   };
-
+  const handleSelectedApp = (type,id) =>{
+    if(type==='career'){
+      var id_app = '528e4614-2b69-11ed-b84b-005056a3c175'
+      var id_project='2fa1cc27-b9a3-11ed-83b0-0adcfa65ae7a'
+      var action = 'MYM_PARTNER_HOME_OPEN_CAREERLISST_LIST'
+      var app = apps.find(item=>item.id===id_app)
+      handleAppClick({...app,element_id: id, action:action, id_project: id_project})
+    } else {
+      var id_app = '67e880ce-b190-11ed-83b0-0adcfa65ae7a'
+      var id_project='8fd81cfc-b191-11ed-83b0-0adcfa65ae7a'
+      var action = 'MYM_SITE_HOME_OPEN_NEWSLIST_LIST'
+      var app = apps.find(item=>item.id===id_app)
+      handleAppClick({...app,element_id: id, action:action, id_project: id_project})
+    }
+  }
   return (
     <>
+    { open &&(
+ <Redirect to="/dashboard/default"/>
+    )}
+     
       <DetailDocumentDialog />
       <Grid container justifyContent="center" alignItems="center">
         <Grid item xs={12} sm={12} md={12} lg={12}>
