@@ -161,6 +161,70 @@ export const SiteProvider = ({ children }) => {
     });
   };
 
+
+
+  // QnA
+  const getQnADetail = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_qna_detail, {
+        outputtype: 'RawJson',
+        id,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { data: qna, view } = response.data;
+          setView({ ...view, action: 'detail' });
+          return qna;
+        } else return {};
+      });
+  };
+  const createQnA = async (data) => {
+    return axiosInstance.post(apiEndpoints.create_qna, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
+  const updateQnA = async (data) => {
+    return axiosInstance.post(apiEndpoints.update_qna, { outputtype: 'RawJson', ...data }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) return true;
+      return false;
+    });
+  };
+
+  const getAllLandingPage = async () => {
+    return axiosInstance.post(apiEndpoints.get_list_landing_page, { outputtype: 'RawJson' }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { data: ldpage } = response.data;
+        return ldpage;
+      } else return [];
+    });
+  };
+  const getCategoryByLandingPage = async (id) => {
+    return axiosInstance.post(apiEndpoints.get_list_category, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { data: category } = response.data;
+        return category;
+      } else return [];
+    });
+  };
+  const getNewsByLandingPage = async (id) => {
+    return axiosInstance.post(apiEndpoints.get_list_news, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { data: news } = response.data;
+        return news;
+      } else return [];
+    });
+  };
+  const getSubCategory = async (id) => {
+    return axiosInstance.post(apiEndpoints.get_list_sub_category, { outputtype: 'RawJson', id }).then((response) => {
+      if (response.status === 200 && response.data.return === 200) {
+        const { data: subCate } = response.data;
+        return subCate;
+      } else return [];
+    });
+  };
+
   return (
     <SiteContext.Provider
       value={{
@@ -179,6 +243,14 @@ export const SiteProvider = ({ children }) => {
         getNewsListDetail,
         createNewsList,
         updateNewsList,
+        getQnADetail,
+        getAllLandingPage,
+        getCategoryByLandingPage,
+        getNewsByLandingPage,
+        getSubCategory,
+        createQnA,
+        updateQnA
+
       }}
     >
       {children}

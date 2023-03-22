@@ -120,6 +120,8 @@ const EnhancedTableToolbar = (props) => {
     buttonCreateNewsList,
     createNewsList,
     buttonCreateNewCareerCategory,
+    buttonCreateNewQnA,
+    createNewQnA,
     buttonImportMentor,
     buttonCreateNewCounsellingCategory,
     createNewCounsellingCategory,
@@ -440,6 +442,13 @@ const EnhancedTableToolbar = (props) => {
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createCardBatch}>
                       {buttonCreateCardBatch.text}
+                    </Button>
+                  </Grid>
+                )}
+                {buttonCreateNewQnA && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={createNewQnA}>
+                      {buttonCreateNewQnA.text}
                     </Button>
                   </Grid>
                 )}

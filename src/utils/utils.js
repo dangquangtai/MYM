@@ -37,6 +37,7 @@ import {
   bannerListActions,
   newsListActions,
   counsellingCategoryActions,
+  qnaActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -272,6 +273,12 @@ export function getUrlByAction(selectedFolder) {
     }
     case counsellingCategoryActions.active_list: {
       return apiEndpoints.get_counselling_category_list;
+    }
+    case qnaActions.active_list: {
+      return apiEndpoints.get_qna_list;
+    }
+    case qnaActions.inactive_list: {
+      return apiEndpoints.get_qna_list_inactive;
     }
     default: {
       return '';

@@ -53,6 +53,7 @@ import BannerListModal from './../../views/Website/BannerList/Detail/index';
 import NewsListModal from './../../views/Site/NewsList/Detail/index';
 import CareerCategoryModal from '../../views/Career/Category';
 import CounsellingCategoryModal from '../../views/Partner/Counselling Category/Detail';
+import QnAModal from '../../views/Site/QnA/Detail';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -196,6 +197,8 @@ const MainLayout = ({ children }) => {
         return <CareerCategoryModal />
       case 'counsellingCategory':
         return <CounsellingCategoryModal />
+      case 'qna':
+        return <QnAModal />
 
     }
   };
