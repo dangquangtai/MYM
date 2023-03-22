@@ -8,9 +8,7 @@ import { apiEndpoints, careerActions } from '../../store/constant';
 
 const CareerWrapper = () => {
   const dispatch = useDispatch();
-
   const [categories, setCategories] = React.useState([]);
-
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -21,14 +19,18 @@ const CareerWrapper = () => {
     }
     async function fetchDataList() {
       dispatch({ type: DOCUMENT_CHANGE, documentType: 'careerlist' });
+    
     }
     if (selectedProject) {
-      if(selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list)
-      fetchData();
-    }
-    else {
-      fetchDataList()
-    }
+      if(selectedFolder.action === careerActions.inactive_list || selectedFolder.action === careerActions.active_list){
+        fetchData();
+      }
+      else {
+
+        fetchDataList()
+      }
+  }
+    
   }, [selectedProject]);
 
   return (

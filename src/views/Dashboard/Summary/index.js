@@ -41,6 +41,7 @@ const Summnary = () => {
   const { selectedApp } = useSelector((state) => state.app);
 
   useEffect(() => {
+    if (selectedApp.app_code==='BOOKING')
     getStatistic();
   }, []);
 

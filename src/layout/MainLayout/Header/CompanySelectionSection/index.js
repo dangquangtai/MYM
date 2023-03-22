@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import useProject from '../../../../hooks/useProject';
 import { PROJECT_CHANGE } from '../../../../store/actions';
-
+import { useState } from 'react';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -93,7 +93,7 @@ const CompanySelectionSection = () => {
   const dispatch = useDispatch();
 
   const { getProjects } = useProject();
-
+  const [one,setOne]= useState(false);
   const { projects } = useSelector((state) => state.project);
   const selectedProject = projects.find((project) => project.selected);
   const { selectedApp } = useSelector((state) => state.app);
@@ -127,11 +127,13 @@ const CompanySelectionSection = () => {
         selected: project.id === id ? true : false,
       };
     });
+  
     dispatch({
       type: PROJECT_CHANGE,
       projects: newSelectedProjects,
     });
   };
+  
 
   return (
     <React.Fragment>

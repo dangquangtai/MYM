@@ -79,7 +79,8 @@ const BannerModal = () => {
   const { createBanner, updateBanner } = useBanner();
   const [tabIndex, setTabIndex] = React.useState(0);
   const { getListObject } = useNotification();
-  const [action, setAction] = useState({...initNotificationMessage.action,image_url:image_default});
+  const [services,setService] =useState(['HIGH_SCHOOL','UEB_MENTOR','CAREER'])
+  const [action, setAction] = useState({...initNotificationMessage.action,image_url:image_default, code:''});
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
     type: '',
@@ -142,12 +143,13 @@ const BannerModal = () => {
   };
   const [choice, setChoice] = useState(false);
   const handleCloseDiaLog = (type) => {
+    setDocumentToDefault();
     setDialogUpload({ open: false, type: type });
   };
   const handleChangeObjectType = async (e) => {
     const { name, value } = e.target;
-    const newBanner = { ...banner, [name]: value };
-    setbanner(newBanner);
+    const newBanner = { ...action, [name]: value };
+    setAction(newBanner);
   };
   const handleChanges = (e) => {
     const { name, value } = e.target;
@@ -176,16 +178,17 @@ const BannerModal = () => {
       ...banner,
       ...selectedDocument,
     });
+    setService(['HIGH_SCHOOL','UEB_MENTOR','CAREER']);
     setAction({...action,...selectedDocument.action})
   }, [selectedDocument]);
-  // useEffect(() => {
-  //   getListObjectByType(action.object_type);
-  // }, [action.object_type]);
+  useEffect(() => {
+    getListObjectByType(action.object_type);
+  }, [action.object_type]);
 
-  // const getListObjectByType = async (type) => {
-  //   const listObject = await getListObject(type);
-  //   setlistObject(listObject);
-  // };
+  const getListObjectByType = async (type) => {
+    const listObject = await getListObject(type);
+    setlistObject(listObject);
+  };
   const handleChangeAction = (e) => {
     const { name, value } = e.target;
     const newAction = { ...action, [name]: value };
@@ -395,7 +398,7 @@ const BannerModal = () => {
                         </div>
                       </div>
                       <Grid container spacing={1}>
-                        <Grid item lg={6} md={6} xs={6}>
+                        {/* <Grid item lg={6} md={6} xs={6}>
                           <div className={classes.tabItem}>
                             <div className={classes.tabItemTitle}>
                               <div className={classes.tabItemLabel}>
@@ -417,8 +420,8 @@ const BannerModal = () => {
                               </div>
                             </div>
                           </div>
-                        </Grid>
-                        <Grid item lg={6} md={6} xs={6}>
+                        </Grid> */}
+                        <Grid item lg={12} md={12} xs={12}>
                           <div className={classes.tabItem}>
                             <div className={classes.tabItemTitle}>
                               <div className={classes.tabItemLabel}>
@@ -429,7 +432,7 @@ const BannerModal = () => {
                             <div className={classes.tabItemBody}>
                               <Grid container className={classes.gridItemInfo} alignItems="center">
                                 <Grid item lg={4} md={4} xs={4}>
-                                  <span className={classes.tabItemLabelField}>Action label:</span>
+                                  <span className={classes.tabItemLabelField}>Tiêu đề:</span>
                                 </Grid>
                                 <Grid item lg={8} md={8} xs={8}>
                                   <TextField
@@ -444,7 +447,22 @@ const BannerModal = () => {
                               </Grid>
                               <Grid container className={classes.gridItemInfo} alignItems="center">
                                 <Grid item lg={4} md={4} xs={4}>
-                                  <span className={classes.tabItemLabelField}>Action Link:</span>
+                                  <span className={classes.tabItemLabelField}>Action label:</span>
+                                </Grid>
+                                <Grid item lg={8} md={8} xs={8}>
+                                  <TextField
+                                    fullWidth
+                                    variant="outlined"
+                                    name="label"
+                                    value={action.label}
+                                    className={classes.inputField}
+                                    onChange={handleChangeAction}
+                                  />
+                                </Grid>
+                              </Grid>
+                              <Grid container className={classes.gridItemInfo} alignItems="center">
+                                <Grid item lg={4} md={4} xs={4}>
+                                  <span className={classes.tabItemLabelField}>Link:</span>
                                 </Grid>
                                 <Grid item lg={8} md={8} xs={8}>
                                   <TextField
@@ -465,7 +483,6 @@ const BannerModal = () => {
                                   <Select
                                     name="object_type"
                                     labelId="career-label"
-                                    id="code"
                                     className={classes.multpleSelectField}
                                     value={action.object_type}
                                     onChange={handleChangeObjectType}
@@ -480,18 +497,38 @@ const BannerModal = () => {
                               </Grid>
                               <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Mã:</span>
+                              <span className={classes.tabItemLabelField}>Object ID:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Select
+                                name="object_id"
+                                labelId="career-label"
+                                id="object_id"
+                                className={classes.multpleSelectField}
+                                value={action.object_id}
+                                onChange={handleChangeAction}
+                              >
+                                {listObject?.map((item) => (
+                                  <MenuItem key={item.id} value={item.id}>
+                                    {item.value}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </Grid>
+                          </Grid>
+                              <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Mã dịch vụ:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <Select
                                 name="code"
                                 labelId="career-label"
-                                id="code"
                                 className={classes.multpleSelectField}
                                 value={action.code}
                                 onChange={handleChangeAction}
                               >
-                                {["HIGH_SCHOOL","CAREER","MEET_UEB_MENTOR"].map((item) => (
+                                {services.map((item) => (
                                   <MenuItem key={item} value={item} selected={item===action.code}>
                                     {item}
                                   </MenuItem>

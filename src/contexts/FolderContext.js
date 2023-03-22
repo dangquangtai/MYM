@@ -23,7 +23,6 @@ export const FolderProvider = ({ children }) => {
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { Item: folders } = response.data;
-
           dispatch({
             type: FOLDER_CHANGE,
             folder: folders,

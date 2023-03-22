@@ -93,7 +93,7 @@ export default function GeneralTable(props) {
   const [displayOptions, setDisplayOptions] = React.useState({});
   const { selectedFolder } = useSelector((state) => state.folder);
   const { selectedDocument } = useSelector((state) => state.document);
-
+  const {selectedApp} = useSelector((state)=>state.app)
   useEffect(() => {
     const initOptions = {
       id: tableColumns.includes('id'),
@@ -1188,7 +1188,22 @@ export default function GeneralTable(props) {
   };
 
   const clickSuccess = () => { };
-
+  useEffect(()=>{
+    if(!selectedApp?.element_id) return;
+    const fetch = async()=>{
+      if (documentType === 'careerlist') {
+        var detailDocument = await getCareerDetailList(selectedApp?.element_id);
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+      }else if (documentType === 'newsList') {
+        var detailDocument = await getNewsListDetail(selectedApp?.element_id);
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
+  
+      }
+    }
+      fetch();
+  },[selectedApp])
   return (
     <React.Fragment>
       {isOpenModalNote && (
@@ -2086,7 +2101,7 @@ export default function GeneralTable(props) {
                     labelRowsPerPage="Số tài liệu mỗi trang"
                     count={count}
                     page={page - 1}
-                    onChangePage={handleChangePage}
+                    onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                   />
                 </Grid>

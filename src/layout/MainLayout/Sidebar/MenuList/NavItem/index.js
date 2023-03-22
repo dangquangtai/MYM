@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,12 +13,10 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { pageUrls } from '../../../../../store/constant';
-
+import { SELECTED_APP_CHANGE } from '../../../../../store/actions';
 import CustomIcon from '../CustomIcon/index';
-
 import Chip from '../../../../../component/Chip';
 import * as actionTypes from '../../../../../store/actions';
-
 const useStyles = makeStyles((theme) => ({
   listIcon: {
     minWidth: '36px',
@@ -50,7 +48,7 @@ const NavItem = (props) => {
   const dispatch = useDispatch();
   const { item, level, drawerToggle, drawerOpen } = props;
   const matchDownXs = useMediaQuery(theme.breakpoints.down('xs'));
-
+  const { selectedApp } = useSelector((state) => state.app);
   const itemIcon = (
     <CustomIcon
       type={item?.icon_type}
@@ -81,7 +79,17 @@ const NavItem = (props) => {
     }
   }
 
-  return (
+  useEffect(()=>{
+    if  (selectedApp.action===item.action && !selectedApp?.menu_id){
+      var app = {...selectedApp,menu_id: item.id}
+      dispatch({ type: SELECTED_APP_CHANGE, app });
+    } 
+  },[])
+
+    
+
+  return (<>
+   
     <Tooltip title={<Typography fontSize={16}>{item.name}</Typography>} placement="right" arrow>
       <ListItem
         disabled={item.disabled}
@@ -92,6 +100,7 @@ const NavItem = (props) => {
         to={item.url}
         target={itemTarget}
         button
+        id={item.id}
         style={{ paddingLeft: item.children.length === 0 ? '32px' : level * 16 + 'px' }}
         {...listItemProps}
       >
@@ -125,8 +134,11 @@ const NavItem = (props) => {
             avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
           />
         )}
+        
       </ListItem>
+     
     </Tooltip>
+    </>
   );
 };
 

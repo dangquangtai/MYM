@@ -328,6 +328,7 @@ const CareerModal = () => {
                               <TextField
                                 fullWidth
                                 type='number'
+                                
                                 variant="outlined"
                                 name="order_number"
                                 value={Career.order_number}

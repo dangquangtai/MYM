@@ -61,14 +61,35 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const App = () => {
   const customization = useSelector((state) => state.customization);
   const [messages, setMessages] = useState();
-
+  const { selectedApp } = useSelector((state) => state.app);
+  const [menu,setMenu] = React.useState({openClick:false,id:''})
   useEffect(() => {
     loadLocaleData(customization.locale).then((d) => {
       setMessages(d.default);
     });
   }, [customization]);
-
-  return (
+  const handleAutoClick = () => {
+    setTimeout(function() {
+      if (menu.openClick){
+        try{
+          document.getElementById(menu.id).click();
+        }
+        catch{
+          document.getElementById(menu.id).click();
+        }
+        setMenu({...menu,openClick:false})
+      }
+  }, 1000);
+   
+    
+    
+  };
+  React.useEffect(()=>{
+    if(!selectedApp) return;
+    if(!selectedApp?.menu_id) return;
+    setMenu({openClick:true,id:selectedApp.menu_id})
+  },[selectedApp])
+  return (<>
     <React.Fragment>
       {messages && (
         <IntlProvider locale={customization.locale} defaultLocale="en" messages={messages}>
@@ -115,12 +136,7 @@ const App = () => {
                                                                               </CareerProvider>
                                                                             </DepartmentProvider>
                                                                           </UniversityProvider>
-
-
-
-
                                                                         </BannerProvider>
-
                                                                       </SiteProvider>
                                                                     </OrderProvider>
                                                                   </SaleProvider>
@@ -154,7 +170,10 @@ const App = () => {
           </NavigationScroll>
         </IntlProvider>
       )}
+
     </React.Fragment>
+       {handleAutoClick()}
+       </>
   );
 };
 
