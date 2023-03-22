@@ -1186,7 +1186,19 @@ export default function GeneralTable(props) {
       onSuccess: reloadCurrentDocuments,
     });
   };
-
+  const handleSplitImage = (image_url) =>{
+    var index = image_url.indexOf('drive.google.com');
+    if (index > -1){
+        index= image_url.indexOf('id=')
+        if (index > -1){
+          return 'https://drive.google.com/uc?export=view&id='+image_url.split('id=')[1]
+        }
+        else {
+          return 'https://drive.google.com/uc?export=view&id='+(image_url.split('/d/')[1]).split('/view')[0]
+        }
+    } else return image_url
+    
+  }
   const clickSuccess = () => { };
   useEffect(()=>{
     if(!selectedApp?.element_id) return;
@@ -1461,7 +1473,7 @@ export default function GeneralTable(props) {
                                       className={classes.tableItemName}
                                       onClick={(event) => openDetailDocument(event, row)}
                                     >
-                                      <img alt="" src={row.image_url} style={style.tableUserAvatar} />
+                                      <img alt="" src={handleSplitImage(row.image_url)} style={style.tableUserAvatar} />
                                     </span>
                                   </>
                                 </TableCell>

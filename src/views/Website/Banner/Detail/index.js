@@ -121,7 +121,10 @@ const BannerModal = () => {
     if (dialogUpload.type === 'image') {
       if (choice) {
         setAction({ ...action, image_url: image });
-      } else setbanner({ ...banner, image_url: image });
+      }
+       else{
+        setbanner({ ...banner, image_url: image });
+       } 
     }
     if (dialogUpload.type === 'video') {
       setbanner({ ...banner, video_url: image });
@@ -215,7 +218,7 @@ const BannerModal = () => {
       <FirebaseUpload
         open={dialogUpload.open || false}
         onSuccess={setURL}
-        onClose={handleCloseDiaLog}
+        onClose={()=>setDialogUpload({open:false})}
         type={dialogUpload.type === 'video' ? 'video' : 'image'}
         folder="Banner"
       />
@@ -334,8 +337,7 @@ const BannerModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 fullWidth
-                                rows={1}
-                                rowsMax={1}
+                              
                                 variant="outlined"
                                 name="title"
                                 value={banner.title || ''}
