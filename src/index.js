@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import { createStore } from 'redux';
-import { Provider, useSelector } from 'react-redux';
-import { Provider } from 'react-redux';
+import { Provider} from 'react-redux';
 import DateFnsUtils from '@date-io/date-fns';
 import vi from 'date-fns/locale/vi';
 import App from './layout/App';
@@ -12,7 +11,6 @@ import reducer from './store/reducer';
 import config from './config';
 import './assets/scss/style.scss';
 import * as serviceWorker from './serviceWorker';
-import { useEffect } from 'react';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const store = createStore(reducer);
