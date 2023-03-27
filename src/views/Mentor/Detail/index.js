@@ -277,16 +277,21 @@ const MentorModal = () => {
     setTimeslot(res);
   };
   const handleSplitImage = (image_url) =>{
-    var index = image_url.indexOf('drive.google.com');
-    if (index > -1){
-        index= image_url.indexOf('id=')
-        if (index > -1){
-          return 'https://drive.google.com/uc?export=view&id='+image_url.split('id=')[1]
+    try{
+      var index = image_url.indexOf('drive.google.com');
+          if (index > -1){
+              index= image_url.indexOf('id=')
+              if (index > -1){
+                return 'https://drive.google.com/uc?export=view&id='+image_url.split('id=')[1]
+              }
+              else {
+                return 'https://drive.google.com/uc?export=view&id='+(image_url.split('/d/')[1]).split('/view')[0]
+              }
+          } else return image_url
         }
-        else {
-          return 'https://drive.google.com/uc?export=view&id='+(image_url.split('/d/')[1]).split('/view')[0]
+        catch {
+          return image_url
         }
-    } else return image_url
     
   }
   useEffect(() => {
