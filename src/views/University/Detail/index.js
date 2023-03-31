@@ -15,11 +15,13 @@ import {
   MenuItem,
   TextField,
   Snackbar,
+  IconButton,
 } from '@material-ui/core';
 import {
   History as HistoryIcon,
   
   ImageOutlined as ImageIcon,
+  RemoveCircle,
 } from '@material-ui/icons';
 import {Checkbox} from '@material-ui/core';
 import Alert from '../../../component/Alert/index.js';
@@ -212,6 +214,7 @@ const UniveristyModal = () => {
       ...university,
       image_url_list: image,
     });
+    console.log(image)
   };
 
   const handleOpenDiaLog = () => {
@@ -219,6 +222,15 @@ const UniveristyModal = () => {
   };
   const handleCloseDiaLog = () => {
     setDialogUpload({open: false ,openmultiple:false, type: 'image'})
+  };
+  const handleRemove = (image_url) => {
+    const filter= university.image_url_list.filter((item)=>item!=image_url)
+    if (!filter){
+      setuniversity({...university,image_url_list: []})
+    } else {
+      setuniversity({...university,image_url_list: filter})
+    }
+   
   };
   return (
     <React.Fragment>
@@ -332,9 +344,18 @@ const UniveristyModal = () => {
                           </div>
                         </div>
                         <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`} >
+                          <Grid container>
                           {university?.image_url_list.map((image_url)=>(
-                              <img src={image_url} alt="" />
+                            <Grid item lg={4} md={4} xs={4}>
+                               <img src={image_url} alt=""  />
+                               <IconButton style={{backgroundColor:'none', border:'none', background:'none',marginTop: '-300px',marginLeft:'90px'}} onClick={()=>handleRemove(image_url)}>
+                                <RemoveCircle style={{color:'black'}}/>
+                               </IconButton>
+                            </Grid>
+                             
                           ))}
+                          </Grid>
+                         
                         
                           <div>
                             <div>Upload/Change Image</div>

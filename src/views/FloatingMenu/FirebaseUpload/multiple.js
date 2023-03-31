@@ -94,12 +94,14 @@ export default function MultipleFirebaseUpload(props) {
 
   async function uploadToStorage(event) {
     setIsUploading(true);
-    var storageRef;
-    var uploadTask;
-    var progress;
+   
     var image_list=[];
     event.preventDefault();
     for (let index in selectedFiles){
+      setTimeout(()=>{
+        var storageRef;
+      var uploadTask;
+      var progress;
       storageRef = ref(storage, `${folder}/${selectedFiles[index].name}`);
       uploadTask = uploadBytesResumable(storageRef, selectedFiles[index]);
       uploadTask.on(
@@ -114,6 +116,7 @@ export default function MultipleFirebaseUpload(props) {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("link",downloadURL,'name',selectedFiles[index].name)
             image_list=[...image_list,downloadURL]
             setProgresspercent(0);
             onSuccess(image_list);
@@ -122,6 +125,8 @@ export default function MultipleFirebaseUpload(props) {
           });
         }
       );
+      },100)
+      
     }
     setSelectedFile([]);
   }

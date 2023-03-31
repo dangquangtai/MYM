@@ -231,7 +231,7 @@ export default function GeneralTable(props) {
   const buttonCreateNewCareerCategory = menuButtons.find((button) => button.name === view.careerCategory.list.create);
   const buttonCreateNewQnA = menuButtons.find((button) => button.name === view.qna.list.create);
   // const buttonCreateNewCounsellingCategory = menuButtons.find((button) => button.name === view.counsellingCategory.list.create);
-  const buttonExportUEBLIST = menuButtons.find((button)=> button.name = view.contest.list.ueb);
+  // const buttonExportUEBLIST = menuButtons.find((button)=> button.name = view.contest.list.ueb);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -664,7 +664,15 @@ export default function GeneralTable(props) {
 
     }
   };
-
+  // const exportUEBData = () => {
+  //   const fetchex =async() =>{
+  //     let data =await exportUEB(search_text)
+  //     if (data !=''){
+  //       window.open(data, '_blank', 'noreferrer');
+  //     }
+  //   }
+  //   fetchex()
+  // }
   const openDialogCreate = () => {
     if (documentType === 'account') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
@@ -740,12 +748,7 @@ export default function GeneralTable(props) {
     setSelected([]);
     fetchDocument({ page: pageCurrent });
   };
-  const exportUEBData = async() => {
-    let data =await exportUEB(search_text)
-    if (data !=''){
-      window.open(data, '_blank', 'noreferrer');
-    }
-  }
+ 
   const showConfirmPopup = ({
     title = 'Thông báo',
     message = 'Yêu cầu lựa chọn ít nhất một bản ghi',
@@ -1399,8 +1402,8 @@ export default function GeneralTable(props) {
                 // buttonCreateNewCounsellingCategory={buttonCreateNewCounsellingCategory}
                 // createNewCounsellingCategory={handleClickCreateNewCounsellingCategory}
                 openFireBase={handleOpen}
-                buttonExportUEBLIST={buttonExportUEBLIST}
-                exportUEBData={exportUEBData}
+                // buttonExportUEBLIST={buttonExportUEBLIST}
+                // exportUEBData={exportUEBData}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (

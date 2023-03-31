@@ -79,7 +79,7 @@ const CareerListModal = () => {
   const editorRef = React.useRef(null);
   const {getCounselingCategories} = useMedia()
   const {createCareer,updateCareer,getCareerList,createCareerList,
-    updateCareerList} = useCareer();
+    updateCareerList, getINCareerList} = useCareer();
   const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
   const [dialogUpload, setDialogUpload] = useState({
@@ -96,7 +96,7 @@ const CareerListModal = () => {
     list_description: '',
     order_number:0,
     career_id_list:[],
-   
+   is_show_category: true,
     counselling_category_id: ''
   });
 
@@ -109,11 +109,28 @@ const CareerListModal = () => {
   }, [selectedDocument]);
 
   useEffect(() => {
+    if (selectedDocument?.is_active !=Career.is_active){
+      setCareer({...Career,career_id_list:[]})
+    }
+   
+   const fetch = async () =>{
+    if(Career.is_active){
+      
+      let data = await getINCareerList()
+      setCareerList(data)
+    } else {
+     
+       let data= await getCareerList();
+      setCareerList(data)
+    }
+   }
+   fetch()
+  }, [Career.is_active]);
+  useEffect(() => {
    const fetch = async () =>{
     let data = await getCounselingCategories();
     setCounselling(data)
-    data= await getCareerList();
-    setCareerList(data)
+   
    }
    fetch()
   }, []);
@@ -126,6 +143,7 @@ const CareerListModal = () => {
       is_hidden: true,
       is_active: true,
       list_description: '',
+      is_show_category: true,
       order_number:0,
       career_id_list:[],
       counselling_category_id: ''
@@ -328,13 +346,25 @@ const CareerListModal = () => {
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hoạt động: </span>
+                              <span className={classes.tabItemLabelField}>Danh sách chính: </span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
                               <Switch
                               checked={Career.is_active}
                               onChange={()=> setCareer({...Career,is_active: !Career.is_active})}
                               inputProps={{ 'aria-label': 'controlled' }} />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Hiển thị tiêu đề: </span>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <Switch
+                              checked={Career.is_show_category}
+                              onChange={()=> setCareer({...Career,is_show_category: !Career.is_show_category})}
+                              inputProps={{ 'aria-label': 'controlled' }} />
+
                             </Grid>
                           </Grid>
                           <Grid container className={classes.gridItemInfo} alignItems="center">

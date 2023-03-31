@@ -361,6 +361,7 @@ export const apiEndpoints = {
   update_university: '/Primary/?FlowAlias=bs_api_share_university_update_detail&action=api',
   active_university: '/Primary/?FlowAlias=bs_api_share_university_active&action=api',
   create_university: '/Primary/?FlowAlias=bs_api_share_university_create_detail&action=api',
+  get_inuniversity_list: '/Primary/?FlowAlias=bs_api_university_get_inactive_university_list&action=api',
   //UniversityList
   get_active_universitylist: '/Primary/?FlowAlias=bs_api_university_get_active_universitylist_by_page&action=api',
   get_inactive_universitylist: '/Primary/?FlowAlias=bs_api_university_get_inactive_universitylist_by_page&action=api',
@@ -387,6 +388,7 @@ export const apiEndpoints = {
   set_active_career: '/Primary/?FlowAlias=bs_api_partner_set_active_career&action=api',
   set_active_career_list: '/Primary/?FlowAlias=bs_api_partner_set_active_career_list&action=api',
   set_featured_career: '/Primary/?FlowAlias=bs_api_partner_set_featured_career_list&action=api',
+  get_inactive_career: '/Primary/?FlowAlias=bs_api_career_get_inactive_careerlist&action=api',
 
   //Banner
   get_banner_list: '/Primary/?FlowAlias=bs_api_site_banner_get_list_banner_active&action=api',

@@ -80,16 +80,16 @@ const UniversityListModal = () => {
   };
   const editorRef = React.useRef(null);
   const [universitiselected,setSelected] = useState([]);
-  const { createUniversityList,
-    updateUniversityList,} = useUniversity();
+  const { createUniversityList,updateUniversityList,getInActiveUniversityList} = useUniversity();
   const {  universities } = useSelector((state) => state.metadata);
   const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
+ 
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
     type: ''
   });
-  const [activeUniversityList, setUniversityList] = useState([]);
+  const [UniversityList, setUniversityList] = useState([]);
   const [University, setUniversity] = useState({
     image_url: '',
     title: '',
@@ -108,8 +108,20 @@ const UniversityListModal = () => {
      ...University,
      ...selectedDocument
     });
-    const filter = universities.filter(item=>selectedDocument.university_id_list.indexOf(item.id)>-1)
-    setSelected(filter)
+    if (selectedDocument.is_active){
+        const fetch = async () =>{
+          let data = await getInActiveUniversityList();
+          setUniversityList(data)
+          const filter = data.filter(item=>selectedDocument.university_id_list.indexOf(item.id)>-1)
+          setSelected(filter)
+        }
+        fetch()
+    } else {
+      setUniversityList(universities)
+      const filter = universities.filter(item=>selectedDocument.university_id_list.indexOf(item.id)>-1)
+      setSelected(filter)
+    }
+   
   }, [selectedDocument]);
 
   useEffect(()=>{
@@ -147,6 +159,18 @@ const UniversityListModal = () => {
       text: text,
     });
   };
+  useEffect(()=>{
+    if (University.is_active){
+      const fetch = async () =>{
+        let data = await getInActiveUniversityList();
+        setUniversityList(data)
+      }
+      fetch()
+  } else {
+    setUniversityList(universities)
+   
+  }
+  },[University.is_active])
   const handleUpdateUniversity = async () => {
     try {
       let content =
@@ -342,12 +366,23 @@ const UniversityListModal = () => {
                           </Grid> */}
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Hoạt động: </span>
+                              <span className={classes.tabItemLabelField}>Danh sách chính: </span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
                               <Switch
                               checked={University.is_active}
                               onChange={()=> setUniversity({...University,is_active: !University.is_active})}
+                              inputProps={{ 'aria-label': 'controlled' }} />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Hiển thị tiêu đề: </span>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <Switch
+                              checked={University.is_show_category}
+                              onChange={()=> setUniversity({...University,is_show_category: !University.is_show_category})}
                               inputProps={{ 'aria-label': 'controlled' }} />
                             </Grid>
                           </Grid>
@@ -447,7 +482,7 @@ const UniversityListModal = () => {
                                   size="small"
                                   multiple={true}
                                   value={universitiselected}
-                                  options={universities}
+                                  options={UniversityList}
                                   getOptionLabel={(option) => option.value}
                                   fullWidth
                                   onChange={(e, value) => {

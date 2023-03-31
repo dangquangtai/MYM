@@ -133,6 +133,19 @@ export const CareerProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getINCareerList = async () => {
+    return axiosInstance
+      .post(apiEndpoints.get_inactive_career, {
+        outputtype: 'RawJson',
+      
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+          return list;
+        } else return [];
+      });
+  };
   const getCareerListPage = async () => {
     return axiosInstance
       .post(apiEndpoints.get_careerlist_active_list, {
@@ -178,7 +191,8 @@ export const CareerProvider = ({ children }) => {
         createCareerCategory,
         updateCareerCategory,
         getCareerCategoryDetail,
-        getCareerCategoryList
+        getCareerCategoryList,
+        getINCareerList
       }}
     >
       {children}

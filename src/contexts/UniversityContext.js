@@ -94,6 +94,19 @@ export const UniversityProvider = ({ children }) => {
         } else return [];
       });
   };
+  const getInActiveUniversityList = async () => {
+    return axiosInstance
+      .post(apiEndpoints.get_inuniversity_list, {
+        outputtype: 'RawJson',
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+         
+          return list;
+        } else return [];
+      });
+  };
   const getNewsList= async () => {
     return axiosInstance
       .post(apiEndpoints.get_activenewslist, {
@@ -145,7 +158,8 @@ export const UniversityProvider = ({ children }) => {
         updateUniversityList,
         getUniversityListDetail,
         getNewsList,
-        getUniversityList
+        getUniversityList,
+        getInActiveUniversityList
       }}
     >
       {children}
