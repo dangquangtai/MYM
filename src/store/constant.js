@@ -440,6 +440,8 @@ export const apiEndpoints = {
 
   //Mentor Import
   import_mentor_data: '/Primary/?FlowAlias=bs_api_mentor_import_data_from_url&action=api',
+  get_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_get_meet_ueb_mentor_list_by_page&action=api',
+  export_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_export_meet_ueb_mentor_list&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -476,6 +478,9 @@ export const eventActions = {
 };
 export const eventcategoryActions = {
   list: 'MYM_MARKETING_EVENT_OPEN_EVENT_CATEGORY_LIST',
+};
+export const contestActions = {
+  ueb_meet_mentor: 'MYM_MARKETING_HOME_OPEN_MEET_UEB_MENTOR_LIST',
 };
 export const episodeActions = {
   active_list: 'MYM_MEDIA_PODCAST_OPEN_EPISODE_LIST',
@@ -961,5 +966,10 @@ export const view = {
       save: 'MYM_SITE_HOME_QNA_SAVE_FORM_BUTTON'
     }
 
+  },
+  contest: {
+    list: {
+      ueb: 'MYM_MARKETING_HOME_EXPORT_MEET_UEB_MENTOR_MENU_BUTTON',
+    }
   }
 };

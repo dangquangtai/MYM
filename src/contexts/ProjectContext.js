@@ -37,7 +37,7 @@ export const ProjectProvider = ({ children }) => {
 
   function getApps() {
     axiosInstance
-      .post(apiEndpoints.get_app_list, { outputtype: 'RawJson'})
+      .post(apiEndpoints.get_app_list, { outputtype: 'RawJson',is_sub:true})
       .then((response) => {
         if (response.status === 200 && response.data.return === 200) {
           const { list: apps } = response.data;

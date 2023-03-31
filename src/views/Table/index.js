@@ -124,6 +124,10 @@ export default function GeneralTable(props) {
       approval_role: tableColumns.includes('approval_role'),
       visible_for_selection: tableColumns.includes('visible_for_selection'),
       active: tableColumns.includes('active'),
+      matching_code: tableColumns.includes('matching_code'),
+      mentee_email: tableColumns.includes('mentee_email'),
+      mentee_name: tableColumns.includes('mentee_name'),
+      mentor_email: tableColumns.includes('mentor_email'),
       mentor_name: tableColumns.includes('mentor'),
       rating: tableColumns.includes('rating'),
       total: tableColumns.includes('total'),
@@ -227,7 +231,7 @@ export default function GeneralTable(props) {
   const buttonCreateNewCareerCategory = menuButtons.find((button) => button.name === view.careerCategory.list.create);
   const buttonCreateNewQnA = menuButtons.find((button) => button.name === view.qna.list.create);
   // const buttonCreateNewCounsellingCategory = menuButtons.find((button) => button.name === view.counsellingCategory.list.create);
-
+  const buttonExportUEBLIST = menuButtons.find((button)=> button.name = view.contest.list.ueb);
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -320,7 +324,7 @@ export default function GeneralTable(props) {
   const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail, importMentor } =
     usePartner();
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
-  const { getBatchDetail, sendEmailVoucher } = useMarketing();
+  const { getBatchDetail, sendEmailVoucher ,   exportUEB} = useMarketing();
   const { getEventCategoryDetail } = useEventCategory();
   const { getEventDetail } = useEvent();
   const { getCardBatchDetail, sendEmailCard } = usePayment();
@@ -736,7 +740,12 @@ export default function GeneralTable(props) {
     setSelected([]);
     fetchDocument({ page: pageCurrent });
   };
-
+  const exportUEBData = async() => {
+    let data =await exportUEB(search_text)
+    if (data !=''){
+      window.open(data, '_blank', 'noreferrer');
+    }
+  }
   const showConfirmPopup = ({
     title = 'Thông báo',
     message = 'Yêu cầu lựa chọn ít nhất một bản ghi',
@@ -746,7 +755,7 @@ export default function GeneralTable(props) {
   }) => {
     setConfirmPopup({ type: CONFIRM_CHANGE, open: true, title, message, action, payload, onSuccess });
   };
-
+ 
   const handleOpenModal = (type, booking) => {
     setSelected((pre) => [...new Set([booking.id, ...pre])]);
     setSelectedRecord(booking);
@@ -1390,6 +1399,8 @@ export default function GeneralTable(props) {
                 // buttonCreateNewCounsellingCategory={buttonCreateNewCounsellingCategory}
                 // createNewCounsellingCategory={handleClickCreateNewCounsellingCategory}
                 openFireBase={handleOpen}
+                buttonExportUEBLIST={buttonExportUEBLIST}
+                exportUEBData={exportUEBData}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1749,7 +1760,26 @@ export default function GeneralTable(props) {
                                   )}
                                 </TableCell>
                               )}
-
+                              {displayOptions.matching_code && (
+                                <TableCell align="left">
+                                  <span>{row.matching_code || ''}</span>
+                                </TableCell>
+                              )}
+                               {displayOptions.mentee_email && (
+                                <TableCell align="left">
+                                  <span>{row.mentee_email || ''}</span>
+                                </TableCell>
+                              )}
+                               {displayOptions.mentee_name && (
+                                <TableCell align="left">
+                                  <span>{row.fullname || ''}</span>
+                                </TableCell>
+                              )}
+                               {displayOptions.mentor_email && (
+                                <TableCell align="left">
+                                  <span>{row.mentor_email || ''}</span>
+                                </TableCell>
+                              )}
                               {displayOptions.mentor_name && (
                                 <TableCell align="left">
                                   <span>{row.mentor_name || ''}</span>

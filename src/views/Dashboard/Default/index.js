@@ -45,6 +45,7 @@ import {
   newsListActions,
   counsellingCategoryActions,
   qnaActions,
+  contestActions,
 } from './../../../store/constant';
 import Summnary from './../Summary/index';
 import { Redirect } from 'react-router-dom';
@@ -85,7 +86,7 @@ import BannerListWrapper from './../../Website/BannerList/index';
 import NewsListWrapper from './../../Site/NewsList/index';
 import CounsellingCategoryWrapper from '../../Partner/Counselling Category';
 import QnAWrapper from '../../Site/QnA';
-
+import ContestWrapper from '../../Contest';
 
 const Default = () => {
   const { selectedFolder } = useSelector((state) => state.folder);
@@ -129,6 +130,7 @@ const Default = () => {
   const availableNewsListEndpoint = Object.values(newsListActions);
   const availableCounsellingCategoryEndpoint = Object.values(counsellingCategoryActions);
   const availableQnAEndpoint = Object.values(qnaActions);
+  const availableContestEndpoint = Object.values(contestActions);
   if (!selectedApp?.id) {
     return <Redirect to="/dashboard/app" />;
   }
@@ -180,6 +182,7 @@ const Default = () => {
           {availableNewsListEndpoint.includes(selectedFolder?.action) && <NewsListWrapper />}
           {availableCounsellingCategoryEndpoint.includes(selectedFolder?.action) && <CounsellingCategoryWrapper />}
           {availableQnAEndpoint.includes(selectedFolder?.action) && <QnAWrapper />}
+          {availableContestEndpoint.includes(selectedFolder?.action) && <ContestWrapper />}
         </Grid>
       )}
     </Grid>

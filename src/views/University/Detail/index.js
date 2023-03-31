@@ -99,6 +99,7 @@ const UniveristyModal = () => {
    is_active: true,
    is_hidden: false,
    description:'',
+   is_consultation_on:false,
    image_url: image_default,
    university_category_id: '',
    university_type_id: '',
@@ -139,6 +140,7 @@ const UniveristyModal = () => {
       is_hidden: false,
       description:'',
       image_url: image_default,
+      is_consultation_on: false,
       university_category_id: '',
       unibersity_type_id: '',
       career_list_id:'',
@@ -395,12 +397,24 @@ const UniveristyModal = () => {
                             </Grid>
                            
                           </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={2} md={2} xs={2}>
+                              <span className={classes.tabItemLabelField}>Tư vấn: </span>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <Checkbox 
+                              checked={university.is_consultation_on}
+                              onChange={()=> setuniversity({...university,is_consultation_on: !university.is_consultation_on})}
+                              inputProps={{ 'aria-label': 'controlled' }} />
+                            </Grid>
+                           
+                          </Grid>
                           
 
                          
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={2} md={2} xs={12}>
-                              <span className={classes.tabItemLabelField}>Danh mục:</span>
+                              <span className={classes.tabItemLabelField}>Loại:</span>
                             </Grid>
                             <Grid item lg={10} md={10} xs={12}>
                               <Select
@@ -422,7 +436,7 @@ const UniveristyModal = () => {
                           </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={2} md={2} xs={12}>
-                              <span className={classes.tabItemLabelField}>Loại:</span>
+                              <span className={classes.tabItemLabelField}>Danh mục:</span>
                             </Grid>
                             <Grid item lg={10} md={10} xs={12}>
                               <Select

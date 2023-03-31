@@ -38,6 +38,7 @@ import {
   newsListActions,
   counsellingCategoryActions,
   qnaActions,
+  contestActions,
 } from '../store/constant.js';
 
 export function getUrlByAction(selectedFolder) {
@@ -279,6 +280,9 @@ export function getUrlByAction(selectedFolder) {
     }
     case qnaActions.inactive_list: {
       return apiEndpoints.get_qna_list_inactive;
+    }
+    case contestActions.ueb_meet_mentor: {
+      return apiEndpoints.get_meet_ueb_mentor;
     }
     default: {
       return '';

@@ -22,6 +22,20 @@ export const MarketingProvider = ({ children }) => {
         } else return {};
       });
   };
+  const exportUEB= async (search_text) => {
+    return axiosInstance
+      .post(apiEndpoints.export_meet_ueb_mentor, {
+        outputtype: 'RawJson',
+        search_text: search_text,
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { url} = response.data;
+   
+          return url;
+        } else return '';
+      });
+  };
 
   const createBatch = async (batch) => {
     return axiosInstance.post(apiEndpoints.create_batch, { outputtype: 'RawJson', ...batch }).then((response) => {
@@ -90,6 +104,7 @@ export const MarketingProvider = ({ children }) => {
         assignVoucher,
         getBatchList,
         getEventList,
+        exportUEB
       }}
     >
       {children}
