@@ -537,6 +537,22 @@ const NewsModal = () => {
                               />
                             </Grid>
                           </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thứ tự:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                name="order_number"
+                                size="small"
+                                type="number"
+                                variant="outlined"
+                                onChange={handleChanges}
+                                value={newsData.order_number || 0}
+                              />
+                            </Grid>
+                          </Grid>
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Hoạt động:</span>

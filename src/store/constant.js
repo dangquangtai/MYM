@@ -2,7 +2,8 @@ export const gridSpacing = 3;
 export const drawerWidth = 320;
 export const drawerWidthIcon = 120;
 export const comanyCode = 'MYM';
-export const image_default = 'https://firebasestorage.googleapis.com/v0/b/meetyourmentor-8ad17.appspot.com/o/Icon%2Ficon_dashbaord.png?alt=media&token=c9ea28a4-3e9e-46ee-8741-425117d9e91e';
+export const image_default =
+  'https://firebasestorage.googleapis.com/v0/b/meetyourmentor-8ad17.appspot.com/o/Icon%2Ficon_dashbaord.png?alt=media&token=c9ea28a4-3e9e-46ee-8741-425117d9e91e';
 export const apiEndpoints = {
   upload: '/upload',
   authenticate: '/Primary/?FlowAlias=bs_api_user_authenticate&action=api',
@@ -353,9 +354,11 @@ export const apiEndpoints = {
   update_news_category: '/Primary/?FlowAlias=bs_api_news_update_news_category&action=api',
   set_active_news_category: '/Primary/?FlowAlias=bs_api_news_set_active_news_category&action=api',
 
-  //University 
-  get_active_university_list: '/Primary/?FlowAlias=bs_api_share_university_get_active_university_list_by_page&action=api',
-  get_inactive_university_list: '/Primary/?FlowAlias=bs_api_share_university_get_inactive_university_list_by_page&action=api',
+  //University
+  get_active_university_list:
+    '/Primary/?FlowAlias=bs_api_share_university_get_active_university_list_by_page&action=api',
+  get_inactive_university_list:
+    '/Primary/?FlowAlias=bs_api_share_university_get_inactive_university_list_by_page&action=api',
   get_university_detail: '/Primary/?FlowAlias=bs_api_share_university_detail_id&action=api',
   get_university_type_list: '/Primary/?FlowAlias=bs_api_share_university_get_type_list&action=api',
   update_university: '/Primary/?FlowAlias=bs_api_share_university_update_detail&action=api',
@@ -418,9 +421,12 @@ export const apiEndpoints = {
   update_career_category: '/Primary/?FlowAlias=bs_api_partner_career_update_career_category&action=api',
   set_active_career_category: '/Primary/?FlowAlias=bs_api_partner_career_set_active_career_category&action=api',
   get_career_category_detail: '/Primary/?FlowAlias=bs_api_partner_career_get_career_category_detail&action=api',
-  get_active_career_category_list: '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list_by_page&action=api',
-  get_inactive_career_category_list: '/Primary/?FlowAlias=bs_api_partner_career_get_inactive_career_category_list_by_page&action=api',
-  get_career_category_list_key_value: '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list&action=api',
+  get_active_career_category_list:
+    '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list_by_page&action=api',
+  get_inactive_career_category_list:
+    '/Primary/?FlowAlias=bs_api_partner_career_get_inactive_career_category_list_by_page&action=api',
+  get_career_category_list_key_value:
+    '/Primary/?FlowAlias=bs_api_partner_career_get_active_career_category_list&action=api',
 
   // Counseling Category
   create_counselling_category: '/Primary/?FlowAlias=bs_api_partner_create_new_counseling_category &action=api',
@@ -444,6 +450,11 @@ export const apiEndpoints = {
   import_mentor_data: '/Primary/?FlowAlias=bs_api_mentor_import_data_from_url&action=api',
   get_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_get_meet_ueb_mentor_list_by_page&action=api',
   export_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_export_meet_ueb_mentor_list&action=api',
+
+  // Chat
+  get_chat_box_list: '/Primary/?FlowAlias=bs_api_chat_get_chat_box_list_by_page&action=api',
+  get_chat_message_list: '/Primary/?FlowAlias=bs_api_get_chat_message_list_by_chatbox_id&action=api',
+  post_chat_message: '/Primary/?FlowAlias=bs_api_post_chat_message&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -592,7 +603,7 @@ export const universityActions = {
   active_list: 'MYM_PARTNER_HOME_OPEN_UNIVERSITY_ACTIVE_LIST',
   inactive_list: 'MYM_PARTNER_HOME_OPEN_UNIVERSITY_INACTIVE_LIST',
   activelist: 'MYM_PARTNER_HOME_OPEN_ACTIVE_UNIVERSITYLIST',
-  inactivelist: 'MYM_PARTNER_HOME_OPEN_INACTIVE_UNIVERSITYLIST'
+  inactivelist: 'MYM_PARTNER_HOME_OPEN_INACTIVE_UNIVERSITYLIST',
 };
 
 export const careerActions = {
@@ -601,9 +612,8 @@ export const careerActions = {
   activelist: 'MYM_PARTNER_HOME_OPEN_CAREERLISST_LIST',
   inactivelist: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREERLISST_LIST',
   categoryactive: 'MYM_PARTNER_HOME_OPEN_ACTIVE_CAREER_CATEGORY_LIST',
-  categoryinactive: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREER_CATEGORY_LIST'
+  categoryinactive: 'MYM_PARTNER_HOME_OPEN_INACTIVE_CAREER_CATEGORY_LIST',
 };
-
 
 export const bannerActions = {
   active_list: 'MYM_SITE_HOME_OPEN_BANNER_LIST',
@@ -624,7 +634,6 @@ export const qnaActions = {
   active_list: 'MYM_SITE_HOME_OPEN_QNA_LIST',
   inactive_list: 'MYM_SITE_HOME_OPEN_QNA_INACTIVE_LIST',
 };
-
 
 export const tinyMCESecretKey = '7kiqm5c7crs3mdgf1lgiq973xn7kdxtf6ohasxhmkb2mpc45';
 export const pageUrls = {
@@ -775,7 +784,6 @@ export const view = {
   mentorlist: {
     list: {
       create: 'MYM_PARTNER_MENTOR_MENTORLIST_CREATE_MENU_BUTTON',
-
     },
     detail: {
       save: 'MYM_PARTNER_MENTOR_MENTORLIST_SAVE_FORM_BUTTON',
@@ -895,11 +903,11 @@ export const view = {
   university: {
     list: {
       create: 'MYM_PARTNER_HOME_CREATE_UNIVERISTY_MENU_BUTTON',
-      create_list: 'MYM_PARTNER_HOME_CREATE_NEW_UNIVERSITYLIST'
+      create_list: 'MYM_PARTNER_HOME_CREATE_NEW_UNIVERSITYLIST',
     },
     detail: {
       save: 'MYM_PARTNER_HOME_CREATE_UNIVERSITY_FORM_BUTTON',
-    }
+    },
   },
   career: {
     list: {
@@ -907,7 +915,7 @@ export const view = {
     },
     detail: {
       save: 'MYM_PARTNER_HOME_SAVE_CAREER_DETAIL_FORM_BUTTON',
-    }
+    },
   },
   careerlist: {
     list: {
@@ -915,7 +923,7 @@ export const view = {
     },
     detail: {
       save: 'MYM_PARTNER_HOME_SAVE_CAREERLIST_DETAIL_FORM_BUTTON',
-    }
+    },
   },
   banner: {
     list: {
@@ -940,38 +948,34 @@ export const view = {
     detail: {
       save: 'MYM_SITE_HOME_NEWSLIST_SAVE_FORM_BUTTON',
     },
-
   },
   careerCategory: {
     list: {
-      create: 'MYM_PARTNER_HOME_CREATE_CAREER_CATEGORY_MENU_BUTTON'
+      create: 'MYM_PARTNER_HOME_CREATE_CAREER_CATEGORY_MENU_BUTTON',
     },
     detail: {
-      save: 'MYM_PARTNER_HOME_UPDATE_CAREER_CATEGORY_FORM_BUTTON'
-    }
-
+      save: 'MYM_PARTNER_HOME_UPDATE_CAREER_CATEGORY_FORM_BUTTON',
+    },
   },
   counsellingCategory: {
     list: {
-      create: 'MYM_PARTNER_HOME_COUSELLING_CATEGORY_CREATE_MENU_BUTTON'
+      create: 'MYM_PARTNER_HOME_COUSELLING_CATEGORY_CREATE_MENU_BUTTON',
     },
     detail: {
-      save: 'MYM_PARTNER_HOME_COUSELLING_CATEGORY_SAVE_FORM_BUTTON'
-    }
-
+      save: 'MYM_PARTNER_HOME_COUSELLING_CATEGORY_SAVE_FORM_BUTTON',
+    },
   },
   qna: {
     list: {
-      create: 'MYM_SITE_HOME_QNA_CREATE_MENU_BUTTON'
+      create: 'MYM_SITE_HOME_QNA_CREATE_MENU_BUTTON',
     },
     detail: {
-      save: 'MYM_SITE_HOME_QNA_SAVE_FORM_BUTTON'
-    }
-
+      save: 'MYM_SITE_HOME_QNA_SAVE_FORM_BUTTON',
+    },
   },
   contest: {
     list: {
       ueb: 'MYM_MARKETING_HOME_EXPORT_MEET_UEB_MENTOR_MENU_BUTTON',
-    }
-  }
+    },
+  },
 };
