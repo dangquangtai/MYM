@@ -18,6 +18,7 @@ import {
     Select,
     Chip,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { image_default, view } from '../../../../store/constant';
@@ -321,8 +322,7 @@ const CounsellingCategoryModal = () => {
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
+                                                           
                                                                 variant="outlined"
                                                                 name="category_code"
                                                                 value={counsellingCategoryData.category_code}
@@ -339,8 +339,7 @@ const CounsellingCategoryModal = () => {
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
+                                                
                                                                 variant="outlined"
                                                                 name="order_number"
                                                                 value={counsellingCategoryData.order_number}
@@ -359,8 +358,6 @@ const CounsellingCategoryModal = () => {
                                                             <TextField
                                                                 fullWidth
                                                                 multiline
-                                                                rows={4}
-                                                                rowsMax={4}
                                                                 variant="outlined"
                                                                 name="content"
                                                                 value={counsellingCategoryData.content}
@@ -377,9 +374,6 @@ const CounsellingCategoryModal = () => {
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
-                                                                variant="outlined"
                                                                 name="description"
                                                                 value={counsellingCategoryData.description}
                                                                 className={classes.inputField}
@@ -387,6 +381,115 @@ const CounsellingCategoryModal = () => {
                                                             />
                                                         </Grid>
 
+                                                    </Grid>
+                                                   
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách mentor:</span>
+                                                        </Grid>
+                                                        <Grid item lg={7} md={7} xs={7}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={'Danh sách Mentor'}
+                                                                className={classes.inputField}
+                                                                onChange={handleChanges}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=mentor&id='}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none' }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Sửa</Button>
+                                                        </Link>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách bài viết:</span>
+                                                        </Grid>
+                                                        <Grid item lg={7} md={7} xs={7}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={'Danh sách bài viết'}
+                                                                className={classes.inputField}
+                                                                onChange={handleChanges}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=news&id='}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none' }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Sửa</Button>
+                                                        </Link>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách ngành nghề:</span>
+                                                        </Grid>
+                                                        <Grid item lg={7} md={7} xs={7}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={'Danh sách ngành nghề'}
+                                                                className={classes.inputField}
+                                                                onChange={handleChanges}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=career&id='}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none' }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Sửa</Button>
+                                                        </Link>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách Podcast:</span>
+                                                        </Grid>
+                                                        <Grid item lg={7} md={7} xs={7}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={'Danh sách Podcast'}
+                                                                className={classes.inputField}
+                                                                onChange={handleChanges}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=podcast&id='}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none' }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Sửa</Button>
+                                                        </Link>
+                                                        </Grid>
                                                     </Grid>
 
 

@@ -88,10 +88,31 @@ const App = () => {
       var action = 'MYM_PARTNER_HOME_OPEN_CAREERLISST_LIST'
       var app = apps.find(item=>item.id===id_app)
       handleAppClick({...app,element_id: id, action:action, id_project: id_project})
-    } else {
+    } else if(type==='news') {
       var id_app = '67e880ce-b190-11ed-83b0-0adcfa65ae7a'
       var id_project='8fd81cfc-b191-11ed-83b0-0adcfa65ae7a'
       var action = 'MYM_SITE_HOME_OPEN_NEWSLIST_LIST'
+      var app = apps.find(item=>item.id===id_app)
+      handleAppClick({...app,element_id: id, action:action, id_project: id_project})
+    }
+    else if(type==='mentor') {
+      var id_app = '528e4614-2b69-11ed-b84b-005056a3c175'
+      var id_project='bbbfdc5c-3a8c-11ed-b853-005056a3c175'
+      var action = 'MYM_PARTNER_MENTOR_OPEN_LIST_MENTOR_LIST'
+      var app = apps.find(item=>item.id===id_app)
+      handleAppClick({...app,element_id: id, action:action, id_project: id_project})
+    }
+    else if(type==='banner') {
+      var id_app = '67e880ce-b190-11ed-83b0-0adcfa65ae7a'
+      var id_project='7e204137-b983-11ed-83b0-0adcfa65ae7a'
+      var action = 'MYM_SITE_HOME_OPEN_BANNERLIST_LIST'
+      var app = apps.find(item=>item.id===id_app)
+      handleAppClick({...app,element_id: id, action:action, id_project: id_project})
+    }
+    else if(type==='podcast') {
+      var id_app = '1adc72b6-2b69-11ed-b84b-005056a3c175'
+      var id_project='71f4fc9f-2b96-11ed-b84b-005056a3c175'
+      var action = 'MYM_MEDIA_PODCAST_OPEN_PLAYLIST_LIST'
       var app = apps.find(item=>item.id===id_app)
       handleAppClick({...app,element_id: id, action:action, id_project: id_project})
     }
