@@ -444,6 +444,8 @@ export const apiEndpoints = {
   import_mentor_data: '/Primary/?FlowAlias=bs_api_mentor_import_data_from_url&action=api',
   get_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_get_meet_ueb_mentor_list_by_page&action=api',
   export_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_export_meet_ueb_mentor_list&action=api',
+  get_mentorlist: '/Primary/?FlowAlias=bs_api_mentor_get_mentorlist_meta_key_by_company&action=api',
+  get_podcast_list: '/Primary/?FlowAlias=bs_api_podcast_get_playlist_meta&action=api',
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'

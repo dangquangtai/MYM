@@ -20,7 +20,7 @@ import {
 import {
   ImageOutlined as ImageIcon,
 } from '@material-ui/icons';
-
+import { Link } from 'react-router-dom';
 import Alert from '../../../component/Alert/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -35,6 +35,8 @@ import useCareer from '../../../hooks/useCareer.js';
 import useUniversity from '../../../hooks/useUniversity.js';
 import { Editor } from '@tinymce/tinymce-react';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import usePartner from '../../../hooks/usePartner.js';
+import useMedia from '../../../hooks/useMedia.js';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -77,6 +79,10 @@ const CareerModal = () => {
     setTabIndex(newValue);
   };
   const editorRef = React.useRef(null);
+  const {getPodcastlist} = useMedia();
+  const {getMentorListMeta} = usePartner();
+  const [podcastList, setPodcast] = useState([]);
+  const [mentorList, setMentorList] = useState([]);
   const {createCareer,updateCareer,getCareerCategoryList} = useCareer();
   const {getUniversityList, getNewsList} = useUniversity();
   const [univeristyList,setUniversityList] = useState([]);
@@ -98,6 +104,9 @@ const CareerModal = () => {
     news_list_id:'',
     university_list_id:'',
     category_id: '',
+    podcast_list_id: '',
+    mentor_list_id: '',
+    is_button_on: true,
   });
   const [CareerCategory, setCareerCategory] = useState([]);
   useEffect(() => {
@@ -116,6 +125,10 @@ const CareerModal = () => {
     setNewList(data);
     data= await getCareerCategoryList();
     setCareerCategory(data)
+    data = await getMentorListMeta();
+    setMentorList(data)
+    data = await getPodcastlist();
+    setPodcast(data)
   }
   fetch()
   }, []);
@@ -131,7 +144,10 @@ const CareerModal = () => {
       order_number:0,
       news_list_id:'',
       university_list_id:'',
-      category_id: ''
+      category_id: '',
+      podcast_list_id: '',
+      mentor_list_id: '',
+      is_button_on:true,
     });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
     
@@ -356,44 +372,8 @@ const CareerModal = () => {
                               </Select>
                             </Grid>
                           </Grid>  
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Danh sách trường:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Select
-                                className={classes.multpleSelectField}
-                                value={Career.university_list_id || ''}
-                                onChange={(event) => setCareer({ ...Career, university_list_id: event.target.value })}
-                              >
-                                {univeristyList &&
-                                  univeristyList.map((item) => (
-                                    <MenuItem key={item.id} value={item.id}>
-                                      {item.title}
-                                    </MenuItem>
-                                  ))}
-                              </Select>
-                            </Grid>
-                          </Grid>    
-                          <Grid container className={classes.gridItem} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Danh sách blogs:</span>
-                            </Grid>
-                            <Grid item lg={8} md={8} xs={8}>
-                              <Select
-                                className={classes.multpleSelectField}
-                                value={Career.news_list_id || ''}
-                                onChange={(event) => setCareer({ ...Career, news_list_id: event.target.value })}
-                              >
-                                {newsList &&
-                                  newsList.map((item) => (
-                                    <MenuItem key={item.id} value={item.id}>
-                                      {item.value}
-                                    </MenuItem>
-                                  ))}
-                              </Select>
-                            </Grid>
-                          </Grid>    
+                         
+                        
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
                               <span className={classes.tabItemLabelField}>Hoạt động: </span>
@@ -404,9 +384,7 @@ const CareerModal = () => {
                               onChange={()=> setCareer({...Career,is_active: !Career.is_active})}
                               inputProps={{ 'aria-label': 'controlled' }} />
                             </Grid>
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
+                            <Grid item lg={2} md={2} xs={2}>
                               <span className={classes.tabItemLabelField}>Nổi bật: </span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
@@ -417,7 +395,159 @@ const CareerModal = () => {
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
                             </Grid>
+                            <Grid item lg={2} md={2} xs={2}>
+                              <span className={classes.tabItemLabelField}>Nút đăng ký: </span>
+                            </Grid>
+                            <Grid item lg={1} md={1} xs={1}>
+                            <Switch
+                                checked={Career.is_button_on}
+                                onChange={()=> setCareer({...Career,is_button_on: !Career.is_button_on})}
+                                color="primary"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                              />
+                            </Grid>
                           </Grid>
+                         
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={2}>
+                              <span className={classes.tabItemLabelField}>Danh sách trường:</span>
+                            </Grid>
+                            <Grid item lg={7} md={7} xs={7}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={Career.university_list_id || ''}
+                                onChange={(event) => setCareer({ ...Career, university_list_id: event.target.value })}
+                              >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {univeristyList &&
+                                  univeristyList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.title}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                            <Grid item lg={3} md={3} xs={12}>
+                            <Link
+                                    to={'/dashboard/app?type=university&id='+(Career.university_list_id===''|| !Career.university_list_id?'create':Career.university_list_id)}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >{Career.university_list_id===''|| !Career.university_list_id?'Tạo mới': 'Cập nhật'}</Button>
+                                  </Link>
+                            </Grid>
+                          </Grid>  
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh sách blogs:</span>
+                            </Grid>
+                            <Grid item lg={7} md={7} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={Career.news_list_id || ''}
+                                onChange={(event) => setCareer({ ...Career, news_list_id: event.target.value })}
+                              >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {newsList &&
+                                  newsList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.value}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                            <Grid item lg={3} md={3} xs={12}>
+                            <Link
+                                    to={'/dashboard/app?type=news&id='+(Career.news_list_id===''||!Career.news_list_id?'create':Career.news_list_id)}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >{Career.news_list_id===''||!Career.news_list_id?'Tạo mới':'Cập nhật'}</Button>
+                                  </Link>
+                            </Grid>
+                          </Grid>    
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh sách Podcast:</span>
+                            </Grid>
+                            <Grid item lg={7} md={7} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={Career.podcast_list_id || ''}
+                                onChange={(event) => setCareer({ ...Career, podcast_list_id: event.target.value })}
+                              >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {podcastList &&
+                                  podcastList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.value}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                            <Grid item lg={3} md={3} xs={12}>
+                            <Link
+                                    to={'/dashboard/app?type=podcast&id='+(Career.podcast_list_id===''||!Career.podcast_list_id?'create':Career.podcast_list_id)}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >{Career.podcast_list_id===''||!Career.podcast_list_id?'Tạo mới':'Cập nhật'}</Button>
+                                  </Link>
+                            </Grid>
+                          </Grid>    
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh sách mentor:</span>
+                            </Grid>
+                            <Grid item lg={7} md={7} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={Career.mentor_list_id || ''}
+                                onChange={(event) => setCareer({ ...Career, mentor_list_id: event.target.value })}
+                              >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {mentorList&&
+                                  mentorList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.value}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                            <Grid item lg={3} md={3} xs={12}>
+                            <Link
+                                    to={'/dashboard/app?type=mentor&id='+(Career.mentor_list_id===''|| !Career.mentor_list_id?'create':Career.mentor_list_id)}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >{Career.mentor_list_id===''|| !Career.mentor_list_id?'Tạo mới': 'Cập nhật'}</Button>
+                                  </Link>
+                            </Grid>
+                          </Grid>    
                         </div>
                       </div>
                     </Grid> 

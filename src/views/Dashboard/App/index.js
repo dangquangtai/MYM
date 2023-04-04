@@ -116,6 +116,13 @@ const App = () => {
       var app = apps.find(item=>item.id===id_app)
       handleAppClick({...app,element_id: id, action:action, id_project: id_project})
     }
+    else if(type==='university') {
+      var id_app = '528e4614-2b69-11ed-b84b-005056a3c175'
+      var id_project='bf683a56-b8e6-11ed-83b0-0adcfa65ae7a'
+      var action = 'MYM_PARTNER_HOME_OPEN_ACTIVE_UNIVERSITYLIST'
+      var app = apps.find(item=>item.id===id_app)
+      handleAppClick({...app,element_id: id, action:action, id_project: id_project})
+    }
   }
   return (
     <>

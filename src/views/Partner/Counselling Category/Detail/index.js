@@ -384,21 +384,21 @@ const CounsellingCategoryModal = () => {
                                                     </Grid>
                                                    
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
+                                                        <Grid item lg={2} md={2} xs={2}>
                                                             <span className={classes.tabItemLabelField}>Danh sách mentor:</span>
                                                         </Grid>
                                                         <Grid item lg={7} md={7} xs={7}>
                                                             <TextField
                                                                 fullWidth
                                                                 name="description"
-                                                                value={'Danh sách Mentor'}
+                                                                value={counsellingCategoryData.mentorlist_title}
                                                                 className={classes.inputField}
-                                                                onChange={handleChanges}
+                                                                disabled
                                                             />
                                                         </Grid>
-                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Grid item lg={3} md={3} xs={3}>
                                                         <Link
-                                                            to={'/dashboard/app?type=mentor&id='}
+                                                            to={'/dashboard/app?type=mentor&id='+counsellingCategoryData.mentorlist_id}
                                                             target="_blank"
                                                             rel="noreferrer"
                                                             variant="contained"
@@ -406,26 +406,26 @@ const CounsellingCategoryModal = () => {
                                                             >
                                                             <Button  variant="contained"
                                                                 style={{ background: 'rgb(97, 42, 255)' }}
-                                                            >Sửa</Button>
+                                                            >Cập nhật</Button>
                                                         </Link>
                                                         </Grid>
                                                     </Grid>
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
+                                                        <Grid item lg={2} md={2} xs={2}>
                                                             <span className={classes.tabItemLabelField}>Danh sách bài viết:</span>
                                                         </Grid>
                                                         <Grid item lg={7} md={7} xs={7}>
                                                             <TextField
                                                                 fullWidth
                                                                 name="description"
-                                                                value={'Danh sách bài viết'}
+                                                                value={counsellingCategoryData.newslist_title}
                                                                 className={classes.inputField}
-                                                                onChange={handleChanges}
+                                                                disabled
                                                             />
                                                         </Grid>
-                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Grid item lg={3} md={3} xs={3}>
                                                         <Link
-                                                            to={'/dashboard/app?type=news&id='}
+                                                            to={'/dashboard/app?type=news&id='+counsellingCategoryData.newslist_id}
                                                             target="_blank"
                                                             rel="noreferrer"
                                                             variant="contained"
@@ -433,26 +433,26 @@ const CounsellingCategoryModal = () => {
                                                             >
                                                             <Button  variant="contained"
                                                                 style={{ background: 'rgb(97, 42, 255)' }}
-                                                            >Sửa</Button>
+                                                            >Cập nhật</Button>
                                                         </Link>
                                                         </Grid>
                                                     </Grid>
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
+                                                        <Grid item lg={2} md={2} xs={2}>
                                                             <span className={classes.tabItemLabelField}>Danh sách ngành nghề:</span>
                                                         </Grid>
                                                         <Grid item lg={7} md={7} xs={7}>
                                                             <TextField
                                                                 fullWidth
                                                                 name="description"
-                                                                value={'Danh sách ngành nghề'}
+                                                                value={counsellingCategoryData.careerlist_title}
                                                                 className={classes.inputField}
-                                                                onChange={handleChanges}
+                                                                disabled
                                                             />
                                                         </Grid>
-                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Grid item lg={3} md={3} xs={3}>
                                                         <Link
-                                                            to={'/dashboard/app?type=career&id='}
+                                                            to={'/dashboard/app?type=career&id='+counsellingCategoryData.careerlist_id}
                                                             target="_blank"
                                                             rel="noreferrer"
                                                             variant="contained"
@@ -460,26 +460,26 @@ const CounsellingCategoryModal = () => {
                                                             >
                                                             <Button  variant="contained"
                                                                 style={{ background: 'rgb(97, 42, 255)' }}
-                                                            >Sửa</Button>
+                                                            >Cập nhật</Button>
                                                         </Link>
                                                         </Grid>
                                                     </Grid>
                                                     <Grid container className={classes.gridItemInfo} alignItems="center">
-                                                        <Grid item lg={4} md={4} xs={4}>
+                                                        <Grid item lg={2} md={2} xs={2}>
                                                             <span className={classes.tabItemLabelField}>Danh sách Podcast:</span>
                                                         </Grid>
                                                         <Grid item lg={7} md={7} xs={7}>
                                                             <TextField
                                                                 fullWidth
                                                                 name="description"
-                                                                value={'Danh sách Podcast'}
+                                                                value={counsellingCategoryData.podcastlist_title}
                                                                 className={classes.inputField}
-                                                                onChange={handleChanges}
+                                                                disabled
                                                             />
                                                         </Grid>
-                                                        <Grid item lg={1} md={1} xs={1}>
+                                                        <Grid item lg={2} md={2} xs={2}>
                                                         <Link
-                                                            to={'/dashboard/app?type=podcast&id='}
+                                                            to={'/dashboard/app?type=podcast&id='+counsellingCategoryData.podcastlist_id}
                                                             target="_blank"
                                                             rel="noreferrer"
                                                             variant="contained"
@@ -487,7 +487,7 @@ const CounsellingCategoryModal = () => {
                                                             >
                                                             <Button  variant="contained"
                                                                 style={{ background: 'rgb(97, 42, 255)' }}
-                                                            >Sửa</Button>
+                                                            >Cập nhật</Button>
                                                         </Link>
                                                         </Grid>
                                                     </Grid>

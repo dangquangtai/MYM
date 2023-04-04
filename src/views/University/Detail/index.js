@@ -16,6 +16,7 @@ import {
   TextField,
   Snackbar,
   IconButton,
+  Switch,
 } from '@material-ui/core';
 import {
   History as HistoryIcon,
@@ -41,6 +42,8 @@ import { Editor } from '@tinymce/tinymce-react';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import usePartner from '../../../hooks/usePartner.js';
+import useMedia from '../../../hooks/useMedia.js';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -86,8 +89,13 @@ const UniveristyModal = () => {
   const {getCareerListPage} = useCareer();
   const editorRef = React.useRef(null);
   const {getUniversityType,updateUniversity ,createUniversity,getNewsList } = useUniversity();
+  const {getPodcastlist} = useMedia();
+  const {getMentorListMeta} = usePartner();
+  const [podcastList, setPodcast] = useState([]);
+  const [mentorList, setMentorList] = useState([]);
   const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
   const { selectedDocument } = useSelector((state) => state.document);
+
   const [dialogUpload, setDialogUpload] = useState({
     open: false,
     type: ''
@@ -107,7 +115,10 @@ const UniveristyModal = () => {
    university_type_id: '',
    career_list_id:'',
    news_list_id:'',
-   image_url_list:[]
+   image_url_list:[],
+   mentor_list_id:'',
+   podcast_list_id: '',
+   is_button_on: true,
   });
 
   useEffect(() => {
@@ -128,6 +139,10 @@ const UniveristyModal = () => {
       setCareerList(data2)
       data2 = await getNewsList();
       setNewList(data2)
+      data2 = await getMentorListMeta();
+      setMentorList(data2)
+      data2 = await getPodcastlist();
+      setPodcast(data2)
     }
     fetch()
    
@@ -147,7 +162,10 @@ const UniveristyModal = () => {
       unibersity_type_id: '',
       career_list_id:'',
       news_list_id:'',
-      image_url_list:[]
+      image_url_list:[],
+      mentor_list_id:'',
+      podcast_list_id: '',
+      is_button_on: true,
     });
     dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: false });
   };
@@ -340,27 +358,28 @@ const UniveristyModal = () => {
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
                             <ImageIcon />
-                            <span>Danh sách hình ảnh</span>
+                            <span>Upload/Change Image</span>
+                            <Button onClick={() => setDialogUpload({openmultiple: true , type: 'image'})} style={{backgroundColor:'#3266FE', color:'white'}}>Chọn hình </Button>
                           </div>
                         </div>
-                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`} >
-                          <Grid container>
-                          {university?.image_url_list.map((image_url)=>(
+                        <div className={`${classes.tabItemBody} ${classes.tabItemMentorAvatarBody}`} style={{maxHeight:300}} >
+                          <Grid container  className={classes.gridItemInfo} alignItems="center">
+                          {university?.image_url_list?.map((image_url)=>(
                             <Grid item lg={4} md={4} xs={4}>
-                               <img src={image_url} alt=""  />
-                               <IconButton style={{backgroundColor:'none', border:'none', background:'none',marginTop: '-300px',marginLeft:'90px'}} onClick={()=>handleRemove(image_url)}>
+                               <img src={image_url} alt=""  style={{marginLeft:10}} />
+                               <IconButton style={{backgroundColor:'none', border:'none', background:'none',marginTop: '-295px',marginLeft:'90px'}} onClick={()=>handleRemove(image_url)}>
                                 <RemoveCircle style={{color:'black'}}/>
                                </IconButton>
                             </Grid>
                              
                           ))}
                           </Grid>
+                        
+                          
+                       
                          
                         
-                          <div>
-                            <div>Upload/Change Image</div>
-                            <Button onClick={() => setDialogUpload({openmultiple: true , type: 'image'})}>Chọn hình </Button>
-                          </div>
+                        
                         </div>
                     
                       </div>
@@ -374,7 +393,7 @@ const UniveristyModal = () => {
                           </div>
 
                         </div>
-                        <div className={classes.tabItemBody}>
+                        <div className={classes.tabItemBody} style={{maxHeight:'500px'}}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={2} md={2} xs={2}>
                               <span className={classes.tabItemLabelField}>Mã trường: </span>
@@ -411,28 +430,37 @@ const UniveristyModal = () => {
                               <span className={classes.tabItemLabelField}>Hoạt động: </span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
-                              <Checkbox 
-                              checked={university.is_active}
-                              onChange={()=> setuniversity({...university,is_active: !university.is_active})}
-                              inputProps={{ 'aria-label': 'controlled' }} />
+                            
+                          <Switch
+                                     checked={university.is_active}
+                                     onChange={()=> setuniversity({...university,is_active: !university.is_active})}
+                                    color="primary"
+                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                  />
                             </Grid>
-                           
-                          </Grid>
-                          <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={2} md={2} xs={2}>
                               <span className={classes.tabItemLabelField}>Tư vấn: </span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
-                              <Checkbox 
-                              checked={university.is_consultation_on}
-                              onChange={()=> setuniversity({...university,is_consultation_on: !university.is_consultation_on})}
-                              inputProps={{ 'aria-label': 'controlled' }} />
+                            <Switch
+                                     checked={university.is_consultation_on}
+                                     onChange={()=> setuniversity({...university,is_consultation_on: !university.is_consultation_on})}
+                                    color="primary"
+                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                  />
                             </Grid>
-                           
+                            <Grid item lg={3} md={3} xs={3}>
+                              <span className={classes.tabItemLabelField}>Nút đăng ký: </span>
+                            </Grid>
+                            <Grid item lg={1} md={1} xs={1}>
+                            <Switch
+                                     checked={university.is_button_on}
+                                     onChange={()=> setuniversity({...university,is_button_on: !university.is_button_on})}
+                                    color="primary"
+                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                  />
+                            </Grid>
                           </Grid>
-                          
-
-                         
                           <Grid container className={classes.gridItem} alignItems="center">
                             <Grid item lg={2} md={2} xs={12}>
                               <span className={classes.tabItemLabelField}>Loại:</span>
@@ -465,6 +493,9 @@ const UniveristyModal = () => {
                                 value={university.university_category_id || ''}
                                 onChange={(event) => setuniversity({ ...university, university_category_id: event.target.value })}
                               >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
                                 {category_list &&
                                   category_list.map((item) => (
                                     <MenuItem key={item.id} value={item.id}>
@@ -478,12 +509,15 @@ const UniveristyModal = () => {
                             <Grid item lg={2} md={2} xs={12}>
                               <span className={classes.tabItemLabelField}>Danh sách ngành:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
+                            <Grid item lg={7} md={7} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
                                 value={university.career_list_id || ''}
                                 onChange={(event) => setuniversity({ ...university, career_list_id: event.target.value })}
                               >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
                                 {careerList &&
                                   careerList.map((item) => (
                                     <MenuItem key={item.id} value={item.id}>
@@ -492,18 +526,17 @@ const UniveristyModal = () => {
                                   ))}
                               </Select>
                             </Grid>
-                             <Grid item lg={2} md={2} xs={12}>
-                              
+                             <Grid item lg={3} md={3} xs={12}>
                                          <Link
-                                    to={'/dashboard/app?type=career&id='+university.career_list_id}
+                                    to={'/dashboard/app?type=career&id='+(university.career_list_id===''||!university.career_list_id?'create':university.career_list_id)}
                                     target="_blank"
                                     rel="noreferrer"
                                     variant="contained"
-                                    style={{color:'white',textDecoration:'none', }}
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
                                     >
                                     <Button  variant="contained"
                                          style={{ background: 'rgb(97, 42, 255)' }}
-                                      >Sửa</Button>
+                                      >{university.career_list_id===''||!university.career_list_id?'Tạo mới':'Cập nhật'}</Button>
                                   </Link>
                             </Grid>
                           </Grid>    
@@ -511,12 +544,15 @@ const UniveristyModal = () => {
                             <Grid item lg={2} md={2} xs={12}>
                               <span className={classes.tabItemLabelField}>Danh sách blogs:</span>
                             </Grid>
-                            <Grid item lg={8} md={8} xs={12}>
+                            <Grid item lg={7} md={7} xs={12}>
                               <Select
                                 className={classes.multpleSelectField}
                                 value={university.news_list_id || ''}
                                 onChange={(event) => setuniversity({ ...university, news_list_id: event.target.value })}
                               >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
                                 {newsList &&
                                   newsList.map((item) => (
                                     <MenuItem key={item.id} value={item.id}>
@@ -525,17 +561,87 @@ const UniveristyModal = () => {
                                   ))}
                               </Select>
                             </Grid>
-                            <Grid item lg={2} md={2} xs={12}>
+                            <Grid item lg={3} md={3} xs={12}>
                             <Link
-                                    to={'/dashboard/app?type=news&id='+university.news_list_id}
+                                    to={'/dashboard/app?type=news&id='+(university.news_list_id===''||!university.news_list_id?'create':university.news_list_id)}
                                     target="_blank"
                                     rel="noreferrer"
                                     variant="contained"
-                                    style={{ color:'white',textDecoration:'none' }}
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
                                     >
                                     <Button  variant="contained"
                                          style={{ background: 'rgb(97, 42, 255)' }}
-                                      >Sửa</Button>
+                                      >{university.news_list_id===''||!university.news_list_id?'Tạo mới':'Cập nhật'}</Button>
+                                  </Link>
+                            </Grid>
+                          </Grid>    
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh sách Podcast:</span>
+                            </Grid>
+                            <Grid item lg={7} md={7} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={university.podcast_list_id || ''}
+                                onChange={(event) => setuniversity({ ...university, podcast_list_id: event.target.value })}
+                              >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {podcastList &&
+                                  podcastList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.value}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                            <Grid item lg={3} md={3} xs={12}>
+                            <Link
+                                    to={'/dashboard/app?type=podcast&id='+(university.podcast_list_id===''||!university.podcast_list_id?'create':university.podcast_list_id)}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >{university.podcast_list_id===''||!university.podcast_list_id?'Tạo mới':'Cập nhật'}</Button>
+                                  </Link>
+                            </Grid>
+                          </Grid>    
+                          <Grid container className={classes.gridItem} alignItems="center">
+                            <Grid item lg={2} md={2} xs={12}>
+                              <span className={classes.tabItemLabelField}>Danh sách mentor:</span>
+                            </Grid>
+                            <Grid item lg={7} md={7} xs={12}>
+                              <Select
+                                className={classes.multpleSelectField}
+                                value={university.mentor_list_id || ''}
+                                onChange={(event) => setuniversity({ ...university, mentor_list_id: event.target.value })}
+                              >
+                                 <MenuItem value="">
+                                  <em>Không chọn</em>
+                                </MenuItem>
+                                {mentorList&&
+                                  mentorList.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>
+                                      {item.value}
+                                    </MenuItem>
+                                  ))}
+                              </Select>
+                            </Grid>
+                            <Grid item lg={3} md={3} xs={12}>
+                            <Link
+                                    to={'/dashboard/app?type=mentor&id='+(university.mentor_list_id===''|| !university.mentor_list_id?'create':university.mentor_list_id)}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="contained"
+                                    style={{ color:'white',textDecoration:'none',marginLeft: 20 }}
+                                    >
+                                    <Button  variant="contained"
+                                         style={{ background: 'rgb(97, 42, 255)' }}
+                                      >{university.mentor_list_id===''|| !university.mentor_list_id?'Tạo mới': 'Cập nhật'}</Button>
                                   </Link>
                             </Grid>
                           </Grid>    
