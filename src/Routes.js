@@ -9,12 +9,12 @@ import GuestGuard from './component/Auth/GuestGuard';
 import AuthGuard from './component/Auth/AuthGuard';
 import MinimalLayout from './layout/MinimalLayout';
 import AppLayout from './layout/AppLayout/index';
-import { useEffect } from 'react';
-
 const AuthLogin = lazy(() => import('./views/Login'));
 const App = lazy(() => import('./views/Dashboard/App/index.js'));
 const DashboardDefault = lazy(() => import('./views/Dashboard/Default'));
 const Logout = lazy(() => import('./views/Users/logout'));
+const Chat = lazy(() => import('./views/Chat/index.js'));
+
 const Routes = () => {
   const location = useLocation();
   return (
@@ -56,15 +56,15 @@ const Routes = () => {
               </Switch>
             </AppLayout>
           </Route>
-          <Route path={['/dashboard/default', '/users/logout']}>
+          <Route path={['/dashboard/default', '/users/logout', '/chat']}>
             <MainLayout>
               <Switch location={location} key={location.pathname}>
                 <NavMotion>
                   <AuthGuard>
                     <Route path="/dashboard/app" component={App} />
-                   
                     <Route path="/dashboard/default" component={DashboardDefault} />
                     <Route path="/users/logout" component={Logout} />
+                    <Route path="/chat" component={Chat} />
                   </AuthGuard>
                 </NavMotion>
               </Switch>

@@ -3,7 +3,6 @@ import React from 'react';
 import {
   makeStyles,
   Button,
-  Chip,
   ClickAwayListener,
   Fade,
   Grid,
@@ -14,21 +13,19 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  ListSubheader,
   ListItemSecondaryAction,
   Typography,
-  Divider
+  Divider,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import NotificationsNoneTwoToneIcon from '@material-ui/icons/NotificationsNoneTwoTone';
-import { subHours } from 'date-fns';
 import QueryBuilderTwoToneIcon from '@material-ui/icons/QueryBuilderTwoTone';
-import User1 from './../../../../assets/images/users/avatar-1.jpg';
 import useAccount from './../../../../hooks/useAccount';
 import useBooking from '../../../../hooks/useBooking';
-import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE, SELECTED_APP_CHANGE } from '../../../../store/actions';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import { DOCUMENT_CHANGE, FLOATING_MENU_CHANGE } from '../../../../store/actions';
+import { QuestionAnswer } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flex: 1,
@@ -190,8 +187,8 @@ const NotificationSection = () => {
   }, []);
   return (
     <React.Fragment>
-      <Button className={classes.menuButton} color="inherit">
-      <AssignmentIndIcon></AssignmentIndIcon>
+      <Button component={Link} to="/chat" target="_blank" className={classes.menuButton} color="inherit">
+        <QuestionAnswer />
       </Button>
       <Button
         className={classes.menuButton}
@@ -201,7 +198,6 @@ const NotificationSection = () => {
         onClick={handleToggle}
         color="inherit"
       >
-       
         <NotificationsNoneTwoToneIcon className={classes.menuIIcon} />
         <span>
           <sup
@@ -244,12 +240,8 @@ const NotificationSection = () => {
               <ClickAwayListener onClickAway={handleClose}>
                 <List className={classes.root}>
                   <PerfectScrollbar className={classes.ScrollHeight}>
-                    {taskList.map(
-                      (
-                        task,
-                        index,
-                      ) => (
-                        <>
+                    {taskList.map((task, index) => (
+                      <>
                         <ListItem
                           button
                           alignItems="flex-start"
@@ -263,52 +255,49 @@ const NotificationSection = () => {
                                 fontSize: '40px',
                               }}
                             /> */}
-                             <Avatar alt="Cindy Baker" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" />
+                            <Avatar
+                              alt="Cindy Baker"
+                              src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg"
+                            />
                           </ListItemAvatar>
                           <ListItemText
                             primary={<Typography variant="subtitle1">{task.task_title}</Typography>}
                             secondary={
                               <React.Fragment>
-                              <Typography
-                                sx={{ display: 'inline' }}
-                                component="span"
-                                variant="body2"
-                                color="text.primary"
-                              >
-                                {task.customer_name}
-                              </Typography>
-                              {task.action_title}
-                            </React.Fragment>
+                                <Typography
+                                  sx={{ display: 'inline' }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {task.customer_name}
+                                </Typography>
+                                {task.action_title}
+                              </React.Fragment>
                             }
                           />
-                       
-                        
+
                           <ListItemSecondaryAction className={classes.listAction}>
                             <Grid container justifyContent="flex-end">
                               <Grid item>
                                 <QueryBuilderTwoToneIcon className={classes.actionIcon} />
                               </Grid>
                               <Grid item>
-                              <Typography
-                               variant="caption"
-                               display="block"
-                               gutterBottom
-                               className={classes.actionColor}
-                             >
-                                {task.customer_name} Ngày {task.assigned_date}
-                             </Typography>
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  gutterBottom
+                                  className={classes.actionColor}
+                                >
+                                  {task.customer_name} Ngày {task.assigned_date}
+                                </Typography>
                               </Grid>
-                              
                             </Grid>
                           </ListItemSecondaryAction>
                         </ListItem>
-                         <Divider variant="inset" component="li" />
-                       
-                         </>
-                      )
-                    )}
-                  
-                  
+                        <Divider variant="inset" component="li" />
+                      </>
+                    ))}
                   </PerfectScrollbar>
                 </List>
               </ClickAwayListener>
