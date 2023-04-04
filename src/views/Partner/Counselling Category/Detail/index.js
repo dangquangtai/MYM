@@ -18,6 +18,7 @@ import {
     Select,
     Chip,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { image_default, view } from '../../../../store/constant';
@@ -321,8 +322,7 @@ const CounsellingCategoryModal = () => {
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
+                                                           
                                                                 variant="outlined"
                                                                 name="category_code"
                                                                 value={counsellingCategoryData.category_code}
@@ -339,8 +339,7 @@ const CounsellingCategoryModal = () => {
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
+                                                
                                                                 variant="outlined"
                                                                 name="order_number"
                                                                 value={counsellingCategoryData.order_number}
@@ -359,8 +358,6 @@ const CounsellingCategoryModal = () => {
                                                             <TextField
                                                                 fullWidth
                                                                 multiline
-                                                                rows={4}
-                                                                rowsMax={4}
                                                                 variant="outlined"
                                                                 name="content"
                                                                 value={counsellingCategoryData.content}
@@ -377,9 +374,6 @@ const CounsellingCategoryModal = () => {
                                                         <Grid item lg={8} md={8} xs={8}>
                                                             <TextField
                                                                 fullWidth
-                                                                rows={1}
-                                                                rowsMax={1}
-                                                                variant="outlined"
                                                                 name="description"
                                                                 value={counsellingCategoryData.description}
                                                                 className={classes.inputField}
@@ -387,6 +381,115 @@ const CounsellingCategoryModal = () => {
                                                             />
                                                         </Grid>
 
+                                                    </Grid>
+                                                   
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách mentor:</span>
+                                                        </Grid>
+                                                        <Grid item lg={6} md={6} xs={6}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={counsellingCategoryData.mentorlist_title}
+                                                                className={classes.inputField}
+                                                                disabled
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={2} md={2} xs={2}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=mentor&id='+counsellingCategoryData.mentorlist_id}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none',marginLeft: 10 }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Cập nhật</Button>
+                                                        </Link>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách bài viết:</span>
+                                                        </Grid>
+                                                        <Grid item lg={6} md={6} xs={6}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={counsellingCategoryData.newslist_title}
+                                                                className={classes.inputField}
+                                                                disabled
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={2} md={2} xs={2}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=news&id='+counsellingCategoryData.newslist_id}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none',marginLeft: 10 }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Cập nhật</Button>
+                                                        </Link>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách ngành nghề:</span>
+                                                        </Grid>
+                                                        <Grid item lg={6} md={6} xs={6}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={counsellingCategoryData.careerlist_title}
+                                                                className={classes.inputField}
+                                                                disabled
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={2} md={2} xs={2}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=career&id='+counsellingCategoryData.careerlist_id}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none',marginLeft: 10 }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Cập nhật</Button>
+                                                        </Link>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid container className={classes.gridItemInfo} alignItems="center">
+                                                        <Grid item lg={4} md={4} xs={4}>
+                                                            <span className={classes.tabItemLabelField}>Danh sách Podcast:</span>
+                                                        </Grid>
+                                                        <Grid item lg={6} md={6} xs={6}>
+                                                            <TextField
+                                                                fullWidth
+                                                                name="description"
+                                                                value={counsellingCategoryData.podcastlist_title}
+                                                                className={classes.inputField}
+                                                                disabled
+                                                            />
+                                                        </Grid>
+                                                        <Grid item lg={2} md={2} xs={2}>
+                                                        <Link
+                                                            to={'/dashboard/app?type=podcast&id='+counsellingCategoryData.podcastlist_id}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            variant="contained"
+                                                            style={{ color:'white',textDecoration:'none',marginLeft: 10 }}
+                                                            >
+                                                            <Button  variant="contained"
+                                                                style={{ background: 'rgb(97, 42, 255)' }}
+                                                            >Cập nhật</Button>
+                                                        </Link>
+                                                        </Grid>
                                                     </Grid>
 
 

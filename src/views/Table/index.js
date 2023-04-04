@@ -1229,9 +1229,55 @@ export default function GeneralTable(props) {
         var detailDocument = await getNewsListDetail(selectedApp?.element_id);
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
-  
       }
+      else if (documentType === 'bannerList') {
+        detailDocument = await getBannerListDetail(selectedDocument.id);
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
+      }
+      else if (documentType === 'universitylist') {
+        detailDocument = await getUniversityListDetail(selectedDocument.id);
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+      }
+      else if (documentType === 'playlist') {
+        detailDocument = await getPlaylistDetail(selectedDocument.id);
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
+      }
+      else if (documentType === 'mentorlist') {
+        detailDocument = await getMentorListDetail(selectedDocument.id);
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
+  }
     }
+    
+    if (selectedApp.element_id==='create'){
+      if (documentType === 'careerlist') {
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+      }else if (documentType === 'newsList') {
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
+      }
+      else if (documentType === 'bannerList') {
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
+      }
+      else if (documentType === 'universitylist') {
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
+      }
+      else if (documentType === 'playlist') {
+       
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
+      }
+      else if (documentType === 'mentorlist') {
+        dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
+        dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
+  }
+    } else 
       fetch();
   },[selectedApp])
   return (
