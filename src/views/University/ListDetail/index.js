@@ -168,8 +168,8 @@ const UniversityListModal = () => {
       fetch()
   } else {
     setUniversityList(universities)
-   
   }
+  setUniversity({...University,university_id_list:[]})
   },[University.is_active])
   const handleUpdateUniversity = async () => {
     try {

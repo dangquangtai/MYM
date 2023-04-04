@@ -112,7 +112,6 @@ const CareerListModal = () => {
     if (selectedDocument?.is_active !=Career.is_active){
       setCareer({...Career,career_id_list:[]})
     }
-   
    const fetch = async () =>{
     if(Career.is_active){
       
@@ -170,7 +169,7 @@ const CareerListModal = () => {
         let check =await createCareerList({...Career, list_description: content});
         if (check == true) {
           handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'career' });
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'careerlist' });
           handleCloseDialog();
         } else {
           handleOpenSnackbar(true, 'error', 'Tạo mới lỗi!');
@@ -179,7 +178,7 @@ const CareerListModal = () => {
         let check =await updateCareerList({...Career, list_description: content});
         if (check == true) {
           handleOpenSnackbar(true, 'success', 'Cập nhập thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'career' });
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'careerlist' });
           handleCloseDialog();
         }
         else {

@@ -375,7 +375,7 @@ const CareerModal = () => {
                          
                         
                           <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={4} md={4} xs={4}>
+                            <Grid item lg={2} md={2} xs={2}>
                               <span className={classes.tabItemLabelField}>Hoạt động: </span>
                             </Grid>
                             <Grid item lg={2} md={2} xs={2}>
@@ -395,7 +395,7 @@ const CareerModal = () => {
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                               />
                             </Grid>
-                            <Grid item lg={2} md={2} xs={2}>
+                            <Grid item lg={3} md={3} xs={3}>
                               <span className={classes.tabItemLabelField}>Nút đăng ký: </span>
                             </Grid>
                             <Grid item lg={1} md={1} xs={1}>
