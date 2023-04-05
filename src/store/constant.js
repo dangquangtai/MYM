@@ -459,6 +459,7 @@ export const apiEndpoints = {
   get_chat_box_list: '/Primary/?FlowAlias=bs_api_chat_get_chat_box_list_by_page&action=api',
   get_chat_message_list: '/Primary/?FlowAlias=bs_api_get_chat_message_list_by_chatbox_id&action=api',
   post_chat_message: '/Primary/?FlowAlias=bs_api_post_chat_message&action=api',
+  get_chat_box_by_booking_id: '/Primary/?FlowAlias=bs_api_get_chat_box_by_booking_id&action=api',
 
 };
 export const apiDomain = 'https://upload.truebpm.vn';

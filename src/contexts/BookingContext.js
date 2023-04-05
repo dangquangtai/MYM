@@ -245,6 +245,19 @@ export const BookingProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getChatByBooking = async (booking_id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_chat_box_by_booking_id, {
+        outputtype: 'RawJson',
+        booking_id: booking_id
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { chatbox, account_list ,function_list } = response.data;
+          return {chatbox, account_list ,function_list};
+        } else return {};
+      });
+  };
   return (
     <BookingContext.Provider
       value={{
@@ -268,7 +281,8 @@ export const BookingProvider = ({ children }) => {
         getFullCalendar,
         getCounsellingByEvent,
         UpdateTimeSlot,
-        downloadData
+        downloadData,
+        getChatByBooking,
       }}
     >
       {children}

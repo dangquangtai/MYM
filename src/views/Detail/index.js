@@ -25,7 +25,11 @@ import {
   Paper,
   Tooltip,
   IconButton,
+  Chip,
+  DialogContentText
 } from '@material-ui/core';
+import MessageIcon from '@material-ui/icons/Message';
+import { Close } from '@material-ui/icons';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import AssignmentReturnedTwoToneIcon from '@material-ui/icons/AssignmentReturnedTwoTone';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -46,7 +50,7 @@ import useView from './../../hooks/useView';
 import { format as formatDate } from 'date-fns';
 import EditModal from './EditModal';
 import { style } from './style';
-
+import moment from 'moment/moment.js';
 import useStyles from './classes';
 import { withStyles } from '@material-ui/core/styles';
 import { FLOATING_MENU_CHANGE, DOCUMENT_CHANGE, TASK_CHANGE } from '../../store/actions';
@@ -55,10 +59,12 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Avatar from './../../component/Avatar/index';
 import NoteModal from './../Table/NoteModal/index';
 import ScheduleModal from './ScheduleModal/index.js';
+import vi from 'moment/locale/vi';
+import Chat from '../ChatOne/index.js';
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
-
+moment.updateLocale('vi', vi);
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
@@ -154,7 +160,7 @@ const DetailDocumentDialog = () => {
   const [noteSelectionList, setNoteSelectionList] = useState(initNoteSelectionList);
   const [selectedNote, setSelectedNote] = useState('');
   const [selectedNoteList, setSelectedNoteList] = useState([]);
-
+  const [dataChat,setDataChat] = useState({account_list:[]})
   const { form_buttons: formButtons, tabs } = useView();
   const changeTimeSlot = formButtons.find((button) => button.name === view.counselling.detail.change_timeslot);
   const tabDisplayOptions = {
@@ -163,7 +169,7 @@ const DetailDocumentDialog = () => {
     meeting: tabs.includes('meeting'),
     feedback: tabs.includes('feedback'),
   };
-
+  const [openChat,setOpenChat] = useState(false);
   const buttonSaveBooking = formButtons.find((button) => button.name === view.counselling.detail.save);
   const [scheduleOpen, setScheduleModole]=useState(false)
   const handleChangeTab = (event, newValue) => {
@@ -173,7 +179,7 @@ const DetailDocumentDialog = () => {
     setTabIndex(newValue);
   };
 
-  const { updateBooking, getMentorDetail, getFeedback, updateBookingMentor, getBookingDetail, setNoteBooking, getLog } =
+  const { updateBooking, getMentorDetail, getFeedback, updateBookingMentor, getBookingDetail, setNoteBooking, getLog,getChatByBooking } =
     useBooking();
 
   const { detailDocument: openDialog } = useSelector((state) => state.floatingMenu);
@@ -202,7 +208,7 @@ const DetailDocumentDialog = () => {
     assess_service: 0,
   });
   const [logs, setLogs] = useState([]);
-
+ 
   useEffect(() => {
     if (!selectedDocument) {
       setDocument({ topic_name_list: [] });
@@ -217,8 +223,11 @@ const DetailDocumentDialog = () => {
     
    
     getFeedbackDetail(selectedDocument.id);
-    
-    
+    const fetch = async()=>{
+      let data = await getChatByBooking(selectedDocument.id)
+      setDataChat(data)
+    }
+    fetch()
     getConsultantDetail(selectedDocument.mentor_id);
   }, [selectedDocument]);
 
@@ -394,6 +403,25 @@ const DetailDocumentDialog = () => {
 
   return (
     <React.Fragment>
+      {openChat && (
+        <Dialog
+        open={openChat}
+        onClose={()=>setOpenChat(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+  
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <Chat
+            chatbox={dataChat.chatbox}
+            />
+          </DialogContentText>
+        </DialogContent>
+       
+      </Dialog>
+      )}
+       
       <ScheduleModal
       isOpen={scheduleOpen}
       time_slot={selectedDocument?.time_slot_date}
@@ -871,6 +899,36 @@ const DetailDocumentDialog = () => {
                           /> */}
                         </div>
                       </div>
+                      {dataChat.account_list.length > 0 && (
+                        <div className={classes.tabItem}>
+                        <div className={classes.tabItemTitle}>
+                        <Grid container spacing={gridSpacing} className={classes.tabAssessItemWrap}>
+                            <Grid item lg={2} md={2} xs={12} className={classes.tabAssessItem}>
+                            <Avatar color="primary">
+                          <MessageIcon />
+                        </Avatar>
+                            </Grid>
+                            <Grid item lg={10} md={10} xs={12} className={classes.tabAssessItem}>
+                            <Typography component="span" variant="h6">
+                            {dataChat?.chatbox?.title}
+                            <br/>
+                            {moment(dataChat?.chatbox?.updated_date).fromNow()} 
+                            <span style={{marginLeft: 150, textDecoration:'underline',cursor:'pointer'}} onClick={()=>setOpenChat(true)}>Xem chi tiết</span>
+                          </Typography>
+                          {dataChat?.chatbox?.is_unread && (
+                            <Chip className={classes.listitemmsg} component="span" size="small"></Chip>
+                          )}
+                          <br/>
+                         
+                            </Grid>
+                         
+                        </Grid>
+                      
+                        </div>
+                      
+                      </div>
+                      )}
+                      
                     </Grid>
                   </Grid>
                 </TabPanel>
