@@ -40,7 +40,6 @@ const EnhancedTableToolbar = (props) => {
     roletemplateList,
     buttonCreateRole,
     createNewRole,
-    buttonSelectDepartment,
     buttonSyncDepartment,
     buttonCreatePodcast,
     createPodcast,
@@ -126,8 +125,8 @@ const EnhancedTableToolbar = (props) => {
     buttonCreateNewCounsellingCategory,
     createNewCounsellingCategory,
     openFireBase,
-    // buttonExportUEBLIST,
-    // exportUEBData
+    exportUEBData,
+    buttonExportUEBLIST,
   } = props;
 
   const filterRef = useRef(null);
@@ -217,10 +216,10 @@ const EnhancedTableToolbar = (props) => {
   const { documentType } = useSelector((state) => state.document);
   const { selectedFolder } = useSelector((state) => state.folder);
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   const [dataDepartmentList, setDepartment] = React.useState();
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setFilter({
@@ -295,13 +294,7 @@ const EnhancedTableToolbar = (props) => {
                     </Button>
                   </Grid>
                 )}
-                {/* {buttonExportUEBLIST && (
-                  <Grid item>
-                    <Button variant="contained" color={'primary'} onClick={exportUEBData} >
-                      {buttonExportUEBLIST.text}
-                    </Button>
-                  </Grid>
-                )} */}
+
                 {buttonCreateNewCareerCategory && (
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createUniversity}>
@@ -353,7 +346,13 @@ const EnhancedTableToolbar = (props) => {
                     </Button>
                   </Grid>
                 )}
-
+                {buttonExportUEBLIST && (
+                  <Grid item>
+                    <Button variant="contained" color={'primary'} onClick={exportUEBData}>
+                      {buttonExportUEBLIST.text}
+                    </Button>
+                  </Grid>
+                )}
                 {buttonCreatePodcast && (
                   <Grid item>
                     <Button variant="contained" color={'primary'} onClick={createPodcast}>
@@ -387,7 +386,7 @@ const EnhancedTableToolbar = (props) => {
                 )}
                 {buttonImportMentor && (
                   <Grid item>
-                    <Button variant="contained" color={'primary'} onClick={openFireBase} >
+                    <Button variant="contained" color={'primary'} onClick={openFireBase}>
                       {buttonImportMentor.text}
                     </Button>
                   </Grid>

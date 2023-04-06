@@ -15,7 +15,7 @@ import {
   TableContainer,
   Chip,
   Snackbar,
-  Portal
+  Portal,
 } from '@material-ui/core';
 import Alert from '../../component/Alert/index';
 import React, { useEffect } from 'react';
@@ -93,7 +93,7 @@ export default function GeneralTable(props) {
   const [displayOptions, setDisplayOptions] = React.useState({});
   const { selectedFolder } = useSelector((state) => state.folder);
   const { selectedDocument } = useSelector((state) => state.document);
-  const {selectedApp} = useSelector((state)=>state.app)
+  const { selectedApp } = useSelector((state) => state.app);
   useEffect(() => {
     const initOptions = {
       id: tableColumns.includes('id'),
@@ -215,8 +215,12 @@ export default function GeneralTable(props) {
   const buttonCreateFileCategory = menuButtons.find((button) => button.name === view.fileCategory.list.create);
   const buttonCreateFileType = menuButtons.find((button) => button.name === view.fileType.list.create);
   const buttonCreateUniversity = menuButtons.find((button) => button.name === view.university.list.create);
-  const buttonCreateNotificationCategory = menuButtons.find((button) => button.name === view.notificationCategory.list.create);
-  const buttonCreateNotificationMessage = menuButtons.find((button) => button.name === view.notificationMessage.list.create);
+  const buttonCreateNotificationCategory = menuButtons.find(
+    (button) => button.name === view.notificationCategory.list.create
+  );
+  const buttonCreateNotificationMessage = menuButtons.find(
+    (button) => button.name === view.notificationMessage.list.create
+  );
   const buttonCreateCounsellingPrice = menuButtons.find((button) => button.name === view.counsellingPrice.list.create);
   const buttonCreateBroadcast = menuButtons.find((button) => button.name === view.broadcast.list.create);
   const buttonCreateNews = menuButtons.find((button) => button.name === view.news.list.create);
@@ -231,7 +235,8 @@ export default function GeneralTable(props) {
   const buttonCreateNewCareerCategory = menuButtons.find((button) => button.name === view.careerCategory.list.create);
   const buttonCreateNewQnA = menuButtons.find((button) => button.name === view.qna.list.create);
   // const buttonCreateNewCounsellingCategory = menuButtons.find((button) => button.name === view.counsellingCategory.list.create);
-  // const buttonExportUEBLIST = menuButtons.find((button)=> button.name = view.contest.list.ueb);
+  const buttonExportUEBLIST = menuButtons.find((button) => button.name = view.contest.list.ueb);
+
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
@@ -321,10 +326,16 @@ export default function GeneralTable(props) {
   } = useRole();
 
   const { getAccountDetail, activeAccount, getAllUserByDept, assignAccount, removeAccount, getAllUser } = useAccount();
-  const { getMentorDetail, toggleActiveMentor, getMentorListDetail, getPartnerDetail, getPartnerCategoryDetail, importMentor } =
-    usePartner();
+  const {
+    getMentorDetail,
+    toggleActiveMentor,
+    getMentorListDetail,
+    getPartnerDetail,
+    getPartnerCategoryDetail,
+    importMentor,
+  } = usePartner();
   const { getPodcastDetail, getEpisodeDetail, getPlaylistDetail } = useMedia();
-  const { getBatchDetail, sendEmailVoucher ,   exportUEB} = useMarketing();
+  const { getBatchDetail, sendEmailVoucher, exportUEB } = useMarketing();
   const { getEventCategoryDetail } = useEventCategory();
   const { getEventDetail } = useEvent();
   const { getCardBatchDetail, sendEmailCard } = usePayment();
@@ -610,27 +621,22 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsCategoryDocument: true });
-
     } else if (documentType === 'university') {
       detailDocument = await getUniversityDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-
     } else if (documentType === 'universitylist') {
       detailDocument = await getUniversityListDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'career') {
+    } else if (documentType === 'career') {
       detailDocument = await getCareerDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'careerlist') {
+    } else if (documentType === 'careerlist') {
       detailDocument = await getCareerDetailList(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-
     } else if (documentType === 'banner') {
       detailDocument = await getBannerDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
@@ -643,36 +649,21 @@ export default function GeneralTable(props) {
       detailDocument = await getNewsListDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
-
-    }
-    else if (documentType === 'careerCategory') {
+    } else if (documentType === 'careerCategory') {
       detailDocument = await getCareerCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-
-    }
-    else if (documentType === 'counsellingCategory') {
+    } else if (documentType === 'counsellingCategory') {
       detailDocument = await getCounsellingCategoryDetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, counsellingCategoryDocument: true });
-
-    }
-    else if (documentType === 'qna') {
+    } else if (documentType === 'qna') {
       detailDocument = await getQnADetail(selectedDocument.id);
       dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, qnaDocument: true });
-
     }
   };
-  // const exportUEBData = () => {
-  //   const fetchex =async() =>{
-  //     let data =await exportUEB(search_text)
-  //     if (data !=''){
-  //       window.open(data, '_blank', 'noreferrer');
-  //     }
-  //   }
-  //   fetchex()
-  // }
+
   const openDialogCreate = () => {
     if (documentType === 'account') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
@@ -686,28 +677,22 @@ export default function GeneralTable(props) {
     } else if (documentType === 'university') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'career') {
+    } else if (documentType === 'career') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'careerlist') {
+    } else if (documentType === 'careerlist') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'universitylist') {
+    } else if (documentType === 'universitylist') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'careerCategory') {
+    } else if (documentType === 'careerCategory') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'counsellingCategory') {
+    } else if (documentType === 'counsellingCategory') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-    }
-    else if (documentType === 'qna') {
+    } else if (documentType === 'qna') {
       dispatch({ type: DOCUMENT_CHANGE, documentType });
       dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
     }
@@ -748,7 +733,7 @@ export default function GeneralTable(props) {
     setSelected([]);
     fetchDocument({ page: pageCurrent });
   };
- 
+
   const showConfirmPopup = ({
     title = 'Thông báo',
     message = 'Yêu cầu lựa chọn ít nhất một bản ghi',
@@ -758,7 +743,7 @@ export default function GeneralTable(props) {
   }) => {
     setConfirmPopup({ type: CONFIRM_CHANGE, open: true, title, message, action, payload, onSuccess });
   };
- 
+
   const handleOpenModal = (type, booking) => {
     setSelected((pre) => [...new Set([booking.id, ...pre])]);
     setSelectedRecord(booking);
@@ -1111,10 +1096,18 @@ export default function GeneralTable(props) {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
   };
+  const exportUEBData = async () => {
+    let data = await exportUEB(search_text);
+    if (data != '') {
+      window.open(data, '_blank', 'noreferrer');
+    }
+  };
   const handleClickCreateQnA = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, qnaDocument: true });
   };
+
+  
   const handleClickCreateNewCounsellingCategory = () => {
     dispatch({ type: DOCUMENT_CHANGE, documentType });
     dispatch({ type: FLOATING_MENU_CHANGE, counsellingCategoryDocument: true });
@@ -1168,28 +1161,28 @@ export default function GeneralTable(props) {
     });
   };
   const setURL = (url) => {
-    setOpenFireBase(false)
+    setOpenFireBase(false);
     setIsOpenModal(true);
-    setURLLink(url)
+    setURLLink(url);
     setModalType('importdata');
-  }
+  };
   const handleCloseDiaLog = () => {
-    setOpenFireBase(false)
-  }
+    setOpenFireBase(false);
+  };
 
   const handleOpen = () => {
-    setOpenFireBase(true)
-  }
+    setOpenFireBase(true);
+  };
   const handleImportData = async () => {
     let check = await importMentor(urlexcel);
 
-    setIsOpenModal(false)
+    setIsOpenModal(false);
     if (check) {
-      setSnackbarStatus({ isOpen: true, type: 'success', text: 'Cập nhật dự liệu thành công' })
+      setSnackbarStatus({ isOpen: true, type: 'success', text: 'Cập nhật dự liệu thành công' });
     } else {
-      setSnackbarStatus({ isOpen: true, type: 'error', text: 'Cập nhật dự liệu lỗi' })
+      setSnackbarStatus({ isOpen: true, type: 'error', text: 'Cập nhật dự liệu lỗi' });
     }
-  }
+  };
   const handleSyncProcessRole = async () => {
     showConfirmPopup({
       message: `Xác nhận đồng bộ ?`,
@@ -1198,88 +1191,75 @@ export default function GeneralTable(props) {
       onSuccess: reloadCurrentDocuments,
     });
   };
-  const handleSplitImage = (image_url) =>{
-    try{
-  var index = image_url.indexOf('drive.google.com');
-      if (index > -1){
-          index= image_url.indexOf('id=')
-          if (index > -1){
-            return 'https://drive.google.com/uc?export=view&id='+image_url.split('id=')[1]
-          }
-          else {
-            return 'https://drive.google.com/uc?export=view&id='+(image_url.split('/d/')[1]).split('/view')[0]
-          }
-      } else return image_url
+  const handleSplitImage = (image_url) => {
+    try {
+      var index = image_url.indexOf('drive.google.com');
+      if (index > -1) {
+        index = image_url.indexOf('id=');
+        if (index > -1) {
+          return 'https://drive.google.com/uc?export=view&id=' + image_url.split('id=')[1];
+        } else {
+          return 'https://drive.google.com/uc?export=view&id=' + image_url.split('/d/')[1].split('/view')[0];
+        }
+      } else return image_url;
+    } catch {
+      return image_url;
     }
-    catch {
-      return image_url
-    }
-   
-    
-  }
-  const clickSuccess = () => { };
-  useEffect(()=>{
-    if(!selectedApp?.element_id) return;
-    const fetch = async()=>{
+  };
+  const clickSuccess = () => {};
+  
+  useEffect(() => {
+    if (!selectedApp?.element_id) return;
+    const fetch = async () => {
       if (documentType === 'careerlist') {
         var detailDocument = await getCareerDetailList(selectedApp?.element_id);
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-      }else if (documentType === 'newsList') {
+      } else if (documentType === 'newsList') {
         var detailDocument = await getNewsListDetail(selectedApp?.element_id);
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
-      }
-      else if (documentType === 'bannerList') {
+      } else if (documentType === 'bannerList') {
         detailDocument = await getBannerListDetail(selectedDocument.id);
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
-      }
-      else if (documentType === 'universitylist') {
+      } else if (documentType === 'universitylist') {
         detailDocument = await getUniversityListDetail(selectedDocument.id);
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-      }
-      else if (documentType === 'playlist') {
+      } else if (documentType === 'playlist') {
         detailDocument = await getPlaylistDetail(selectedDocument.id);
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
-      }
-      else if (documentType === 'mentorlist') {
+      } else if (documentType === 'mentorlist') {
         detailDocument = await getMentorListDetail(selectedDocument.id);
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: detailDocument, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
-  }
-    }
-    
-    if (selectedApp.element_id==='create'){
+      }
+    };
+
+    if (selectedApp.element_id === 'create') {
       if (documentType === 'careerlist') {
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-      }else if (documentType === 'newsList') {
+      } else if (documentType === 'newsList') {
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, newsListDocument: true });
-      }
-      else if (documentType === 'bannerList') {
+      } else if (documentType === 'bannerList') {
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, bannerListDocument: true });
-      }
-      else if (documentType === 'universitylist') {
+      } else if (documentType === 'universitylist') {
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, detailDocument: true });
-      }
-      else if (documentType === 'playlist') {
-       
+      } else if (documentType === 'playlist') {
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, playlistDocument: true });
-      }
-      else if (documentType === 'mentorlist') {
+      } else if (documentType === 'mentorlist') {
         dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType });
         dispatch({ type: FLOATING_MENU_CHANGE, mentorListDocument: true });
-  }
-    } else 
-      fetch();
-  },[selectedApp])
+      }
+    } else fetch();
+  }, [selectedApp]);
   return (
     <React.Fragment>
       {isOpenModalNote && (
@@ -1291,26 +1271,25 @@ export default function GeneralTable(props) {
           selectedBooking={selectedRecord}
         />
       )}
-      {snackbarStatus.isOpen && (<>
-        <Portal>
-          <Snackbar
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            open={snackbarStatus.isOpen}
-            autoHideDuration={3000}
-            onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
-          >
-            <Alert
+      {snackbarStatus.isOpen && (
+        <>
+          <Portal>
+            <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              open={snackbarStatus.isOpen}
+              autoHideDuration={3000}
               onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
-              severity={snackbarStatus.type}
-              sx={{ width: '100%' }}
             >
-              {snackbarStatus.text}
-            </Alert>
-          </Snackbar>
-        </Portal>
-
-
-      </>
+              <Alert
+                onClose={() => setSnackbarStatus({ ...snackbarStatus, isOpen: false })}
+                severity={snackbarStatus.type}
+                sx={{ width: '100%' }}
+              >
+                {snackbarStatus.text}
+              </Alert>
+            </Snackbar>
+          </Portal>
+        </>
       )}
       <FirebaseUpload
         open={openFireBase || false}
@@ -1448,8 +1427,8 @@ export default function GeneralTable(props) {
                 // buttonCreateNewCounsellingCategory={buttonCreateNewCounsellingCategory}
                 // createNewCounsellingCategory={handleClickCreateNewCounsellingCategory}
                 openFireBase={handleOpen}
-                // buttonExportUEBLIST={buttonExportUEBLIST}
-                // exportUEBData={exportUEBData}
+                buttonExportUEBLIST={buttonExportUEBLIST}
+                exportUEBData={exportUEBData}
               />
               <Grid container spacing={gridSpacing}>
                 {(documentType === 'department' || documentType === 'processrole') && (
@@ -1480,12 +1459,12 @@ export default function GeneralTable(props) {
                         documentType === 'department'
                           ? classes.table2
                           : documentType === 'processrole'
-                            ? classes.table3
-                            : classes.table
+                          ? classes.table3
+                          : classes.table
                       }
                       aria-labelledby="tableTitle"
                       size={'medium'}
-                    // aria-label="enhanced table"
+                      // aria-label="enhanced table"
                     >
                       <EnhancedTableHead
                         classes={classes}
@@ -1592,8 +1571,6 @@ export default function GeneralTable(props) {
                                 </TableCell>
                               )}
 
-
-
                               {displayOptions.fullname && (
                                 <TableCell align="left">
                                   <>
@@ -1694,7 +1671,6 @@ export default function GeneralTable(props) {
                                   onClick={(event) => openDetailDocument(event, row)}
                                 >
                                   {row.university_name}
-
                                 </TableCell>
                               )}
                               {displayOptions.voucher_code && <TableCell align="left">{row.voucher_code}</TableCell>}
@@ -1814,17 +1790,17 @@ export default function GeneralTable(props) {
                                   <span>{row.matching_code || ''}</span>
                                 </TableCell>
                               )}
-                               {displayOptions.mentee_email && (
+                              {displayOptions.mentee_email && (
                                 <TableCell align="left">
                                   <span>{row.mentee_email || ''}</span>
                                 </TableCell>
                               )}
-                               {displayOptions.mentee_name && (
+                              {displayOptions.mentee_name && (
                                 <TableCell align="left">
                                   <span>{row.fullname || ''}</span>
                                 </TableCell>
                               )}
-                               {displayOptions.mentor_email && (
+                              {displayOptions.mentor_email && (
                                 <TableCell align="left">
                                   <span>{row.mentor_email || ''}</span>
                                 </TableCell>
