@@ -280,17 +280,14 @@ const Chat = ({chatbox}) => {
                       {selectedChatbox.title}
                     </Typography>
                     <Typography align="left" component="div" variant="subtitle2">
-                      {selectedChatbox.description}
+                      {selectedChatbox?.description?.split('-')[1]}<br/>
+                      {selectedChatbox?.description?.split('-')[2]}<br/>
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs zeroMinWidth></Grid>
-              <Grid item>
-                <IconButton color="secondary" size="medium">
-                  <MoreHorizTwoToneIcon />
-                </IconButton>
-              </Grid>
+              
+             
             </Grid>
           </div>
           <PerfectScrollbar className={classes.ScrollHeightinbox} containerRef={setScrollEl}  style={{maxHeight:420}}>
