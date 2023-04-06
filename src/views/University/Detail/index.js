@@ -121,6 +121,7 @@ const UniveristyModal = () => {
     setuniversity({
       ...university,
       ...selectedDocument,
+      description: selectedDocument?.description?.replaceAll('\n\n', '<br><br>')
     });
   }, [selectedDocument]);
   const [newsList, setNewList] = useState([]);

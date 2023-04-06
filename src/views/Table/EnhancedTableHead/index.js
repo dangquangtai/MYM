@@ -75,7 +75,7 @@ function EnhancedTableHead(props) {
                     direction={orderBy === headCell.id ? order : 'asc'}
                     onClick={createSortHandler(headCell.id)}
                   >
-                    {headCell.label}
+                    { (documentType === 'careerlist' || documentType === 'universitylist')&& headCell.id==='is_active'? 'Danh sách chính': headCell.label}
                     {orderBy === headCell.id ? (
                       <span className={classes.visuallyHidden}>
                         {order === 'desc' ? 'sorted descending' : 'sorted ascending'}

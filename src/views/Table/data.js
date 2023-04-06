@@ -78,6 +78,7 @@ export const headCells = [
 
 
   { id: 'is_active', numeric: false, disablePadding: false, label: 'Hoạt động', maxWidth: 150 },
+ 
   { id: 'is_featured', numeric: false, disablePadding: false, label: 'Nổi bật', maxWidth: 150 },
   { id: 'order_code', numeric: false, disablePadding: false, label: 'Mã order', maxWidth: 150 },
   { id: 'order_title', numeric: false, disablePadding: false, label: 'Tiêu đề', maxWidth: 150 },

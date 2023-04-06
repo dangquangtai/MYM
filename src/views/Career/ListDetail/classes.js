@@ -81,8 +81,8 @@ const useStyles = makeStyles((theme) => ({
         background: '#f1f1f9',
         margin: '0px',
         borderRadius: '0px',
-        maxWidth: '40vw',
-        minWidth: '40vw',
+        maxWidth: '60vw',
+        minWidth: '60vw',
         maxHeight: '100%',
         overflowY: 'hidden',
         [theme.breakpoints.down('md')]: {

@@ -113,7 +113,8 @@ const CareerModal = () => {
     if (!selectedDocument) return;
     setCareer({
      ...Career,
-     ...selectedDocument
+     ...selectedDocument,
+     career_description: selectedDocument?.career_description?.replaceAll('\n\n', '<br><br>')
     });
   }, [selectedDocument]);
 

@@ -166,7 +166,7 @@ export default function GeneralTable(props) {
       final_total: tableColumns.includes('final_total'),
       status_display: tableColumns.includes('status_display'),
       is_featured: tableColumns.includes('is_featured'),
-      is_active: tableColumns.includes('is_active'),
+      is_active: tableColumns.includes('is_active') ,
       scheduled_datetime: tableColumns.includes('scheduled_datetime'),
       is_completed: tableColumns.includes('is_completed'),
       landing_page_name: tableColumns.includes('landing_page_name'),
