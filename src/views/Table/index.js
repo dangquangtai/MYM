@@ -235,7 +235,7 @@ export default function GeneralTable(props) {
   const buttonCreateNewCareerCategory = menuButtons.find((button) => button.name === view.careerCategory.list.create);
   const buttonCreateNewQnA = menuButtons.find((button) => button.name === view.qna.list.create);
   // const buttonCreateNewCounsellingCategory = menuButtons.find((button) => button.name === view.counsellingCategory.list.create);
-  const buttonExportUEBLIST = menuButtons.find((button) => button.name = view.contest.list.ueb);
+  const buttonExportUEBLIST = menuButtons.find((button) => button.name === view.contest.list.ueb);
 
 
   const [isOpenModalNote, setIsOpenModalNote] = React.useState(false);
