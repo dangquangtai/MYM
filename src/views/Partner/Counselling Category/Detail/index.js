@@ -32,6 +32,7 @@ import {
   DescriptionOutlined as DescriptionOutlinedIcon,
   RadioOutlined as RadioOutlinedIcon,
   ImageOutlined as ImageIcon,
+  QuestionAnswer
 } from '@material-ui/icons';
 import useStyles from './../../../../utils/classes';
 import usePartner from './../../../../hooks/usePartner';
@@ -243,7 +244,7 @@ const CounsellingCategoryModal = () => {
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
-                        <History className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
+                        <QuestionAnswer className={`${tabIndex === 1 ? classes.tabActiveIcon : ''}`} />
                         Câu hỏi
                       </Typography>
                     }
@@ -545,7 +546,7 @@ const CounsellingCategoryModal = () => {
                       <div className={classes.tabItem}>
                         <div className={classes.tabItemTitle}>
                           <div className={classes.tabItemLabel}>
-                            <QueueMusic />
+                            <QuestionAnswer/>
                             <span>Câu hỏi</span>
                           </div>
                         </div>
@@ -560,7 +561,7 @@ const CounsellingCategoryModal = () => {
                                 variant="outlined"
                                 name="default_text1"
                                 multiline
-                                rows={2}
+                                rows={4}
                                 fullWidth
                                 value={defaultText.default_text1}
                                 className={classes.inputField}
@@ -577,7 +578,7 @@ const CounsellingCategoryModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 multiline
-                                rows={2}
+                                rows={4}
                                 fullWidth
                                 variant="outlined"
                                 name="default_text2"
@@ -596,7 +597,7 @@ const CounsellingCategoryModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 multiline
-                                rows={2}
+                                rows={4}
                                 fullWidth
                                 variant="outlined"
                                 name="default_text3"
@@ -615,7 +616,7 @@ const CounsellingCategoryModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                  multiline
-                                 rows={2}
+                                 rows={4}
                                  fullWidth
                                 variant="outlined"
                                 name="default_text4"
