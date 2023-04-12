@@ -561,7 +561,7 @@ const CounsellingCategoryModal = () => {
                                 variant="outlined"
                                 name="default_text1"
                                 multiline
-                                rows={4}
+                                rows={5}
                                 fullWidth
                                 value={defaultText.default_text1}
                                 className={classes.inputField}
@@ -578,7 +578,7 @@ const CounsellingCategoryModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 multiline
-                                rows={4}
+                                rows={5}
                                 fullWidth
                                 variant="outlined"
                                 name="default_text2"
@@ -597,7 +597,7 @@ const CounsellingCategoryModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                 multiline
-                                rows={4}
+                                rows={5}
                                 fullWidth
                                 variant="outlined"
                                 name="default_text3"
@@ -616,7 +616,7 @@ const CounsellingCategoryModal = () => {
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
                                  multiline
-                                 rows={4}
+                                 rows={5}
                                  fullWidth
                                 variant="outlined"
                                 name="default_text4"
