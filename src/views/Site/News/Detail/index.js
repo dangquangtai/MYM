@@ -21,6 +21,7 @@ import {
   ListItemIcon,
   List,
   FormControl,
+  Link,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -93,6 +94,7 @@ const NewsModal = () => {
     source_name: '',
     source_url: '',
     related_news_id_list: [],
+    template_id: '',
   });
   const [landingPage, setLandingPage] = useState([]);
   const [template, setTemplate] = useState([]);
@@ -136,7 +138,14 @@ const NewsModal = () => {
 
   const setDocumentToDefault = async () => {
     setTabIndex(0);
-    setNews({ is_active: true, is_featured: false });
+    setNews({
+      is_active: true,
+      is_featured: false,
+      source_name: '',
+      source_url: '',
+      related_news_id_list: [],
+      template_id: '',
+    });
     setFeaturedNews([]);
     setPublishedNews([]);
     setCheckedNews([]);
@@ -408,6 +417,7 @@ const NewsModal = () => {
                               <TextField
                                 fullWidth
                                 autoFocus
+                                multiline
                                 name="title"
                                 size="small"
                                 type="text"
@@ -553,6 +563,7 @@ const NewsModal = () => {
                               <TextField
                                 fullWidth
                                 name="source_url"
+                                multiline
                                 size="small"
                                 type="text"
                                 variant="outlined"
@@ -603,45 +614,18 @@ const NewsModal = () => {
                               />
                             </Grid>
                           </Grid>
-                        </div>
-                      </div>
-                      {/* <div className={classes.tabItem}>
-                        <div className={classes.tabItemTitle}>
-                          <div className={classes.tabItemLabel}>
-                            <span>Tin liên quan</span>
-                          </div>
-                        </div>
-                        <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
-                            <Grid item lg={12} md={12} xs={12}>
-                              <TextField
-                                fullWidth
-                                select
-                                multiple
-                                size="small"
-                                variant="outlined"
-                                name="related_news_id_list"
-                                value={newsData.related_news_id_list || []}
-                                onChange={handleChanges}
-                                renderValue={(selected) => (
-                                  <div className={classes.chips}>
-                                    {selected.map((value) => (
-                                      <Chip key={value} label={value} className={classes.chip} />
-                                    ))}
-                                  </div>
-                                )}
-                              >
-                                {relatedNews?.map((option) => (
-                                  <MenuItem key={option.id} value={option.id}>
-                                    <Checkbox checked={newsData?.related_news_id_list.indexOf(option.id) > -1} />
-                                    <ListItemText primary={option.title} />
-                                  </MenuItem>
-                                ))}
-                              </TextField>
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>News URL:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <Link href={newsData.news_url} target="_blank">
+                                {newsData.news_url}
+                              </Link>
                             </Grid>
                           </Grid>
                         </div>
-                      </div> */}
+                      </div>
                     </Grid>
                   </Grid>
                 </TabPanel>
