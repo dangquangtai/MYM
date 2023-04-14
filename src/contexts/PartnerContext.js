@@ -22,6 +22,21 @@ export const PartnerProvider = ({ children }) => {
         } else return {};
       });
   };
+
+  const getMentorListMeta = async () => {
+    return axiosInstance
+      .post(apiEndpoints.get_mentorlist, {
+        outputtype: 'RawJson',
+      
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+     
+          return list;
+        } else return [];
+      });
+  };
   const getMentorbyEmail = async (email) => {
     return axiosInstance
       .post(apiEndpoints.get_mentor_by_email, {
@@ -265,7 +280,9 @@ export const PartnerProvider = ({ children }) => {
         createPartnerCategory,
         updatePartnerCategory,
         getPartnerListInactive,
-        getMentorbyEmail, importMentor
+        getMentorbyEmail, 
+        importMentor,
+        getMentorListMeta
       }}
     >
       {children}

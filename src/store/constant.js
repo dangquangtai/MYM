@@ -162,13 +162,16 @@ export const apiEndpoints = {
   get_statistic_data: '/Primary/?FlowAlias=bs_api_get_booking_branches_dasboard_data&action=api',
 
   //High School
-  get_completed_high_school_counselling_list_by_page:
-    '/Primary/?FlowAlias=bs_api_high_school_counselling_get_completed_counselling_list&action=api',
-  get_uncompleted_high_school_counselling_list_by_page:
-    '/Primary/?FlowAlias=bs_api_high_school_counselling_get_uncompleted_counselling_list&action=api',
-  get_cancel_high_school_counselling_list_by_page:
-    '/Primary/?FlowAlias=bs_api_high_school_counselling_get_cancel_counselling_list&action=api',
+  get_completed_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_uncompleted_counselling_list&action=api',
+  get_cancel_high_school_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_cancel_counselling_list&action=api',
   get_list_high_school_counselling: '/Primary/?FlowAlias=bs_api_high_school_counselling_get_list_by_page&action=api',
+  
+  get_completed_high_school_new_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_new_counselling_get_completed_counselling_list&action=api',
+  get_uncompleted_high_school_new_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_new_counselling_get_uncompleted_counselling_list&action=api',
+  get_cancel_high_school_new_counselling_list_by_page: '/Primary/?FlowAlias=bs_api_high_school_new_counselling_get_cancel_counselling_list&action=api',
+  get_list_high_school_new_counselling: '/Primary/?FlowAlias=bs_api_high_school_new_counselling_get_list_by_page&action=api',
+
 
   get_booking_detail: '/Primary/?FlowAlias=bs_api_counselling_get_counselling_detail&action=api',
   get_counselling_by_evnet_id: '/Primary/?FlowAlias=bs_api_booking_get_counselling_list_by_event_id&action=api',
@@ -451,10 +454,14 @@ export const apiEndpoints = {
   get_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_get_meet_ueb_mentor_list_by_page&action=api',
   export_meet_ueb_mentor: '/Primary/?FlowAlias=bs_api_contest_export_meet_ueb_mentor_list&action=api',
 
-  // Chat
+  get_mentorlist: '/Primary/?FlowAlias=bs_api_mentor_get_mentorlist_meta_key_by_company&action=api',
+  get_podcast_list: '/Primary/?FlowAlias=bs_api_podcast_get_playlist_meta&action=api',
   get_chat_box_list: '/Primary/?FlowAlias=bs_api_chat_get_chat_box_list_by_page&action=api',
   get_chat_message_list: '/Primary/?FlowAlias=bs_api_get_chat_message_list_by_chatbox_id&action=api',
   post_chat_message: '/Primary/?FlowAlias=bs_api_post_chat_message&action=api',
+  get_chat_box_by_booking_id: '/Primary/?FlowAlias=bs_api_get_chat_box_by_booking_id&action=api',
+
+
 };
 export const apiDomain = 'https://upload.truebpm.vn';
 // export const apiDomain = 'http://localhost:4000'
@@ -517,6 +524,10 @@ export const counsellingActions = {
   high_school_cancel_list: 'MYM_BOOKING_HOME_OPEN_CANCEL_COUNSELLING_LIST',
   high_school_completed_list: 'MYM_BOOKING_HOME_OPEN_COMPLETED_COUNSELLING_LIST',
   high_school_all_list: 'MYM_BOOKING_HOME_OPEN_COUNSELLING_LIST',
+  high_school_new_uncompleted_list: 'MYM_BOOKING_HOME_OPEN_DRAFT_HIGH_SCHOOL_LIST',
+  high_school_new_cancel_list: 'MYM_BOOKING_HOME_OPEN_CANCEL_HIGH_SCHOOL_LIST',
+  high_school_new_completed_list: 'MYM_BOOKING_HOME_OPEN_COMPLETED_HIGH_SCHOOL_LIST',
+  high_school_new_all_list: 'MYM_BOOKING_HOME_OPEN_HIGH_SCHOOL_LIST',
 };
 
 export const batchActions = {
@@ -976,6 +987,9 @@ export const view = {
   contest: {
     list: {
       ueb: 'MYM_MARKETING_HOME_EXPORT_MEET_UEB_MENTOR_MENU_BUTTON',
+    },
+    detail:{
+
     },
   },
 };

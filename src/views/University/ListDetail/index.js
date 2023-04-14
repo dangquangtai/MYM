@@ -168,7 +168,6 @@ const UniversityListModal = () => {
       fetch()
   } else {
     setUniversityList(universities)
-   
   }
   },[University.is_active])
   const handleUpdateUniversity = async () => {
@@ -285,7 +284,7 @@ const UniversityListModal = () => {
                     value={0}
                     {...a11yProps(0)}
                   />
-                  <Tab
+                  {/* <Tab
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
@@ -295,7 +294,7 @@ const UniversityListModal = () => {
                     }
                     value={1}
                     {...a11yProps(1)}
-                  />
+                  /> */}
                   <Tab
                     className={classes.unUpperCase}
                     label={
@@ -323,7 +322,7 @@ const UniversityListModal = () => {
                         <div className={classes.tabItemBody}>
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Tiêu đề danh sách trường: </span>
+                              <span className={classes.tabItemLabelField}>Danh sách trường: </span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -336,10 +335,26 @@ const UniversityListModal = () => {
                               />
                             </Grid>
                           </Grid>
-
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Order number:</span>
+                              <span className={classes.tabItemLabelField}>Mô tả:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                              
+                             
+                                variant="outlined"
+                                name="description"
+                                value={University.description}
+                                className={classes.inputField}
+                                onChange={handleChange}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thứ tự:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -371,7 +386,9 @@ const UniversityListModal = () => {
                             <Grid item lg={2} md={2} xs={2}>
                               <Switch
                               checked={University.is_active}
-                              onChange={()=> setUniversity({...University,is_active: !University.is_active})}
+                              onChange={()=>{
+                                setUniversity({...University,is_active: !University.is_active, university_id_list: []});
+                              } }
                               inputProps={{ 'aria-label': 'controlled' }} />
                             </Grid>
                           </Grid>

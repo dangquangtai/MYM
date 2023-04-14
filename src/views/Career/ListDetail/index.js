@@ -109,17 +109,11 @@ const CareerListModal = () => {
   }, [selectedDocument]);
 
   useEffect(() => {
-    if (selectedDocument?.is_active !=Career.is_active){
-      setCareer({...Career,career_id_list:[]})
-    }
-   
    const fetch = async () =>{
     if(Career.is_active){
-      
       let data = await getINCareerList()
       setCareerList(data)
     } else {
-     
        let data= await getCareerList();
       setCareerList(data)
     }
@@ -170,7 +164,7 @@ const CareerListModal = () => {
         let check =await createCareerList({...Career, list_description: content});
         if (check == true) {
           handleOpenSnackbar(true, 'success', 'Tạo mới thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'career' });
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'careerlist' });
           handleCloseDialog();
         } else {
           handleOpenSnackbar(true, 'error', 'Tạo mới lỗi!');
@@ -179,7 +173,7 @@ const CareerListModal = () => {
         let check =await updateCareerList({...Career, list_description: content});
         if (check == true) {
           handleOpenSnackbar(true, 'success', 'Cập nhập thành công!');
-          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'career' });
+          dispatch({ type: DOCUMENT_CHANGE, selectedDocument: null, documentType: 'careerlist' });
           handleCloseDialog();
         }
         else {
@@ -276,7 +270,7 @@ const CareerListModal = () => {
                     value={0}
                     {...a11yProps(0)}
                   />
-                  <Tab
+                  {/* <Tab
                     className={classes.unUpperCase}
                     label={
                       <Typography className={classes.tabLabels} component="span" variant="subtitle1">
@@ -286,7 +280,7 @@ const CareerListModal = () => {
                     }
                     value={1}
                     {...a11yProps(1)}
-                  />
+                  /> */}
                   <Tab
                     className={classes.unUpperCase}
                     label={
@@ -327,10 +321,25 @@ const CareerListModal = () => {
                               />
                             </Grid>
                           </Grid>
-
                           <Grid container className={classes.gridItemInfo} alignItems="center">
                             <Grid item lg={4} md={4} xs={4}>
-                              <span className={classes.tabItemLabelField}>Order number:</span>
+                              <span className={classes.tabItemLabelField}>Mô tả:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                              
+                                variant="outlined"
+                                name="list_description"
+                                value={Career.list_description}
+                                className={classes.inputField}
+                                onChange={handleChange}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Thứ tự:</span>
                             </Grid>
                             <Grid item lg={8} md={8} xs={8}>
                               <TextField
@@ -351,7 +360,7 @@ const CareerListModal = () => {
                             <Grid item lg={2} md={2} xs={2}>
                               <Switch
                               checked={Career.is_active}
-                              onChange={()=> setCareer({...Career,is_active: !Career.is_active})}
+                              onChange={()=> setCareer({...Career,is_active: !Career.is_active, career_id_list:[]})}
                               inputProps={{ 'aria-label': 'controlled' }} />
                             </Grid>
                           </Grid>

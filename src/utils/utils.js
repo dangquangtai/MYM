@@ -190,6 +190,18 @@ export function getUrlByAction(selectedFolder) {
     case counsellingActions.high_school_uncompleted_list: {
       return apiEndpoints.get_uncompleted_high_school_counselling_list_by_page;
     }
+    case counsellingActions.high_school_new_completed_list: {
+      return apiEndpoints.get_completed_high_school_new_counselling_list_by_page;
+    }
+    case counsellingActions.high_school_new_cancel_list: {
+      return apiEndpoints.get_cancel_high_school_new_counselling_list_by_page;
+    }
+    case counsellingActions.high_school_new_all_list: {
+      return apiEndpoints.get_list_high_school_new_counselling;
+    }
+    case counsellingActions.high_school_new_uncompleted_list: {
+      return apiEndpoints.get_uncompleted_high_school_new_counselling_list_by_page;
+    }
     case orderActions.pending_booking_list: {
       return apiEndpoints.get_pending_booking_order_list;
     }

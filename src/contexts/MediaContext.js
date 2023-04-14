@@ -23,6 +23,20 @@ export const MediaProvider = ({ children }) => {
         } else return {};
       });
   };
+  const getPodcastlist = async (id) => {
+    return axiosInstance
+      .post(apiEndpoints.get_podcast_list, {
+        outputtype: 'RawJson',
+     
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.return === 200) {
+          const { list } = response.data;
+  
+          return list;
+        } else return [];
+      });
+  };
 
   const createPodcast = async (data) => {
     return axiosInstance.post(apiEndpoints.create_podcast, { outputtype: 'RawJson', ...data }).then((response) => {
@@ -149,6 +163,7 @@ export const MediaProvider = ({ children }) => {
         getPlaylistDetail,
         createPlaylist,
         updatePlaylist,
+        getPodcastlist
       }}
     >
       {children}
