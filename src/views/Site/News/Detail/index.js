@@ -95,6 +95,7 @@ const NewsModal = () => {
     related_news_id_list: [],
   });
   const [landingPage, setLandingPage] = useState([]);
+  const [template, setTemplate] = useState([]);
 
   const [relatedNews, setRelatedNews] = useState([]);
   const [publishedNews, setPublishedNews] = React.useState([]);
@@ -270,9 +271,10 @@ const NewsModal = () => {
 
   useEffect(() => {
     const getCategories = async () => {
-      const { newsCategory, landingPage } = await getNewsCategory();
+      const { newsCategory, landingPage, templates } = await getNewsCategory();
       setCategories(newsCategory);
       setLandingPage(landingPage);
+      setTemplate(templates);
     };
     getCategories();
   }, []);
@@ -482,6 +484,28 @@ const NewsModal = () => {
                                 onChange={handleChanges}
                               >
                                 {landingPage?.map((option) => (
+                                  <MenuItem key={option.id} value={option.id}>
+                                    {option.value}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            </Grid>
+                          </Grid>
+                          <Grid container className={classes.gridItemInfo} alignItems="center">
+                            <Grid item lg={4} md={4} xs={4}>
+                              <span className={classes.tabItemLabelField}>Mẫu tin tức:</span>
+                            </Grid>
+                            <Grid item lg={8} md={8} xs={8}>
+                              <TextField
+                                fullWidth
+                                select
+                                size="small"
+                                variant="outlined"
+                                name="template_id"
+                                value={newsData.template_id || ''}
+                                onChange={handleChanges}
+                              >
+                                {template?.map((option) => (
                                   <MenuItem key={option.id} value={option.id}>
                                     {option.value}
                                   </MenuItem>

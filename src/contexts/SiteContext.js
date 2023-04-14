@@ -41,8 +41,8 @@ export const SiteProvider = ({ children }) => {
   const getNewsCategory = async () => {
     return axiosInstance.post(apiEndpoints.get_category, { outputtype: 'RawJson' }).then((response) => {
       if (response.status === 200 && response.data.return === 200) {
-        const { list: newsCategory, landing_page: landingPage } = response.data;
-        return { newsCategory, landingPage };
+        const { list: newsCategory, landing_page: landingPage, templates } = response.data;
+        return { newsCategory, landingPage, templates };
       } else return [];
     });
   };
@@ -161,8 +161,6 @@ export const SiteProvider = ({ children }) => {
     });
   };
 
-
-
   // QnA
   const getQnADetail = async (id) => {
     return axiosInstance
@@ -249,8 +247,7 @@ export const SiteProvider = ({ children }) => {
         getNewsByLandingPage,
         getSubCategory,
         createQnA,
-        updateQnA
-
+        updateQnA,
       }}
     >
       {children}
